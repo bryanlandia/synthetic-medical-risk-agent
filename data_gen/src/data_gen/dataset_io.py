@@ -11,7 +11,10 @@ from .schema import Record
 
 
 def dump_record(r: Record) -> str:
-    return json.dumps(r.model_dump(mode="json"), sort_keys=True, ensure_ascii=True)
+    data = r.model_dump(mode="json")
+    if data.get("pair_group") is None:
+        data.pop("pair_group", None)  # absent in schema 1, so older datasets stay byte-identical
+    return json.dumps(data, sort_keys=True, ensure_ascii=True)
 
 
 def dump_manifest(manifest: dict) -> str:

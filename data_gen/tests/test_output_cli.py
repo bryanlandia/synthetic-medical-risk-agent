@@ -100,12 +100,12 @@ def test_cli_validate_catches_corruption(tmp_path, capsys):
     assert "INVALID" in capsys.readouterr().out
 
 
-def test_cli_rejects_reserved_style_config(tmp_path, capsys):
+def test_cli_rejects_unsupported_style_config(tmp_path, capsys):
     cfg_file = tmp_path / "cfg.json"
-    cfg_file.write_text(json.dumps({"style_rates": {"narrative": 1.0}}))
+    cfg_file.write_text(json.dumps({"style_rates": {"ai_scribe": 1.0}}))
     out = tmp_path / "x"
     assert main(["generate", "--out", str(out), "--config", str(cfg_file), *SMALL]) == 2
-    assert "reserved" in capsys.readouterr().err
+    assert "not supported" in capsys.readouterr().err
     assert not out.exists()  # failed before producing any record
 
 

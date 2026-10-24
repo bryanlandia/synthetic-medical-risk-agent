@@ -2,14 +2,14 @@
 
 ## 1. Client and configuration
 
-- [ ] 1.1 Add an Anthropic API client wrapper that reads the key only from the environment and supports a mock, and verify with a test that a missing key fails clearly and no key string appears in the repo
-- [ ] 1.2 Add config for model id, prompt version, retry count, caps (full run and pilot), setting rates, matched-pair count and pilot size, make the config reject template styles with the LLM source and LLM settings with template rendering, and verify config tests cover bad values and both rejections
+- [x] 1.1 Add an Anthropic API client wrapper that reads the key only from the environment and supports a mock, and verify with a test that a missing key fails clearly and no key string appears in the repo
+- [x] 1.2 Add config for model id, prompt version, retry count, caps (full run and pilot), setting rates, matched-pair count and pilot size, make the config reject template styles with the LLM source and LLM settings with template rendering, and verify config tests cover bad values and both rejections
 
 ## 2. Settings and plan version 2 (small `data_gen/` code change)
 
-- [ ] 2.1 Add per-symptom phrase sets and the four setting profiles, and verify tests that each symptom has at least 3 phrases, no phrase belongs to two symptoms, and every setting has a complete profile
-- [ ] 2.2 Bump the plan to version 2 with the setting, allowed phrases per symptom, code-computed H/L lab flags and reference ranges, per-setting completeness rules, and stale values for `copy_forward`, and verify tests for determinism, flag correctness at range boundaries, stale rate within 0.03 of config, and that template renderers still pass parse-back on version 2 plans
-- [ ] 2.3 Add schema version 2 with the optional `pair_group` field and update the validators to accept versions 1 and 2, and verify the committed template dataset still passes `data-gen validate` and that pair records validate
+- [x] 2.1 Add per-symptom phrase sets and the four setting profiles, and verify tests that each symptom has at least 3 phrases, no phrase belongs to two symptoms, and every setting has a complete profile
+- [x] 2.2 Bump the plan to version 2 with the setting, allowed phrases per symptom, code-computed H/L lab flags and reference ranges, per-setting completeness rules, and stale values for `copy_forward`, and verify tests for determinism, flag correctness at range boundaries, stale rate within 0.03 of config, and that template renderers still pass parse-back on version 2 plans
+- [x] 2.3 Add schema version 2 with the optional `pair_group` field and update the validators to accept versions 1 and 2, and verify the committed template dataset still passes `data-gen validate` and that pair records validate
 
 ## 3. Verbalizer
 

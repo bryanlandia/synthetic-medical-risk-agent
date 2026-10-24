@@ -61,7 +61,7 @@ def build_manifest(cfg: GenConfig, by_split: dict[str, list[Record]]) -> dict:
         "plan_version": PLAN_VERSION,
         "injection_catalog_version": catalog_version(),
         "note_source": "template",
-        "config": cfg.model_dump(mode="json"),
+        "config": cfg.canonical_dump(),
         "config_hash": cfg.config_hash(),
         "llm_calls": 0,
         "excluded_records": 0,
