@@ -1,0 +1,101 @@
+{
+  "config": {
+    "hedge_rate": 0.25,
+    "missing_rate": 0.05,
+    "n_per_adversarial_type": 60,
+    "n_test": 1000,
+    "n_train": 4000,
+    "omit_absent_symptom_rate": 0.3,
+    "seed": 20261,
+    "stale_rate": 0.06,
+    "style_rates": {
+      "templated": 0.5,
+      "terse": 0.5
+    },
+    "target_prevalence": 0.3,
+    "unit_mismatch_rate": 0.08
+  },
+  "config_hash": "f25c43952052c85b",
+  "excluded_records": 0,
+  "generator_version": "0.1.0",
+  "injection_catalog_version": "1",
+  "llm_calls": 0,
+  "note_source": "template",
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "plan_version": "1",
+  "schema_version": "1",
+  "seed": 20261,
+  "splits": {
+    "adversarial": {
+      "bayes_ceiling": {
+        "auc": 0.768318,
+        "brier": 0.174175,
+        "log_loss": 0.520295
+      },
+      "mean_true_probability": 0.320871,
+      "n": 420,
+      "noise_counts": {
+        "contradiction": 83,
+        "missing_value": 181,
+        "unit_mismatch": 90
+      },
+      "prevalence": 0.319048,
+      "styles": {
+        "templated": 215,
+        "terse": 205
+      },
+      "tag_record_counts": {
+        "borderline": 60,
+        "contradiction": 60,
+        "impossible_value": 60,
+        "missing_labs": 60,
+        "note_flag_disagreement": 60,
+        "prompt_injection": 60,
+        "unit_mismatch": 60
+      }
+    },
+    "test": {
+      "bayes_ceiling": {
+        "auc": 0.804024,
+        "brier": 0.153087,
+        "log_loss": 0.477014
+      },
+      "mean_true_probability": 0.299235,
+      "n": 1000,
+      "noise_counts": {
+        "contradiction": 90,
+        "hedging": 331,
+        "missing_value": 396,
+        "unit_mismatch": 137
+      },
+      "prevalence": 0.3,
+      "styles": {
+        "templated": 500,
+        "terse": 500
+      },
+      "tag_record_counts": {}
+    },
+    "train": {
+      "bayes_ceiling": {
+        "auc": 0.815685,
+        "brier": 0.149982,
+        "log_loss": 0.462355
+      },
+      "mean_true_probability": 0.301052,
+      "n": 4000,
+      "noise_counts": {
+        "contradiction": 348,
+        "hedging": 1264,
+        "missing_value": 1587,
+        "unit_mismatch": 476
+      },
+      "prevalence": 0.3,
+      "styles": {
+        "templated": 2019,
+        "terse": 1981
+      },
+      "tag_record_counts": {}
+    }
+  },
+  "synthetic": true
+}

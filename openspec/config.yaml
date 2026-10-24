@@ -1,32 +1,33 @@
 schema: spec-driven
 
-# Project context (optional)
-# Add only constraints that should guide OpenSpec artifacts and workflows.
-# Include constraints an agent cannot infer by reading the code.
-# Keep general project documentation and discoverable codebase facts out.
-# Example:
-#   context: |
-#     Designs and tasks must cover Windows, macOS, and Linux
-#     Write all artifacts in Spanish
+context: |
+  Portfolio demo for a Staff SWE application: fine-tuned small model +
+  Strands Agents SDK agent + rigorous evals (evals are the primary deliverable).
+  HARD CONSTRAINT: all medical data is synthetic and the disease is fictional,
+  defined by a hidden seeded scoring rule we own. State this in README, UI and
+  data files. The agent must never give real medical advice.
+  Stack: Python data_gen/ training/ agent/ evals/; Next.js web/ (Vercel) proxying
+  /api/analyze with a shared-secret header to FastAPI+Strands on Render;
+  classifier served on CPU in the container; LoRA model is offline comparison only;
+  orchestrator is Claude via Anthropic API. Evals use Inspect AI (+ promptfoo in CI),
+  MLflow for training runs. Evals target the deployed API.
+  Prefer code-graded scorers over model-graded. Everything seeded and reproducible.
+  LLM spend must be protected: rate limit, input caps, spend limit.
+  Assumed unless changed: classifier-only live serving, single-page UI, Anthropic
+  API (not Bedrock) for the orchestrator.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - State out-of-scope items and which eval categories the change affects
+  specs:
+    - Scenarios need measurable thresholds, not vague quality claims
+    - Cover safety and adversarial behavior explicitly where relevant
+  design:
+    - Note reproducibility (seeds, pinned versions) and cost/secrets impact
+  tasks:
+    - Every behavior-changing task has a paired test or eval task
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+operations:
+  apply:
+    guidance:
+      - Run the fast eval subset before marking a task done
