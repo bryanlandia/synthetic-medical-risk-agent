@@ -30,7 +30,7 @@
 
 ## 6. Review the open generator PR
 
-- [ ] 6.1 Owner decides whether to update PR #1 with the new `main` (merge or rebase) and, if so, verify the review runs on it and that comments do not appear on `data_gen/data/` lines
+- [x] 6.1 Owner decides whether to update PR #1 with the new `main` (merge or rebase) and, if so, verify the review runs on it and that comments do not appear on `data_gen/data/` lines
 
 ## 7. Lower cost: switch the reviewer to Sonnet 5.5
 
