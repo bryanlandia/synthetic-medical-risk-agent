@@ -9,10 +9,10 @@
 
 ## 2. Rating app
 
-- [ ] 2.1 Scaffold `rating_ui/` (Next.js, TypeScript, pinned versions, no deploy config, loopback binding) and verify `npm run build` and `npm run dev` start on 127.0.0.1 only
-- [ ] 2.2 Implement the route handlers with the path guard (blind sheet in, rating file out, key never read, kind from launch config) and verify tests requesting every route and traversal paths find no key content and that a body-supplied kind is ignored
-- [ ] 2.3 Implement the one-note-at-a-time page: six fields, keyboard shortcuts, back and forward, progress with incomplete marking, synthetic-data notice, autosave and resume, with test ids on every control; verify Playwright tests for keyboard-only rating, reload resume and incomplete marking
-- [ ] 2.4 Add a README for clinicians (how to launch, what each field means, where the file goes, how to run the gate) and verify a person following it from a clean checkout reaches a saved rating file
+- [x] 2.1 Scaffold `rating_ui/` (Next.js, TypeScript, pinned versions, no deploy config, loopback binding) and verify `npm run build` and `npm run dev` start on 127.0.0.1 only
+- [x] 2.2 Implement the route handlers with the path guard (blind sheet in, rating file out, key never read, kind from launch config) and verify tests requesting every route and traversal paths find no key content and that a body-supplied kind is ignored
+- [x] 2.3 Implement the one-note-at-a-time page: six fields, keyboard shortcuts, back and forward, progress with incomplete marking, synthetic-data notice, autosave and resume, with test ids on every control; verify Playwright tests for keyboard-only rating, reload resume and incomplete marking
+- [x] 2.4 Add a README for clinicians (how to launch, what each field means, where the file goes, how to run the gate) and verify a person following it from a clean checkout reaches a saved rating file
 
 ## 3. Adversarial reviewer, direct mode
 

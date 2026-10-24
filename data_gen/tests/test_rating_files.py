@@ -233,3 +233,31 @@ def test_template_datasets_are_unchanged_by_any_of_this(tmp_path):
     cfg = GenConfig(n_train=60, n_test=20, n_per_adversarial_type=3)
     manifest = write_dataset(build_dataset(cfg), cfg, tmp_path)
     assert "llm" not in manifest and not (tmp_path / "README.md").exists()
+
+
+# --- the rating app (TypeScript) and this module must agree ---------------------------------------------------------
+
+def test_rater_slugs_agree_with_the_rating_app():
+    from pathlib import Path
+
+    cases = json.loads((Path(__file__).parents[2] / "rating_ui" / "tests" / "slug-cases.json").read_text())
+    for name, slug in cases:
+        if slug is None:
+            with pytest.raises(ValueError):
+                rater_slug(name)
+        else:
+            assert rater_slug(name) == slug, name
+
+
+def test_a_file_in_the_shape_the_app_writes_is_read_by_the_gate_side(tmp_path):
+    app_output = {
+        "kind": "human", "model_id": None, "prompt_version": None, "rater": "Dr. Reyes", "version": 1,
+        "ratings": {"n01": {"comment": "", "plausible": "y", "reason": "",
+                            "symptoms": {"dizziness": "none", "fatigue": "possible", "joint_stiffness": "absent",
+                                         "photophobia": "present", "tremor": "present"}},
+                    "n02": {"comment": "template residue", "plausible": "n", "reason": "", "symptoms": {}}},
+    }
+    path = tmp_path / "ratings.dr.-reyes.json"
+    path.write_text(json.dumps(app_output))
+    rf = read_rating_file(path)
+    assert rf.kind == "human" and rf.ratings["n01"].complete and not rf.ratings["n02"].complete
