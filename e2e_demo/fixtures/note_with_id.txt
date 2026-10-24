@@ -1,0 +1,5 @@
+VISIT NOTE - follow-up
+Patient SSN 123-45-6789 on file for billing.
+SYMPTOMS: tremor: yes | fatigue: possible | dizziness: no
+RESULTS: Velorin index 128.9 mg/dL; Serum K-17 3.604 mmol/L
+PLAN: continue current monitoring.
