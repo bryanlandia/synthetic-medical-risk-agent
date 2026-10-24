@@ -33,15 +33,15 @@ The review job SHALL NOT run for draft pull requests, for pull requests from for
 - **THEN** the review workflow is not triggered
 
 ### Requirement: Model and effort are pinned
-The review job SHALL use Claude Opus 5.5 at medium effort, set explicitly in the workflow and not left to a default.
+The review job SHALL use Claude Sonnet 5.5 at medium effort, set explicitly in the workflow and not left to a default.
 
 #### Scenario: Workflow pins model and effort
 - **WHEN** the workflow file is inspected
-- **THEN** the action arguments contain `--model claude-opus-5-5` and `--effort medium`
+- **THEN** the action arguments contain `--model claude-sonnet-5-5` and `--effort medium`
 
 #### Scenario: Run uses the pinned model
 - **WHEN** a review run finishes
-- **THEN** its log or usage record shows `claude-opus-5-5` as the session model (helper sub-agents started by the review plugin may use other models)
+- **THEN** its log or usage record shows `claude-sonnet-5-5` as the session model (helper sub-agents started by the review plugin may use other models)
 
 ### Requirement: Review is advisory
 The review SHALL be informational only. The review job SHALL NOT be a required status check, and the reviewer SHALL NOT be granted tools to approve, request changes on, merge, or push to a pull request.
