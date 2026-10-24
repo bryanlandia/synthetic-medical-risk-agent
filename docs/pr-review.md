@@ -22,16 +22,19 @@ Pull requests in this repository get an automatic, **advisory** review from Clau
 
 ## Cost and limits
 
-Each run is bounded by `--max-turns`, a 15 minute job timeout, one run per pull request at a time (older runs are cancelled), and the path exclusions above. The workflow first ran on Opus 5.5 and was switched to Sonnet 5.5 to cut the price per review. The figures below were measured on **Opus 5.5** (plus the Sonnet and Haiku helper agents the review plugin starts) on a small test pull request with two files and two seeded defects; Sonnet 5.5 figures are recorded after the switch is verified (task 7.3).
+Each run is bounded by `--max-turns`, a 15 minute job timeout, one run per pull request at a time (older runs are cancelled), and the path exclusions above. The workflow first ran on Opus 5.5 and was switched to Sonnet 5.5 to cut the price per review. Measured on the same small test pull request each time (two files, two seeded defects):
 
-| Attempt | Total cost | Model time | Turns | Result |
-|---|---|---|---|---|
-| 1 | $0.44 | 51 s | 13 | ran, posted nothing |
-| 2 (rerun) | $0.50 | 93 s | 16 | two inline comments, both defects found |
+| Model, attempt | Total cost | Model time | Turns | Denied tools | Result |
+|---|---|---|---|---|---|
+| Opus 5.5, attempt 1 | $0.44 | 51 s | 13 | 2 | ran, posted nothing |
+| Opus 5.5, attempt 2 (rerun) | $0.50 | 93 s | 16 | 3 | two inline comments, both defects found, spec cited by line |
+| **Sonnet 5.5** | **$0.05** | 13 s | 6 | 0 | two inline comments, both defects found; spec not cited |
 
-Wall-clock time for the whole job was about 1.5 to 2.5 minutes. Larger pull requests will cost more; the turn limit, 15 minute timeout and Console spend limit bound it.
+(Totals include the helper agents the review plugin starts on other models.) Sonnet 5.5 is about 9 times cheaper per review on this test pull request. Wall-clock time for the whole job was about 45 seconds on Sonnet and 1.5 to 2.5 minutes on Opus. This is one small sample: larger pull requests will cost more, and the turn limit, 15 minute timeout and Console spend limit bound it.
 
-Reliability: the same pull request produced no comments on one attempt and the correct comments on the rerun, so a single quiet run does not prove a pull request is clean. Re-run the job (or push a commit) if a review looks missing. The agent's individual steps are not visible in the run log (`show_full_output` is off), and the result reported 2 to 3 denied tool permissions per run whose cause is not yet known. The `--effort medium` flag is passed to the action but is not echoed in the log, so it can be confirmed only from the workflow file. (`medium` is also Sonnet 5.5's default level, so the flag documents the intent.)
+Depth trade-off: Sonnet flagged the contradicting timeout constant from the comment next to it and did not find the requirement, because it looked only in `openspec/specs` while the requirement was still unarchived under `openspec/changes/`. Opus cited the spec directly. If spec checking matters, tighten the review guidelines to name `openspec/changes/*/specs` explicitly.
+
+Reliability: on Opus the same pull request produced no comments on one attempt and the correct comments on the rerun (Sonnet posted on its first and only attempt so far), so a single quiet run does not prove a pull request is clean. Re-run the job (or push a commit) if a review looks missing. The agent's individual steps are not visible in the run log (`show_full_output` is off), and the Opus runs reported 2 to 3 denied tool permissions whose cause was never identified (the Sonnet run reported none). The `--effort medium` flag is passed to the action but is not echoed in the log, so it can be confirmed only from the workflow file. (`medium` is also Sonnet 5.5's default level, so the flag documents the intent.)
 
 ## Checking the setup
 

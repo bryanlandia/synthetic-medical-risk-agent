@@ -35,8 +35,8 @@
 ## 7. Lower cost: switch the reviewer to Sonnet 5.5
 
 - [x] 7.1 Change the model to `claude-sonnet-5-5` (effort stays `medium`) in the workflow, check script, spec, proposal, design and setup notes, and verify the check script passes and its self-test detects a model change
-- [ ] 7.2 Land the switch through a pull request (the action skips PRs that edit its own workflow, so review the diff by hand) and verify `main` has the new model
-- [ ] 7.3 Reopen or rerun the seeded-defect check on a throwaway PR and verify both defects are still flagged, the session model is `claude-sonnet-5-5`, and the real cost per review is recorded in `docs/pr-review.md`
+- [x] 7.2 Land the switch through a pull request (the action skips PRs that edit its own workflow, so review the diff by hand) and verify `main` has the new model
+- [x] 7.3 Reopen or rerun the seeded-defect check on a throwaway PR and verify both defects are still flagged, the session model is `claude-sonnet-5-5`, and the real cost per review is recorded in `docs/pr-review.md`
 
 ## Workflow follow-up
 
