@@ -2,20 +2,57 @@
 
 ## Purpose
 
-Defines how clinical notes are written by an LLM from a note plan while keeping the plan's ground truth and labeled noise intact, with validation, caching and cost bounds, so published results rest on realistic prose that is still verifiably faithful.
+Defines how clinical notes are written by an LLM in several clinician-authored documentation settings from a note plan, while keeping the plan's ground truth and labeled noise intact, with validation, a human realism gate, matched-pair groups, caching and cost bounds, so evaluation results rest on varied, plausible prose that is still verifiably faithful.
 
 ## ADDED Requirements
 
-### Requirement: LLM verbalizes the note plan
-The system SHALL turn each note plan into prose using an LLM, supporting the terse, templated, narrative and AI-scribe styles. Verbalization SHALL NOT change the plan's lab values, symptom polarities, noise tags, label or true probability.
+### Requirement: LLM verbalizes the note plan in documentation settings
+The system SHALL turn each note plan into prose using an LLM in one of four documentation settings: `shorthand`, `ehr_template`, `ai_scribe` and `copy_forward`. Verbalization SHALL NOT change the plan's lab values, symptom polarities, noise tags, label or true probability.
 
-#### Scenario: All four styles are producible
-- **WHEN** a cohort is generated with a configured rate for each of the four styles
-- **THEN** every note's metadata names exactly one style and the realized rate of each style is within 0.03 of its configured rate on at least 1,000 notes
+#### Scenario: All four settings are producible
+- **WHEN** a cohort is generated with a configured rate for each setting
+- **THEN** every note's metadata names exactly one setting and the realized rate of each setting is within 0.03 of its configured rate on at least 1,000 notes
 
 #### Scenario: Ground truth is unchanged by verbalization
 - **WHEN** a plan is verbalized by the LLM
 - **THEN** the record's true flags, true probability, label and noise tags are identical to those of the template-rendered version of the same plan
+
+### Requirement: Settings follow their documentation profile
+Each setting SHALL follow a profile that fixes its form: `shorthand` is brief abbreviated text stating only headline items; `ehr_template` has review of systems grouped by body system and labs with high or low flags; `ai_scribe` is narrative prose that may quote the patient; `copy_forward` is a progress note that may carry stale values from a prior visit.
+
+#### Scenario: EHR template flags are correct and computed by code
+- **WHEN** an `ehr_template` note states a lab value
+- **THEN** it shows a high flag if the stated value is above the lab's reference range, a low flag if below, and none if within, in 100% of validated notes
+
+#### Scenario: Shorthand is shorter than a scribe summary
+- **WHEN** at least 100 validated notes of each setting exist
+- **THEN** the median word count of `shorthand` notes is below that of `ai_scribe` notes
+
+#### Scenario: Copy-forward stale values are planned and tagged
+- **WHEN** a plan marks a lab value as stale for a `copy_forward` note
+- **THEN** the note states that stale value, and the record carries the matching `contradiction` noise tag with the structured value unchanged
+
+### Requirement: Symptom wording varies
+Each symptom SHALL be expressed with varied wording drawn from a per-symptom phrase set carried in the plan, and every mention SHALL include at least one of the plan's allowed phrases for that symptom.
+
+#### Scenario: Wording diversity across a cohort
+- **WHEN** at least 1,000 validated notes are analyzed
+- **THEN** each symptom appears with at least 3 distinct allowed phrases and no single phrase accounts for more than 60% of that symptom's mentions
+
+#### Scenario: Mention without an allowed phrase is rejected
+- **WHEN** a note mentions a planned symptom without any of its allowed phrases
+- **THEN** the note fails validation and is retried
+
+### Requirement: Notes state no diagnosis, risk or treatment
+Notes SHALL NOT state a diagnosis, a risk estimate or probability, or a medication or treatment. Plan-and-monitoring statements that name no disease and no drug are allowed.
+
+#### Scenario: Denylist scan passes
+- **WHEN** all accepted notes are scanned for the disease name, the words "diagnos", "risk" and "probab", percent signs, and a denylist of common medication names
+- **THEN** there are zero matches
+
+#### Scenario: Violating note is retried
+- **WHEN** an LLM-written note contains a denylisted term
+- **THEN** it fails validation and is regenerated within the bounded retry count
 
 ### Requirement: Injection text is inserted verbatim
 Prompt-injection text SHALL come from the versioned catalog and appear in the note verbatim. The LLM SHALL NOT author injection content.
@@ -29,7 +66,15 @@ Prompt-injection text SHALL come from the versioned catalog and appear in the no
 - **THEN** none are found
 
 ### Requirement: Notes are validated against the plan
-Each LLM-written note SHALL be validated before acceptance: stated lab values are parsed and compared to the plan within 1% after unit conversion, and symptom polarity is recovered by an independent extraction pass and compared to the plan. Mismatches not covered by a recorded noise tag cause rejection.
+Each LLM-written note SHALL be validated before acceptance: stated lab values are parsed, tolerating flags, reference ranges and display rounding, and compared to the plan within 1% after unit conversion; symptom polarity is recovered by an independent extraction pass and compared to the plan. Mismatches not covered by a recorded noise tag cause rejection.
+
+#### Scenario: Realistic lab formatting is accepted
+- **WHEN** a note shows a lab as a value with a flag, a reference range or fewer decimals than the plan
+- **THEN** validation accepts it if the value is within 1% of the plan
+
+#### Scenario: Invented or wrong value is rejected
+- **WHEN** a note states a lab value that is not in the plan or differs from it by more than 1% without a recorded noise tag
+- **THEN** the note fails validation
 
 #### Scenario: Unfaithful note is retried then excluded
 - **WHEN** a note fails validation
@@ -47,11 +92,41 @@ Each LLM-written note SHALL be validated before acceptance: stated lab values ar
 The symptom extractor used for validation SHALL be measured against a hand-checked sample so that validation results can be trusted.
 
 #### Scenario: Extractor accuracy threshold
-- **WHEN** the extractor is run on a hand-checked sample of at least 100 notes covering all four styles
-- **THEN** per-flag accuracy is at least 0.95, and a lower result blocks the real run
+- **WHEN** the extractor is run on the owner's hand-checked sample of 80 notes, 20 per setting
+- **THEN** per-flag accuracy is at least 0.95, and a lower result blocks the full paid run
+
+### Requirement: Human realism gate before the paid run
+Before the full paid run, the project owner SHALL blind-rate a pilot sample of 20 notes per setting for plausibility as real clinical documentation. Every setting SHALL reach at least 80% plausible, or the full paid run for that setting is blocked.
+
+#### Scenario: Rating sheet is blind
+- **WHEN** the rating sheet is generated
+- **THEN** the notes are shuffled across settings, the sheet contains no setting names, and the mapping from note id to setting is stored separately
+
+#### Scenario: Gate result per setting
+- **WHEN** the owner's ratings are loaded
+- **THEN** a report shows the plausible count and rate for each setting, marks each setting pass or fail at 80%, and the full run proceeds only if all four pass
+
+#### Scenario: Controls reveal rater discrimination
+- **WHEN** template-fixture notes are mixed into the sheet as controls
+- **THEN** their plausible rate is reported separately and excluded from the gate
+
+#### Scenario: Failed setting is revised and re-rated
+- **WHEN** a setting fails the gate
+- **THEN** its prompt is revised and its prompt version bumped, 20 fresh notes are drawn for that setting, and only that setting is re-rated
+
+### Requirement: Matched-pair groups
+The system SHALL write a configured number of test patients in all four settings, forming groups with identical ground truth. Each record in a group SHALL have a unique record identifier and a shared `pair_group` value, and identifiers SHALL NOT reveal the setting.
+
+#### Scenario: Pair members share ground truth and differ in setting and text
+- **WHEN** a matched-pair group is produced
+- **THEN** its four records have identical labs, true flags, true probability and label, four different settings, no two identical texts, and unique record identifiers that do not encode the setting
+
+#### Scenario: Groups can be deduplicated
+- **WHEN** a pooled metric is computed over the test split
+- **THEN** records can be grouped by `pair_group` so that a matched patient is not counted four times
 
 ### Requirement: Cached and cost-bounded generation
-LLM calls SHALL be cached keyed by plan, prompt version, model identifier and sampling seed; SHALL be capped by a configured call or spend limit; and SHALL NOT be repeated for a cached input.
+LLM calls SHALL be cached keyed by plan, prompt version, model identifier and sampling seed; SHALL be capped by a configured call or spend limit; and SHALL NOT be repeated for a cached input. The pilot SHALL run under its own small cap.
 
 #### Scenario: Rerun makes no LLM calls
 - **WHEN** generation is rerun with unchanged seed, configuration, prompt version and model
@@ -63,22 +138,15 @@ LLM calls SHALL be cached keyed by plan, prompt version, model identifier and sa
 
 #### Scenario: Dry run estimates cost before spending
 - **WHEN** the estimate command is run on a configuration
-- **THEN** it reports the number of uncached calls and an estimated cost without making any LLM call
+- **THEN** it reports the number of uncached calls, including the pilot and matched-pair notes, and an estimated cost without making any LLM call
 
 #### Scenario: Key comes from the environment only
 - **WHEN** the repository files, cache and datasets are scanned for the API key pattern
 - **THEN** there are zero matches
 
-### Requirement: Paraphrase groups
-The system SHALL produce multiple notes for one patient that differ in wording and share identical ground truth, grouped by patient identifier and numbered.
-
-#### Scenario: Paraphrases share ground truth and differ in text
-- **WHEN** a paraphrase group of k notes is produced for a patient
-- **THEN** all k notes have identical labs, true flags, true probability and label, each carries a distinct `paraphrase_index`, and no two notes have identical text
-
 ### Requirement: Note provenance in the manifest
-The manifest SHALL record, for each split, the note source (template or LLM), model identifier, prompt version, attempts, exclusions and total calls.
+The manifest SHALL record, for each split, the note source (template or LLM), model identifier, prompt version, counts per setting, matched-pair group count, attempts, exclusions and total calls.
 
 #### Scenario: Provenance is readable
 - **WHEN** the manifest of an LLM-note dataset is read
-- **THEN** it states note source `llm`, the model identifier, prompt version, counts of excluded records, and total LLM calls made
+- **THEN** it states note source `llm`, the model identifier, prompt version, counts per setting, the number of matched-pair groups, exclusion counts per setting and noise type, and total LLM calls made
