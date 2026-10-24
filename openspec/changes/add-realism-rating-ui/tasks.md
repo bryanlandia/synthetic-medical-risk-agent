@@ -22,9 +22,9 @@
 
 ## 4. Adversarial reviewer, browser mode with video
 
-- [ ] 4.1 Implement the fixed tool set mapped to Playwright actions on the app's test ids, URL allow-list, step limit and refusal counting; verify tests with a scripted fake model against the real running app that all six actions work and that off-list actions and URLs are refused and counted
-- [ ] 4.2 Implement the Anthropic tool-use loop over the page's accessibility snapshot with the shared spend cap and video recording to the round directory, and verify a scripted run produces a complete rating file written by the app, a session log and a non-empty video
-- [ ] 4.3 Verify that hitting the step, call or spend limit keeps partial ratings, saves the video and makes the gate report the rest as unrated
+- [x] 4.1 Implement the fixed tool set mapped to Playwright actions on the app's test ids, URL allow-list, step limit and refusal counting; verify tests with a scripted fake model against the real running app that all six actions work and that off-list actions and URLs are refused and counted
+- [x] 4.2 Implement the Anthropic tool-use loop over the page's accessibility snapshot with the shared spend cap and video recording to the round directory, and verify a scripted run produces a complete rating file written by the app, a session log and a non-empty video
+- [x] 4.3 Verify that hitting the step, call or spend limit keeps partial ratings, saves the video and makes the gate report the rest as unrated
 
 ## 5. Docs and integration
 

@@ -54,3 +54,18 @@ def estimate_review(cfg: GenConfig, sheet: dict, cache: DiskCache | None = None)
     out_total = int(total_calls * avg_out)
     cost = (in_total * lc.reviewer_price_input_per_mtok + out_total * lc.reviewer_price_output_per_mtok) / 1_000_000
     return ReviewEstimate(len(sheet["notes"]), calls, cached, retries, in_total, out_total, round(cost, 4), measured)
+
+
+TURNS_PER_NOTE = 2.3  # one turn of tool calls to rate, one to move on, and the odd correction
+BROWSER_INPUT_PER_TURN = 1500  # persona, tool definitions, the note and earlier results of this note
+BROWSER_OUTPUT_PER_TURN = {"low": 250, "medium": 500, "high": 1000}
+
+
+def estimate_browser(cfg: GenConfig, n_notes: int) -> ReviewEstimate:
+    """Browser mode is not cached (every turn depends on the page), so all turns are paid."""
+    lc = cfg.llm
+    turns = round(n_notes * TURNS_PER_NOTE)
+    in_total = turns * BROWSER_INPUT_PER_TURN
+    out_total = turns * BROWSER_OUTPUT_PER_TURN[lc.reviewer_effort]
+    cost = (in_total * lc.reviewer_price_input_per_mtok + out_total * lc.reviewer_price_output_per_mtok) / 1_000_000
+    return ReviewEstimate(n_notes, turns, 0, 0, in_total, out_total, round(cost, 4), False)

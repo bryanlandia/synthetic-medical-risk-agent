@@ -10,6 +10,10 @@ dependencies = [
     "pydantic>=2.9,<3",
 ]
 
+[project.optional-dependencies]
+# The reviewer that operates the rating app in a browser and records a video. Not needed for anything else.
+review = ["playwright==1.55.0"]
+
 [dependency-groups]
 dev = [
     "pytest>=8.3,<9",
