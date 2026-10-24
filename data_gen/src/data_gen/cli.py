@@ -94,6 +94,7 @@ def cmd_estimate(args: argparse.Namespace) -> int:
 def _generate_llm(args: argparse.Namespace, cfg: GenConfig) -> int:
     from .llm.client import AnthropicClient, LLMCallError, MissingApiKeyError
     from .llm.estimate import estimate
+    from .llm.gate import load_gate_result
     from .llm.gateway import Budget, BudgetExceeded, CachedClient, DiskCache
     from .llm.progress import Progress
     from .llm.run import plan_all, run_and_write
@@ -111,7 +112,8 @@ def _generate_llm(args: argparse.Namespace, cfg: GenConfig) -> int:
         return 4
     try:
         client = CachedClient(AnthropicClient(), cache, Budget.for_run(cfg.llm), cfg.llm.prompt_version)
-        result = run_and_write(cfg, client, out, items, None if args.quiet else Progress("generate", client))
+        result = run_and_write(cfg, client, out, items, None if args.quiet else Progress("generate", client),
+                               realism_review=load_gate_result(Path(args.realism_dir)))
     except MissingApiKeyError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -180,7 +182,7 @@ def cmd_pilot(args: argparse.Namespace) -> int:
 
 
 def cmd_gate(args: argparse.Namespace) -> int:
-    from .llm.gate import evaluate, load_round
+    from .llm.gate import evaluate, load_round, save_gate_result
 
     cfg = _config_from_args(args)
     base = Path(args.dir)
@@ -190,10 +192,11 @@ def cmd_gate(args: argparse.Namespace) -> int:
         return 2
     rounds, problems = [], []
     for d in dirs:
-        loaded, probs = load_round(d)
+        loaded, probs = load_round(d, tuple(cfg.llm.gate_rater_kinds))
         rounds.append(loaded)
         problems += probs
     report = evaluate(cfg, rounds, problems)
+    save_gate_result(base, report)
     print(SYNTHETIC_NOTICE)
     print(report.render())
     return 0 if report.passed else 1
@@ -249,6 +252,7 @@ def main(argv: list[str] | None = None) -> int:
     gen = sub.add_parser("generate", help="generate the synthetic dataset (template: offline; llm: spends money)")
     gen.add_argument("--out", help="output directory (default data/, or data_llm/ for the llm source)")
     gen.add_argument("--cache", default=str(DEFAULT_CACHE), help="LLM response cache (llm source)")
+    gen.add_argument("--realism-dir", default=str(DEFAULT_REALISM), help="where gate.json is read from (llm source)")
     gen.add_argument("--yes", action="store_true", help="confirm that an llm run may spend money")
     _add_config_args(gen)
     gen.set_defaults(func=cmd_generate)

@@ -232,7 +232,7 @@ def test_missing_and_invalid_ratings_block_the_gate(pilot, tmp_path):
     nofile = tmp_path / "nofile"
     nofile.mkdir()
     (nofile / "key.json").write_text((pilot[1] / "key.json").read_text())
-    assert any("not found" in p for p in report_for([nofile]).problems)
+    assert any("no ratings found" in p for p in report_for([nofile]).problems)
 
 
 def test_controls_are_reported_and_never_gated(pilot, tmp_path):

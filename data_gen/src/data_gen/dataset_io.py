@@ -21,6 +21,23 @@ def dump_manifest(manifest: dict) -> str:
     return json.dumps(manifest, sort_keys=True, indent=2) + "\n"
 
 
+def llm_dataset_readme(manifest: dict) -> str:
+    llm = manifest.get("llm", {})
+    review = llm.get("realism_review")
+    if review:
+        who = review["description"]
+        passed = "passed" if review.get("passed") else "did not pass"
+        realism = f"The notes' realism was reviewed by {who} and {passed} the realism gate. "
+    else:
+        realism = "No realism review was recorded for these notes. "
+    realism += "This is a plausibility check, not a clinical validation."
+    return (
+        f"# Synthetic notes (LLM-written)\n\n{manifest['notice']}\n\n"
+        f"Notes were written by {llm.get('model_id')} (prompt version {llm.get('prompt_version')}) from seeded "
+        f"note plans. {realism}\n"
+    )
+
+
 def write_dataset(
     by_split: dict[str, list[Record]], cfg: GenConfig, out_dir: Path, llm_stats: dict | None = None
 ) -> dict:
@@ -30,6 +47,8 @@ def write_dataset(
         (out_dir / f"{name}.jsonl").write_text("\n".join(lines) + "\n")
     manifest = build_manifest(cfg, by_split, llm_stats)
     (out_dir / "manifest.json").write_text(dump_manifest(manifest))
+    if cfg.note_source == "llm":
+        (out_dir / "README.md").write_text(llm_dataset_readme(manifest))
     return manifest
 
 

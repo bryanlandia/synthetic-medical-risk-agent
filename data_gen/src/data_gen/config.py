@@ -40,6 +40,9 @@ class LLMConfig(BaseModel):
     matched_pairs: int = Field(default=200, ge=0)  # test patients written in all four settings
     exclusion_threshold: float = Field(default=0.15, ge=0, le=1)  # max pilot exclusion rate per setting
     concurrency: int = Field(default=8, ge=1, le=32)  # parallel API calls; never changes the data
+    # Which kinds of rater the realism gate counts. A developer who is not a clinician may accept "llm" for a
+    # demo run, but that is a visible choice (reported by the gate and recorded in the manifest).
+    gate_rater_kinds: list[Literal["human", "llm"]] = Field(default_factory=lambda: ["human"], min_length=1)
     # Prices in USD per million tokens, used only for estimates and the spend cap.
     price_input_per_mtok: float = Field(default=0.10, ge=0)
     price_output_per_mtok: float = Field(default=0.50, ge=0)
@@ -102,12 +105,13 @@ class GenConfig(BaseModel):
         """JSON-ready config. Fields added after the first dataset are omitted while they hold their
         defaults, so existing manifests and config hashes stay byte-identical."""
         data = self.model_dump(mode="json")
-        data["llm"].pop("concurrency", None)  # speed only: the worker count cannot change the dataset
+        for gate_only in ("concurrency", "gate_rater_kinds"):
+            data["llm"].pop(gate_only, None)  # speed and gate policy only: they cannot change the dataset
         for name in ("note_source", "llm"):
             default = type(self).model_fields[name].get_default(call_default_factory=True)
             default_dump = default.model_dump(mode="json") if isinstance(default, BaseModel) else default
             if name == "llm":
-                default_dump = {k: v for k, v in default_dump.items() if k != "concurrency"}
+                default_dump = {k: v for k, v in default_dump.items() if k not in ("concurrency", "gate_rater_kinds")}
             if data[name] == default_dump:
                 data.pop(name)
         return data

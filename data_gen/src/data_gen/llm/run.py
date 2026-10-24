@@ -152,8 +152,10 @@ def _stats(cfg: GenConfig, client: LLMClient, tally: ExclusionTally, groups: int
 
 def run_and_write(
     cfg: GenConfig, client: LLMClient, out_dir: Path, items: list[PlanItem] | None = None,
-    progress: Callable[..., None] | None = None,
+    progress: Callable[..., None] | None = None, realism_review: dict | None = None,
 ) -> RunResult:
     result = generate_llm(cfg, client, items, progress)  # raises before anything is written
+    if realism_review:
+        result.stats["realism_review"] = realism_review
     write_dataset(result.by_split, cfg, out_dir, llm_stats=result.stats)
     return result
