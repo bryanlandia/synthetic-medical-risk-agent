@@ -43,6 +43,12 @@ class Budget:
     _lock: threading.Lock = field(default_factory=threading.Lock, repr=False, compare=False)
 
     @classmethod
+    def for_review(cls, cfg: LLMConfig) -> "Budget":
+        return cls(max_calls=cfg.reviewer_max_calls, max_spend_usd=cfg.reviewer_max_spend_usd,
+                   price_input_per_mtok=cfg.reviewer_price_input_per_mtok,
+                   price_output_per_mtok=cfg.reviewer_price_output_per_mtok)
+
+    @classmethod
     def for_run(cls, cfg: LLMConfig, *, pilot: bool = False) -> "Budget":
         return cls(
             max_calls=cfg.pilot_max_calls if pilot else cfg.max_calls,
@@ -137,8 +143,10 @@ def cache_key(prompt_version: str, system: str, prompt: str, model: str, max_tok
 class CachedClient:
     """Wraps a client with a cache and a budget. Same ``complete`` signature as an ``LLMClient``."""
 
-    def __init__(self, inner: LLMClient, cache: DiskCache, budget: Budget, prompt_version: str):
+    def __init__(self, inner: LLMClient, cache: DiskCache, budget: Budget, prompt_version: str,
+                 kind: str | None = None):
         self.inner, self.cache, self.budget, self.prompt_version = inner, cache, budget, prompt_version
+        self.kind = kind  # label for cached entries and logs; by default writer or extractor
         self.hits = 0
         self.misses = 0
         self._count_lock = threading.Lock()
@@ -147,7 +155,7 @@ class CachedClient:
         self, *, system: str, prompt: str, model: str, max_tokens: int, nonce: int = 0
     ) -> LLMResult:
         key = cache_key(self.prompt_version, system, prompt, model, max_tokens, nonce)
-        kind = "extractor" if system == EXTRACTOR_SYSTEM else "writer"
+        kind = self.kind or ("extractor" if system == EXTRACTOR_SYSTEM else "writer")
         cached = self.cache.get(key)
         if cached is not None:
             with self._count_lock:

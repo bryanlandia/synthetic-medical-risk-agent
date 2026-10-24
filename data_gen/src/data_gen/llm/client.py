@@ -52,7 +52,9 @@ class LLMClient(Protocol):
 class AnthropicClient:
     """Calls the Anthropic Messages API with the key from the environment."""
 
-    def __init__(self, *, sdk: Any | None = None, max_retries: int = 2, timeout: float = 120.0):
+    def __init__(self, *, sdk: Any | None = None, max_retries: int = 2, timeout: float = 120.0,
+                 effort: str = "low"):
+        self.effort = effort  # how hard the model thinks; low keeps short-note writing cheap
         key = os.environ.get(API_KEY_ENV)
         if not key:
             raise MissingApiKeyError(
@@ -76,7 +78,7 @@ class AnthropicClient:
                 max_tokens=max_tokens,
                 system=system,
                 messages=[{"role": "user", "content": prompt}],
-                output_config={"effort": "low"},  # keep thinking spend small for short notes
+                output_config={"effort": self.effort},
             )
         except sdk.RateLimitError as exc:
             raise LLMCallError(f"rate limited: {exc}", retryable=True, rate_limited=True) from exc

@@ -105,6 +105,7 @@ class GateReport:
     raters: list[str] = field(default_factory=list)  # rater kinds that were counted, e.g. ["human"]
     rater_names: list[str] = field(default_factory=list)
     disagreements: dict[str, int] = field(default_factory=dict)  # per setting, notes the raters split on
+    discrimination: dict[str, dict] = field(default_factory=dict)  # llm reviewer -> controls gap numbers
 
     @property
     def extractor_passed(self) -> bool:
@@ -141,6 +142,8 @@ class GateReport:
             lines.append(f"  info  controls (old template notes, not gated): {self.controls_plausible}/{self.controls_rated} rated plausible")
         fid = ", ".join(f"{k} {v:.2f}" for k, v in self.fidelity.items())
         lines.append(f"  info  owner labels agree with the plan (not gated): {fid}")
+        for name, g in self.discrimination.items():
+            lines.append(f"  info  reviewer {name}: {g['notes_rate']:.0%} of LLM notes plausible vs {g['controls_rate']:.0%} of controls")
         if any(self.disagreements.values()):
             dis = ", ".join(f"{k} {v}" for k, v in self.disagreements.items() if v)
             lines.append(f"  info  raters disagreed on plausibility (counted as implausible): {dis}")
@@ -160,8 +163,10 @@ def evaluate(cfg: GenConfig, rounds: list[Round], format_problems: list[str] | N
     controls: list[Rating] = []
     kinds: set[str] = set()
     names: set[str] = set()
+    disc: dict[str, dict] = {}
     for ratings, key in rounds:
         review = key.get("review", {})
+        disc.update(review.get("discrimination", {}))
         kinds.update(review.get("kinds", ["human"]))
         names.update(review.get("raters", []))
         notes = key["notes"]
@@ -209,7 +214,7 @@ def evaluate(cfg: GenConfig, rounds: list[Round], format_problems: list[str] | N
         fidelity={k: (fid[k] / n if n else 0.0) for k in SYMPTOM_KEYS},
         controls_rated=len(rated_controls), controls_plausible=sum(c.plausible == "y" for c in rated_controls),
         exclusion_rates=exclusion, exclusion_threshold=cfg.llm.exclusion_threshold, problems=problems,
-        raters=sorted(kinds), rater_names=sorted(names), disagreements=disagreements,
+        raters=sorted(kinds), rater_names=sorted(names), disagreements=disagreements, discrimination=disc,
     )
 
 
@@ -234,7 +239,11 @@ def _from_file(rf: RatingFile) -> dict[str, Rating]:
             for i, nr in rf.ratings.items()}
 
 
-def load_round(directory: Path, accepted: tuple[str, ...] = ("human",)) -> tuple[Round, list[str]]:
+MIN_CONTROL_GAP = 0.20  # an LLM reviewer must rate the old template controls this far below the LLM notes
+
+
+def load_round(directory: Path, accepted: tuple[str, ...] = ("human",),
+               min_control_gap: float = MIN_CONTROL_GAP) -> tuple[Round, list[str]]:
     """Load a round's key and the ratings of every accepted rater kind. A hand-filled ratings.md counts as
     a human rater. Files from kinds that are not accepted are listed but not counted."""
     key = json.loads((directory / "key.json").read_text())
@@ -262,7 +271,23 @@ def load_round(directory: Path, accepted: tuple[str, ...] = ("human",)) -> tuple
         problems.append(f"{directory.name}: no ratings from an accepted rater kind ({', '.join(accepted)}); "
                         f"found only: {', '.join(skipped)}")
     names = [rf.rater if rf else "ratings.md" for _, rf, _ in counted]
-    key["review"] = {"kinds": sorted({k for k, _, _ in counted}), "raters": names, "not_counted": skipped}
+    discrimination: dict[str, dict] = {}
+    for kind, rf, _ in counted:
+        if kind != "llm" or rf is None:
+            continue
+        from ..review.reviewer import controls_gap
+
+        gap = controls_gap(rf.ratings, key)
+        if gap is None:
+            continue
+        discrimination[rf.rater] = gap
+        if gap["gap"] < min_control_gap:
+            problems.append(
+                f"{directory.name}: LLM reviewer {rf.rater} is non-discriminating: it rated {gap['notes_rate']:.0%} of the "
+                f"LLM-written notes plausible but also {gap['controls_rate']:.0%} of the old template controls "
+                f"(needs a gap of at least {min_control_gap:.0%})")
+    key["review"] = {"kinds": sorted({k for k, _, _ in counted}), "raters": names, "not_counted": skipped,
+                     "discrimination": discrimination}
     merged = _merge(counted) if counted else {}
     return (merged, key), problems
 

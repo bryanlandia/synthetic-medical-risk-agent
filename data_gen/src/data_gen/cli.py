@@ -19,6 +19,7 @@ DEFAULT_DIR = Path("data")
 DEFAULT_LLM_DIR = Path("data_llm")
 DEFAULT_CACHE = Path("cache/llm_cache.jsonl")
 DEFAULT_REALISM = Path("realism")
+DEFAULT_REVIEW_CACHE = Path("cache/review_cache.jsonl")
 
 
 def _configure_logging(verbose: int) -> None:
@@ -192,7 +193,7 @@ def cmd_gate(args: argparse.Namespace) -> int:
         return 2
     rounds, problems = [], []
     for d in dirs:
-        loaded, probs = load_round(d, tuple(cfg.llm.gate_rater_kinds))
+        loaded, probs = load_round(d, tuple(cfg.llm.gate_rater_kinds), cfg.llm.reviewer_min_control_gap)
         rounds.append(loaded)
         problems += probs
     report = evaluate(cfg, rounds, problems)
@@ -200,6 +201,61 @@ def cmd_gate(args: argparse.Namespace) -> int:
     print(SYNTHETIC_NOTICE)
     print(report.render())
     return 0 if report.passed else 1
+
+
+def cmd_review(args: argparse.Namespace) -> int:
+    from .llm.client import AnthropicClient, LLMCallError, MissingApiKeyError
+    from .llm.gateway import Budget, CachedClient, DiskCache
+    from .llm.progress import Progress
+    from .review.estimate import estimate_review
+    from .review.reviewer import (ReviewerConfigError, check_independent, controls_gap, load_blind_sheet,
+                                  review_round)
+
+    cfg = _config_from_args(args)
+    directory = Path(args.dir) / f"round{args.round}"
+    if not (directory / "sheet.json").exists():
+        print(f"error: {directory}/sheet.json not found; run the pilot first", file=sys.stderr)
+        return 2
+    try:
+        check_independent(cfg)
+    except ReviewerConfigError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    cache = DiskCache(Path(args.cache))
+    sheet = load_blind_sheet(directory)
+    est = estimate_review(cfg, sheet, cache)
+    print(SYNTHETIC_NOTICE)
+    print(f"review of {directory}: {est.notes} notes by {cfg.llm.reviewer_model_id} (an LLM review, not a clinician)")
+    print(f"  calls: {est.calls} to make + ~{est.expected_retry_calls} expected retries ({est.cached} already cached)")
+    print(f"  tokens: ~{est.input_tokens:,} in, ~{est.output_tokens:,} out ({'measured' if est.measured else 'assumed'})")
+    print(f"  estimated cost: ${est.cost_usd:.2f}  (caps: {cfg.llm.reviewer_max_calls} calls, ${cfg.llm.reviewer_max_spend_usd:.2f})")
+    if args.estimate:
+        return 0
+    if est.calls and not args.yes:
+        print("\nThis review would spend money. Re-run with --yes to proceed (the caps above still apply).", file=sys.stderr)
+        return 4
+    try:
+        client = CachedClient(AnthropicClient(effort=cfg.llm.reviewer_effort), cache, Budget.for_review(cfg.llm),
+                              cfg.llm.reviewer_prompt_version, kind="reviewer")
+        result = review_round(cfg, client, directory)
+    except MissingApiKeyError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except LLMCallError as exc:
+        print(f"stopped: {exc}", file=sys.stderr)
+        return 3
+    cache.compact()
+    print(f"wrote {result.path}: {len(result.ratings)} rated, {len(result.unrated)} unrated, "
+          f"~${client.budget.spend_usd:.3f} spent")
+    key = json.loads((directory / "key.json").read_text()) if (directory / "key.json").exists() else None
+    gap = controls_gap(result.ratings, key) if key else None
+    if gap:
+        flag = "" if gap["gap"] >= cfg.llm.reviewer_min_control_gap else "  <-- NON-DISCRIMINATING"
+        print(f"  plausible: LLM notes {gap['notes_rate']:.0%}, controls {gap['controls_rate']:.0%}{flag}")
+    if result.stopped:
+        print(f"stopped early: {result.stopped}", file=sys.stderr)
+        return 3
+    return 0
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
@@ -280,6 +336,15 @@ def main(argv: list[str] | None = None) -> int:
     gate.add_argument("--rounds", type=int, nargs="*", help="rounds to include (default: all found)")
     _add_config_args(gate)
     gate.set_defaults(func=cmd_gate)
+
+    rev = sub.add_parser("review", help="have the adversarial LLM reviewer rate a pilot round (spends a little)")
+    rev.add_argument("--dir", default=str(DEFAULT_REALISM))
+    rev.add_argument("--round", type=int, default=0)
+    rev.add_argument("--cache", default=str(DEFAULT_REVIEW_CACHE))
+    rev.add_argument("--estimate", action="store_true", help="dry run: print the cost; no API call, no key needed")
+    rev.add_argument("--yes", action="store_true", help="confirm that the review may spend money")
+    _add_config_args(rev)
+    rev.set_defaults(func=cmd_review)
 
     val = sub.add_parser("validate", help="check a generated dataset against the specs")
     val.add_argument("--data", default=str(DEFAULT_DIR))

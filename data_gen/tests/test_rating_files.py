@@ -20,8 +20,11 @@ def blind(directory):
     return json.loads((directory / "sheet.json").read_text())
 
 
-def perfect_file(pilot, kind="human", rater="Dr. Reyes", plausible=lambda meta, i: "y", **extra):
-    """A rating file that labels every note exactly as the extractor read it."""
+def perfect_file(pilot, kind="human", rater="Dr. Reyes", plausible=None, **extra):
+    """A rating file that labels every note exactly as the extractor read it. An llm file rejects the old template
+    controls, as a discriminating reviewer would."""
+    if plausible is None:
+        plausible = (lambda meta, i: "n" if meta["kind"] == "control" else "y") if kind == "llm" else (lambda meta, i: "y")
     _, directory, _ = pilot
     key = json.loads((directory / "key.json").read_text())["notes"]
     seen: dict[str, int] = {}

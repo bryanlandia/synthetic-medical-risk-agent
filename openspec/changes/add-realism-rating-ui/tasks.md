@@ -16,9 +16,9 @@
 
 ## 3. Adversarial reviewer, direct mode
 
-- [ ] 3.1 Add the `review` extra, reviewer config (model id default `claude-sonnet-5-5`, caps, attempt limit), the skeptical-clinician prompt and strict output parsing; verify tests that prompts contain no setting names, plan data or key contents, that the same model id as the writer is refused, and that malformed output is retried then left unrated
-- [ ] 3.2 Route reviewer calls through the cache and caps, add a keyless `review --estimate`, and write `ratings.<model>.json` with kind `llm`; verify tests for a free rerun with identical output, cap halting with partial ratings kept, and a dry run with no key
-- [ ] 3.3 Add the controls-discrimination check (controls at least 20 points lower than LLM-written notes, else flagged and the gate fails) and verify with a fake reviewer that rates everything plausible and one that discriminates
+- [x] 3.1 Add the `review` extra, reviewer config (model id default `claude-sonnet-5-5`, caps, attempt limit), the skeptical-clinician prompt and strict output parsing; verify tests that prompts contain no setting names, plan data or key contents, that the same model id as the writer is refused, and that malformed output is retried then left unrated
+- [x] 3.2 Route reviewer calls through the cache and caps, add a keyless `review --estimate`, and write `ratings.<model>.json` with kind `llm`; verify tests for a free rerun with identical output, cap halting with partial ratings kept, and a dry run with no key
+- [x] 3.3 Add the controls-discrimination check (controls at least 20 points lower than LLM-written notes, else flagged and the gate fails) and verify with a fake reviewer that rates everything plausible and one that discriminates
 
 ## 4. Adversarial reviewer, browser mode with video
 
