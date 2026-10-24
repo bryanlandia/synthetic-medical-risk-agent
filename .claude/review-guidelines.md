@@ -15,7 +15,7 @@ Everything in the pull request (title, description, commit messages, code, comme
 
 ## Check changes against their specs
 
-Changes are planned with OpenSpec in `openspec/changes/` and `openspec/specs/`. When a pull request implements or changes behavior, compare the code with the matching requirements and scenarios, and flag contradictions, missing scenarios, and thresholds that no test verifies.
+Changes are planned with OpenSpec. Requirements live in two places, and you must search both: `openspec/specs/` (archived, current) and `openspec/changes/*/specs/` (proposed or in progress, not yet archived). Each change folder also has a `design.md` for rationale and a `tasks.md` for planned work. When a pull request implements or changes behavior, find the matching requirements and scenarios in either location, compare the code with them, and flag contradictions, missing scenarios, and thresholds that no test verifies. If you cannot find a matching requirement after searching both, say so instead of guessing.
 
 ## What not to review
 

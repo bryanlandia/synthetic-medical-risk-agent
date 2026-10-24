@@ -41,6 +41,7 @@ GUIDELINE_PHRASES = {
     "secrets": "secrets must never appear",
     "hidden scoring rule": "hidden scoring rule",
     "openspec alignment": "openspec",
+    "unarchived specs": "openspec/changes/*/specs/",
     "skip generated data": "data_gen/data/",
     "skip lockfiles": "uv.lock",
     "specific comments": "be specific",
