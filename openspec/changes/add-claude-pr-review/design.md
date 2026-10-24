@@ -2,7 +2,7 @@
 
 ## Context
 
-Greenfield CI: `.github/workflows/` is empty. PR #1 (`add-synthetic-data-generator`) is open against `main`, and the repository is currently private but planned to be public. `gh` is authenticated with admin rights and the `workflow` scope. The orchestrator model family is Claude 5; Opus 5.5 is `claude-opus-5-5`. See proposal.md for motivation and the spec for requirements.
+Greenfield CI: `.github/workflows/` is empty. PR #1 (`add-synthetic-data-generator`) is open against `main`, and the repository is currently private but planned to be public. `gh` is authenticated with admin rights and the `workflow` scope. The orchestrator model family is Claude 5; Sonnet 5.5 is `claude-sonnet-5-5` and Opus 5.5 is `claude-opus-5-5`. See proposal.md for motivation and the spec for requirements.
 
 Facts taken from the official documentation (checked while planning):
 - The action is `anthropics/claude-code-action@v1`; model and other CLI flags go in `claude_args`; `--effort` accepts `low`, `medium`, `high`, `xhigh`, `max` and its available levels depend on the model.
@@ -14,7 +14,7 @@ Facts taken from the official documentation (checked while planning):
 ## Goals / Non-Goals
 
 **Goals:**
-- Automatic, advisory review on every eligible PR with Opus 5.5 at medium effort.
+- Automatic, advisory review on every eligible PR with Sonnet 5.5 at medium effort.
 - Credentials and permissions as small as the action allows; spend bounded and observable.
 - A tested setup, including a negative test (injection text) and a seeded-defect test.
 
@@ -28,7 +28,9 @@ Facts taken from the official documentation (checked while planning):
 
 **Authenticate with an API key secret `ANTHROPIC_API_KEY`**, supplied by the owner. The owner sets it with `gh secret set` in their own terminal so the key never passes through the assistant or a file. Alternative: workload identity federation (no static secret), rejected as unnecessary setup for a single repository; revisit if the repo moves to an organization.
 
-**Pin model and effort in `claude_args`:** `--model claude-opus-5-5 --effort medium --max-turns 20` (turn limit tuned during the end-to-end run) and `--allowedTools "mcp__github_inline_comment__create_inline_comment"`, which is the only write-capable tool, so the reviewer can comment but not approve, push or merge. A guidelines pointer is added with `--append-system-prompt`.
+**Pin model and effort in `claude_args`:** `--model claude-sonnet-5-5 --effort medium --max-turns 20` (turn limit tuned during the end-to-end run) and `--allowedTools "mcp__github_inline_comment__create_inline_comment"`, which is the only write-capable tool, so the reviewer can comment but not approve, push or merge. A guidelines pointer is added with `--append-system-prompt`.
+
+**Model: Sonnet 5.5, not Opus 5.5.** The first end-to-end run on Opus 5.5 cost $0.44 and $0.50 for two attempts at a tiny two-file PR, which is too much per review for a project that opens many small PRs. Sonnet 5.5 supports the same effort levels and uses `medium` by default, so `--effort medium` keeps the intended setting. Trade-off: Opus may catch subtler defects, so after the switch the seeded-defect check is rerun and the real cost is recorded; if Sonnet misses defects that matter, the model is a one-line change back. Alternative: keep Opus and shrink the reviewed scope, rejected because it hides the problem for large PRs instead of lowering the price per token.
 
 **Authenticate to GitHub as the Claude GitHub App** (the action default), which needs a one-time browser install by a repository admin. The app grants a broad permission set shared with other Claude features, but its per-run token is short-lived and scoped to this repository. Alternative: pass the workflow's `GITHUB_TOKEN` with `pull-requests: write`, which avoids the app and its broader permissions; the docs are unclear that inline comments work this way, so it is a fallback to test only if the app install is unacceptable.
 
@@ -43,7 +45,7 @@ Facts taken from the official documentation (checked while planning):
 - [The action skips any PR that introduces or changes its own workflow file, because the workflow must match the default branch] → Confirmed on PR #2: the OIDC and app-token exchange succeeded, then the action logged "Workflow validation failed … identical content to the version on the repository's default branch" and exited with the job marked successful and no review. Merge the workflow PR first, then run the end-to-end tests on PRs opened afterwards. The same skip will happen on any later PR that edits the workflow file, so check that file's changes by hand.
 - [Plugin and marketplace are fetched from a git URL at run time, so the code that runs with the API key is not pinned] → Pin the marketplace to a ref if the inputs support it; otherwise accept and record it, keep the key scoped by a Console spend limit and a dedicated key for CI.
 - [Prompt injection through PR text, comments or code] → Comment-only tool, minimal permissions, read-only repository permissions, guidelines restored from the base branch, the injection test in the spec, and treating review output as advisory.
-- [Cost: Opus 5.5 reviewing large diffs, especially the first PR that includes a roughly 10 MB generated dataset] → `paths-ignore`, a guideline to skip generated data, `--max-turns`, timeout and concurrency, and a Console spend limit. The real per-review cost is measured in the end-to-end run and recorded in the setup notes.
+- [Cost: model spend on large diffs, especially the first PR that includes a roughly 10 MB generated dataset] → `paths-ignore`, a guideline to skip generated data, `--max-turns`, timeout and concurrency, and a Console spend limit. The real per-review cost is measured in the end-to-end run and recorded in the setup notes.
 - [The plugin skips PRs that already have a comment from the reviewer, so later pushes may not be re-reviewed] → Accepted for now; if re-review on push is wanted, switch to a custom prompt in a later change.
 - [The reviewer is wrong or noisy] → It is advisory, not a required check; tune the guidelines after seeing real output.
 - [Private repo today, public later] → The design already assumes the public-repo fork rules, so nothing changes at the switch except that fork PRs will be skipped.

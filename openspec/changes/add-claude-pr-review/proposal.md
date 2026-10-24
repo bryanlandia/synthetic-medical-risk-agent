@@ -7,7 +7,7 @@ The project is built mostly through AI-assisted changes, and an independent revi
 ## What Changes
 
 - Add a GitHub Actions workflow that runs Claude as a pull request reviewer using the official `anthropics/claude-code-action`, authenticated with an Anthropic API key stored as a repository secret.
-- Pin the reviewer to Claude Opus 5.5 at medium effort.
+- Pin the reviewer to Claude Sonnet 5.5 at medium effort (chosen over Opus 5.5 to keep each review cheap; see design).
 - Run on pull requests that are opened, updated, reopened, or marked ready for review, and post findings on the PR as inline comments (or one summary comment when nothing is found). Draft PRs are skipped.
 - Keep the reviewer advisory: it is not a required check and never blocks merging.
 - Bound cost and blast radius: least-privilege workflow permissions, one run per PR at a time with older runs cancelled, a job timeout, a turn limit, and path exclusions for generated data and lockfiles.
@@ -41,6 +41,6 @@ None directly. This is repository tooling. Reviews of later changes will cover e
 
 - New files: a workflow under `.github/workflows/`, a review guidelines file, and setup notes. No application code changes.
 - New external dependencies: the `anthropics/claude-code-action` GitHub Action and the `code-review` plugin it installs at run time, both third-party code run with access to PR contents.
-- New spend: Anthropic API tokens per review (Opus 5.5) and GitHub Actions minutes. Mitigated by turn limit, concurrency, timeouts, path exclusions, and a Console spend limit.
+- New spend: Anthropic API tokens per review (Sonnet 5.5) and GitHub Actions minutes. Mitigated by turn limit, concurrency, timeouts, path exclusions, and a Console spend limit.
 - New secret: `ANTHROPIC_API_KEY` repository secret, supplied by the repository owner at setup time and never written to a file.
 - Requires a repository admin to install the Claude GitHub App (a browser step).

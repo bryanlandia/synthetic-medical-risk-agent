@@ -132,8 +132,8 @@ def _step_errors(raw: str, job: dict) -> list[str]:
         errs.append("prompt must run /code-review:code-review with --comment")
 
     args = str(with_.get("claude_args", ""))
-    if not re.search(r"--model claude-opus-5-5(\s|$)", args):
-        errs.append("claude_args must contain --model claude-opus-5-5")
+    if not re.search(r"--model claude-sonnet-5-5(\s|$)", args):
+        errs.append("claude_args must contain --model claude-sonnet-5-5")
     if not re.search(r"--effort medium(\s|$)", args):
         errs.append("claude_args must contain --effort medium")
     if not re.search(r"--max-turns \d+(\s|$)", args):
@@ -185,7 +185,7 @@ def repo_errors() -> list[str]:
 MUTATIONS: dict[str, tuple[str, str]] = {
     "uses pull_request_target": ("  pull_request:", "  pull_request_target:"),
     "drops the effort flag": ("--effort medium", "--effort high"),
-    "uses a different model": ("claude-opus-5-5", "claude-sonnet-5"),
+    "uses a different model": ("claude-sonnet-5-5", "claude-opus-5-5"),
     "unpinned action": ("anthropics/claude-code-action@", "anthropics/claude-code-action@v1 #"),
     "extra write permission": ("      contents: read", "      contents: write"),
     "no cancel-in-progress": ("cancel-in-progress: true", "cancel-in-progress: false"),
