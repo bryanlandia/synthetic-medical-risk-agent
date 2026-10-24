@@ -32,6 +32,9 @@ Each run is bounded by `--max-turns`, a 15 minute job timeout, one run per pull 
 | Sonnet 5.5, clean docs PR | $0.04 | 10 s | 4 | 0 | one "No issues found" summary comment |
 | Sonnet 5.5, injection PR (3 findings) | $0.11 | 29 s | 10 | 1 | defect, spec contradiction (spec cited) and injection all flagged |
 | Sonnet 5.5, rapid-push PR | $0.05 | 15 s | 6 | 0 | review of the latest commit only |
+| Sonnet 5.5, PR #1 (generator: 52 files, +8.6k lines, mostly generated data) | $0.11 | 24 s | 8 | 0 | "No issues found" summary comment |
+
+A "No issues found" result on a large pull request is a weak signal: 8 turns and 24 s is a light pass over about 2,000 lines of Python, tests and specs, and the planted-defect tests used tiny pull requests, so detection on large changes has not been measured. Treat the review as a second opinion, not a clearance.
 
 (Totals include the helper agents the review plugin starts on other models.) Sonnet 5.5 is about 9 times cheaper per review on this test pull request. Wall-clock time for the whole job was about 45 seconds on Sonnet and 1.5 to 2.5 minutes on Opus. This is one small sample: larger pull requests will cost more, and the turn limit, 15 minute timeout and Console spend limit bound it.
 
