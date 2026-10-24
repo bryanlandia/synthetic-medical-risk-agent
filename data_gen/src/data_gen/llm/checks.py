@@ -10,6 +10,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from ..config import LLM_SETTINGS
 from ..labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, LabDef
 from ..render import ADDENDUM
 from ..schema import NotePlanV2, PlanLabV2
@@ -199,6 +200,12 @@ def phrase_errors(text: str, plan: NotePlanV2) -> list[str]:
 
 # --- everything that needs no network ---------------------------------------------------------------------
 
+def reveals_setting(text: str) -> str | None:
+    """The documentation setting's name, if the note says it (e.g. a header "EHR template"): the rating sheet is blind."""
+    lowered = text.lower().replace("-", " ").replace("_", " ")
+    return next((s for s in LLM_SETTINGS if s.replace("_", " ") in lowered), None)
+
+
 def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
     """All offline failure codes for a finalized note (marker already replaced by the injection text)."""
     errs: list[str] = []
@@ -208,4 +215,6 @@ def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
     errs += [f"identifier:{f}" for f in scan_text(body_without_addendum(text))]
     errs += lab_errors(text, plan)
     errs += phrase_errors(text, plan)
+    if reveals_setting(text):
+        errs.append("setting_name")
     return errs

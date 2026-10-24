@@ -274,3 +274,10 @@ def test_restated_names_work_for_every_lab():
         plan = make_plan(labs=[lab(l.key, l.mean, l.unit)])
         for text in (f"{l.name} ({l.abbr}): {l.mean:g} {l.unit}", f"{l.abbr} ({l.name}): {l.mean:g} {l.unit}"):
             assert lab_errors(text, plan) == [], text
+
+
+def test_a_note_that_names_its_documentation_setting_is_a_validation_failure():
+    from data_gen.llm.checks import reveals_setting
+
+    assert reveals_setting("Specialist follow-up visit, EHR template.\nHistory: stable") == "ehr_template"
+    assert reveals_setting("Pt seen, labs reviewed.") is None

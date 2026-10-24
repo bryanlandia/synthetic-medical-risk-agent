@@ -17,6 +17,7 @@ from ..cohort import generate_cohort
 from ..config import LLM_SETTINGS, GenConfig
 from ..labs import SYMPTOM_KEYS
 from ..seeds import rng_for
+from .checks import reveals_setting
 from .client import LLMClient
 from .pool import ordered_parallel
 from .run import PlanItem, plan_all
@@ -165,15 +166,10 @@ Save the filled sheet as `ratings.md` next to this file.
 """
 
 
-def _reveals_setting(text: str) -> str | None:
-    lowered = text.lower().replace("-", " ").replace("_", " ")
-    return next((s for s in LLM_SETTINGS if s.replace("_", " ") in lowered), None)
-
-
 def build_sheet(cfg: GenConfig, notes: list[PilotNote], controls: list[tuple[str, str]]) -> tuple[str, dict]:
     """(sheet markdown, key). Shuffled, no setting names; the key maps every note id back."""
     for text in [n.text for n in notes] + [t for _, t in controls]:
-        if (leak := _reveals_setting(text)):
+        if (leak := reveals_setting(text)):
             raise ValueError(f"a note names its own setting ({leak!r}); the sheet would not be blind")
     entries: list[tuple[str, str, dict]] = []
     for n in notes:
