@@ -1,0 +1,3 @@
+{"synthetic": true, "patient_id": "E2E-0001", "labs": {"velorin_index": 101.2, "serum_k17": 4.1}}
+{"synthetic": true, "patient_id": "E2E-0002", "labs": {"velorin_index": -5.0, "serum_k17": 4.4}}
+{"synthetic": true, "patient_id": "E2E-0003", "labs": {"velorin_index": 99.0, "serum_k17": 40.0}}
