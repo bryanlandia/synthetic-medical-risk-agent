@@ -7,3 +7,7 @@ node_modules/
 .env
 .DS_Store
 .envrc
+
+# Recorded reviewer sessions are large; commit a trimmed copy on purpose (under 15 MB) with git add -f
+**/realism/**/review.webm
+**/realism/**/review-video/
