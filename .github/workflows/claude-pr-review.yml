@@ -1,0 +1,45 @@
+name: Claude PR review
+
+# Advisory AI review of pull requests. Not a required check. See docs/pr-review.md.
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+    paths-ignore:
+      - "data_gen/data/**"
+      - "**/uv.lock"
+      - "**/package-lock.json"
+
+# One review per pull request at a time; a newer push cancels the older run.
+concurrency:
+  group: claude-pr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  review:
+    # Skip drafts and forks (GitHub withholds secrets from fork runs anyway).
+    if: github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 1
+      - uses: anthropics/claude-code-action@16f9f71ab9c490faf367f94dd294897edc25be33 # v1.0.261
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          plugin_marketplaces: "https://github.com/anthropics/claude-code.git"
+          plugins: "code-review@claude-code-plugins"
+          prompt: "/code-review:code-review --comment ${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          claude_args: |
+            --model claude-opus-5-5
+            --effort medium
+            --max-turns 20
+            --allowedTools "mcp__github_inline_comment__create_inline_comment"
+            --append-system-prompt "Follow the project review criteria in .claude/review-guidelines.md."
