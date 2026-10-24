@@ -22,7 +22,16 @@ Pull requests in this repository get an automatic, **advisory** review from Clau
 
 ## Cost and limits
 
-Each run is bounded by `--max-turns`, a 15 minute job timeout, one run per pull request at a time (older runs are cancelled), and the path exclusions above. Measured cost and run time per review: _recorded here after the end-to-end run (task 5.1)._
+Each run is bounded by `--max-turns`, a 15 minute job timeout, one run per pull request at a time (older runs are cancelled), and the path exclusions above. Measured on a small test pull request (two files, two seeded defects), with Opus 5.5 plus the Sonnet and Haiku helper agents the review plugin starts:
+
+| Attempt | Total cost | Model time | Turns | Result |
+|---|---|---|---|---|
+| 1 | $0.44 | 51 s | 13 | ran, posted nothing |
+| 2 (rerun) | $0.50 | 93 s | 16 | two inline comments, both defects found |
+
+Wall-clock time for the whole job was about 1.5 to 2.5 minutes. Larger pull requests will cost more; the turn limit, 15 minute timeout and Console spend limit bound it.
+
+Reliability: the same pull request produced no comments on one attempt and the correct comments on the rerun, so a single quiet run does not prove a pull request is clean. Re-run the job (or push a commit) if a review looks missing. The agent's individual steps are not visible in the run log (`show_full_output` is off), and the result reported 2 to 3 denied tool permissions per run whose cause is not yet known. The `--effort medium` flag is passed to the action but is not echoed in the log, so it can be confirmed only from the workflow file.
 
 ## Checking the setup
 
