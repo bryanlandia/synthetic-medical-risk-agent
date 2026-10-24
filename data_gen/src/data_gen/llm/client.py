@@ -20,11 +20,13 @@ class MissingApiKeyError(RuntimeError):
 
 
 class LLMCallError(RuntimeError):
-    """A call failed after the SDK's own retries. ``retryable`` is False for auth and request errors."""
+    """A call failed after the SDK's own retries. ``retryable`` is False for auth and request errors;
+    ``rate_limited`` marks 429 and overload responses, which callers retry with backoff."""
 
-    def __init__(self, message: str, retryable: bool):
+    def __init__(self, message: str, retryable: bool, rate_limited: bool = False):
         super().__init__(message)
         self.retryable = retryable
+        self.rate_limited = rate_limited
 
 
 class LLMRefusal(RuntimeError):
@@ -40,7 +42,11 @@ class LLMResult:
 
 
 class LLMClient(Protocol):
-    def complete(self, *, system: str, prompt: str, model: str, max_tokens: int) -> LLMResult: ...
+    def complete(
+        self, *, system: str, prompt: str, model: str, max_tokens: int, nonce: int = 0
+    ) -> LLMResult:
+        """nonce distinguishes otherwise identical requests (retries) so a cache never replays a failure."""
+        ...
 
 
 class AnthropicClient:
@@ -60,7 +66,9 @@ class AnthropicClient:
         self._sdk = sdk
         self._client = sdk.Anthropic(api_key=key, max_retries=max_retries, timeout=timeout)
 
-    def complete(self, *, system: str, prompt: str, model: str, max_tokens: int) -> LLMResult:
+    def complete(
+        self, *, system: str, prompt: str, model: str, max_tokens: int, nonce: int = 0
+    ) -> LLMResult:
         sdk = self._sdk
         try:
             response = self._client.messages.create(
@@ -71,12 +79,13 @@ class AnthropicClient:
                 output_config={"effort": "low"},  # keep thinking spend small for short notes
             )
         except sdk.RateLimitError as exc:
-            raise LLMCallError(f"rate limited: {exc}", retryable=True) from exc
+            raise LLMCallError(f"rate limited: {exc}", retryable=True, rate_limited=True) from exc
         except sdk.APIConnectionError as exc:
             raise LLMCallError(f"connection error: {exc}", retryable=True) from exc
         except sdk.APIStatusError as exc:
-            retryable = getattr(exc, "status_code", 0) >= 500
-            raise LLMCallError(f"API error {getattr(exc, 'status_code', '?')}: {exc}", retryable) from exc
+            status = getattr(exc, "status_code", 0)
+            raise LLMCallError(f"API error {status or '?'}: {exc}", status >= 500,
+                               rate_limited=status in (429, 529)) from exc
 
         if response.stop_reason == "refusal":
             raise LLMRefusal("the model declined this request")
@@ -98,8 +107,11 @@ class MockClient:
     input_tokens: int = 800
     output_tokens: int = 350
 
-    def complete(self, *, system: str, prompt: str, model: str, max_tokens: int) -> LLMResult:
-        self.calls.append({"system": system, "prompt": prompt, "model": model, "max_tokens": max_tokens})
+    def complete(
+        self, *, system: str, prompt: str, model: str, max_tokens: int, nonce: int = 0
+    ) -> LLMResult:
+        self.calls.append(
+            {"system": system, "prompt": prompt, "model": model, "max_tokens": max_tokens, "nonce": nonce})
         return LLMResult(
             text=self.responder(system, prompt),
             input_tokens=self.input_tokens,

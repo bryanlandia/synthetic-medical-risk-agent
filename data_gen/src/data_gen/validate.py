@@ -145,6 +145,18 @@ def _adversarial_record_errors(r: Record) -> list[str]:
     return errs
 
 
+def unique_patients(records: list[Record]) -> list[Record]:
+    """One record per patient: matched-pair members share a pair_group and count once."""
+    seen: set[str] = set()
+    out = []
+    for r in records:
+        key = r.pair_group or r.patient_id
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
 def pair_group_errors(by_split: dict[str, list[Record]]) -> list[str]:
     """Matched-pair groups: one patient written in every LLM setting, identical apart from the note."""
     groups: dict[str, list[Record]] = {}
@@ -196,17 +208,19 @@ def distribution_errors(by_split: dict[str, list[Record]]) -> list[str]:
     """Random test must match train on prevalence (0.02) and lab means (0.1 SD).
 
     For tiny smoke datasets (test split under 500) the sampling noise of a mean difference alone
-    exceeds 0.1 SD, so the lab-mean tolerance is widened to 5 standard errors there.
+    exceeds 0.1 SD, so the lab-mean tolerance is widened to 5 standard errors there. The prevalence
+    tolerance never goes below one patient per split, which matters only for tiny datasets.
     """
-    train, test = by_split.get("train", []), by_split.get("test", [])
+    train, test = by_split.get("train", []), unique_patients(by_split.get("test", []))
     if not train or not test:
         return ["train or test split is empty"]
     tol_sd = 0.1 if len(test) >= STRICT_MIN_TEST else 5 * (1 / len(train) + 1 / len(test)) ** 0.5
     errs = []
     prev = abs(sum(r.ground_truth.label for r in train) / len(train)
                - sum(r.ground_truth.label for r in test) / len(test))
-    if prev > 0.02:
-        errs.append(f"train/test prevalence differs by {prev:.4f} > 0.02")
+    prev_tol = max(0.02, 1 / len(train) + 1 / len(test))  # a stratified split is off by at most one patient
+    if prev > prev_tol:
+        errs.append(f"train/test prevalence differs by {prev:.4f} > {prev_tol:.4f}")
     for lab in LABS:
         a = sum(r.ground_truth.labs[lab.key] for r in train) / len(train)
         b = sum(r.ground_truth.labs[lab.key] for r in test) / len(test)

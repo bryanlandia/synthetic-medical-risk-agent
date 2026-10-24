@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from . import PLAN_VERSION, PLAN_VERSION_LLM
-from .config import STALE_VALUE_STYLES, GenConfig
+from .config import STALE_VALUE_STYLES, GenConfig, supported_styles
 from .injections import entries as injection_entries
 from .labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, SYMPTOM_KEYS
 from .rule import round_sig
@@ -275,17 +275,26 @@ def plan_note(
     flags: dict[str, bool],
     rng: np.random.Generator,
     case: str | None = None,
+    *,
+    style: str | None = None,
+    missing: set[str] | None = None,
 ) -> PlannedNote:
     """Build the plan for one patient. ``case`` None = ordinary train/test patient.
+
+    ``style`` and ``missing`` force the documentation setting and the set of missing labs; matched-pair
+    groups use them so one patient's members share a lab panel. Left as None, draws are unchanged.
 
     Template notes get a version 1 plan. With the LLM source the style is a documentation setting and
     the plan is version 2, following that setting's profile. Version 1 draws are unchanged.
     """
-    style = choose_style(cfg, rng)
+    if style is None:
+        style = choose_style(cfg, rng)
+    elif style not in supported_styles(cfg.note_source):
+        raise ValueError(f"style {style!r} is not supported by note_source {cfg.note_source!r}")
     profile = PROFILES[style] if cfg.note_source == "llm" else None
     render_seed = int(rng.integers(0, 2**31 - 1))
 
-    missing = _choose_missing(cfg, rng, case)
+    missing = _choose_missing(cfg, rng, case) if missing is None else set(missing)
     noise = [Annotation(type="missing_value", lab=key) for key in sorted(missing)]
     tags: list[Annotation] = []
     if case == "missing_labs":

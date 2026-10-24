@@ -41,7 +41,7 @@ Unlocks realistic inputs for happy path, data quality, borderline and adversaria
 
 ## Impact
 
-- New dependency on the Anthropic API (Haiku-class model) for dataset generation only. Roughly 6,000 notes plus extraction calls, retries and an 88-note pilot; the dry-run `estimate` confirms the cost before any paid run. A call cap, a committed cache and a Console spend limit bound it.
+- New dependency on the Anthropic API (Haiku-class model) for dataset generation only. Roughly 6,000 notes plus extraction calls, retries and an 88-note pilot, which the dry-run `estimate` puts near $3 (assumed token counts, calibrated by the pilot); the estimate is shown and `--yes` is required before any paid run. A call cap, a committed cache and a Console spend limit bound it.
 - A small additive change in `data_gen/` code: plan version 2 (symptom phrase sets, lab flags, setting rules) and schema version 2 (optional `pair_group`). The committed template dataset keeps validating.
 - Human effort: the owner reviews one blind sheet of about 88 notes.
 - The API key comes only from the environment. Larger committed artifacts (LLM-note datasets and cache) are checked by a size limit.

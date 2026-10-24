@@ -150,3 +150,26 @@ The manifest SHALL record, for each split, the note source (template or LLM), mo
 #### Scenario: Provenance is readable
 - **WHEN** the manifest of an LLM-note dataset is read
 - **THEN** it states note source `llm`, the model identifier, prompt version, counts per setting, the number of matched-pair groups, exclusion counts per setting and noise type, and total LLM calls made
+
+### Requirement: Bounded concurrent generation
+The system SHALL write notes with a configurable number of parallel workers (default 8, at most 32), and the resulting dataset SHALL NOT depend on the worker count. Call caps SHALL hold exactly under concurrency, and rate-limit responses SHALL be retried with backoff without consuming a note's attempt.
+
+#### Scenario: Output does not depend on the worker count
+- **WHEN** the same configuration is generated with 1 worker and again with 8 workers
+- **THEN** the accepted records, exclusion counts and per-setting counts are identical
+
+#### Scenario: Calls overlap up to the configured limit
+- **WHEN** a run uses 8 workers and each call takes measurable time
+- **THEN** more than one call is in flight at once and never more than 8
+
+#### Scenario: Call cap is exact under concurrency
+- **WHEN** the call cap is 25 and 8 workers are running
+- **THEN** exactly 25 paid calls are made, the run stops with a clear error, nothing is written to a split, and all 25 results are in the cache
+
+#### Scenario: Rate limits back off without using up attempts
+- **WHEN** the API answers a call with rate-limit errors
+- **THEN** the call is retried with exponentially growing waits up to a fixed bound, the note's attempt count is unchanged, and if the bound is exceeded the attempt fails as a retryable call error
+
+#### Scenario: Stopping early does not depend on the worker count
+- **WHEN** the pilot reaches its target or a setting is stopped early while other notes are still in flight
+- **THEN** in-flight notes finish and are cached, and only results up to the stopping point enter the sample and the counts
