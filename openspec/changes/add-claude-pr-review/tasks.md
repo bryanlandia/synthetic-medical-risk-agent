@@ -18,7 +18,7 @@
 
 ## 4. Land on main
 
-- [ ] 4.1 Open a pull request from `add-claude-pr-review` to `main`, and verify the run result: success, or the expected failure if the action refuses to run because the workflow is new on this branch; record which in the PR description
+- [x] 4.1 Open a pull request from `add-claude-pr-review` to `main`, and verify the run result: success, or the expected failure if the action refuses to run because the workflow is new on this branch; record which in the PR description
 - [ ] 4.2 Owner reviews and merges the pull request, and `gh api` on `main` shows `.github/workflows/claude-pr-review.yml` present
 
 ## 5. End-to-end verification (after the workflow is on main)

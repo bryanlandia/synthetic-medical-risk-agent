@@ -42,6 +42,6 @@ If `uv` hangs while searching for Python, your shell may have a stale `VIRTUAL_E
 
 ## Known behavior
 
-- First run: the action may refuse to run on the pull request that introduces or changes the workflow itself; the workflow must be on `main` before it reviews other pull requests.
+- Workflow changes are not reviewed: the action skips (and the job still shows success) on any pull request that adds or edits the workflow file, because the file must match the one on `main`. This is why the first pull request that added it got no review. Review changes to `.github/workflows/claude-pr-review.yml` by hand.
 - The plugin and its marketplace are fetched from a git URL at run time. They run with access to the pull request contents and the API key.
 - Review text may be wrong or noisy. Treat it as a second opinion.
