@@ -96,7 +96,7 @@ Notes SHALL state lab values at the precision a lab report prints (three signifi
 - **THEN** it is shown with at most three significant figures and stays within 0.5% of the plan value, so it passes the 1% validation
 
 #### Scenario: One wording per symptom
-- **WHEN** a note states a symptom with two or more different wordings in one sentence, or with three or more anywhere, where no wording is nested in another
+- **WHEN** a note states a symptom with two or more different wordings in one sentence, or with three or more anywhere (three in one sentence, or four anywhere, for ai_scribe prose), where no wording is nested in another
 - **THEN** it fails validation with a repeated-symptom code, while repeating the same wording, a wording nested in a longer one, or two wordings in separate sentences is accepted
 
 #### Scenario: Offered wording is a hint, not a requirement
@@ -159,7 +159,7 @@ Each note SHALL be written with style traits drawn from its seed (layout, order,
 - **THEN** each setting has six distinct notes, each passes the claims and identifier scans, none mentions the fiction, and every lab flag in them agrees with its reference range
 
 #### Scenario: Copying an exemplar is rejected
-- **WHEN** a note contains eight consecutive plain words (numbers and lab names break a run) from any exemplar of its setting, other than a stock line the traits asked for
+- **WHEN** a note contains ten consecutive plain words (numbers and lab names break a run) from any exemplar of its setting, other than a stock line or sentence the traits asked for
 - **THEN** it fails validation with an exemplar-copied code
 
 #### Scenario: Pilot reports variety against limits
@@ -200,7 +200,7 @@ Before the full paid run, the project owner SHALL blind-rate a pilot sample of 2
 - **THEN** a report shows the plausible count and rate for each setting, marks each setting pass or fail at 80%, and the full run proceeds only if all four pass
 
 #### Scenario: Controls reveal rater discrimination
-- **WHEN** template-fixture notes are mixed into the sheet as controls
+- **WHEN** template-fixture notes are mixed into the sheet as controls in every pilot round, a fresh set each time
 - **THEN** their plausible rate is reported separately and excluded from the gate
 
 #### Scenario: Failed setting is revised and re-rated

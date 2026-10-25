@@ -226,8 +226,11 @@ def style_errors(text: str, plan: NotePlanV2) -> list[str]:
     for s in plan.symptoms:
         # Several wordings inside one sentence ("denies fatigue, feels not tired, no low energy"), or three or more
         # anywhere, read as padding. Two wordings in separate sentences ("Denies fatigue. Energy normal.") are normal.
-        if any(len(_distinct_wordings(part, s.flag)) > 1 for part in re.split(r"(?<=[.!?])\s+|\n+", body)) \
-                or len(_distinct_wordings(body, s.flag)) >= 3:
+        # Scribe prose may restate a finding naturally ("denies any shaking or tremor"); only a third wording in one
+        # sentence, or a fourth anywhere, is padding there. Terse and templated settings allow fewer.
+        per_sentence, overall = (3, 4) if plan.style == "ai_scribe" else (2, 3)
+        if any(len(_distinct_wordings(part, s.flag)) >= per_sentence for part in re.split(r"(?<=[.!?])\s+|\n+", body)) \
+                or len(_distinct_wordings(body, s.flag)) >= overall:
             errs.append(f"symptom_repeated:{s.flag}")
     if _COMMENTARY.search(body):
         errs.append("meta_commentary")
@@ -257,7 +260,7 @@ def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
 
 # --- copying the exemplars ---------------------------------------------------------------------------------------
 
-EXEMPLAR_SHINGLE = 8  # words in a row that may not be taken from an exemplar note
+EXEMPLAR_SHINGLE = 10  # plain words in a row that may not be taken from an exemplar note
 
 
 _LAB_WORDS = {w for lab in LABS for w in re.findall(r"[a-z0-9']+", f"{lab.name} {lab.abbr}".lower())}
@@ -279,8 +282,8 @@ def _shingles(text: str, n: int = EXEMPLAR_SHINGLE) -> set[tuple[str, ...]]:
 
 
 def exemplar_errors(text: str, plan: NotePlanV2) -> list[str]:
-    """The note must not reproduce a run of eight words from any exemplar of its setting, except the stock lines
-    the style traits ask for."""
+    """The note must not reproduce a run of ten plain words from any exemplar of its setting, except the stock lines
+    and sentences the style traits ask for."""
     from ..traits import stock_lines
     from .prompts import exemplars
 

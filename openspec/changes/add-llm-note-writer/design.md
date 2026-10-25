@@ -111,6 +111,14 @@ The reviewer was kept blind to the setting, which made it judge an AI-scribe dra
 
 Trade-off: a reviewer told "tidy is expected" can be too generous to a genuinely bad scribe note. The reviewer still judges whether it reads like real scribe output, and the controls check still has to pass.
 
+### What round 4 showed (added after the fourth review)
+
+With the ai_scribe redesign and kind-aware raters, the direct review rated 79 of 80 notes plausible and the browser run 16 of 16. Three follow-ups:
+
+- **A lenient reviewer is not a result.** Round 4 had no template controls, so the check that the reviewer rates bad notes lower never ran. Controls now go into every pilot round, a fresh set each round, and the reviewer should also be run on round 0, whose notes were known to be weak, before its verdict on later rounds is trusted.
+- **ai_scribe was still rejecting natural wording** (26% exclusions, over the 15% gate limit). The replay of rejected attempts showed "denies any shaking or tremor" and "joint stiffness and morning stiffness" flagged as padding, which scribe prose does naturally. For ai_scribe the repetition limit is a third wording in a sentence or a fourth anywhere; terse and templated settings keep the stricter limit. The same replay passes 31 of 34 first attempts (from 9 of 39).
+- **Smaller fixes:** the exemplar-copy check now needs ten plain words in a row and exempts stock sentences as well as stock lines; the copy_forward opener limit is 45%, since 40% of 20 notes from four equal stock openers is within chance.
+
 ## Risks / Trade-offs
 
 - [A too-small output limit silently truncates notes, and a validator bug makes good notes look bad (both happened in the first real pilot: Haiku 5.5 thinks by default and thinking counts against `max_tokens`, and a lab whose name and abbreviation contain digits was misread)] → Default `max_tokens` 2000; a `max_tokens` stop is its own failure (`truncated`) and is never validated as if complete; the parser skips a lab's own parenthesised restatement; a setting is stopped early when most of its first attempts fail, and a full run stops when most notes fail, so no money is spent on retries that cannot help; every run prints live progress and `-v` logs each call.

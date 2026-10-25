@@ -268,7 +268,7 @@ def test_a_later_round_replaces_only_its_own_setting(pilot, tmp_path, items):
     report = report_for([bad, tmp_path / "round1"])
     assert report.settings["ai_scribe"].passed and report.settings["ai_scribe"].plausible == 20
     assert report.settings["shorthand"].passed and report.passed, report.render()
-    ids_round1 = {m["record_id"] for m in key1["notes"].values()}
+    ids_round1 = {m["record_id"] for m in key1["notes"].values() if m["kind"] == "note"}
     assert not ids_round0 & ids_round1, "round 1 must use fresh notes"
 
 
@@ -303,3 +303,19 @@ def test_gate_command_exit_codes(pilot, tmp_path, cfg_file, capsys):
     assert main(["gate", "--dir", str(bad.parent), *ARGS, *cfg_file]) == 1
     assert "RESULT: FAIL" in capsys.readouterr().out
     assert main(["gate", "--dir", str(tmp_path / "nowhere"), *ARGS, *cfg_file]) == 2
+
+
+def test_every_round_has_controls_and_each_round_a_fresh_set():
+    from data_gen.llm.pilot import control_notes
+
+    r0, r1, r2 = control_notes(CFG, 0), control_notes(CFG, 1), control_notes(CFG, 2)
+    assert r0 == control_notes(CFG) and len(r0) == len(r1) == len(r2) == CFG.llm.pilot_controls
+    assert r0 != r1 and r1 != r2 and r0 != r2  # a different draw of patients each round
+
+
+def test_a_pilot_round_after_the_first_still_contains_controls(items, tmp_path):
+    result = run_pilot(CFG, client(OracleLLM(items), tmp_path), items, round_=1)
+    meta = write_pilot(CFG, result, tmp_path / "round1", 1)
+    key = json.loads((tmp_path / "round1" / "key.json").read_text())["notes"]
+    assert sum(m["kind"] == "control" for m in key.values()) == CFG.llm.pilot_controls
+    assert len(json.loads((tmp_path / "round1" / "sheet.json").read_text())["notes"]) == 80 + CFG.llm.pilot_controls

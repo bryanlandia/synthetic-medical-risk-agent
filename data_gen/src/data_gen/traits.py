@@ -133,7 +133,7 @@ def stock_lines(setting: str, traits: dict[str, str]) -> list[str]:
     """Stock lines the traits ask the writer to include verbatim; they are not copying."""
     import re
 
-    return [m for line in trait_lines(setting, traits) for m in re.findall(r'stock line "([^"]+)"', line)]
+    return [m for line in trait_lines(setting, traits) for m in re.findall(r'stock (?:line|sentence) "([^"]+)"', line)]
 
 
 def trait_lines(setting: str, traits: dict[str, str]) -> list[str]:

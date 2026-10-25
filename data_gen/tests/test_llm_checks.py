@@ -338,3 +338,34 @@ def test_the_prompt_says_to_write_the_unit_when_it_is_not_the_usual_one():
     usual = make_plan(labs=[PlanLabV2(lab="velorin_index", value=99.0, unit="mg/dL")], style="shorthand")
     assert "write the unit for this one" in build_prompt(alt).user
     assert "write the unit for this one" not in build_prompt(usual).user
+
+
+def test_scribe_prose_may_restate_a_finding_but_not_pad_it():
+    from data_gen.llm.checks import style_errors
+
+    symptoms = [PlanSymptomV2(flag="tremor", stated="negated", phrases=("no tremor", "denies shaking"))]
+    scribe = make_plan(symptoms=symptoms, style="ai_scribe")
+    terse = make_plan(symptoms=symptoms, style="shorthand")
+    two = "The patient denies any shaking or tremor and says their hands feel steady."
+    assert style_errors(two, scribe) == []  # natural in scribe prose
+    assert "symptom_repeated:tremor" in style_errors(two, terse)  # but padding in a terse note
+    three = "The patient denies tremor, notes no shaking, and describes hands steady."
+    assert "symptom_repeated:tremor" in style_errors(three, scribe)  # a third wording in one sentence is padding
+    four = "No tremor. Denies shaking. Hands steady. The patient has shaky hands? No."
+    assert "symptom_repeated:tremor" in style_errors(four, scribe)  # four wordings across the note
+
+
+def test_stock_sentences_and_short_runs_are_not_copying(plans_by_style=None):
+    from data_gen.llm.checks import exemplar_errors
+    from data_gen.llm.prompts import exemplars
+    from data_gen.traits import stock_lines
+
+    plan = make_plan(symptoms=[], style="ai_scribe")
+    plan = plan.model_copy(update={"traits": {"filler": "understanding"}})
+    assert stock_lines("ai_scribe", plan.traits) == ["The patient verbalized understanding."]
+    example = exemplars("ai_scribe")[0]
+    import re
+
+    words = re.findall(r"[a-z']+", example.lower())  # plain words, as the check counts them
+    assert exemplar_errors(" ".join(words[:9]) + " zzz and then something else entirely", plan) == []  # 9 in a row: too short
+    assert exemplar_errors(" ".join(words[:12]), plan) == ["exemplar_copied"]

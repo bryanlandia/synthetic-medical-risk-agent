@@ -134,7 +134,7 @@ def used_record_ids(realism_dir, settings: tuple[str, ...]) -> set[str]:
     return used
 
 
-def control_notes(cfg: GenConfig) -> list[tuple[str, str]]:
+def control_notes(cfg: GenConfig, round_: int = 0) -> list[tuple[str, str]]:
     """Template-fixture notes (the old, unrealistic kind) to mix into the sheet, alternating the two styles."""
     n = cfg.llm.pilot_controls
     if n == 0:
@@ -142,7 +142,7 @@ def control_notes(cfg: GenConfig) -> list[tuple[str, str]]:
     tcfg = GenConfig(seed=cfg.seed, n_train=cfg.n_train, n_test=cfg.n_test,
                      n_per_adversarial_type=cfg.n_per_adversarial_type, target_prevalence=cfg.target_prevalence)
     patients = [p for p in generate_cohort(tcfg) if p.split == "train"]
-    order = rng_for(cfg.seed, "notes", 997).permutation(len(patients))
+    order = rng_for(cfg.seed, "notes", 997 + 1000 * round_).permutation(len(patients))  # round 0 keeps its set
     out = []
     for k, idx in enumerate(order[: n * 4]):
         rec = build_record(tcfg, patients[int(idx)], "train", None)
@@ -209,7 +209,7 @@ def write_pilot(
 
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    controls = control_notes(cfg) if round_ == 0 else []  # controls go into the first sheet only
+    controls = control_notes(cfg, round_)  # every round, a fresh set: the discrimination check needs them each time
     sheet, notes_key, blind = build_sheet(cfg, result.notes, controls)
     meta = {
         "round": round_,
