@@ -1,0 +1,621 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "1",
+  "rater": "reviewer-claude-sonnet-5-5",
+  "ratings": {
+    "n01": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Eight fictional lab values all sit neatly within their reference ranges, each with the unit repeated in the ref range (e.g., 'ratio (ref 0.6-1.4 ratio)'), and the ROS is a tidy symptom-by-symptom pattern with a generic plan, which reads as generated rather than charted.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n02": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The phrasing is formulaic and uniform: each symptom is introduced in the same pattern ('possible X is also mentioned; the patient notes...') with a neat patient quote. The lab values come with tidy units, and the closing line is clean. Together these read like LLM-generated documentation.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n03": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Awkward phrasing ('the patient says she denies', redundant dizziness quote) and oddly formatted fictional labs with expanded names, abbreviations in parentheses and a unit 'ratio' read like a generated template rather than real chart text.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n04": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is overly tidy and formulaic: a 'ROS' header holding only a meds/allergies line, a perfectly uniform list of symptoms and fictional labs that all fall mid-range, and a generic plan, which reads as generated rather than charted.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n05": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n06": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Overly tidy, generic four-sentence note with quoted patient phrases ('hands steady', 'not tired') and a made-up index with mg/dL units that reads like a model-written template rather than real chart documentation.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n07": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n08": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Mechanical symptom denials (shaking, fatigue, photophobia, joint stiffness, 'woozy') in uniform pattern, with odd invented lab abbreviations ('VLI', 'K17') and a generic template feel that doesn't match real charting.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n09": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Fictional lab names with uniformly formatted values and reference ranges, all normal, plus a mechanically organized ROS ('Positive for tires easily') and a generic history/plan read as LLM-generated rather than a real chart note.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n10": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Every lab is a fictional analyte with a uniform 'Name (ABBR): value unit (ref range unit)' format, all values fall within range, and the history and plan are generic boilerplate, so the note reads as machine-generated.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n11": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom list is too tidy and mechanical, alternating one present symptom with denials in uniform fragments, and the invented lab abbreviations (BRE, DOR) with unit/ratio formatting look constructed rather than charted.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n12": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS line is generic filler ('Symptoms documented under Neuro, General, and Eyes as applicable'), the History is vague, and the labs are repeated mechanically with a duplicated headline value in an unnaturally tidy format, which reads like a generated template.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n13": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note contains meta-commentary and a self-correction ('Wait, that mentions... Corrected note:') that is LLM-style output, not chart documentation, plus invented lab abbreviations and a truncated duplicate.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n14": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n15": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is overly tidy and templated, with a mechanical symptom list (one present, three denied), a redundant 'ratio' unit on the Dorrin ratio, and generic filler that reads like a generated imitation rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n16": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Lab names are odd invented codes (K17, TAC, BRE, HAT, DOR) with uniformly formatted units and reference ranges, and the ROS is a mechanical one-line-per-system pattern, which reads as synthetic.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n17": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Phrasing is stilted and templated (\"feeling not tired\", mechanical present/denied pairing, generic opener and closer) and reads like a language model summary rather than real clinician documentation.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n18": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The results use invented, unexplained lab abbreviations (K17, TAC, BRE, DOR) with an odd ratio, and the stiff templated phrasing ('Reviewed and unchanged from prior visit: no other interval concerns recorded') reads like generated filler rather than real charting.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n19": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Invented, unexplained lab abbreviations (VLI, TAC, BRE, DOR) are reported with tidy units in a uniform pattern, and the vague boilerplate about being reviewed by 'the same clinic team as before' reads like a generated template rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n20": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n21": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n22": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n23": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n24": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Cryptic invented abbreviations (VLI, DOR) with a glucose-style unit and a ratio, paired with a neat negative ROS pair, read like a generated fragment rather than real chart documentation.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n25": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n26": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Reads like a templated, model-generated note: each symptom is stated in a mechanical pattern with a paired direct quote, 'The patient notes no...' denials repeat verbatim, and the fictional lab value is dropped in without context.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n27": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Every fictional lab is normal and listed in a uniform 'Name (ABBR): value unit (ref range unit)' pattern, and the ROS is a tidy one-line denial per system with paraphrased wording ('No exhaustion', 'light sensitivity', 'stiff joints'), which reads as generated rather than charted.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n28": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n29": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n30": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS contains garbled templated phrasing (\"Negative for denies fatigue\", \"Possible for maybe some stiff joints\"), and the lab panel is uniformly in range with a bare-bones plan, which reads like machine-generated text rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n31": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Lab names such as 'K17' and 'HAT' are not real standard test abbreviations, and the symptom line mechanically runs through the same four symptoms in a tidy pattern, which reads as generated.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n32": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom review is a mechanical one-positive, four-negative list, the 'Carried-over: no changes to history reviewed' line is awkward, and the lab names 'K17' and 'HAT' are not real tests and are given with unnatural units.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n33": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n34": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is too tidy and uniform: every lab has an identical 'name (ABBR) value unit (ref range unit)' format with every value normal, and the ROS lines are mechanical, with generic history and plan text. The result looks generated rather than charted.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n35": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as templated: the ROS is a neat, uniform symptom list, and the lab panel has fictional analytes with a tidy 'value (H, ref ...)' format and 'ratio' repeated as a unit. Two flagged highs get no comment, and the plan is generic, so it looks machine-generated.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n36": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS reads as a mechanical list of denials, and the lab panel is a uniform set of eight fictional tests that all fall mid-range, each with a neatly formatted reference range and unit. The plan is generic. Together this looks generated rather than charted.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n37": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Fictional lab names (Velorin index, serum K-17) are dropped in with odd units and the phrase 'mentioned in passing during review', and the stilted denials ('not woozy', 'not bothered by bright lights') read as LLM-generated rather than real charting.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n38": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Generic, stilted phrasing (\"a patient checking in since the last appointment\", \"They describe no dizzy spells when moving around or standing up\") with mechanically paired denials and no clinical specifics reads like LLM-generated filler rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n39": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n40": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Symptom list is mechanically uniform (\"X present\", \"Denies photophobia\") and lab abbreviations (VLI, HAT, DOR) are non-standard and invented-looking, while the carried-forward boilerplate reads like a generated template.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n41": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n42": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n43": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Phrasing is unnatural ('notes not woozy at all', '0.994 ratio' redundant unit) and the note is a mechanical pairing of two denied symptoms with a fictional lab value and a generic plan, reading as generated.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n44": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n45": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Fictional lab names with uniform 'value (ref range unit)' formatting, redundant 'ratio' units, and a tidy, minimal ROS read as generated rather than from a real chart.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n46": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is too tidy: it covers every symptom in the same terse bullet pattern, and the lab abbreviations (BRE, HAT, DOR) are non-standard with oddly specific units. The generic plan also reads like a generated template rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n47": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n48": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n49": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n50": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Lab names are opaque invented codes (VLI, K17, TAC, BRE, HAT, PLX, DOR), each with a uniformly formatted reference range and unit (including 'ratio'). The ROS is a tidy one-line-per-system pattern, and 'no new history provided' alongside a full ROS and labs reads like a generated template.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n51": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is too tidy, with every lab spelled out as 'Name (ABBR) value unit' in a uniform pattern, including the odd 'ratio' unit for a ratio, and a mechanical symptom pattern of two positives followed by two negatives, which reads as generated rather than charted.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    }
+  },
+  "version": 1
+}

@@ -1,0 +1,16 @@
+{
+  "description": "an LLM review, not a clinician",
+  "disagreements": {
+    "ai_scribe": 0,
+    "copy_forward": 0,
+    "ehr_template": 0,
+    "shorthand": 0
+  },
+  "passed": true,
+  "rater_kinds": [
+    "llm"
+  ],
+  "raters": [
+    "reviewer-claude-sonnet-5-5"
+  ]
+}

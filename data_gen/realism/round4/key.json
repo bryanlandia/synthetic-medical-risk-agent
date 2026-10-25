@@ -1,0 +1,1484 @@
+{
+  "meta": {
+    "aborted_early": {},
+    "estimated_spend_usd": 0.0606,
+    "exclusion_rates": {
+      "ai_scribe": 0.2593,
+      "copy_forward": 0.0476,
+      "ehr_template": 0.0476,
+      "shorthand": 0.0
+    },
+    "model_id": "claude-haiku-5-5",
+    "prompt_version": "2",
+    "round": 4,
+    "settings": [
+      "shorthand",
+      "ehr_template",
+      "ai_scribe",
+      "copy_forward"
+    ],
+    "short_of_target": {},
+    "tally": {
+      "accepted": {
+        "ai_scribe": 20,
+        "copy_forward": 20,
+        "ehr_template": 20,
+        "shorthand": 20
+      },
+      "attempts": 150,
+      "calls": 234,
+      "excluded": {
+        "ai_scribe": 7,
+        "copy_forward": 1,
+        "ehr_template": 1
+      },
+      "excluded_by_setting_and_noise": {
+        "ai_scribe:hedging": 4,
+        "ai_scribe:none": 3,
+        "copy_forward:contradiction": 1,
+        "copy_forward:hedging": 1,
+        "ehr_template:hedging": 1
+      },
+      "failure_codes": {
+        "exemplar_copied": 13,
+        "extractor_unparseable": 1,
+        "lab_missing": 4,
+        "phrase_missing": 5,
+        "polarity": 5,
+        "symptom_repeated": 82
+      },
+      "input_tokens": 306705,
+      "output_tokens": 32939
+    },
+    "variety": {
+      "ai_scribe": {
+        "distinct_trait_combos": 20,
+        "max_top_opener_share": 0.45,
+        "min_distinct_trait_combos": 8,
+        "notes": 20,
+        "passed": true,
+        "top_opener": "visit summary the",
+        "top_opener_share": 0.35
+      },
+      "copy_forward": {
+        "distinct_trait_combos": 19,
+        "max_top_opener_share": 0.35,
+        "min_distinct_trait_combos": 8,
+        "notes": 20,
+        "passed": false,
+        "top_opener": "seen in clinic",
+        "top_opener_share": 0.4
+      },
+      "ehr_template": {
+        "distinct_trait_combos": 20,
+        "max_top_opener_share": 0.35,
+        "min_distinct_trait_combos": 8,
+        "notes": 20,
+        "passed": true,
+        "top_opener": "history specialist follow",
+        "top_opener_share": 0.3
+      },
+      "shorthand": {
+        "distinct_trait_combos": 18,
+        "max_top_opener_share": 0.4,
+        "min_distinct_trait_combos": 6,
+        "notes": 20,
+        "passed": true,
+        "top_opener": "vli mg dl",
+        "top_opener_share": 0.1
+      }
+    }
+  },
+  "notes": {
+    "n01": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-003284",
+      "setting": "ai_scribe"
+    },
+    "n02": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-003742",
+      "setting": "copy_forward"
+    },
+    "n03": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-003689",
+      "setting": "copy_forward"
+    },
+    "n04": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present"
+      },
+      "record_id": "P20261-002315",
+      "setting": "ehr_template"
+    },
+    "n05": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-004641",
+      "setting": "copy_forward"
+    },
+    "n06": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003067",
+      "setting": "ehr_template"
+    },
+    "n07": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003483",
+      "setting": "ehr_template"
+    },
+    "n08": {
+      "extraction": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present"
+      },
+      "record_id": "P20261-004505",
+      "setting": "shorthand"
+    },
+    "n09": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000764",
+      "setting": "copy_forward"
+    },
+    "n10": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002034",
+      "setting": "shorthand"
+    },
+    "n11": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-000395",
+      "setting": "shorthand"
+    },
+    "n12": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent"
+      },
+      "record_id": "P20261-003142",
+      "setting": "copy_forward"
+    },
+    "n13": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent"
+      },
+      "record_id": "P20261-002012",
+      "setting": "shorthand"
+    },
+    "n14": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "present",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "photophobia": "present"
+      },
+      "record_id": "P20261-000904",
+      "setting": "shorthand"
+    },
+    "n15": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-004354",
+      "setting": "shorthand"
+    },
+    "n16": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "possible",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "possible",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001190",
+      "setting": "ehr_template"
+    },
+    "n17": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-004655",
+      "setting": "copy_forward"
+    },
+    "n18": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000276",
+      "setting": "shorthand"
+    },
+    "n19": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "present",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "present",
+        "tremor": "present"
+      },
+      "record_id": "P20261-000896",
+      "setting": "copy_forward"
+    },
+    "n20": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-000983",
+      "setting": "ai_scribe"
+    },
+    "n21": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000799",
+      "setting": "ai_scribe"
+    },
+    "n22": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-001433",
+      "setting": "shorthand"
+    },
+    "n23": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002343",
+      "setting": "copy_forward"
+    },
+    "n24": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "joint_stiffness": "absent"
+      },
+      "record_id": "P20261-000878",
+      "setting": "ai_scribe"
+    },
+    "n25": {
+      "extraction": {
+        "dizziness": "possible",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003463",
+      "setting": "ai_scribe"
+    },
+    "n26": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001730",
+      "setting": "shorthand"
+    },
+    "n27": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001723",
+      "setting": "ehr_template"
+    },
+    "n28": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "absent"
+      },
+      "record_id": "P20261-000422",
+      "setting": "ai_scribe"
+    },
+    "n29": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001898",
+      "setting": "ai_scribe"
+    },
+    "n30": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003995",
+      "setting": "copy_forward"
+    },
+    "n31": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-004706",
+      "setting": "shorthand"
+    },
+    "n32": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002733",
+      "setting": "ehr_template"
+    },
+    "n33": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-001044",
+      "setting": "copy_forward"
+    },
+    "n34": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002844",
+      "setting": "shorthand"
+    },
+    "n35": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-001383",
+      "setting": "copy_forward"
+    },
+    "n36": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-002355",
+      "setting": "ai_scribe"
+    },
+    "n37": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000647",
+      "setting": "copy_forward"
+    },
+    "n38": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present"
+      },
+      "record_id": "P20261-003559",
+      "setting": "ai_scribe"
+    },
+    "n39": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "joint_stiffness": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003202",
+      "setting": "ehr_template"
+    },
+    "n40": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "possible",
+        "joint_stiffness": "absent"
+      },
+      "record_id": "P20261-000523",
+      "setting": "ehr_template"
+    },
+    "n41": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003598",
+      "setting": "ehr_template"
+    },
+    "n42": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-003546",
+      "setting": "shorthand"
+    },
+    "n43": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002585",
+      "setting": "ehr_template"
+    },
+    "n44": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-003501",
+      "setting": "ehr_template"
+    },
+    "n45": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003672",
+      "setting": "shorthand"
+    },
+    "n46": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-000270",
+      "setting": "ehr_template"
+    },
+    "n47": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002084",
+      "setting": "ehr_template"
+    },
+    "n48": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001849",
+      "setting": "copy_forward"
+    },
+    "n49": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002463",
+      "setting": "ehr_template"
+    },
+    "n50": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-003197",
+      "setting": "ai_scribe"
+    },
+    "n51": {
+      "extraction": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001121",
+      "setting": "copy_forward"
+    },
+    "n52": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002326",
+      "setting": "ehr_template"
+    },
+    "n53": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-002588",
+      "setting": "ai_scribe"
+    },
+    "n54": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000783",
+      "setting": "copy_forward"
+    },
+    "n55": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-001692",
+      "setting": "ehr_template"
+    },
+    "n56": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "not_mentioned",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "tremor": "present"
+      },
+      "record_id": "P20261-000849",
+      "setting": "shorthand"
+    },
+    "n57": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-004624",
+      "setting": "ai_scribe"
+    },
+    "n58": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-004557",
+      "setting": "ai_scribe"
+    },
+    "n59": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-002649",
+      "setting": "copy_forward"
+    },
+    "n60": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-002960",
+      "setting": "ai_scribe"
+    },
+    "n61": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000293",
+      "setting": "ai_scribe"
+    },
+    "n62": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-003686",
+      "setting": "ehr_template"
+    },
+    "n63": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-002123",
+      "setting": "shorthand"
+    },
+    "n64": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-003675",
+      "setting": "ai_scribe"
+    },
+    "n65": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-004515",
+      "setting": "shorthand"
+    },
+    "n66": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-003871",
+      "setting": "shorthand"
+    },
+    "n67": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-002913",
+      "setting": "ai_scribe"
+    },
+    "n68": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-001182",
+      "setting": "shorthand"
+    },
+    "n69": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "present",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002159",
+      "setting": "copy_forward"
+    },
+    "n70": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "possible",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "possible"
+      },
+      "record_id": "P20261-002393",
+      "setting": "ehr_template"
+    },
+    "n71": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-004074",
+      "setting": "copy_forward"
+    },
+    "n72": {
+      "extraction": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-001381",
+      "setting": "copy_forward"
+    },
+    "n73": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "joint_stiffness": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000419",
+      "setting": "shorthand"
+    },
+    "n74": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-004436",
+      "setting": "ehr_template"
+    },
+    "n75": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "not_mentioned",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-000456",
+      "setting": "ai_scribe"
+    },
+    "n76": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "not_mentioned",
+        "tremor": "possible"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "tremor": "possible"
+      },
+      "record_id": "P20261-004206",
+      "setting": "ai_scribe"
+    },
+    "n77": {
+      "extraction": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "not_mentioned",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "tremor": "present"
+      },
+      "record_id": "P20261-002957",
+      "setting": "copy_forward"
+    },
+    "n78": {
+      "extraction": {
+        "dizziness": "present",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "not_mentioned"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "dizziness": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent"
+      },
+      "record_id": "P20261-002932",
+      "setting": "ehr_template"
+    },
+    "n79": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      },
+      "record_id": "P20261-002400",
+      "setting": "shorthand"
+    },
+    "n80": {
+      "extraction": {
+        "dizziness": "not_mentioned",
+        "fatigue": "not_mentioned",
+        "joint_stiffness": "not_mentioned",
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "kind": "note",
+      "plan_symptoms": {
+        "photophobia": "absent",
+        "tremor": "absent"
+      },
+      "record_id": "P20261-002826",
+      "setting": "ai_scribe"
+    }
+  }
+}

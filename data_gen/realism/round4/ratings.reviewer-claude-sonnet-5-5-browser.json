@@ -1,0 +1,201 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "4",
+  "rater": "reviewer-claude-sonnet-5-5-browser",
+  "ratings": {
+    "n01": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n02": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n03": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n04": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n05": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n06": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n07": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n08": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n09": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n10": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n11": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n13": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n16": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n20": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n21": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n24": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    }
+  },
+  "version": 1
+}

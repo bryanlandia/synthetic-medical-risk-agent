@@ -1,0 +1,333 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "1",
+  "rater": "reviewer-claude-sonnet-5-5-browser",
+  "ratings": {
+    "n01": {
+      "comment": "Mechanical, redundant symptom denials with synonym padding (\"feels not exhausted, no low energy\") and generic boilerplate read as templated generation.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n02": {
+      "comment": "Self-contradictory phrasing (\"c/o denies\", \"denies photophobia, bothered by bright lights\") and oddly precise labs with ratio units and \"no flags listed\" read as templated or generated rather than real charting.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "possible",
+        "tremor": "none"
+      }
+    },
+    "n03": {
+      "comment": "Reads as generated: \"fictional study condition\" in the history, mechanical ROS phrasing (\"negative for tired\"), and uniformly formatted labs with odd precision and a redundant \"ratio\" unit.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n04": {
+      "comment": "Lab values have inconsistent, unnatural decimal precision (4.199, 30.93, 0.6902) with a repeated \"(reference ...)\" format on every line, and the ROS wording (\"negative for shaky hands\", \"bothered by bright lights\") reads as mechanically generated.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n05": {
+      "comment": "ROS uses mechanical \"negative for X (denies X)\" paraphrase pattern, and the lab list has uniform formatting with odd precision and \"ratio\" units, reading as generated rather than real charting.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n06": {
+      "comment": "Uniform, over-explained symptom-by-symptom narrative with stock quoted patient phrases and over-hedged fatigue, plus tidy invented lab indices, reads as LLM-generated rather than a real visit note.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n07": {
+      "comment": "Over-explained denials (tremor/shaking/shaky hands, bright lights repeated), stock phrase about labs \"discussed only as part of the overall picture\", and tidy uniform prose are unlike real clinical documentation.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n08": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n09": {
+      "comment": "Lab values have unnatural precision (3.933, 0.7242) with unexplained abbreviations, and the symptom list is mechanically ordered, which suggests a generated note.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n10": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n11": {
+      "comment": "Mechanical uniform ROS negatives and lab lines with inconsistent decimal precision (e.g., 4.028, 0.9458) and redundant \"ratio\" units read as generated, not charted.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n12": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n13": {
+      "comment": "Mechanical present/present/denies/denies pattern with lay-style redundant paraphrases, and lab values with odd three-decimal precision and unusual units look artificial.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n14": {
+      "comment": "Mechanical symptom-by-symptom pattern with over-explained denials (\"no shaking... not felt tremulous\"), overly clean prose, and inconsistent lab precision (4.528 g/dL) read as LLM-generated.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n15": {
+      "comment": "Over-explained denials (mornings feel fine, not lightheaded or off balance), generic filler about discussing numbers in plain terms, and uniformly tidy sentences read like LLM text rather than a real visit note.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n16": {
+      "comment": "Mechanical, restated denials (\"not bothered by bright lights\", \"no stiff joints reported\"), a redundant \"ratio\" unit on a ratio value, and generic filler assessment text read as generated.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n17": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n18": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n19": {
+      "comment": "Odd unexplained lab acronyms with over-precise values and a literal \"ratio\" unit, plus mechanical symptom pattern (poss/poss/+/denies), read as synthetic.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n20": {
+      "comment": "Over-explained denials (tremor or shaky hands; not tired or exhausted), repeated \"the patient\" phrasing, and tidy generic structure read as LLM-written rather than a real visit note.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n21": {
+      "comment": "Overly clean, generic ambient-summary prose with a titer reported in g/dL (odd unit, 4 decimals) and stock filler like \"seemed to understand what it means for their monitoring.\"",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n22": {
+      "comment": "Mechanical, redundant denials (\"fatigue, or low energy\", \"achy stiff joints or stiff joints\") and uniform lab list with cryptic invented codes read as generated boilerplate.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n23": {
+      "comment": "Symptom bullets are mechanically uniform with lay-language paraphrases (\"shaky hands\", \"achy stiff joints\", \"woozy\"), and the labs use odd invented abbreviations (VLI, HAT, PLX) with inconsistent precision, which reads as generated.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n24": {
+      "comment": "Mechanical denial listing synonyms (\"fatigue, tired, exhausted\") and uniform terse lines with unnaturally precise lab values read as generated.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n25": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n26": {
+      "comment": "Mechanical, uniform denials with quoted patient-phrase pairs and overly precise lab values (e.g., 7.403, 0.9152 \"ratio\") read as generated rather than real charting.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n27": {
+      "comment": "Over-explained, redundant denials (\"not bothered by bright lights or sensitive to bright light at all\"), awkward phrasing like \"I was told by the patient\" and \"this visit summary\", and a tidy symptom-by-symptom structure read like LLM text rather than a real chart note.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    }
+  },
+  "version": 1
+}

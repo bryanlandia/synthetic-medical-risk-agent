@@ -1,0 +1,343 @@
+{
+  "version": 1,
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "symptom_keys": [
+    "tremor",
+    "fatigue",
+    "photophobia",
+    "joint_stiffness",
+    "dizziness"
+  ],
+  "plausible_values": [
+    "y",
+    "n"
+  ],
+  "symptom_values": [
+    "present",
+    "possible",
+    "absent",
+    "none"
+  ],
+  "notes": [
+    {
+      "id": "n01",
+      "text": "Follow-up visit today. The patient states a hand tremor, saying \"my hands shake when I try to hold a cup.\" They mention stiff joints and deny any light sensitivity. The next visit is already scheduled."
+    },
+    {
+      "id": "n02",
+      "text": "Progress note: routine follow-up\n\nPast history reviewed, unchanged. Medications reviewed with patient.\nSeen for routine follow-up. Interval history:\n- possible tremor\n- low energy\n- stiffness in the joints\n- no dizzy spells\n\nLabs:\n- VLI 7.63 mmol/L\n- K17 4.62 mmol/L\n- BRE 20.9 U/L\n- PLX 269 x10^9/L\n- DOR 0.554\n\nPlan: continue current monitoring plan."
+    },
+    {
+      "id": "n03",
+      "text": "Follow-up visit.\nPast history reviewed, unchanged.\nToday: hands steady, energy level normal, no morning stiffness.\nResults: K17 3.64 mmol/L, HAT 3.81 g/dL, OSM 299 mOsm/kg, PLX 286 x10^9/L, DOR 0.486.\nRecheck at next scheduled visit."
+    },
+    {
+      "id": "n04",
+      "text": "RESULTS:\n- Velorin index (VLI): 110 mg/dL (ref 70-130)\n- Tarnic acid (TAC): 301 umol/L (ref 200-400)\n- Brell enzyme (BRE): 31.8 U/L (ref 15-55)\n- Halvin titer (HAT): 3.81 g/dL (ref 3-5)\n\nHISTORY:\nFollow-up visit for specialist review. Chart reviewed prior to visit.\n\nROS:\nNeuro: Negative for dizziness.\nEyes: Negative for light sensitivity.\nMSK: Negative for joint stiffness.\n\nPLAN:\n1. Continue current monitoring.\n2. Return for follow-up as scheduled or sooner if symptoms change."
+    },
+    {
+      "id": "n05",
+      "text": "Patient reviewed at scheduled follow-up.\nFamily history reviewed, no changes.\nPast history reviewed, unchanged.\n\nUpdated: no fatigue, no morning stiffness. Denies joint stiffness.\nLabs:\n- VLI 5.91 mmol/L\n- TAC 231 umol/L\n- OSM 152 mOsm/kg\n- DOR 0.797\n\nPlan: continue current monitoring plan."
+    },
+    {
+      "id": "n06",
+      "text": "RESULTS: Tarnic acid (TAC) 401 umol/L (H, ref 200-400); Dorrin ratio (DOR) 0.995 (ref 0.6-1.4)\n\nHISTORY: Follow-up visit. Chart reviewed prior to visit.\n\nROS:\nNeuro: positive for dizziness.\nMSK: no morning stiffness.\nGeneral: energy level normal, no tremor.\n\nPLAN:\n1. Continue current monitoring.\n2. Return for recheck as scheduled or sooner if symptoms change."
+    },
+    {
+      "id": "n07",
+      "text": "[Results]\nVelorin index (VLI) 4.61 mmol/L (ref 3.89-7.21); Serum K-17 (K17) 4.26 mmol/L (ref 3.4-5); Tarnic acid (TAC) 232 umol/L (ref 200-400); Brell enzyme (BRE) 34 U/L (ref 15-55); Halvin titer (HAT) 3.39 g/dL (ref 3-5); Plexa count (PLX) 234 x10^9/L (ref 150-400)\n\n[History]\nSpecialist follow-up visit.\n\n[ROS]\nNeuro: positive for tremulous hands. MSK: positive for achy stiff joints.\n\n[Plan]\n1. Continue monitoring.\n2. Return for follow-up as scheduled, sooner if symptoms worsen."
+    },
+    {
+      "id": "n08",
+      "text": "denies exhaustion, joint stiffness\nK17: 2.77\nHAT: 4.57\nf/u if worse"
+    },
+    {
+      "id": "n09",
+      "text": "PROGRESS NOTE - FOLLOW-UP\nCarried over from previous visit: medications reviewed, past history unchanged. Family history reviewed, no changes.\nToday:\n - possibly fatigued at times\n - no trouble with bright lights\n - denies joint stiffness\n - no dizzy spells\nResults:\n - Tarnic acid (TAC): 505 umol/L\n - Osmet level (OSM): 188 mOsm/kg\nContinue current monitoring plan."
+    },
+    {
+      "id": "n10",
+      "text": "BRE 41.7 U/L; PLX 205 x10^9/L. Denies fatigue, no lightheadedness."
+    },
+    {
+      "id": "n11",
+      "text": "BRE 27.6, PLX 232. Denies fatigue, joint stiffness. F/u if worse."
+    },
+    {
+      "id": "n12",
+      "text": "Patient returns for follow-up. Past history reviewed, unchanged. Medications reviewed with patient.\n\nInterval: no shaking, no fatigue, stiff joints, maybe some dizziness.\n\nResults:\n- TAC 337 umol/L\n- BRE 43.1 U/L\n- OSM 272 mOsm/kg\n- PLX 312 x10^9/L\n- DOR 1\n\nPlan: continue current monitoring plan."
+    },
+    {
+      "id": "n13",
+      "text": "denies shaky hands, wooziness. HAT 4.03, PLX 306"
+    },
+    {
+      "id": "n14",
+      "text": "VLI: 94.5 mg/dL\nBRE: 36.1 U/L\nDOR: 0.768\nno fatigue. no photophobia. RTC 6 wks"
+    },
+    {
+      "id": "n15",
+      "text": "K17 4.16 mmol/L, HAT 3.92 g/dL, DOR 1.16\nc/o tremor, denies stiffness, no lightheadedness. f/u if worse"
+    },
+    {
+      "id": "n16",
+      "text": "Medications and allergies reviewed.\n\nHistory: Specialist follow-up visit. Patient returns for routine review of previously noted results.\n\nResults: Tarnic acid (TAC) 5.89 mg/dL (ref 3.36-6.72); Halvin titer (HAT) 4.45 g/dL (ref 3-5); Plexa count (PLX) 232 x10^9/L (ref 150-400); Dorrin ratio (DOR) 0.975 (ref 0.6-1.4)\n\nReview of Systems:\nNeuro: negative for tremor.\nMSK: no joint stiffness.\n\nPlan: Continue monitoring; recheck results at next scheduled visit."
+    },
+    {
+      "id": "n17",
+      "text": "PROGRESS NOTE - FOLLOW-UP\nFamily history reviewed, no changes.\nUpdated: shaking of the hands present. Denies fatigue and light sensitivity. No dizzy spells.\nResults: VLI 93.1 mg/dL. OSM 294 mOsm/kg.\nContinue current monitoring plan."
+    },
+    {
+      "id": "n18",
+      "text": "VLI 111 mg/dL, TAC 202 umol/L, HAT 3.88 g/dL\n?photophobia\nno fatigue\n- dizziness\n- lightheadedness\nf/u if worse"
+    },
+    {
+      "id": "n19",
+      "text": "Patient seen in routine follow-up. Family history reviewed, no changes.\nUpdated: dizzy spells; denies shaking, light sensitivity, and joint stiffness.\nResults: K17 4.09 mmol/L, BRE 20.4 U/L, PLX 275 x10^9/L.\nMonitoring continues; recheck at next scheduled visit."
+    },
+    {
+      "id": "n20",
+      "text": "Since the last visit, the patient says things have stayed mostly the same. She denies photophobia and says her joints are not stiff in the mornings. No lab results are being reviewed at this visit.\n\nShe describes no new concerns and says she has been managing day to day without changes. Nothing is being changed for now."
+    },
+    {
+      "id": "n21",
+      "text": "Seen today for a scheduled follow-up of ongoing concerns. The patient states their hands are steady and they have no shaking. They mention no morning stiffness. Labs show a Velorin index (VLI) of 6.89 mmol/L and an Osmet level (OSM) of 303 mOsm/kg. Nothing is being changed for now."
+    },
+    {
+      "id": "n22",
+      "text": "K17 4.2, BRE 34, PLX 268. Denies tremor, fatigue. RTC 6 wks."
+    },
+    {
+      "id": "n23",
+      "text": "Patient seen in follow-up. Family history reviewed, no changes. Medications and past history reviewed, no changes.\n\nInterval:\n- denies shaking, no tiredness\n- stiffness in the joints, feels dizzy\n\nResults:\n- Velorin index (VLI): 68.7 mg/dL\n- Serum K-17 (K17): 16.7 mg/dL\n- Halvin titer (HAT): 3.51 g/dL\n- Plexa count (PLX): 234 x10^9/L\n- Dorrin ratio (DOR): 1.05\n\nContinue current monitoring plan."
+    },
+    {
+      "id": "n24",
+      "text": "Since the last visit, the patient says things have stayed mostly the same. She describes feeling dizzy at times, and says she has no tremor and no tiredness. Her Velorin index was 3.85 mmol/L and her Dorrin ratio was 1.22, both reviewed today. We will plan a return visit in a few weeks."
+    },
+    {
+      "id": "n25",
+      "text": "Follow-up visit today. The patient reports no tremor, and says \"my hands are steady.\" Energy level is normal; the patient denies fatigue. The patient reports light sensitivity and notes feeling woozy at times. Possibly joints a bit stiff, the patient says \"my joints feel a little stiff some mornings, maybe.\"\n\nTarnic acid (TAC) was 312 umol/L and Brell enzyme (BRE) was 45.5 U/L. Return visit in a few weeks."
+    },
+    {
+      "id": "n26",
+      "text": "OSM 296 DOR 0.902\nNo shaky hands. No photophobia. RTC 6 wks"
+    },
+    {
+      "id": "n27",
+      "text": "[History]\nFollow-up visit, specialty clinic. Interval review, no acute concerns raised.\n\n[Results]\n- Velorin index (VLI): 96.8 mg/dL (ref 70-130)\n- Brell enzyme (BRE): 28.1 U/L (ref 15-55)\n- Plexa count (PLX): 229 x10^9/L (ref 150-400)\n- Dorrin ratio (DOR): 0.805 (ref 0.6-1.4)\n\n[ROS]\nNeuro: Negative for lightheadedness.\nMSK: Negative for joint stiffness.\n\n[Plan]\n1. Recheck labs at next visit.\n2. Continue monitoring."
+    },
+    {
+      "id": "n28",
+      "text": "Since the last visit, the patient says things have been mostly the same, but they describe feeling dizzy and say, \"the room tilts a little when I stand up too fast.\" They deny tremor and say they have no light sensitivity. They say there is possible joint stiffness, though they are not sure. Nothing is being changed for now."
+    },
+    {
+      "id": "n29",
+      "text": "Seen today for a routine follow-up of ongoing concerns that the patient wanted to talk through. The patient states there is no fatigue at the moment and mentions no dizzy spells. They say there may be a possible tremor, describing it as \"my hand shakes a little sometimes, maybe.\" Plexa count (PLX) was 229 x10^9/L. Nothing is being changed for now."
+    },
+    {
+      "id": "n30",
+      "text": "Follow-up visit - progress note\n\nFamily history reviewed, no changes. Medications reviewed with patient, no changes.\nTrembling hands present. Energy level normal. Denies light sensitivity. Denies lightheadedness.\nResults: BRE 51.9 U/L, HAT 4.36 g/dL, PLX 243 x10^9/L, DOR 0.681.\nRecheck at next scheduled visit."
+    },
+    {
+      "id": "n31",
+      "text": "K17 3.49, TAC 282, PLX 185. Poss tired on and off. Denies shaking, stiff joints."
+    },
+    {
+      "id": "n32",
+      "text": "Chart reviewed prior to visit.\n\nHistory: Specialist follow-up visit. Reports ongoing low energy and tiring easily, with bothersome sensitivity to bright lights.\n\nReview of Systems: Positive for fatigue (General), bright light sensitivity (Eyes). Negative for shaking (Neuro), joint stiffness (MSK).\n\nResults: Velorin index (VLI): 92.4 mg/dL (ref 70-130); Serum K-17 (K17): 4.86 mmol/L (ref 3.4-5); Tarnic acid (TAC): 311 umol/L (ref 200-400); Halvin titer (HAT): 4 g/dL (ref 3-5); Dorrin ratio (DOR): 0.904 (ref 0.6-1.4)\n\nPlan: Continue monitoring and recheck labs at next scheduled visit."
+    },
+    {
+      "id": "n33",
+      "text": "Patient seen in follow-up, with the visit note carried forward from last time.\nMedications reviewed with patient. Past history unchanged.\n\nToday:\n - no tiredness\n - no photophobia\n - morning stiffness\n\nResults:\n - Velorin index (VLI): 189 mg/dL\n - Brell enzyme (BRE): 46.2 U/L\n - Halvin titer (HAT): 5.69 g/dL\n\nContinue current monitoring plan."
+    },
+    {
+      "id": "n34",
+      "text": "denies fatigue, light sensitivity. VLI 83.2 mg/dL, TAC 324 umol/L. RTC 6 wks"
+    },
+    {
+      "id": "n35",
+      "text": "Progress Note: Follow-Up Visit\n\nFamily history reviewed, no changes.\nInterval: patient reports morning stiffness and feels dizzy. No shaking.\n\nSymptoms:\n- Morning stiffness, present\n- Feels dizzy\n- No shaking\n\nLabs:\n- K17: 3.98 mmol/L\n- TAC: 418 umol/L\n- OSM: 306 mOsm/kg\n- PLX: 327 x10^9/L\n\nRecheck these values at the next scheduled visit."
+    },
+    {
+      "id": "n36",
+      "text": "Since the last visit, things have stayed largely the same. The patient says her hands are steady with no tremor, and she describes morning stiffness in her joints. She denies any wooziness or dizzy spells. Dorrin ratio (DOR) was 0.543, and her next visit is already scheduled."
+    },
+    {
+      "id": "n37",
+      "text": "PROGRESS NOTE - FOLLOW-UP\nPatient returns for follow-up. Past history reviewed, unchanged.\nToday:\n - no light sensitivity\n - joints not stiff\n - no dizzy spells\nResults:\n - Serum K-17 (K17): 3.69 mmol/L\n - Tarnic acid (TAC): 181 umol/L\n - Halvin titer (HAT): 3.5 g/dL\n - Osmet level (OSM): 275 mOsm/kg\n - Dorrin ratio (DOR): 0.775\nRecheck at next scheduled visit."
+    },
+    {
+      "id": "n38",
+      "text": "Follow-up visit today. The patient says the hands have been bothering her lately, and describes trembling hands on and off. She has stiff joints in the mornings, and says she has had no dizzy spells recently. She denies photophobia. Labs were reviewed today: serum K-17 (K17) was 3.89 mmol/L and Plexa count (PLX) was 243 x10^9/L. We'll see her back in a few weeks."
+    },
+    {
+      "id": "n39",
+      "text": "[History]\nFollow-up visit. Medications and allergies reviewed.\n\n[ROS]\nEyes: Denies light sensitivity.\nMSK: No stiff joints.\nNeuro: No dizziness.\n\n[Results]\nVelorin index (VLI): 5.1 mmol/L (ref 3.89-7.21); Halvin titer (HAT): 4.88 g/dL (ref 3-5); Osmet level (OSM): 291 mOsm/kg (ref 270-310); Plexa count (PLX): 218 x10^9/L (ref 150-400); Dorrin ratio (DOR): 0.6 (L, ref 0.6-1.4)\n\n[Plan]\n1) Continue monitoring.\n2) Repeat labs at next visit."
+    },
+    {
+      "id": "n40",
+      "text": "Follow-up visit - specialty clinic\n\nHistory: Patient returns for specialty follow-up. Medications and allergies reviewed.\nReview of systems: Positive for light sensitivity (Eyes). Negative for shaking, dizziness, fatigue.\nResults: Serum K-17 (K17) 16.5 mg/dL (ref 13.3-19.6); Brell enzyme (BRE) 33.8 U/L (ref 15-55); Halvin titer (HAT) 4.03 g/dL (ref 3-5)\nPlan: Monitoring continues; follow up as scheduled."
+    },
+    {
+      "id": "n41",
+      "text": "[History]\nSpecialist follow-up visit. Chart reviewed prior to visit.\n\n[ROS]\nNeuro: positive for dizziness? No. Negative for dizzy spells.\nEyes: denies light sensitivity.\nMSK: positive for joint stiffness.\n\n[Results]\n- Halvin titer (HAT): 3.63 g/dL (ref 3-5)\n- Osmet level (OSM): 288 mOsm/kg (ref 270-310)\n- Plexa count (PLX): 278 x10^9/L (ref 150-400)\n- Dorrin ratio (DOR): 1.01 (ref 0.6-1.4)\n\n[Plan]\n1. Continue current monitoring.\n2. Recheck labs at next scheduled visit."
+    },
+    {
+      "id": "n42",
+      "text": "c/o dizzy spells. Poss mild stiffness in the joints. No tremor. No shaking. Denies photophobia.\nVLI 73.5 PLX 158. f/u if worse"
+    },
+    {
+      "id": "n43",
+      "text": "Chart reviewed prior to visit.\n\nSpecialist follow-up. Brief typed history: patient returns for scheduled review with ongoing symptoms as below.\n\nResults:\nSerum K-17 (K17) 4.07 mmol/L (ref 3.4-5)\nBrell enzyme (BRE) 39 U/L (ref 15-55)\nPlexa count (PLX) 278 x10^9/L (ref 150-400)\n\nReview of Systems:\nNeuro: positive for shaking of the hands and dizzy spells.\nGeneral: positive for fatigue.\nMSK: positive for stiffness in the joints.\n\nPlan: Monitoring continues; recheck labs at next scheduled visit."
+    },
+    {
+      "id": "n44",
+      "text": "Medications and allergies reviewed.\n\nResults:\n- Brell enzyme (BRE): 55 U/L (ref 15-55)\n- Halvin titer (HAT): 3.84 g/dL (ref 3-5)\n- Plexa count (PLX): 230 x10^9/L (ref 150-400)\n\nHistory: Specialist follow-up. Patient returns for routine review and reports no new concerns since the last visit.\n\nReview of Systems:\nNeuro: possible occasional shaky hands. General: denies low energy. Neuro: denies lightheadedness.\n\nPlan: Monitoring continues; follow up as scheduled."
+    },
+    {
+      "id": "n45",
+      "text": "Pt f/u. No low energy. No dizziness.\nTAC 405 PLX 291. RTC 6 wks."
+    },
+    {
+      "id": "n46",
+      "text": "Follow-Up Visit:\nHistory: Specialist follow-up for ongoing review.\n\nResults: Velorin index (VLI) 125 mg/dL (ref 70-130); Serum K-17 (K17) 4.24 mmol/L (ref 3.4-5); Tarnic acid (TAC) 305 umol/L (ref 200-400); Brell enzyme (BRE) 0.477 ukat/L (ref 0.25-0.917); Plexa count (PLX) 190 x10^9/L (ref 150-400); Dorrin ratio (DOR) 0.597 (L, ref 0.6-1.4)\n\nReview of Systems: Positive for lightheadedness (Neuro) and possible fatigue (General). Negative for tremor (Neuro), light sensitivity (Eyes), and stiff joints (MSK).\n\nPlan: Continue monitoring and recheck labs at next visit."
+    },
+    {
+      "id": "n47",
+      "text": "SPECIALIST FOLLOW-UP\nHPI: Seen for specialist follow-up. Ongoing joint stiffness and episodes of dizziness reported since last visit.\nRESULTS:\n  - Brell enzyme (BRE): 19.9 U/L (ref 15-55)\nROS:\n  MSK: positive for stiffness in the joints\n  Neuro: positive for dizziness\n  Eyes: denies photophobia\nPLAN: Continue monitoring and recheck at next scheduled visit."
+    },
+    {
+      "id": "n48",
+      "text": "Patient seen in follow-up. Medications reviewed with patient. Past history reviewed, unchanged.\nInterval: tired. No tremor. No trouble with bright lights. Denies joint stiffness.\nResults: TAC 186 umol/L; HAT 3.49 g/dL; OSM 158 mOsm/kg; PLX 178 x10^9/L.\nRecheck labs at the next scheduled visit."
+    },
+    {
+      "id": "n49",
+      "text": "[Results]\nHalvin titer (HAT) 3.56 g/dL (ref 3-5); Plexa count (PLX) 305 x10^9/L (ref 150-400)\n\n[History]\nSpecialist follow-up visit. Interval history reviewed at this visit.\n\n[ROS]\nNeuro: denies tremor; no dizziness\nMSK: denies joint stiffness\n\n[Plan]\nContinue monitoring and recheck labs at next scheduled visit."
+    },
+    {
+      "id": "n50",
+      "text": "Coming in today for a follow-up, the patient reports feeling generally okay since the last visit. Hands steady, and no fatigue, energy holding up well. The patient notes feeling dizzy at times, describing it as \"like the room tilts when I get up too quickly.\" The patient seems unsure how often this happens.\n\nBloodwork showed a Serum K-17 of 15.8 mg/dL and a Dorrin ratio of 0.985. The next visit is already scheduled."
+    },
+    {
+      "id": "n51",
+      "text": "Patient returns for follow-up. Medications reviewed with patient.\nUpdated: no shaky hands, no exhaustion, denies lightheadedness.\nResults: Serum K-17 2.7 mmol/L, Brell enzyme (BRE) 35.2 U/L, Osmet level (OSM) 207 mOsm/kg.\nContinue current monitoring plan."
+    },
+    {
+      "id": "n52",
+      "text": "HISTORY: Specialist follow-up visit. Chart reviewed prior to visit.\n\nRESULTS:\n- Velorin index (VLI) 6.94 mmol/L (ref 3.89-7.21)\n- Serum K-17 (K17) 4.48 mmol/L (ref 3.4-5)\n- Brell enzyme (BRE) 31.5 U/L (ref 15-55)\n- Halvin titer (HAT) 4.61 g/dL (ref 3-5)\n\nROS:\nNeuro: Positive for tremor, lightheadedness absent. No lightheadedness.\nGeneral: Positive for fatigue.\nEyes: Negative for light sensitivity.\nMSK: Negative for morning stiffness.\n\nPLAN:\n1. Continue monitoring and recheck labs at next visit.\n2. Return for follow-up as scheduled."
+    },
+    {
+      "id": "n53",
+      "text": "The patient states that things have stayed largely the same since the last visit. She mentions that she has been feeling low energy lately and said, \"I just feel worn down all the time.\" She denies tremor and mentions no dizziness when she stands up. Bloodwork in passing showed a Halvin titer of 3.88 g/dL and a Dorrin ratio of 1.14.\n\nNothing is being changed for now."
+    },
+    {
+      "id": "n54",
+      "text": "Progress note - routine follow-up\n\nMedications reviewed with patient.\nPast history reviewed, unchanged.\n\nInterval:\n- Denies tiredness.\n- Achy stiff joints, present.\n- No shaky hands.\n\nResults:\n- Velorin index (VLI): 59.2 mg/dL\n- Brell enzyme (BRE): 25.3 U/L\n- Osmet level (OSM): 293 mOsm/kg\n- Plexa count (PLX): 254 x10^9/L\n- Dorrin ratio (DOR): 0.68\n\nContinue current monitoring plan."
+    },
+    {
+      "id": "n55",
+      "text": "[Results]\n- Serum K-17 (K17): 4.36 mmol/L (ref 3.4-5)\n- Tarnic acid (TAC): 312 umol/L (ref 200-400)\n- Halvin titer (HAT): 2.66 g/dL (L, ref 3-5)\n- Osmet level (OSM): 284 mOsm/kg (ref 270-310)\n- Plexa count (PLX): 288 x10^9/L (ref 150-400)\n- Dorrin ratio (DOR): 0.853 (ref 0.6-1.4)\n\n[History]\nSpecialist follow-up visit. Medications and allergies reviewed.\n\n[Review of Systems]\nNeuro: positive for hand tremor, denies dizziness. General: positive for low energy. Eyes: no light sensitivity. MSK: no morning stiffness.\n\n[Plan]\n1. Continue current monitoring.\n2. Recheck labs at next scheduled visit, or sooner if symptoms change."
+    },
+    {
+      "id": "n56",
+      "text": "K17: 5.4 mmol/L. HAT: 4.05 g/dL. OSM: 297 mOsm/kg.\nNo stiff joints. No dizziness. RTC 6 wks."
+    },
+    {
+      "id": "n57",
+      "text": "Seen today to review hand symptoms and how things have been going. The patient states they have a hand tremor and says, \"it shakes when I hold my coffee.\" They mention no joint stiffness, and maybe some dizziness now and then that they cannot pin down. The next visit is already scheduled."
+    },
+    {
+      "id": "n58",
+      "text": "Follow-up visit today. The patient reports being bothered by bright lights lately and notes that her joints feel stiff, saying \"my joints feel achy and stiff when I first get up.\" She reports no dizzy spells. Labs showed a Velorin index (VLI) of 81.5 mg/dL, a Tarnic acid (TAC) of 371 umol/L, and a Brell enzyme (BRE) of 0.703 ukat/L, which the patient was informed of during the visit. Monitoring will continue, and the patient will return in a few weeks."
+    },
+    {
+      "id": "n59",
+      "text": "Patient seen in follow-up.\nPast history reviewed, unchanged.\nUpdated:\n - tremor present\n - no tiredness\n - denies light sensitivity\n - no stiff joints\nResults:\n - Tarnic acid (TAC): 234 umol/L\n - Brell enzyme (BRE): 15.6 U/L\n - Dorrin ratio (DOR): 1.07\nContinue current monitoring plan."
+    },
+    {
+      "id": "n60",
+      "text": "Follow-up visit today. The patient reports being bothered by bright lights, and notes that joints are not stiff. She denies lightheadedness. No lab results are included in this summary.\n\nThe patient reports that the bright lights are the main thing bothering her day to day, and notes that she has had no stiffness in her joints. She also denies any lightheadedness. We will see her again in a few weeks to check how things are going."
+    },
+    {
+      "id": "n61",
+      "text": "Seen today for a check-in on how things have been going. She states her hands have been steady and mentions no tremor. She mentions feeling tired most afternoons, saying \"I just run out of gas by mid-afternoon.\" She denies joint stiffness, and she mentions feeling woozy when she stands up quickly.\n\nNothing is being changed for now."
+    },
+    {
+      "id": "n62",
+      "text": "[HISTORY]\nSpecialist follow-up visit. Medications and allergies reviewed.\n\n[ROS]\nNegative for tremor, photophobia, and joint stiffness.\n\n[Results]\nVLI 108 mg/dL (ref 70-130); PLX 231 x10^9/L (ref 150-400); DOR 0.923 (ref 0.6-1.4)\n\n[Plan]\nContinue monitoring; repeat labs at next visit."
+    },
+    {
+      "id": "n63",
+      "text": "c/o trembling hands, stiff joints, feels dizzy. Denies low energy, photophobia.\nHAT 3.19 g/dL; DOR 0.681. RTC 6 wks"
+    },
+    {
+      "id": "n64",
+      "text": "Seen today for a routine follow-up visit. The patient says they have been feeling generally fine lately, and describes having no fatigue and no stiff joints since the last check. Plexa count (PLX) was 162 x10^9/L and Dorrin ratio (DOR) 0.893 on the most recent bloodwork.\n\nNothing is being changed for now."
+    },
+    {
+      "id": "n65",
+      "text": "HAT: 4.95 g/dL, PLX: 241 x10^9/L\nc/o exhausted. Denies photophobia, dizziness. RTC 6 wks"
+    },
+    {
+      "id": "n66",
+      "text": "OSM 299 PLX 223 DOR 0.943\nno fatigue\nno joint stiffness"
+    },
+    {
+      "id": "n67",
+      "text": "Follow-up visit today. The patient says her hands are steady and describes no tremor. Joints are not stiff, according to the patient. Labs reviewed today show serum K-17 at 3.88 mmol/L, Tarnic acid at 383 umol/L, and Plexa count at 226 x10^9/L. Return visit in a few weeks."
+    },
+    {
+      "id": "n68",
+      "text": "VLI 108 mg/dL, TAC 262 umol/L. c/o dizziness, bothered by bright lights. no low energy. no stiffness. RTC 6 wks"
+    },
+    {
+      "id": "n69",
+      "text": "Patient is back for a follow-up visit.\nPast history reviewed, unchanged.\nSymptoms: hands steady, no joint stiffness.\nResults: HAT 4.35 g/dL, OSM 307 mOsm/kg.\nRecheck at next scheduled visit."
+    },
+    {
+      "id": "n70",
+      "text": "Follow-up visit, specialty clinic. Interval visit, no acute issues reviewed.\n\nResults:\n- Serum K-17 (K17): 3.47 mmol/L (ref 3.4-5)\n- Tarnic acid (TAC): 332 umol/L (ref 200-400)\n- Brell enzyme (BRE): 31.8 U/L (ref 15-55)\n- Plexa count (PLX): 176 x10^9/L (ref 150-400)\n- Dorrin ratio (DOR): 0.861 (ref 0.6-1.4)\n\nReview of Systems:\nPositive for joint stiffness (MSK). Negative for fatigue (General), light sensitivity (Eyes), dizzy spells (Neuro).\n\nPlan:\n1. Continue monitoring.\n2. Repeat labs at next visit."
+    },
+    {
+      "id": "n71",
+      "text": "Follow-up visit note\nPast history reviewed, unchanged.\nMedications reviewed with patient.\nSeen for routine follow-up.\nInterval:\n- Denies tremor.\n- Possible mild light sensitivity at times.\n- Joints not stiff.\n- Denies lightheadedness.\nResults:\n- TAC 378 umol/L\n- PLX 230 x10^9/L\nContinue current monitoring plan."
+    },
+    {
+      "id": "n72",
+      "text": "Patient seen in follow-up. Family history reviewed, no changes.\n\nUpdated this visit:\n- shaky hands\n- energy level normal\n- no trouble with bright lights\n- achy stiff joints\n- no dizzy spells\n\nResults:\n- Tarnic acid (TAC): 227 umol/L\n- Brell enzyme (BRE): 39.6 U/L\n- Osmet level (OSM): 218 mOsm/kg\n\nRecheck at next scheduled visit."
+    },
+    {
+      "id": "n73",
+      "text": "no tremor. no photophobia. VLI 78.2 K17 4.47 BRE 0.549"
+    },
+    {
+      "id": "n74",
+      "text": "HISTORY: Specialist follow-up. Patient returns for routine review with no new concerns raised.\n\nRESULTS:\n  Velorin index (VLI): 75.5 mg/dL (ref 70-130)\n  Tarnic acid (TAC): 312 umol/L (ref 200-400)\n  Brell enzyme (BRE): 0.741 ukat/L (ref 0.25-0.917)\n  Plexa count (PLX): 272 x10^9/L (ref 150-400)\n  Dorrin ratio (DOR): 0.578 (L, ref 0.6-1.4)\n\nROS:\n  Neuro: negative for tremor; negative for dizziness\n  General: positive for low energy\n\nPLAN:\n1. Recheck Dorrin ratio at next scheduled visit.\n2. Monitoring continues."
+    },
+    {
+      "id": "n75",
+      "text": "Follow-up visit today. The patient reports no shaky hands and notes no trouble with bright lights. Labs reviewed today show a Velorin index (VLI) of 135 mg/dL, a Brell enzyme (BRE) of 23 U/L, and a Dorrin ratio (DOR) of 1.02. Return visit in a few weeks to recheck."
+    },
+    {
+      "id": "n76",
+      "text": "Since the last visit, the patient states that there has been a hand tremor and mentions noticing it in both hands. There is no fatigue, and the patient denies light sensitivity. The patient mentions maybe some stiff joints, though this is uncertain and not clearly constant. Labs show Halvin titer (HAT) at 4.34 g/dL and Osmet level (OSM) at 278 mOsm/kg. The patient is asked to return in a few weeks."
+    },
+    {
+      "id": "n77",
+      "text": "Patient returns for follow-up, doing reasonably well since last visit.\nMedications reviewed with patient.\nUpdated: denies low energy, no light sensitivity, joint stiffness present.\nVLI 7.49 mmol/L\nPLX 288 x10^9/L\nPlan: continue current monitoring plan."
+    },
+    {
+      "id": "n78",
+      "text": "[History]\nSpecialist follow-up visit. Chart reviewed prior to visit.\n\n[Review of Systems]\nGeneral: fatigue.\nNeuro: no dizziness.\nEyes: denies photophobia.\nMSK: no joint stiffness.\n\n[Results]\nDorrin ratio (DOR) 1.11 (ref 0.6-1.4)\n\n[Plan]\n1. Continue current monitoring.\n2. Recheck at next scheduled visit or sooner if symptoms change."
+    },
+    {
+      "id": "n79",
+      "text": "c/o tremor, stiff joints AM. Denies light sensitivity, dizziness. BRE 31, PLX 210"
+    },
+    {
+      "id": "n80",
+      "text": "The patient states that things have stayed largely the same since the last visit, with no new problems raised. They mention no trouble with bright lights and no morning stiffness.\n\nThe patient mentions that they have been managing day to day without any changes to how they feel, and they did not raise any other concerns today. The next visit is already scheduled."
+    }
+  ]
+}
