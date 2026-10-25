@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Velorin index",
+    "abbr": "VLI",
+    "unit": "mg/dL",
+    "ref_lo": 70,
+    "ref_hi": 130
+  },
+  {
+    "name": "Serum K-17",
+    "abbr": "K17",
+    "unit": "mmol/L",
+    "ref_lo": 3.4,
+    "ref_hi": 5.0
+  },
+  {
+    "name": "Tarnic acid",
+    "abbr": "TAC",
+    "unit": "umol/L",
+    "ref_lo": 200,
+    "ref_hi": 400
+  },
+  {
+    "name": "Brell enzyme",
+    "abbr": "BRE",
+    "unit": "U/L",
+    "ref_lo": 15,
+    "ref_hi": 55
+  },
+  {
+    "name": "Halvin titer",
+    "abbr": "HAT",
+    "unit": "g/dL",
+    "ref_lo": 3.0,
+    "ref_hi": 5.0
+  },
+  {
+    "name": "Osmet level",
+    "abbr": "OSM",
+    "unit": "mOsm/kg",
+    "ref_lo": 270,
+    "ref_hi": 310
+  },
+  {
+    "name": "Plexa count",
+    "abbr": "PLX",
+    "unit": "x10^9/L",
+    "ref_lo": 150,
+    "ref_hi": 400
+  },
+  {
+    "name": "Dorrin ratio",
+    "abbr": "DOR",
+    "unit": "",
+    "ref_lo": 0.6,
+    "ref_hi": 1.4
+  }
+]

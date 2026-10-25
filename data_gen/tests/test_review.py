@@ -282,3 +282,39 @@ def test_the_reviewer_is_told_the_fictional_panel_and_nothing_about_scoring():
     for word in ("weight", "coefficient", "intercept", "logistic", "velorin-kessler", "probab", "prevalence"):
         assert word not in low, word
     assert reveals_setting(REVIEWER_SYSTEM) is None
+
+
+# --- which round the review uses and where its files go ----------------------------------------------------------
+
+def test_latest_round_is_the_highest_number_with_a_sheet(tmp_path):
+    from data_gen.cli import latest_round
+
+    assert latest_round(tmp_path) is None
+    for n in (0, 2, 9, 10):
+        (tmp_path / f"round{n}").mkdir()
+        (tmp_path / f"round{n}" / "sheet.json").write_text("{}")
+    (tmp_path / "round11").mkdir()  # no sheet yet: not a candidate
+    (tmp_path / "roundx").mkdir()
+    assert latest_round(tmp_path) == 10  # numeric: round10 beats round9
+
+
+def test_review_defaults_to_the_highest_round_and_writes_there(pilot, tmp_path, monkeypatch, capsys):
+    realism = tmp_path / "realism"
+    for n in (0, 3):
+        (realism / f"round{n}").mkdir(parents=True)
+        for name in ("sheet.json", "key.json"):
+            (realism / f"round{n}" / name).write_text((pilot[1] / name).read_text())
+    monkeypatch.setattr("data_gen.llm.client.AnthropicClient", lambda *a, **k: MockClient(Answers(pilot)))
+    args = ["review", "--dir", str(realism), "--note-source", "llm", "--yes", "--cache", str(tmp_path / "c.jsonl")]
+    assert main(args) == 0
+    out = capsys.readouterr().out
+    assert "reviewing round 3 (the highest round" in out
+    assert list((realism / "round3").glob("ratings.reviewer-*.json")) and not list((realism / "round0").glob("ratings.reviewer-*.json"))
+    assert main([*args, "--round", "0"]) == 0  # an explicit round wins
+    assert list((realism / "round0").glob("ratings.reviewer-*.json"))
+    assert "reviewing round 0\n" in capsys.readouterr().out
+
+
+def test_review_with_no_rounds_says_so(tmp_path, capsys):
+    assert main(["review", "--dir", str(tmp_path), "--note-source", "llm", "--estimate"]) == 2
+    assert "no round with a sheet.json" in capsys.readouterr().err

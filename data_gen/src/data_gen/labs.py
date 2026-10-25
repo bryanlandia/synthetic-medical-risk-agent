@@ -149,3 +149,10 @@ SYMPTOM_STEMS: dict[str, str] = {
     "joint_stiffness": r"\b(stiff)",
     "dizziness": r"\b(dizz|lighthead|woozy|woozi)",
 }
+
+
+def glossary_rows() -> list[dict]:
+    """The fictional lab panel as a rater should see it. The rating app ships a copy (rating_ui/lib/glossary.json);
+    a test keeps the two identical. No weights, coefficients or scoring data."""
+    return [{"name": lab.name, "abbr": lab.abbr, "unit": "" if lab.unit == "ratio" else lab.unit,
+             "ref_lo": lab.ref_lo, "ref_hi": lab.ref_hi} for lab in LABS]

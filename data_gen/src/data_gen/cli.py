@@ -186,12 +186,22 @@ def cmd_pilot(args: argparse.Namespace) -> int:
     return 0
 
 
+def latest_round(base: Path) -> int | None:
+    """The highest N for which base/roundN/sheet.json exists (numeric, so round10 beats round9)."""
+    import re
+
+    found = [int(m.group(1)) for d in Path(base).glob("round*")
+             if (m := re.fullmatch(r"round(\d+)", d.name)) and (d / "sheet.json").exists()]
+    return max(found) if found else None
+
+
 def cmd_gate(args: argparse.Namespace) -> int:
     from .llm.gate import evaluate, load_round, save_gate_result
 
     cfg = _config_from_args(args)
     base = Path(args.dir)
-    dirs = [base / f"round{r}" for r in args.rounds] if args.rounds else sorted(base.glob("round*"))
+    dirs = ([base / f"round{r}" for r in args.rounds] if args.rounds else
+            sorted(base.glob("round*"), key=lambda d: int(d.name[5:]) if d.name[5:].isdigit() else -1))
     if not dirs:
         print(f"error: no round directories found in {base}/", file=sys.stderr)
         return 2
@@ -245,10 +255,15 @@ def cmd_review(args: argparse.Namespace) -> int:
                                   review_round)
 
     cfg = _config_from_args(args)
-    directory = Path(args.dir) / f"round{args.round}"
+    round_number = args.round if args.round is not None else latest_round(Path(args.dir))
+    if round_number is None:
+        print(f"error: no round with a sheet.json in {args.dir}/; run the pilot first", file=sys.stderr)
+        return 2
+    directory = Path(args.dir) / f"round{round_number}"
     if not (directory / "sheet.json").exists():
         print(f"error: {directory}/sheet.json not found; run the pilot first", file=sys.stderr)
         return 2
+    print(f"reviewing round {round_number}" + ("" if args.round is not None else " (the highest round; use --round N to choose)"))
     try:
         check_independent(cfg)
     except ReviewerConfigError as exc:
@@ -382,7 +397,9 @@ def main(argv: list[str] | None = None) -> int:
 
     rev = sub.add_parser("review", help="have the adversarial LLM reviewer rate a pilot round (spends a little)")
     rev.add_argument("--dir", default=str(DEFAULT_REALISM))
-    rev.add_argument("--round", type=int, default=0)
+    rev.add_argument("--round", type=int, default=None,
+                     help="round to review; default is the highest round that has a sheet.json. The recording, the "
+                          "session log and the ratings are written into that round's folder")
     rev.add_argument("--cache", default=str(DEFAULT_REVIEW_CACHE))
     rev.add_argument("--estimate", action="store_true", help="dry run: print the cost; no API call, no key needed")
     rev.add_argument("--yes", action="store_true", help="confirm that the review may spend money")

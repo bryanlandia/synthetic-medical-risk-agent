@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import glossary from "@/lib/glossary.json";
 import {
   SYMPTOM_KEYS,
   isComplete,
@@ -156,6 +157,7 @@ export default function RatingApp() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
+      if (el.tagName === "SUMMARY") return; // Enter on the glossary toggle opens it; it must not move to the next note
       if (el.tagName === "TEXTAREA" || el.tagName === "INPUT") {
         if (e.key === "Escape") (el as HTMLElement).blur();
         return;
@@ -190,6 +192,7 @@ export default function RatingApp() {
           You will read {total} short clinical notes about a <strong>fictional</strong> syndrome and say whether each reads
           like real documentation. Your answers save as you go, and you can stop and come back.
         </p>
+        <Glossary />
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -226,6 +229,8 @@ export default function RatingApp() {
           </span>
         </div>
       </header>
+
+      <Glossary />
 
       {finished && <p className="done" data-testid="finished" role="status">All {total} notes are rated. Thank you.</p>}
 
@@ -290,6 +295,30 @@ export default function RatingApp() {
         })}
       </nav>
     </main>
+  );
+}
+
+function Glossary() {
+  return (
+    <details className="glossary" data-testid="glossary">
+      <summary data-testid="glossary-toggle">Lab panel used in these notes (fictional)</summary>
+      <p>
+        The lab names, abbreviations and units are made up on purpose. Please do not count them against a note: judge the
+        writing, the layout and how the values are presented, and whether a unit or range in a note disagrees with this list.
+      </p>
+      <table>
+        <thead>
+          <tr><th scope="col">Test</th><th scope="col">Abbreviation</th><th scope="col">Unit</th><th scope="col">Reference range</th></tr>
+        </thead>
+        <tbody>
+          {glossary.map((g) => (
+            <tr key={g.abbr} data-testid={`glossary-row-${g.abbr}`}>
+              <td>{g.name}</td><td>{g.abbr}</td><td>{g.unit || "none (a ratio)"}</td><td>{g.ref_lo}–{g.ref_hi}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
   );
 }
 

@@ -319,3 +319,21 @@ def test_the_reviewer_dwells_on_each_finished_note_and_comment(setup):
         _browser.run_browser_review(CFG, script, budget(), d, app.url, max_notes=1, record_video=False, pause=2.0)
         slow = time.monotonic() - t0
     assert slow - quick >= 3.0  # about 1s on arrival + 2s after the comment + 2s before moving on, minus noise
+
+
+@needs_app
+def test_the_recording_goes_into_the_highest_round_folder_by_default(setup, monkeypatch, capsys):
+    from data_gen.cli import main
+
+    d, key, sheet = setup  # d is .../round0
+    higher = d.parent / "round2"
+    higher.mkdir()
+    for name in ("sheet.json", "key.json"):
+        (higher / name).write_text((d / name).read_text())
+    monkeypatch.setattr("data_gen.review.browser.AnthropicToolClient", lambda **k: Script(key, sheet))
+    code = main(["review", "--dir", str(d.parent), "--note-source", "llm", "--mode", "browser", "--max-notes", "2",
+                 "--yes", "--pause", "0", "--app-dir", str(APP_DIR)])
+    out = capsys.readouterr().out
+    assert code == 0 and "reviewing round 2" in out
+    assert (higher / "review.webm").stat().st_size > 0 and (higher / "review-session.jsonl").exists()
+    assert not (d / "review.webm").exists()

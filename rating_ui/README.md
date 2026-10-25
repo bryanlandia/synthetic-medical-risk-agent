@@ -31,6 +31,10 @@ show as rated, tell the developer. Do not open `key.json` in that folder until y
 Keyboard: `y` / `n` for plausible, then `1` present, `2` possible, `3` absent, `4` not mentioned for each symptom in
 turn (arrow keys move between fields), `Enter` for the next note, `←` for the previous, `c` for a comment.
 
+## The lab panel is fictional
+
+The notes mention eight made-up lab tests. A collapsible "Lab panel used in these notes (fictional)" box on every page lists them with their units and reference ranges. Please do not count the invented names against a note; judge the writing, the layout, and whether a unit or range in a note disagrees with that list.
+
 ## Run the gate (developer)
 
 ```

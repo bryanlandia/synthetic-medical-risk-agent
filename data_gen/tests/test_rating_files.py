@@ -264,3 +264,15 @@ def test_a_file_in_the_shape_the_app_writes_is_read_by_the_gate_side(tmp_path):
     path.write_text(json.dumps(app_output))
     rf = read_rating_file(path)
     assert rf.kind == "human" and rf.ratings["n01"].complete and not rf.ratings["n02"].complete
+
+
+def test_the_rating_apps_glossary_matches_the_lab_panel():
+    from pathlib import Path
+
+    from data_gen.labs import glossary_rows
+
+    shipped = json.loads((Path(__file__).parents[2] / "rating_ui" / "lib" / "glossary.json").read_text())
+    assert shipped == glossary_rows(), "regenerate rating_ui/lib/glossary.json from data_gen.labs.glossary_rows()"
+    text = json.dumps(shipped).lower()
+    for word in ("weight", "coefficient", "intercept", "logistic", "velorin-kessler", "probab"):
+        assert word not in text
