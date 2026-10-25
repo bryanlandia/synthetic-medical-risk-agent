@@ -50,3 +50,12 @@ The prompt tells the reviewer to look for artifice (tidy phrasing no clinician w
 ## Open Questions
 
 - Whether to batch five notes per direct-mode call. Cheaper and probably fine, but could let notes influence each other's ratings; the default is one note per call and this can be revisited when the cost is measured.
+
+## First real review (task 5.2)
+
+Round 0, 80 Haiku-written notes (20 per setting) and 8 template controls, rated by claude-sonnet-5-5.
+
+- Direct mode, 88 notes: 5 of 80 LLM-written notes plausible (shorthand 1, ehr_template 2, ai_scribe 0, copy_forward 2), 2 of 8 controls plausible (25%). The controls gap is negative, so the gate rejects the reviewer as non-discriminating, as specified.
+- Browser mode, 12 notes, recorded to `review.webm`: 2 of 12 plausible; the same tells as direct mode.
+- Gate with `llm.gate_rater_kinds = ["llm"]`: FAIL on every setting; its output names the rater kinds ("rated by: llm (not a clinician)") and the per-reviewer rates. Two raters disagreed on plausibility for 3 notes.
+- The stated reasons are consistent and specific, and point at real writer defects: a "fictional study condition" mention in the history, self-contradictory phrasing ("c/o denies"), mechanical synonym padding ("feels not exhausted, no low energy"), and lab values with unnatural precision (4.199, 30.93). These are inputs to a prompt revision and to new offline checks.

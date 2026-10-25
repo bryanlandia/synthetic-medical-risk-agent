@@ -29,7 +29,7 @@
 ## 5. Docs and integration
 
 - [x] 5.1 Update AGENTS.md (layout, commands for the app, `review` and the gate) and the dataset README, and verify the documented commands run as written
-- [ ] 5.2 Run the real review on the pilot round in direct mode and then in browser mode; record the plausible rates, controls gap, disagreements, spend and video path in the change notes, and verify the gate output names the accepted rater kinds
+- [x] 5.2 Run the real review on the pilot round in direct mode and then in browser mode; record the plausible rates, controls gap, disagreements, spend and video path in the change notes, and verify the gate output names the accepted rater kinds
 - [x] 5.3 Check the repository: no key or API token in tracked files, the video under the size limit if committed, `rating_ui/` has no deploy config (local-only for now), and `openspec validate add-realism-rating-ui --strict` passes
 
 ## Workflow follow-up
