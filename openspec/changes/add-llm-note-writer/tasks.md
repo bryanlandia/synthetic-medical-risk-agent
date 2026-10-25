@@ -44,8 +44,8 @@
 ## 8. Integration
 
 - [x] 8.1 Run `estimate` at default sizes (about 4,000 train, 1,000 test including 200 matched groups, 420 adversarial) and confirm the estimated cost is acceptable before spending
-- [ ] 8.2 Run the real generation under the cap, commit datasets and cache, and verify manifest provenance (source `llm`, model, prompt version, counts per setting, pair groups, exclusions per setting and noise type), that `data-gen validate` passes, and that a second run makes zero calls
-- [ ] 8.3 Verify dataset and cache size limits, the identifier and denylist scans and a repository scan for the API key pattern all pass, and state in the dataset README that the template dataset is test fixtures only
+- [x] 8.2 Run the real generation under the cap, commit datasets and cache, and verify manifest provenance (source `llm`, model, prompt version, counts per setting, pair groups, exclusions per setting and noise type), that `data-gen validate` passes, and that a second run makes zero calls
+- [x] 8.3 Verify dataset and cache size limits, the identifier and denylist scans and a repository scan for the API key pattern all pass, and state in the dataset README that the template dataset is test fixtures only
 
 ## 9. Bounded concurrency (added after the first real pilot; do before group 8)
 

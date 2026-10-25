@@ -1,0 +1,197 @@
+{
+  "config": {
+    "hedge_rate": 0.25,
+    "missing_rate": 0.05,
+    "n_per_adversarial_type": 60,
+    "n_test": 1000,
+    "n_train": 4000,
+    "note_source": "llm",
+    "omit_absent_symptom_rate": 0.3,
+    "seed": 20261,
+    "stale_rate": 0.06,
+    "style_rates": {
+      "ai_scribe": 0.25,
+      "copy_forward": 0.25,
+      "ehr_template": 0.25,
+      "shorthand": 0.25
+    },
+    "target_prevalence": 0.3,
+    "unit_mismatch_rate": 0.08
+  },
+  "config_hash": "8151340e6ce1549d",
+  "excluded_records": 292,
+  "generator_version": "0.1.0",
+  "injection_catalog_version": "1",
+  "llm": {
+    "accepted": {
+      "ai_scribe": 1446,
+      "copy_forward": 1403,
+      "ehr_template": 1444,
+      "shorthand": 1435
+    },
+    "attempts": 8818,
+    "cache_hits": 701,
+    "calls": 15094,
+    "estimated_spend_usd": 2.7239,
+    "excluded": {
+      "ai_scribe": 90,
+      "copy_forward": 100,
+      "ehr_template": 39,
+      "shorthand": 63
+    },
+    "excluded_by_setting_and_noise": {
+      "ai_scribe:contradiction": 2,
+      "ai_scribe:hedging": 67,
+      "ai_scribe:missing_value": 39,
+      "ai_scribe:none": 11,
+      "ai_scribe:unit_mismatch": 6,
+      "copy_forward:contradiction": 44,
+      "copy_forward:hedging": 79,
+      "copy_forward:missing_value": 34,
+      "copy_forward:none": 7,
+      "copy_forward:unit_mismatch": 14,
+      "ehr_template:hedging": 9,
+      "ehr_template:missing_value": 11,
+      "ehr_template:none": 18,
+      "ehr_template:unit_mismatch": 3,
+      "shorthand:contradiction": 2,
+      "shorthand:hedging": 27,
+      "shorthand:missing_value": 11,
+      "shorthand:none": 27,
+      "shorthand:unit_mismatch": 3
+    },
+    "failure_codes": {
+      "claim": 13,
+      "contradictory_phrasing": 1,
+      "exemplar_copied": 181,
+      "lab_flag": 4,
+      "lab_missing": 67,
+      "lab_unit": 2,
+      "lab_wrong": 13,
+      "marker": 2,
+      "meta_commentary": 68,
+      "phrase_missing": 116,
+      "polarity": 595,
+      "setting_name": 2,
+      "symptom_extra": 4,
+      "symptom_repeated": 2924
+    },
+    "input_tokens": 18442245,
+    "model_id": "claude-haiku-5-5",
+    "output_tokens": 2031328,
+    "paid_calls": 14393,
+    "pair_groups_dropped": 31,
+    "pair_groups_planned": 200,
+    "prompt_text_hashes": {
+      "ai_scribe": "c3423677e251",
+      "copy_forward": "08f5d805ecce",
+      "ehr_template": "ae7ba0396ea2",
+      "shorthand": "7286e19262fe"
+    },
+    "prompt_version": "2",
+    "realism_review": {
+      "description": "an LLM review, not a clinician",
+      "disagreements": {
+        "ai_scribe": 0,
+        "copy_forward": 0,
+        "ehr_template": 0,
+        "shorthand": 0
+      },
+      "passed": true,
+      "rater_kinds": [
+        "llm"
+      ],
+      "raters": [
+        "reviewer-claude-sonnet-5-5"
+      ]
+    }
+  },
+  "llm_calls": 14393,
+  "note_source": "llm",
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "plan_version": "2",
+  "schema_version": "2",
+  "seed": 20261,
+  "splits": {
+    "adversarial": {
+      "bayes_ceiling": {
+        "auc": 0.77017,
+        "brier": 0.173256,
+        "log_loss": 0.51782
+      },
+      "mean_true_probability": 0.322471,
+      "n": 403,
+      "n_unique_patients": 403,
+      "noise_counts": {
+        "contradiction": 77,
+        "missing_value": 174,
+        "unit_mismatch": 83
+      },
+      "prevalence": 0.317618,
+      "styles": {
+        "ai_scribe": 113,
+        "copy_forward": 93,
+        "ehr_template": 101,
+        "shorthand": 96
+      },
+      "tag_record_counts": {
+        "borderline": 58,
+        "contradiction": 55,
+        "impossible_value": 60,
+        "missing_labs": 58,
+        "note_flag_disagreement": 57,
+        "prompt_injection": 60,
+        "unit_mismatch": 55
+      }
+    },
+    "test": {
+      "bayes_ceiling": {
+        "auc": 0.809319,
+        "brier": 0.149904,
+        "log_loss": 0.465588
+      },
+      "mean_true_probability": 0.298269,
+      "n": 1438,
+      "n_unique_patients": 931,
+      "noise_counts": {
+        "contradiction": 293,
+        "hedging": 418,
+        "missing_value": 531,
+        "unit_mismatch": 163
+      },
+      "prevalence": 0.294307,
+      "styles": {
+        "ai_scribe": 362,
+        "copy_forward": 354,
+        "ehr_template": 365,
+        "shorthand": 357
+      },
+      "tag_record_counts": {}
+    },
+    "train": {
+      "bayes_ceiling": {
+        "auc": 0.815739,
+        "brier": 0.150035,
+        "log_loss": 0.462585
+      },
+      "mean_true_probability": 0.299985,
+      "n": 3798,
+      "n_unique_patients": 3798,
+      "noise_counts": {
+        "contradiction": 766,
+        "hedging": 1145,
+        "missing_value": 1508,
+        "unit_mismatch": 414
+      },
+      "prevalence": 0.300685,
+      "styles": {
+        "ai_scribe": 953,
+        "copy_forward": 936,
+        "ehr_template": 953,
+        "shorthand": 956
+      },
+      "tag_record_counts": {}
+    }
+  },
+  "synthetic": true
+}
