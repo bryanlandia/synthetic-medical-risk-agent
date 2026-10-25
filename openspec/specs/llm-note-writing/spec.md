@@ -1,10 +1,9 @@
-# Spec Delta
+# llm-note-writing Specification
 
 ## Purpose
-
 Defines how clinical notes are written by an LLM in several clinician-authored documentation settings from a note plan, while keeping the plan's ground truth and labeled noise intact, with validation, a human realism gate, matched-pair groups, caching and cost bounds, so evaluation results rest on varied, plausible prose that is still verifiably faithful.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: LLM verbalizes the note plan in documentation settings
 The system SHALL turn each note plan into prose using an LLM in one of four documentation settings: `shorthand`, `ehr_template`, `ai_scribe` and `copy_forward`. Verbalization SHALL NOT change the plan's lab values, symptom polarities, noise tags, label or true probability.
@@ -188,16 +187,20 @@ The symptom extractor used for validation SHALL be measured against a hand-check
 - **WHEN** the extractor is run on the owner's hand-checked sample of 80 notes, 20 per setting
 - **THEN** per-flag accuracy is at least 0.95, and a lower result blocks the full paid run
 
-### Requirement: Human realism gate before the paid run
-Before the full paid run, the project owner SHALL blind-rate a pilot sample of 20 notes per setting for plausibility as real clinical documentation. Every setting SHALL reach at least 80% plausible, or the full paid run for that setting is blocked.
+### Requirement: Realism gate before the paid run
+Before the full paid run, a rater of an accepted kind SHALL rate a pilot sample of 20 notes per setting for plausibility as real clinical documentation: the project owner or a clinician, or, only when the configuration accepts `llm` and the result is reported as an LLM review and not a clinician's, the adversarial LLM reviewer. Every setting SHALL reach at least 80% plausible, or the full paid run for that setting is blocked.
 
 #### Scenario: Rating sheet is blind
 - **WHEN** the rating sheet is generated
 - **THEN** the notes are shuffled across settings, the sheet shows each note's kind (what it is meant to be) but no internal setting names, plans or record ids, and the mapping from note id to setting is stored separately
 
 #### Scenario: Gate result per setting
-- **WHEN** the owner's ratings are loaded
+- **WHEN** the accepted raters' ratings are loaded
 - **THEN** a report shows the plausible count and rate for each setting, marks each setting pass or fail at 80%, and the full run proceeds only if all four pass
+
+#### Scenario: Only accepted rater kinds count
+- **WHEN** ratings exist from a rater kind that the configuration does not accept
+- **THEN** they are listed but not counted, the default accepts human raters only, and an accepted LLM review is named as such in the gate report, the manifest and the dataset README
 
 #### Scenario: Controls reveal rater discrimination
 - **WHEN** template-fixture notes are mixed into the sheet as controls in every pilot round, a fresh set each time

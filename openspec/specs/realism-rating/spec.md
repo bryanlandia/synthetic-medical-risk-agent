@@ -7,15 +7,23 @@ Lets a human clinician or a clearly labelled LLM reviewer rate blind pilot notes
 ## Requirements
 
 ### Requirement: Blind sheet for the rating tool
-The pilot SHALL write a machine-readable blind sheet containing each note's id and text and the rating instructions, and nothing that identifies a note's setting, plan or extractor reading. The key SHALL stay in a separate file.
+The pilot SHALL write a machine-readable sheet containing each note's id, text and kind (a short label and a description of what is normal for that kind of documentation) and the rating instructions, and nothing that identifies a note's plan, extractor reading, record or internal setting name. The key SHALL stay in a separate file.
 
 #### Scenario: Sheet carries no answers
 - **WHEN** `sheet.json` is written for a pilot round
-- **THEN** it contains no setting names, no plan symptoms and no extractor labels, and the test that scans it for the four setting names and the key's contents finds none
+- **THEN** it contains no internal setting names, no plan symptoms, no extractor labels and no record ids, each note carries only its id, text and kind, and the template-fixture controls are described as a plain clinician-written note, not as controls
 
 #### Scenario: Same notes as the markdown sheet
 - **WHEN** both sheets are written for a round
 - **THEN** they list the same note ids in the same order with identical note text
+
+#### Scenario: Each note says what kind it is meant to be
+- **WHEN** a rater opens a note
+- **THEN** the app shows the kind label and what is normal for it (for example that an AI-scribe draft is expected to be structured and even-toned), so the note is judged against that kind
+
+#### Scenario: Older rounds get their kinds
+- **WHEN** a round was written before kinds existed and the reviewer command runs
+- **THEN** each note's kind is added to its sheet from the key, once, and a dry run changes no file
 
 ### Requirement: Rating app shows one note at a time and saves as it goes
 The rating app SHALL present notes one at a time with plausibility (y or n) and the five symptom labels (present, possible, absent, none), a progress indicator and a visible notice that all data is synthetic. It SHALL save every change to a rating file immediately, let the rater go back and forward, and resume where they stopped.
@@ -74,11 +82,11 @@ Each rating file SHALL record a rater name, a rater kind of `human` or `llm`, an
 - **THEN** the note counts as implausible for the gate and the report lists the number of disagreements per setting
 
 ### Requirement: Adversarial LLM reviewer
-The reviewer SHALL use a model different from the note writer's, a skeptical-clinician prompt that looks for signs of artificial text, and only what a human rater sees: the note text and the rating instructions. It SHALL output the same six fields per note plus a one-sentence reason for each implausible verdict.
+The reviewer SHALL use a model different from the note writer's, a skeptical-clinician prompt that looks for signs of artificial text judged against what each kind of note normally looks like, and only what a human rater sees: the note text, its kind and the rating instructions. It SHALL output the same six fields per note plus a one-sentence reason for each implausible verdict.
 
 #### Scenario: Reviewer is blind
 - **WHEN** the reviewer's prompts for a round are captured in a test
-- **THEN** they contain no setting names, plan data, extractor labels or key contents
+- **THEN** they contain no internal setting names, plan data, extractor labels, record ids or key contents, and each user message states the note's kind
 
 #### Scenario: Reviewer differs from the writer
 - **WHEN** the reviewer is configured with the same model id as the writer
@@ -91,6 +99,10 @@ The reviewer SHALL use a model different from the note writer's, a skeptical-cli
 #### Scenario: Output is validated
 - **WHEN** the reviewer returns an unparsable or incomplete rating for a note
 - **THEN** that note is retried up to the attempt limit and otherwise left unrated, so the gate reports it missing and does not treat it as a pass
+
+#### Scenario: Kind sets the standard
+- **WHEN** an AI-scribe draft and a quick shorthand note are both tidy and even-toned
+- **THEN** the prompt for the first says this is expected and is not a reason to reject it, and the prompt for the second does not
 
 ### Requirement: Reviewer operates the rating app through a browser
 The reviewer SHALL be able to rate a round by operating the running rating app in a browser, using only a fixed set of actions (read the current note, set plausibility, set a symptom label, add a comment, go to the next note, finish), and SHALL record the session as a video.
