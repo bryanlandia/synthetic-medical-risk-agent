@@ -1,9 +1,11 @@
-"""Command line: ``data-gen generate`` and ``data-gen validate``."""
+"""Command line: ``data-gen generate``, ``estimate``, ``pilot``, ``gate`` and ``validate``."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import logging
+import os
 import sys
 from pathlib import Path
 
@@ -14,26 +16,187 @@ from .dataset_io import dump_record, read_dataset, write_dataset
 from .validate import dataset_errors, distribution_errors, manifest_errors
 
 DEFAULT_DIR = Path("data")
+DEFAULT_LLM_DIR = Path("data_llm")
+DEFAULT_CACHE = Path("cache/llm_cache.jsonl")
+DEFAULT_REALISM = Path("realism")
+
+
+def _configure_logging(verbose: int) -> None:
+    level = logging.WARNING if verbose == 0 else logging.INFO if verbose == 1 else logging.DEBUG
+    logging.basicConfig(level=level, stream=sys.stderr, force=True, datefmt="%H:%M:%S",
+                        format="%(asctime)s %(levelname)s %(message)s")
+    if verbose:
+        os.environ.setdefault("ANTHROPIC_LOG", "info")  # also show the SDK's own retries
 
 
 def _config_from_args(args: argparse.Namespace) -> GenConfig:
     base = json.loads(Path(args.config).read_text()) if args.config else {}
-    for field in ("seed", "n_train", "n_test", "n_per_adversarial_type", "target_prevalence"):
-        value = getattr(args, field)
+    for field in ("seed", "n_train", "n_test", "n_per_adversarial_type", "target_prevalence", "note_source"):
+        value = getattr(args, field, None)
         if value is not None:
             base[field] = value
     return GenConfig(**base)
 
 
+def _out_dir(args: argparse.Namespace, cfg: GenConfig) -> Path:
+    return Path(args.out) if args.out else (DEFAULT_LLM_DIR if cfg.note_source == "llm" else DEFAULT_DIR)
+
+
 def cmd_generate(args: argparse.Namespace) -> int:
     cfg = _config_from_args(args)
+    if cfg.note_source == "llm":
+        return _generate_llm(args, cfg)
+    out = _out_dir(args, cfg)
     by_split = build_dataset(cfg)
-    manifest = write_dataset(by_split, cfg, Path(args.out))
+    manifest = write_dataset(by_split, cfg, out)
     print(SYNTHETIC_NOTICE)
     for name, info in manifest["splits"].items():
         print(f"{name}: {info['n']} records, prevalence {info['prevalence']}")
-    print(f"wrote {args.out}/ (seed {cfg.seed}, config {manifest['config_hash']})")
+    print(f"wrote {out}/ (seed {cfg.seed}, config {manifest['config_hash']})")
     return 0
+
+
+def _print_estimate(cfg: GenConfig, est, label: str) -> None:
+    print(f"{label}: {est.notes} notes {est.per_setting}")
+    print(f"  calls: {est.first_attempt_calls} first-attempt + ~{est.expected_retry_calls} expected retries "
+          f"({est.cached_calls} already cached)")
+    print(f"  tokens: ~{est.input_tokens:,} in, ~{est.output_tokens:,} out")
+    print(f"  estimated cost: ${est.cost_usd:.2f}  (caps: {cfg.llm.max_calls} calls, ${cfg.llm.max_spend_usd:.2f})")
+    a = est.assumptions
+    basis = "measured from the cache" if a["measured_writer_tokens_used"] else "assumed (no measurements yet)"
+    print(f"  token counts: {basis}; retry rate {a['retry_rate']:.0%}; model {a['model_id']}")
+
+
+def cmd_estimate(args: argparse.Namespace) -> int:
+    from .llm.estimate import estimate, exceeds_caps
+    from .llm.gateway import DiskCache
+    from .llm.pilot import pilot_items
+    from .llm.run import plan_all
+
+    cfg = _config_from_args(args)
+    if cfg.note_source != "llm":
+        print("error: estimate is for the LLM note source (pass --note-source llm)", file=sys.stderr)
+        return 2
+    items = plan_all(cfg)
+    if args.pilot:
+        items = pilot_items(cfg, items)
+    est = estimate(cfg, items, DiskCache(Path(args.cache)))
+    if args.json:
+        print(json.dumps(est.as_dict(), indent=2, sort_keys=True))
+    else:
+        print(SYNTHETIC_NOTICE)
+        _print_estimate(cfg, est, "pilot" if args.pilot else "full run")
+    for warning in exceeds_caps(cfg, est):
+        print(f"WARNING: {warning}", file=sys.stderr)
+    return 0
+
+
+def _generate_llm(args: argparse.Namespace, cfg: GenConfig) -> int:
+    from .llm.client import AnthropicClient, LLMCallError, MissingApiKeyError
+    from .llm.estimate import estimate
+    from .llm.gateway import Budget, BudgetExceeded, CachedClient, DiskCache
+    from .llm.progress import Progress
+    from .llm.run import plan_all, run_and_write
+    from .llm.writer import TooManyExclusions
+
+    out = _out_dir(args, cfg)
+    cache = DiskCache(Path(args.cache))
+    items = plan_all(cfg)
+    est = estimate(cfg, items, cache)
+    print(SYNTHETIC_NOTICE)
+    _print_estimate(cfg, est, "full run")
+    if est.first_attempt_calls and not args.yes:
+        print("\nThis run would spend money. Re-run with --yes to proceed (the caps above still apply).",
+              file=sys.stderr)
+        return 4
+    try:
+        client = CachedClient(AnthropicClient(), cache, Budget.for_run(cfg.llm), cfg.llm.prompt_version)
+        result = run_and_write(cfg, client, out, items, None if args.quiet else Progress("generate", client))
+    except MissingApiKeyError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except (BudgetExceeded, TooManyExclusions) as exc:
+        print(f"stopped: {exc}\nnothing was written to {out}/; completed notes are cached.", file=sys.stderr)
+        return 3
+    except LLMCallError as exc:
+        print(f"stopped: {exc}\nnothing was written to {out}/; completed notes are cached.", file=sys.stderr)
+        return 3
+    cache.compact()  # sorted by key, so the committed cache does not depend on which worker finished first
+    s = result.stats
+    print(f"wrote {out}/: {sum(len(v) for v in result.by_split.values())} records, "
+          f"{s['paid_calls']} paid calls, {s['cache_hits']} cache hits, ~${s['estimated_spend_usd']} spent")
+    return 0
+
+
+def cmd_pilot(args: argparse.Namespace) -> int:
+    from .config import LLM_SETTINGS
+    from .llm.client import AnthropicClient, LLMCallError, MissingApiKeyError
+    from .llm.estimate import estimate
+    from .llm.gateway import Budget, BudgetExceeded, CachedClient, DiskCache
+    from .llm.pilot import pilot_items, run_pilot, used_record_ids, write_pilot
+    from .llm.progress import Progress
+    from .llm.run import plan_all
+
+    cfg = _config_from_args(args)
+    if cfg.note_source != "llm":
+        print("error: pilot is for the LLM note source (pass --note-source llm)", file=sys.stderr)
+        return 2
+    settings = tuple(args.setting) if args.setting else LLM_SETTINGS
+    items = plan_all(cfg)
+    cache = DiskCache(Path(args.cache))
+    est = estimate(cfg, pilot_items(cfg, items, settings, args.round), cache)
+    print(SYNTHETIC_NOTICE)
+    _print_estimate(cfg, est, f"pilot round {args.round} ({', '.join(settings)})")
+    if est.first_attempt_calls and not args.yes:
+        print("\nThis pilot would spend money. Re-run with --yes to proceed.", file=sys.stderr)
+        return 4
+    directory = Path(args.out) / f"round{args.round}"
+    try:
+        client = CachedClient(AnthropicClient(), cache, Budget.for_run(cfg.llm, pilot=True), cfg.llm.prompt_version)
+        used = used_record_ids(args.out, settings) if args.round > 0 else set()
+        progress = None if args.quiet else Progress("pilot", client)
+        result = run_pilot(cfg, client, items, settings, args.round, exclude=used, progress=progress)
+    except MissingApiKeyError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+    except (BudgetExceeded, LLMCallError) as exc:
+        print(f"stopped: {exc}\nnothing was written; completed notes are cached.", file=sys.stderr)
+        return 3
+    cache.compact()
+    meta = write_pilot(cfg, result, directory, args.round, settings, round(client.budget.spend_usd, 4))
+    spent = meta["estimated_spend_usd"]
+    print(f"wrote {directory}/sheet.md and key.json: {len(result.notes)} notes, about ${spent} spent")
+    for setting, rate in meta["exclusion_rates"].items():
+        flag = "  <-- above the limit: revise this setting's prompt" if rate > cfg.llm.exclusion_threshold else ""
+        print(f"  exclusion rate {setting:13s} {rate:.0%}{flag}")
+    for setting, rate in result.aborted.items():
+        print(f"  ABORTED {setting}: {rate:.0%} of its notes failed validation, so it was stopped early "
+              f"(mostly: {result.tally.top_failures()}). Fix the cause, then re-run with --round and --setting.",
+              file=sys.stderr)
+    if result.short:
+        print(f"  WARNING: could not reach {cfg.llm.pilot_per_setting} accepted notes for {result.short}", file=sys.stderr)
+    print(f"Next: rate the notes in {directory}/sheet.md, save it as {directory}/ratings.md, then run: data-gen gate")
+    return 0
+
+
+def cmd_gate(args: argparse.Namespace) -> int:
+    from .llm.gate import evaluate, load_round
+
+    cfg = _config_from_args(args)
+    base = Path(args.dir)
+    dirs = [base / f"round{r}" for r in args.rounds] if args.rounds else sorted(base.glob("round*"))
+    if not dirs:
+        print(f"error: no round directories found in {base}/", file=sys.stderr)
+        return 2
+    rounds, problems = [], []
+    for d in dirs:
+        loaded, probs = load_round(d)
+        rounds.append(loaded)
+        problems += probs
+    report = evaluate(cfg, rounds, problems)
+    print(SYNTHETIC_NOTICE)
+    print(report.render())
+    return 0 if report.passed else 1
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
@@ -46,10 +209,13 @@ def cmd_validate(args: argparse.Namespace) -> int:
         + distribution_errors(by_split)
     )
     if args.regenerate:
-        again = build_dataset(cfg)
-        for name, recs in again.items():
-            if [dump_record(r) for r in recs] != [dump_record(r) for r in by_split[name]]:
-                errors.append(f"regenerating from the manifest config does not reproduce {name}")
+        if cfg.note_source != "template":
+            print("note: --regenerate applies to template datasets; LLM notes are reproduced from the cache.")
+        else:
+            again = build_dataset(cfg)
+            for name, recs in again.items():
+                if [dump_record(r) for r in recs] != [dump_record(r) for r in by_split[name]]:
+                    errors.append(f"regenerating from the manifest config does not reproduce {name}")
     print(SYNTHETIC_NOTICE)
     if errors:
         print(f"INVALID: {len(errors)} problem(s)")
@@ -57,23 +223,59 @@ def cmd_validate(args: argparse.Namespace) -> int:
             print(" -", e)
         return 1
     n = sum(len(v) for v in by_split.values())
-    print(f"OK: {n} records valid" + (" and reproducible from seed" if args.regenerate else ""))
+    reproducible = " and reproducible from seed" if args.regenerate and cfg.note_source == "template" else ""
+    print(f"OK: {n} records valid{reproducible}")
     return 0
+
+
+def _add_config_args(p: argparse.ArgumentParser) -> None:
+    p.add_argument("-v", "--verbose", action="count", default=0,
+                   help="log every API call with tokens, stop reason and duration (-vv for cache hits too)")
+    p.add_argument("--quiet", action="store_true", help="no live progress line")
+    p.add_argument("--config", help="JSON file of GenConfig fields")
+    p.add_argument("--seed", type=int)
+    p.add_argument("--n-train", dest="n_train", type=int)
+    p.add_argument("--n-test", dest="n_test", type=int)
+    p.add_argument("--n-per-adversarial-type", dest="n_per_adversarial_type", type=int)
+    p.add_argument("--target-prevalence", dest="target_prevalence", type=float)
+    p.add_argument("--note-source", dest="note_source", choices=["template", "llm"],
+                   help="template (offline, default) or llm (calls the Anthropic API; needs ANTHROPIC_API_KEY)")
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="data-gen", description=SYNTHETIC_NOTICE)
     sub = parser.add_subparsers(dest="command", required=True)
 
-    gen = sub.add_parser("generate", help="generate the synthetic dataset (offline, deterministic)")
-    gen.add_argument("--out", default=str(DEFAULT_DIR))
-    gen.add_argument("--config", help="JSON file of GenConfig fields")
-    gen.add_argument("--seed", type=int)
-    gen.add_argument("--n-train", dest="n_train", type=int)
-    gen.add_argument("--n-test", dest="n_test", type=int)
-    gen.add_argument("--n-per-adversarial-type", dest="n_per_adversarial_type", type=int)
-    gen.add_argument("--target-prevalence", dest="target_prevalence", type=float)
+    gen = sub.add_parser("generate", help="generate the synthetic dataset (template: offline; llm: spends money)")
+    gen.add_argument("--out", help="output directory (default data/, or data_llm/ for the llm source)")
+    gen.add_argument("--cache", default=str(DEFAULT_CACHE), help="LLM response cache (llm source)")
+    gen.add_argument("--yes", action="store_true", help="confirm that an llm run may spend money")
+    _add_config_args(gen)
     gen.set_defaults(func=cmd_generate)
+
+    est = sub.add_parser("estimate", help="dry-run the cost of an llm run; makes no API call, needs no key")
+    est.add_argument("--cache", default=str(DEFAULT_CACHE))
+    est.add_argument("--pilot", action="store_true", help="estimate the pilot sample only")
+    est.add_argument("--json", action="store_true")
+    _add_config_args(est)
+    est.set_defaults(func=cmd_estimate)
+
+    pil = sub.add_parser("pilot", help="write the small rating sample for the human realism gate (spends a little)")
+    pil.add_argument("--out", default=str(DEFAULT_REALISM))
+    pil.add_argument("--cache", default=str(DEFAULT_CACHE))
+    pil.add_argument("--round", type=int, default=0, help="0 for the first pilot; higher rounds draw fresh notes")
+    pil.add_argument("--setting", action="append",
+                     choices=["shorthand", "ehr_template", "ai_scribe", "copy_forward"],
+                     help="only this setting (repeat for several); used to re-rate a revised setting")
+    pil.add_argument("--yes", action="store_true", help="confirm that the pilot may spend money")
+    _add_config_args(pil)
+    pil.set_defaults(func=cmd_pilot)
+
+    gate = sub.add_parser("gate", help="evaluate the owner's ratings; exit 0 only if the full run may proceed")
+    gate.add_argument("--dir", default=str(DEFAULT_REALISM))
+    gate.add_argument("--rounds", type=int, nargs="*", help="rounds to include (default: all found)")
+    _add_config_args(gate)
+    gate.set_defaults(func=cmd_gate)
 
     val = sub.add_parser("validate", help="check a generated dataset against the specs")
     val.add_argument("--data", default=str(DEFAULT_DIR))
@@ -82,9 +284,10 @@ def main(argv: list[str] | None = None) -> int:
     val.set_defaults(func=cmd_validate)
 
     args = parser.parse_args(argv)
+    _configure_logging(getattr(args, "verbose", 0))
     try:
         return args.func(args)
-    except ValueError as exc:  # includes pydantic validation errors and reserved styles
+    except ValueError as exc:  # includes pydantic validation errors and unsupported styles
         print(f"error: {exc}", file=sys.stderr)
         return 2
 

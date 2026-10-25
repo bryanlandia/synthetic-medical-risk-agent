@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from . import DISEASE_NAME, GENERATOR_VERSION, PLAN_VERSION, SCHEMA_VERSION, SYNTHETIC_NOTICE
 
@@ -64,6 +64,25 @@ class NotePlan(Strict):
     render_seed: int
 
 
+class PlanLabV2(PlanLab):
+    flag: Literal["H", "L"] | None = None  # high / low vs the reference range, computed by code
+    ref_range: tuple[float, float] | None = None  # shown only by settings that display ranges
+    stale: bool = False  # value deliberately carried over from a prior visit
+
+
+class PlanSymptomV2(PlanSymptom):
+    phrases: list[str]  # allowed wording; a mention must use one of these
+    quote: bool = False  # include the patient's own words
+
+
+class NotePlanV2(NotePlan):
+    """Plan for LLM-written notes. A superset of version 1; template renderers ignore the extra fields."""
+
+    version: Literal["2"]
+    labs: list[PlanLabV2]
+    symptoms: list[PlanSymptomV2]
+
+
 class ModelInput(Strict):
     patient_id: str
     panel: list[LabEntry]
@@ -90,9 +109,22 @@ class Record(Strict):
     style: str
     input: ModelInput
     ground_truth: GroundTruth
-    plan: NotePlan | None = None  # evaluation metadata, not part of the model input
+    plan: NotePlanV2 | NotePlan | None = None  # evaluation metadata, not part of the model input
+    pair_group: str | None = None  # schema 2: shared by the records of one matched-pair group
     tags: list[Annotation] = Field(default_factory=list)
     noise: list[Annotation] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def _check_versions(self) -> "Record":
+        if self.schema_version not in ("1", "2"):
+            raise ValueError(f"unsupported schema_version {self.schema_version!r} (supported: 1, 2)")
+        if self.plan is not None and self.plan_version != self.plan.version:
+            raise ValueError("plan_version does not match the plan")
+        if self.plan is not None and self.plan.version == "2" and self.schema_version != "2":
+            raise ValueError("plan version 2 requires schema_version 2")
+        if self.pair_group is not None and self.schema_version != "2":
+            raise ValueError("pair_group requires schema_version 2")
+        return self
 
     def input_view(self) -> dict[str, Any]:
         return self.input.model_dump(mode="json")

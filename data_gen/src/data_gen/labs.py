@@ -52,16 +52,24 @@ LAB_KEYS: tuple[str, ...] = tuple(lab.key for lab in LABS)
 @dataclass(frozen=True)
 class SymptomDef:
     key: str
-    name: str  # surface form used in notes
+    name: str  # canonical surface form, used by the template renderers and their parser
     base_rate: float
+    # Wording an LLM-written note may use for this symptom (includes the canonical name). No phrase is
+    # shared with, or contained in, another symptom's phrases, so a mention maps to one symptom.
+    phrases: tuple[str, ...] = ()
 
 
 SYMPTOMS: tuple[SymptomDef, ...] = (
-    SymptomDef("tremor", "tremor", 0.20),
-    SymptomDef("fatigue", "fatigue", 0.35),
-    SymptomDef("photophobia", "photophobia", 0.15),
-    SymptomDef("joint_stiffness", "joint stiffness", 0.30),
-    SymptomDef("dizziness", "dizziness", 0.25),
+    SymptomDef("tremor", "tremor", 0.20,
+               ("tremor", "shaking", "shaky hands", "tremulous")),
+    SymptomDef("fatigue", "fatigue", 0.35,
+               ("fatigue", "tired", "low energy", "exhausted")),
+    SymptomDef("photophobia", "photophobia", 0.15,
+               ("photophobia", "light sensitivity", "sensitive to bright light", "bothered by bright lights")),
+    SymptomDef("joint_stiffness", "joint stiffness", 0.30,
+               ("joint stiffness", "stiff joints", "achy stiff joints", "morning stiffness")),
+    SymptomDef("dizziness", "dizziness", 0.25,
+               ("dizziness", "lightheaded", "woozy", "dizzy spells")),
 )
 
 SYMPTOM_BY_KEY: dict[str, SymptomDef] = {s.key: s for s in SYMPTOMS}

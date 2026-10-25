@@ -1,0 +1,3 @@
+Setting: ai_scribe. A visit summary written by an ambient AI scribe from the conversation.
+
+Write flowing narrative prose in complete sentences, two short paragraphs at most, about 90 to 170 words. Attribute statements to the patient ("reports", "says", "mentions"), and use hedged wording ("seems to", "maybe", "on and off") for uncertain symptoms. Where the user message asks for a patient quote, include a short quote in the patient's own plain words, in quotation marks, that still uses one of the allowed phrases. Mention any lab results only in passing, inside the narrative, never as a list. End with one sentence about when the patient will be seen again.

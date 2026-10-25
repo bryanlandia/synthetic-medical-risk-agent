@@ -11,12 +11,22 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
-from . import PLAN_VERSION
-from .config import GenConfig
+from . import PLAN_VERSION, PLAN_VERSION_LLM
+from .config import STALE_VALUE_STYLES, GenConfig, supported_styles
 from .injections import entries as injection_entries
-from .labs import LAB_BY_KEY, LABS, SYMPTOM_KEYS
+from .labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, SYMPTOM_KEYS
 from .rule import round_sig
-from .schema import Annotation, NotePlan, PlanInjection, PlanLab, PlanSymptom
+from .schema import (
+    Annotation,
+    NotePlan,
+    NotePlanV2,
+    PlanInjection,
+    PlanLab,
+    PlanLabV2,
+    PlanSymptom,
+    PlanSymptomV2,
+)
+from .settings import PROFILES, SettingProfile
 
 CASE_TYPES: tuple[str, ...] = (
     "borderline",
@@ -31,7 +41,7 @@ CASE_TYPES: tuple[str, ...] = (
 
 @dataclass
 class PlannedNote:
-    plan: NotePlan
+    plan: NotePlan | NotePlanV2
     noise: list[Annotation] = field(default_factory=list)
     tags: list[Annotation] = field(default_factory=list)
     missing: set[str] = field(default_factory=set)
@@ -85,8 +95,14 @@ def _forced_labs(rng: np.random.Generator, case: str | None, present: list[str])
     return []
 
 
-def _stated_keys(rng: np.random.Generator, present: list[str], forced: list[str]) -> list[str]:
-    n_stated = min(len(present), int(rng.integers(2, 5)))
+def _stated_keys(
+    rng: np.random.Generator, present: list[str], forced: list[str],
+    lo: int = 2, hi: int = 5, state_all: bool = False,
+) -> list[str]:
+    """Labs the note states: ``lo`` to ``hi - 1`` of the present ones (version 1: 2 to 4), or all."""
+    if state_all:
+        return [lab.key for lab in LABS if lab.key in set(present)]
+    n_stated = min(len(present), int(rng.integers(lo, hi)))
     pool = [k for k in present if k not in forced]
     extra = max(0, n_stated - len(forced))
     chosen = set(forced)
@@ -97,7 +113,7 @@ def _stated_keys(rng: np.random.Generator, present: list[str], forced: list[str]
 
 def _state_lab(
     cfg: GenConfig, rng: np.random.Generator, case: str | None, style: str,
-    key: str, true_v: float, forced: list[str],
+    key: str, true_v: float, forced: list[str], stale_rate: float | None = None,
 ) -> tuple[PlanLab, list[Annotation], list[Annotation]]:
     """What the note says for one lab, plus the noise/tag annotations that describe it."""
     lab = LAB_BY_KEY[key]
@@ -120,7 +136,9 @@ def _state_lab(
         noise.append(ann)
         if case == "unit_mismatch":
             tags.append(ann)
-    elif ordinary and style == "templated" and rng.random() < cfg.stale_rate:
+    elif ordinary and style in STALE_VALUE_STYLES and rng.random() < (
+        cfg.stale_rate if stale_rate is None else stale_rate
+    ):
         factor = float(rng.uniform(1.25, 1.7) if rng.random() < 0.5 else rng.uniform(0.55, 0.8))
         value = round_sig(true_v * factor)
         noise.append(Annotation(type="contradiction", lab=key, detail={
@@ -153,15 +171,16 @@ def _choose_disagreements(
 
 def _plan_symptoms(
     cfg: GenConfig, rng: np.random.Generator, ordinary: bool,
-    flags: dict[str, bool], disagree: dict[str, str],
+    flags: dict[str, bool], disagree: dict[str, str], hedge_rate: float | None = None,
 ) -> tuple[list[PlanSymptom], list[Annotation]]:
     symptoms: list[PlanSymptom] = []
     noise: list[Annotation] = []
+    hedge = cfg.hedge_rate if hedge_rate is None else hedge_rate
     for key in SYMPTOM_KEYS:
         truth = flags[key]
         if key in disagree:
             symptoms.append(PlanSymptom(flag=key, stated="negated" if truth else "present"))
-        elif truth and ordinary and rng.random() < cfg.hedge_rate:
+        elif truth and ordinary and rng.random() < hedge:
             symptoms.append(PlanSymptom(flag=key, stated="hedged"))
             noise.append(Annotation(type="hedging", flag=key))
         elif truth:
@@ -183,18 +202,99 @@ def _choose_injection(rng: np.random.Generator, case: str | None) -> tuple[PlanI
     return entry, [tag]
 
 
+# --- version 2 helpers (LLM-written notes) --------------------------------------------------------------
+
+def lab_flag(lab_key: str, stated_value: float, unit: str) -> str | None:
+    """High / low against the lab's reference range, judged on the value as written."""
+    lab = LAB_BY_KEY[lab_key]
+    canonical = stated_value if unit == lab.unit else lab.from_alt(stated_value)
+    if canonical > lab.ref_hi:
+        return "H"
+    if canonical < lab.ref_lo:
+        return "L"
+    return None
+
+
+def _display_range(lab_key: str, unit: str) -> tuple[float, float]:
+    lab = LAB_BY_KEY[lab_key]
+    if unit == lab.unit:
+        return (lab.ref_lo, lab.ref_hi)
+    return (round_sig(lab.to_alt(lab.ref_lo), 3), round_sig(lab.to_alt(lab.ref_hi), 3))
+
+
+def _is_stale(noise: list[Annotation], lab_key: str) -> bool:
+    return any(
+        a.type == "contradiction" and a.lab == lab_key and a.detail.get("kind") == "stale_copied_forward"
+        for a in noise
+    )
+
+
+def _v2_labs(profile: SettingProfile, plan_labs: list[PlanLab], noise: list[Annotation]) -> list[PlanLabV2]:
+    return [
+        PlanLabV2(
+            lab=pl.lab, value=pl.value, unit=pl.unit,
+            flag=lab_flag(pl.lab, pl.value, pl.unit) if profile.show_flags else None,
+            ref_range=_display_range(pl.lab, pl.unit) if profile.show_ref_ranges else None,
+            stale=_is_stale(noise, pl.lab),
+        )
+        for pl in plan_labs
+    ]
+
+
+def _v2_symptoms(
+    rng: np.random.Generator, profile: SettingProfile,
+    symptoms: list[PlanSymptom], disagree: dict[str, str],
+) -> list[PlanSymptomV2]:
+    """Cap the negatives a setting states, and attach wording options and quote requests."""
+    negated = [i for i, s in enumerate(symptoms) if s.stated == "negated" and s.flag not in disagree]
+    dropped: set[int] = set()
+    if profile.max_negatives is not None and len(negated) > profile.max_negatives:
+        keep = {int(i) for i in rng.choice(negated, size=profile.max_negatives, replace=False)}
+        dropped = set(negated) - keep
+    out: list[PlanSymptomV2] = []
+    for i, s in enumerate(symptoms):
+        if i in dropped:
+            continue
+        pool = SYMPTOM_BY_KEY[s.flag].phrases
+        picked = rng.choice(len(pool), size=min(int(rng.integers(2, 4)), len(pool)), replace=False)
+        quote = bool(
+            profile.quote_patient and s.stated in ("present", "hedged") and rng.random() < 0.5
+        )
+        out.append(PlanSymptomV2(
+            flag=s.flag, stated=s.stated, phrases=[pool[int(j)] for j in picked], quote=quote))
+    return out
+
+
+def _scaled(rate: float, multiplier: float) -> float:
+    return min(1.0, rate * multiplier)
+
+
 def plan_note(
     cfg: GenConfig,
     labs: dict[str, float],
     flags: dict[str, bool],
     rng: np.random.Generator,
     case: str | None = None,
+    *,
+    style: str | None = None,
+    missing: set[str] | None = None,
 ) -> PlannedNote:
-    """Build the plan for one patient. ``case`` None = ordinary train/test patient."""
-    style = choose_style(cfg, rng)
+    """Build the plan for one patient. ``case`` None = ordinary train/test patient.
+
+    ``style`` and ``missing`` force the documentation setting and the set of missing labs; matched-pair
+    groups use them so one patient's members share a lab panel. Left as None, draws are unchanged.
+
+    Template notes get a version 1 plan. With the LLM source the style is a documentation setting and
+    the plan is version 2, following that setting's profile. Version 1 draws are unchanged.
+    """
+    if style is None:
+        style = choose_style(cfg, rng)
+    elif style not in supported_styles(cfg.note_source):
+        raise ValueError(f"style {style!r} is not supported by note_source {cfg.note_source!r}")
+    profile = PROFILES[style] if cfg.note_source == "llm" else None
     render_seed = int(rng.integers(0, 2**31 - 1))
 
-    missing = _choose_missing(cfg, rng, case)
+    missing = _choose_missing(cfg, rng, case) if missing is None else set(missing)
     noise = [Annotation(type="missing_value", lab=key) for key in sorted(missing)]
     tags: list[Annotation] = []
     if case == "missing_labs":
@@ -202,9 +302,17 @@ def plan_note(
     present = [lab.key for lab in LABS if lab.key not in missing]
 
     forced = _forced_labs(rng, case, present)
+    if profile is None:
+        stated, stale_rate = _stated_keys(rng, present, forced), None
+    else:
+        stated = _stated_keys(
+            rng, present, forced, profile.min_labs, (profile.max_labs or 0) + 1,
+            state_all=profile.max_labs is None)
+        stale_rate = _scaled(cfg.stale_rate, profile.stale_rate_multiplier)
     plan_labs: list[PlanLab] = []
-    for key in _stated_keys(rng, present, forced):
-        plan_lab, lab_noise, lab_tags = _state_lab(cfg, rng, case, style, key, labs[key], forced)
+    for key in stated:
+        plan_lab, lab_noise, lab_tags = _state_lab(
+            cfg, rng, case, style, key, labs[key], forced, stale_rate)
         plan_labs.append(plan_lab)
         noise += lab_noise
         tags += lab_tags
@@ -219,14 +327,23 @@ def plan_note(
 
     disagree, disagree_tags = _choose_disagreements(rng, case, flags)
     tags += disagree_tags
-    symptoms, hedge_noise = _plan_symptoms(cfg, rng, case is None, flags, disagree)
+    hedge_rate = None if profile is None else _scaled(cfg.hedge_rate, profile.hedge_rate_multiplier)
+    symptoms, hedge_noise = _plan_symptoms(cfg, rng, case is None, flags, disagree, hedge_rate)
     noise += hedge_noise
 
     injection, injection_tags = _choose_injection(rng, case)
     tags += injection_tags
 
-    plan = NotePlan(
-        version=PLAN_VERSION, style=style, labs=plan_labs, symptoms=symptoms,
-        injection=injection, render_seed=render_seed,
-    )
+    plan: NotePlan | NotePlanV2
+    if profile is None:
+        plan = NotePlan(
+            version=PLAN_VERSION, style=style, labs=plan_labs, symptoms=symptoms,
+            injection=injection, render_seed=render_seed,
+        )
+    else:
+        plan = NotePlanV2(
+            version=PLAN_VERSION_LLM, style=style, labs=_v2_labs(profile, plan_labs, noise),
+            symptoms=_v2_symptoms(rng, profile, symptoms, disagree),
+            injection=injection, render_seed=render_seed,
+        )
     return PlannedNote(plan=plan, noise=noise, tags=tags, missing=missing, panel_overrides=overrides)

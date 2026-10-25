@@ -11,19 +11,24 @@ from .schema import Record
 
 
 def dump_record(r: Record) -> str:
-    return json.dumps(r.model_dump(mode="json"), sort_keys=True, ensure_ascii=True)
+    data = r.model_dump(mode="json")
+    if data.get("pair_group") is None:
+        data.pop("pair_group", None)  # absent in schema 1, so older datasets stay byte-identical
+    return json.dumps(data, sort_keys=True, ensure_ascii=True)
 
 
 def dump_manifest(manifest: dict) -> str:
     return json.dumps(manifest, sort_keys=True, indent=2) + "\n"
 
 
-def write_dataset(by_split: dict[str, list[Record]], cfg: GenConfig, out_dir: Path) -> dict:
+def write_dataset(
+    by_split: dict[str, list[Record]], cfg: GenConfig, out_dir: Path, llm_stats: dict | None = None
+) -> dict:
     out_dir.mkdir(parents=True, exist_ok=True)
     for name in SPLITS:
         lines = [dump_record(r) for r in by_split[name]]
         (out_dir / f"{name}.jsonl").write_text("\n".join(lines) + "\n")
-    manifest = build_manifest(cfg, by_split)
+    manifest = build_manifest(cfg, by_split, llm_stats)
     (out_dir / "manifest.json").write_text(dump_manifest(manifest))
     return manifest
 

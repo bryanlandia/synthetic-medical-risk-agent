@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 
-from .config import AVAILABLE_STYLES
+from .config import AVAILABLE_STYLES, LLM_SETTINGS
 from .injections import all_texts
 from .labs import LAB_BY_KEY, LABS
 from .plan import CASE_TYPES
@@ -76,10 +76,27 @@ def _panel_errors(r: Record) -> list[str]:
     return errs
 
 
+def _llm_record_errors(r: Record) -> list[str]:
+    """Structural checks for LLM-written records (plan version 2). Text fidelity was checked, with the
+    LLM extractor, when each note was accepted; the offline text checks live in data_gen.llm.checks."""
+    pid = r.patient_id
+    errs: list[str] = []
+    view = json.dumps(r.input_view()).lower()
+    errs += [f"{pid}: input view contains {w!r}" for w in FORBIDDEN_IN_INPUT if w in view]
+    if r.style not in LLM_SETTINGS or r.style != r.plan.style:
+        errs.append(f"{pid}: style {r.style!r} is not an LLM documentation setting matching the plan")
+    errs += [f"{pid}: identifier scan: {f}" for f in scan_text(r.input.note)]
+    if r.pair_group is not None and any(setting in r.patient_id for setting in LLM_SETTINGS):
+        errs.append(f"{pid}: record id reveals its setting")
+    return errs + _panel_errors(r)
+
+
 def record_errors(r: Record) -> list[str]:
     pid = r.patient_id
     if r.plan is None:
         return [f"{pid}: record has no plan"]
+    if r.plan.version == "2":
+        return _llm_record_errors(r)
     errs: list[str] = []
     view = json.dumps(r.input_view()).lower()
     errs += [f"{pid}: input view contains {w!r}" for w in FORBIDDEN_IN_INPUT if w in view]
@@ -128,6 +145,40 @@ def _adversarial_record_errors(r: Record) -> list[str]:
     return errs
 
 
+def unique_patients(records: list[Record]) -> list[Record]:
+    """One record per patient: matched-pair members share a pair_group and count once."""
+    seen: set[str] = set()
+    out = []
+    for r in records:
+        key = r.pair_group or r.patient_id
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
+def pair_group_errors(by_split: dict[str, list[Record]]) -> list[str]:
+    """Matched-pair groups: one patient written in every LLM setting, identical apart from the note."""
+    groups: dict[str, list[Record]] = {}
+    for recs in by_split.values():
+        for r in recs:
+            if r.pair_group is not None:
+                groups.setdefault(r.pair_group, []).append(r)
+    errs: list[str] = []
+    for group, members in groups.items():
+        if any(m.split != "test" for m in members):
+            errs.append(f"pair group {group}: members must be in the test split")
+        if sorted(m.style for m in members) != sorted(LLM_SETTINGS):
+            errs.append(f"pair group {group}: expected one record per setting, got {sorted(m.style for m in members)}")
+        if len({m.ground_truth.model_dump_json() for m in members}) != 1:
+            errs.append(f"pair group {group}: ground truth differs between members")
+        if len({tuple((e.lab, e.value) for e in m.input.panel) for m in members}) != 1:
+            errs.append(f"pair group {group}: lab panel differs between members")
+        if len({m.input.note for m in members}) != len(members):
+            errs.append(f"pair group {group}: two members have identical text")
+    return errs
+
+
 def dataset_errors(by_split: dict[str, list[Record]], min_per_type: int = 50) -> list[str]:
     errs: list[str] = []
     all_ids = [r.patient_id for recs in by_split.values() for r in recs]
@@ -150,24 +201,26 @@ def dataset_errors(by_split: dict[str, list[Record]], min_per_type: int = 50) ->
     ]
     for r in adv:
         errs += _adversarial_record_errors(r)
-    return errs
+    return errs + pair_group_errors(by_split)
 
 
 def distribution_errors(by_split: dict[str, list[Record]]) -> list[str]:
     """Random test must match train on prevalence (0.02) and lab means (0.1 SD).
 
     For tiny smoke datasets (test split under 500) the sampling noise of a mean difference alone
-    exceeds 0.1 SD, so the lab-mean tolerance is widened to 5 standard errors there.
+    exceeds 0.1 SD, so the lab-mean tolerance is widened to 5 standard errors there. The prevalence
+    tolerance never goes below one patient per split, which matters only for tiny datasets.
     """
-    train, test = by_split.get("train", []), by_split.get("test", [])
+    train, test = by_split.get("train", []), unique_patients(by_split.get("test", []))
     if not train or not test:
         return ["train or test split is empty"]
     tol_sd = 0.1 if len(test) >= STRICT_MIN_TEST else 5 * (1 / len(train) + 1 / len(test)) ** 0.5
     errs = []
     prev = abs(sum(r.ground_truth.label for r in train) / len(train)
                - sum(r.ground_truth.label for r in test) / len(test))
-    if prev > 0.02:
-        errs.append(f"train/test prevalence differs by {prev:.4f} > 0.02")
+    prev_tol = max(0.02, 1 / len(train) + 1 / len(test))  # a stratified split is off by at most one patient
+    if prev > prev_tol:
+        errs.append(f"train/test prevalence differs by {prev:.4f} > {prev_tol:.4f}")
     for lab in LABS:
         a = sum(r.ground_truth.labs[lab.key] for r in train) / len(train)
         b = sum(r.ground_truth.labs[lab.key] for r in test) / len(test)

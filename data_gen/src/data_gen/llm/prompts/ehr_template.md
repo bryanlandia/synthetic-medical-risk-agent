@@ -1,0 +1,5 @@
+Setting: ehr_template. A specialist follow-up visit written in an electronic health record template.
+
+Use a few short labelled sections in the style of an EHR template: a one or two line typed history, then "ROS:" with the symptoms grouped by body system (for example Neuro, Eyes, MSK, General) using wording like "positive for", "negative for" or "possible", then "Results:" listing each lab on its own line with its value, unit, high/low flag in parentheses when one is listed, and the reference range when listed, then a brief "Plan:" line. About 90 to 170 words. Place each symptom under a sensible body system (tremor and dizziness: Neuro; photophobia: Eyes; joint stiffness: MSK; fatigue: General).
+
+Only include a body system in the review of systems if one of the listed symptoms belongs to it. Do not add a system, and do not write any "negative for" or "no ..." statement, for a symptom that is not listed. A lab with no flag in the list is normal: never add a flag, "high", "low" or any other interpretation to it.

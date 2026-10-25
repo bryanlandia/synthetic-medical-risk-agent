@@ -6,7 +6,14 @@ from collections import Counter
 
 import numpy as np
 
-from . import GENERATOR_VERSION, PLAN_VERSION, SCHEMA_VERSION, SYNTHETIC_NOTICE
+from . import (
+    GENERATOR_VERSION,
+    PLAN_VERSION,
+    PLAN_VERSION_LLM,
+    SCHEMA_VERSION,
+    SCHEMA_VERSION_LLM,
+    SYNTHETIC_NOTICE,
+)
 from .config import GenConfig
 from .injections import catalog_version
 from .schema import Record
@@ -39,20 +46,34 @@ def bayes_ceiling(records: list[Record]) -> dict:
     }
 
 
-def build_manifest(cfg: GenConfig, by_split: dict[str, list[Record]]) -> dict:
+def _unique(records: list[Record]) -> list[Record]:
+    seen: set[str] = set()
+    out = []
+    for r in records:
+        key = r.pair_group or r.patient_id
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
+
+
+def build_manifest(cfg: GenConfig, by_split: dict[str, list[Record]], llm_stats: dict | None = None) -> dict:
     splits = {}
     for name in SPLITS:
-        recs = by_split[name]
+        all_recs = by_split[name]
+        recs = _unique(all_recs) if cfg.note_source == "llm" else all_recs  # matched pairs count once
         splits[name] = {
-            "n": len(recs),
+            "n": len(all_recs),
             "prevalence": round(float(np.mean([r.ground_truth.label for r in recs])), 6),
             "mean_true_probability": round(float(np.mean([r.ground_truth.true_probability for r in recs])), 6),
-            "styles": dict(sorted(Counter(r.style for r in recs).items())),
-            "noise_counts": dict(sorted(Counter(n.type for r in recs for n in r.noise).items())),
-            "tag_record_counts": dict(sorted(Counter(t for r in recs for t in r.tag_types()).items())),
+            "styles": dict(sorted(Counter(r.style for r in all_recs).items())),
+            "noise_counts": dict(sorted(Counter(n.type for r in all_recs for n in r.noise).items())),
+            "tag_record_counts": dict(sorted(Counter(t for r in all_recs for t in r.tag_types()).items())),
             "bayes_ceiling": bayes_ceiling(recs),
         }
-    return {
+        if cfg.note_source == "llm":
+            splits[name]["n_unique_patients"] = len(recs)
+    manifest = {
         "notice": SYNTHETIC_NOTICE,
         "synthetic": True,
         "seed": cfg.seed,
@@ -61,9 +82,20 @@ def build_manifest(cfg: GenConfig, by_split: dict[str, list[Record]]) -> dict:
         "plan_version": PLAN_VERSION,
         "injection_catalog_version": catalog_version(),
         "note_source": "template",
-        "config": cfg.model_dump(mode="json"),
+        "config": cfg.canonical_dump(),
         "config_hash": cfg.config_hash(),
         "llm_calls": 0,
         "excluded_records": 0,
         "splits": splits,
     }
+    if cfg.note_source == "llm":
+        stats = llm_stats or {}
+        manifest.update(
+            note_source="llm",
+            plan_version=PLAN_VERSION_LLM,
+            schema_version=SCHEMA_VERSION_LLM,
+            llm=stats,
+            llm_calls=stats.get("paid_calls"),
+            excluded_records=sum(stats.get("excluded", {}).values()),
+        )
+    return manifest

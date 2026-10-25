@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from .config import AVAILABLE_STYLES, RESERVED_STYLES
+from .config import AVAILABLE_STYLES
 from .labs import LAB_BY_KEY, SYMPTOM_BY_KEY, SYMPTOMS
 from .schema import NotePlan
 
@@ -84,10 +84,11 @@ _RENDERERS = {"terse": render_terse, "templated": render_templated}
 
 
 def render(plan: NotePlan) -> str:
-    if plan.style in RESERVED_STYLES:
-        raise ValueError(f"style {plan.style!r} is reserved: no renderer yet")
     if plan.style not in _RENDERERS:
-        raise ValueError(f"unknown style {plan.style!r}; available: {AVAILABLE_STYLES}")
+        raise ValueError(
+            f"style {plan.style!r} is not supported by template rendering (supported: "
+            f"{', '.join(AVAILABLE_STYLES)}); LLM settings are written by the LLM note writer"
+        )
     rng = np.random.default_rng(plan.render_seed)
     text = _RENDERERS[plan.style](plan, rng)
     if plan.injection is not None:

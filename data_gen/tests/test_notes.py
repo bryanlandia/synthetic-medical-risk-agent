@@ -1,5 +1,6 @@
 import json
 import socket
+import subprocess
 import sys
 
 import numpy as np
@@ -125,8 +126,18 @@ def test_render_is_deterministic_and_offline(plans, monkeypatch):
     _, items = plans
     for _, _, p in items[:300]:
         assert render(p.plan) == render(p.plan)
-    for banned in ("anthropic", "requests", "httpx", "urllib3", "aiohttp"):
-        assert banned not in sys.modules
+
+
+def test_template_path_imports_no_network_libraries():
+    # A fresh interpreter, so other tests importing the SDK cannot affect the result.
+    code = (
+        "import sys, data_gen.builder, data_gen.render, data_gen.cli;"
+        "banned = ('anthropic', 'requests', 'httpx', 'httpx2', 'urllib3', 'aiohttp');"
+        "bad = [m for m in banned if m in sys.modules];"
+        "sys.exit(1 if bad else 0)"
+    )
+    result = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
 
 
 def test_dataset_is_byte_identical_for_same_seed():
@@ -158,15 +169,25 @@ def test_parse_back_detects_tampering(plans):
     assert parse_back_errors(p.plan, bad)
 
 
-@pytest.mark.parametrize("style", ["narrative", "ai_scribe"])
-def test_reserved_styles_fail_clearly(style):
-    cfg = GenConfig(n_train=10, n_test=5, style_rates={style: 1.0})
-    with pytest.raises(ValueError, match="reserved"):
-        build_dataset(cfg)
+@pytest.mark.parametrize("style", ["shorthand", "ehr_template", "ai_scribe", "copy_forward"])
+def test_llm_settings_are_rejected_by_template_rendering(style):
+    with pytest.raises(ValueError, match="not supported by note_source 'template'"):
+        GenConfig(n_train=10, n_test=5, style_rates={style: 1.0})
     labs, flags = sample_features(rng_for(1, "features", 0))
     plan = plan_note(GenConfig(), labs, flags, rng_for(1, "noise", 0)).plan
-    with pytest.raises(ValueError, match="reserved"):
+    with pytest.raises(ValueError, match="not supported by template rendering"):
         render(plan.model_copy(update={"style": style}))
+
+
+@pytest.mark.parametrize("style", ["terse", "templated"])
+def test_template_styles_are_rejected_by_the_llm_source(style):
+    with pytest.raises(ValueError, match="not supported by note_source 'llm'"):
+        GenConfig(note_source="llm", style_rates={style: 1.0})
+
+
+def test_build_dataset_refuses_the_llm_source():
+    with pytest.raises(ValueError, match="LLM note writer"):
+        build_dataset(GenConfig(note_source="llm", n_train=10, n_test=5))
 
 
 def test_style_rates_validation():
