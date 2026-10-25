@@ -11,7 +11,7 @@ import re
 from dataclasses import dataclass
 
 from ..config import LLM_SETTINGS
-from ..labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, LabDef, all_symptom_phrases
+from ..labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, SYMPTOM_STEMS, LabDef, all_symptom_phrases
 from ..render import ADDENDUM
 from ..schema import NotePlanV2, PlanLabV2
 from ..scan import scan_text
@@ -190,7 +190,9 @@ def _has_phrase(text: str, phrase: str) -> bool:
 
 def phrase_errors(text: str, plan: NotePlanV2) -> list[str]:
     body = body_without_addendum(text)
-    errs = [f"phrase_missing:{s.flag}" for s in plan.symptoms if not any(_has_phrase(body, p) for p in s.phrases)]
+    errs = [f"phrase_missing:{s.flag}" for s in plan.symptoms
+            if not re.search(SYMPTOM_STEMS[s.flag], body, re.IGNORECASE)
+            and not any(_has_phrase(body, p) for p in all_symptom_phrases(s.flag))]  # offered wording is only a hint
     planned = {s.flag for s in plan.symptoms}
     for key in SYMPTOM_BY_KEY:
         if key not in planned and any(_has_phrase(body, p) for p in all_symptom_phrases(key)):
@@ -207,6 +209,8 @@ def reveals_setting(text: str) -> str | None:
 
 
 _META = re.compile(r"\b(fictional|synthetic|simulated|test data|this study|study condition|made[- ]up)\b", re.I)
+_COMMENTARY = re.compile(
+    r"\b(wait,|hmm\b|let me\b|corrected note|final note|allowed phrases?|wording ideas?|style lines?|one phrase per)", re.I)
 _CO_DENIES = re.compile(r"\bc/o\s+(denies|deny|no|neg|negative)\b", re.I)
 
 
@@ -219,11 +223,19 @@ def style_errors(text: str, plan: NotePlanV2) -> list[str]:
     if _CO_DENIES.search(body):
         errs.append("contradictory_phrasing")
     for s in plan.symptoms:
-        used = [p for p in all_symptom_phrases(s.flag) if _has_phrase(body, p)]  # any polarity: one wording only
-        distinct = [p for p in used if not any(p != q and p.lower() in q.lower() for q in used)]  # drop nested ones
-        if len(distinct) > 1:
+        # Several wordings inside one sentence ("denies fatigue, feels not tired, no low energy"), or three or more
+        # anywhere, read as padding. Two wordings in separate sentences ("Denies fatigue. Energy normal.") are normal.
+        if any(len(_distinct_wordings(part, s.flag)) > 1 for part in re.split(r"(?<=[.!?])\s+|\n+", body)) \
+                or len(_distinct_wordings(body, s.flag)) >= 3:
             errs.append(f"symptom_repeated:{s.flag}")
+    if _COMMENTARY.search(body):
+        errs.append("meta_commentary")
     return errs
+
+
+def _distinct_wordings(text: str, flag: str) -> list[str]:
+    used = [p for p in all_symptom_phrases(flag) if _has_phrase(text, p)]  # any polarity
+    return [p for p in used if not any(p != q and p.lower() in q.lower() for q in used)]  # drop nested ones
 
 
 def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
@@ -247,9 +259,22 @@ def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
 EXEMPLAR_SHINGLE = 8  # words in a row that may not be taken from an exemplar note
 
 
+_LAB_WORDS = {w for lab in LABS for w in re.findall(r"[a-z0-9']+", f"{lab.name} {lab.abbr}".lower())}
+
+
 def _shingles(text: str, n: int = EXEMPLAR_SHINGLE) -> set[tuple[str, ...]]:
-    words = re.findall(r"[a-z0-9']+", text.lower())
-    return {tuple(words[i:i + n]) for i in range(len(words) - n + 1)}
+    """Runs of n plain words. Numbers and lab names break a run, so a results block that happens to be laid out like
+    an exemplar's is not copying; only copied prose is."""
+    out: set[tuple[str, ...]] = set()
+    run: list[str] = []
+    for w in re.findall(r"[a-z0-9']+", text.lower()):
+        if any(ch.isdigit() for ch in w) or w in _LAB_WORDS:
+            run = []
+            continue
+        run.append(w)
+        if len(run) >= n:
+            out.add(tuple(run[-n:]))
+    return out
 
 
 def exemplar_errors(text: str, plan: NotePlanV2) -> list[str]:

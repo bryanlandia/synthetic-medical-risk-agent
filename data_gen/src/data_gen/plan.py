@@ -253,14 +253,16 @@ def _v2_symptoms(
         keep = {int(i) for i in rng.choice(negated, size=profile.max_negatives, replace=False)}
         dropped = set(negated) - keep
     out: list[PlanSymptomV2] = []
+    quoted = False
     for i, s in enumerate(symptoms):
         if i in dropped:
             continue
         pool = symptom_phrase_pool(s.flag, s.stated)  # wording for how the note states it
         picked = rng.choice(len(pool), size=min(int(rng.integers(2, 4)), len(pool)), replace=False)
         quote = bool(
-            profile.quote_patient and s.stated in ("present", "hedged") and rng.random() < 0.5
+            profile.quote_patient and not quoted and s.stated in ("present", "hedged") and rng.random() < 0.5
         )
+        quoted = quoted or quote  # at most one patient quote per note, as in real documentation
         out.append(PlanSymptomV2(
             flag=s.flag, stated=s.stated, phrases=[pool[int(j)] for j in picked], quote=quote))
     return out

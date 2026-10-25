@@ -172,7 +172,7 @@ def test_phrases_must_appear_and_unplanned_symptoms_must_not():
                                sym("fatigue", "negated", ["tired", "low energy"])])
     assert phrase_errors("Reports shaky hands. Denies feeling tired.", plan) == []
     assert phrase_errors("SHAKING noted; not Tired.", plan) == []
-    assert "phrase_missing:tremor" in phrase_errors("Reports a tremor. Not tired.", plan)
+    assert "phrase_missing:tremor" in phrase_errors("Nothing new today. Not tired.", plan)
     assert "symptom_extra:dizziness" in phrase_errors("Shaky hands, not tired, lightheaded at times.", plan)
 
 

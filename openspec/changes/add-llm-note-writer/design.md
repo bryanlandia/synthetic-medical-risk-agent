@@ -72,6 +72,16 @@ Variety is measured in code (top opener share, distinct trait combinations) and 
 
 Cost: the exemplars add about 400 input tokens per writer call (a few cents per pilot).
 
+### What round 1 taught (added after the second review)
+
+Round 1 (variety levers on) rose from 5 to 18 of 51 accepted notes rated plausible (ehr_template 7/20, copy_forward 10/20), but my own new checks rejected 20 to 62% of the writer's notes (repeated wording 103, missing phrase 40, copied exemplar 39), leaving ai_scribe and shorthand with only 8 and 3 accepted notes. Reading the rejected text showed three mistakes of mine:
+
+- **Rigid wording rules caused the stilted text.** "Use exactly one of these phrases" made the model contort ("Negative for denies fatigue", "not woozy at all") and, for shorthand, print its own reasoning ("Wait, that breaks the rule..."). Wording is now a vocabulary hint; mention detection is lenient; polarity stays with the independent extractor. Repetition is flagged only inside one sentence or at three wordings, and reasoning leaking into the output is its own failure code.
+- **The exemplar-copy check fired on result blocks** that merely share a layout with an exemplar. Numbers and lab names now break a run.
+- **Uniformity came from the profile.** ehr_template listed all eight labs in a uniform block, and several settings stated every symptom, one positive and four negatives. ehr_template now states at most six labs, ehr_template and copy_forward at most three negatives, and ai_scribe at most one patient quote.
+
+The reviewer's remaining reasons were mostly about presentation: a unit repeated inside the reference range ("(ref 0.6-1.4 ratio)"), "ratio" as a unit, and invented analytes. The first two are fixed in the prompt; for the third the reviewer (prompt version 2) is now given the glossary of the fictional panel and told not to count it against a note. Stock phrases in the polarity pools that read stilted in prose ("not tired", "not woozy") were replaced.
+
 ## Risks / Trade-offs
 
 - [A too-small output limit silently truncates notes, and a validator bug makes good notes look bad (both happened in the first real pilot: Haiku 5.5 thinks by default and thinking counts against `max_tokens`, and a lab whose name and abbreviation contain digits was misread)] → Default `max_tokens` 2000; a `max_tokens` stop is its own failure (`truncated`) and is never validated as if complete; the parser skips a lab's own parenthesised restatement; a setting is stopped early when most of its first attempts fail, and a full run stops when most notes fail, so no money is spent on retries that cannot help; every run prints live progress and `-v` logs each call.

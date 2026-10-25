@@ -70,6 +70,8 @@ Round 0 was rated 5 of 80 plausible by the adversarial reviewer. Its reasons, ta
 - [x] 11.3 Write six original exemplar notes per setting, show two per note chosen by seed, and bump the prompt hash input; verify the exemplars are clean, original, flag-consistent and that the prompt shows exactly two
 - [x] 11.4 Reject a note that reproduces eight consecutive words of an exemplar (except stock lines the traits ask for) and verify the check and the stock-line exception
 - [x] 11.5 Measure variety (top opener share, distinct trait combinations), report it in the pilot output and key meta, and verify the limits are below the round-0 baseline
+- [x] 11.8 Relax the wording rules (hint not requirement, lenient mention detection, per-sentence repetition, exemplar check that ignores numbers and lab names), add a meta-commentary check, fix ratio and reference-range presentation, cap labs and negatives and quotes per note, and verify tests for each
+- [x] 11.9 Give the reviewer the glossary of the fictional panel and bump `llm.reviewer_prompt_version` to 2, and verify the glossary lists every lab with its unit and range and contains no scoring or plan data
 - [ ] 11.6 Pilot round 1 with the revised writer, then verify the variety report and the exclusion rate per setting; adjust a trait, exemplar or check if one is the cause (replaces the pilot in 10.4)
 - [ ] 11.7 Review round 1 with the adversarial reviewer (and the owner), and verify the plausible rates and controls gap in the gate output; record what changed in design.md (replaces 10.5)
 

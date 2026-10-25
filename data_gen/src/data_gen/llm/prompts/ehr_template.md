@@ -1,4 +1,4 @@
-Setting: ehr_template. A specialist follow-up visit written in an electronic health record template.
+Kind of note: a specialist follow-up visit written in an electronic health record template.
 
 Use a few short labelled sections typical of an EHR template: a typed history of one or two lines, a review of systems, the results with each lab's value, unit, high/low flag in parentheses when one is listed and the reference range when listed, and a brief plan. The label style, section order, review-of-systems form, results layout and plan form are set by the style lines. Use wording like "positive for", "negative for" or "possible" in the review of systems. About 70 to 150 words. Place each symptom under a sensible body system (tremor and dizziness: Neuro; photophobia: Eyes; joint stiffness: MSK; fatigue: General).
 

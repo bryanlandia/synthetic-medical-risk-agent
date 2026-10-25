@@ -49,7 +49,7 @@ class Answers:
 
 def cached(inner, tmp_path, name="review.jsonl", **budget):
     b = Budget(budget.get("calls", 10_000), 100.0, 2.0, 10.0)
-    return CachedClient(inner, DiskCache(tmp_path / name), b, "1", kind="reviewer")
+    return CachedClient(inner, DiskCache(tmp_path / name), b, LLM_CFG.llm.reviewer_prompt_version, kind="reviewer")
 
 
 def round_with_key(pilot, tmp_path):
@@ -159,7 +159,7 @@ def test_review_writes_an_llm_rating_file_the_gate_can_read(pilot, tmp_path):
     assert len(result.ratings) == 88 and result.unrated == []
     rf = read_rating_file(result.path)
     assert result.path.name == f"ratings.{reviewer_name(LLM_CFG)}.json"
-    assert (rf.kind, rf.model_id, rf.prompt_version) == ("llm", "claude-sonnet-5-5", "1")
+    assert (rf.kind, rf.model_id, rf.prompt_version) == ("llm", "claude-sonnet-5-5", LLM_CFG.llm.reviewer_prompt_version)
     assert all(r.complete for r in rf.ratings.values())
 
 
@@ -195,7 +195,7 @@ def test_the_estimate_counts_uncached_calls_and_needs_no_key(pilot, tmp_path):
     cache = DiskCache(tmp_path / "e.jsonl")
     est = estimate_review(LLM_CFG, sheet, cache)
     assert est.calls == 88 and est.cached == 0 and est.cost_usd > 0 and not est.measured
-    client = CachedClient(MockClient(Answers(pilot)), cache, Budget(10_000, 100.0, 2.0, 10.0), "1", kind="reviewer")
+    client = CachedClient(MockClient(Answers(pilot)), cache, Budget(10_000, 100.0, 2.0, 10.0), LLM_CFG.llm.reviewer_prompt_version, kind="reviewer")
     review_round(LLM_CFG, client, round_with_key(pilot, tmp_path))
     after = estimate_review(LLM_CFG, sheet, cache)
     assert after.calls == 0 and after.cached == 88 and after.measured and after.cost_usd == 0
@@ -266,3 +266,19 @@ def test_no_controls_in_a_round_means_no_discrimination_check(pilot):
     key = json.loads((directory / "key.json").read_text())
     key["notes"] = {i: m for i, m in key["notes"].items() if m["kind"] == "note"}
     assert controls_gap({}, key) is None
+
+
+def test_the_reviewer_is_told_the_fictional_panel_and_nothing_about_scoring():
+    from data_gen.labs import LABS
+    from data_gen.llm.checks import reveals_setting
+
+    low = REVIEWER_SYSTEM.lower()
+    for lab in LABS:
+        assert lab.name in REVIEWER_SYSTEM and f"({lab.abbr})" in REVIEWER_SYSTEM
+        assert f"{lab.ref_lo:g}-{lab.ref_hi:g}" in REVIEWER_SYSTEM
+        if lab.unit != "ratio":
+            assert lab.unit in REVIEWER_SYSTEM
+    assert "do not count unfamiliar test names" in low and "fictional" in low
+    for word in ("weight", "coefficient", "intercept", "logistic", "velorin-kessler", "probab", "prevalence"):
+        assert word not in low, word
+    assert reveals_setting(REVIEWER_SYSTEM) is None

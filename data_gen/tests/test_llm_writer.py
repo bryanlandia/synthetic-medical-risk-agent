@@ -131,7 +131,7 @@ def test_note_with_a_medication_is_retried_without_calling_the_extractor():  # t
     [
         (GOOD_NOTE.replace("128.9", "150"), "lab_wrong:velorin_index"),
         (GOOD_NOTE.replace("VLI 128.9 mg/dL, ", ""), "lab_missing:velorin_index"),
-        (GOOD_NOTE.replace("shaky hands", "a tremor"), "phrase_missing:tremor"),
+        (GOOD_NOTE.replace("shaky hands", "nothing remarkable"), "phrase_missing:tremor"),
         (GOOD_NOTE + " Also bothered by bright lights.", "symptom_extra:photophobia"),  # not in the plan
         (GOOD_NOTE + " Call 555-867-5309.", "identifier:phone"),
         ("", "empty"),

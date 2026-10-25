@@ -96,8 +96,20 @@ Notes SHALL state lab values at the precision a lab report prints (three signifi
 - **THEN** it is shown with at most three significant figures and stays within 0.5% of the plan value, so it passes the 1% validation
 
 #### Scenario: One wording per symptom
-- **WHEN** a note states a symptom with two or more different allowed phrases that are not nested in one another
-- **THEN** it fails validation with a repeated-symptom code, while repeating the same phrase, or a phrase nested in a longer one, is accepted
+- **WHEN** a note states a symptom with two or more different wordings in one sentence, or with three or more anywhere, where no wording is nested in another
+- **THEN** it fails validation with a repeated-symptom code, while repeating the same wording, a wording nested in a longer one, or two wordings in separate sentences is accepted
+
+#### Scenario: Offered wording is a hint, not a requirement
+- **WHEN** a note mentions a listed symptom in a natural form that is not one of the offered phrases (for example "denies A, B" grouped)
+- **THEN** it is accepted if the symptom is recognisably mentioned, and its polarity is judged by the independent extractor
+
+#### Scenario: No reasoning in the output
+- **WHEN** a note contains drafts, corrections or comments about the rules (such as "Wait," or "Corrected note")
+- **THEN** it fails validation with a meta-commentary code
+
+#### Scenario: Reference ranges and ratios read like a report
+- **WHEN** the prompt lists a lab with a reference range, or a ratio
+- **THEN** the range is given as numbers only without repeating the unit, and a ratio is given without a unit
 
 #### Scenario: Contradictory shorthand is rejected
 - **WHEN** a note says "c/o denies", "c/o no" or "c/o neg"
@@ -135,7 +147,7 @@ Each note SHALL be written with style traits drawn from its seed (layout, order,
 - **THEN** each setting has six distinct notes, each passes the claims and identifier scans, none mentions the fiction, and every lab flag in them agrees with its reference range
 
 #### Scenario: Copying an exemplar is rejected
-- **WHEN** a note contains eight consecutive words from any exemplar of its setting, other than a stock line the traits asked for
+- **WHEN** a note contains eight consecutive plain words (numbers and lab names break a run) from any exemplar of its setting, other than a stock line the traits asked for
 - **THEN** it fails validation with an exemplar-copied code
 
 #### Scenario: Pilot reports variety against limits

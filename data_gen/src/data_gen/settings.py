@@ -44,7 +44,7 @@ PROFILES: dict[str, SettingProfile] = {
             "systems grouped by body system (Neuro, Eyes, MSK, General), a results block that lists each lab "
             "with its high or low flag and reference range, and a brief monitoring plan."
         ),
-        min_labs=1, max_labs=None, max_negatives=None,
+        min_labs=1, max_labs=6, max_negatives=3,
         show_flags=True, show_ref_ranges=True,
         stale_rate_multiplier=1.0, hedge_rate_multiplier=0.5, quote_patient=False,
     ),
@@ -66,7 +66,7 @@ PROFILES: dict[str, SettingProfile] = {
             "unchanged boilerplate, some carried-over text, then a few updated lines. Carried-over values "
             "are not labelled as old."
         ),
-        min_labs=2, max_labs=5, max_negatives=None,
+        min_labs=2, max_labs=5, max_negatives=3,
         show_flags=False, show_ref_ranges=False,
         stale_rate_multiplier=4.0, hedge_rate_multiplier=1.0, quote_patient=False,
     ),

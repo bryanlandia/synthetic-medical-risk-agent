@@ -71,7 +71,8 @@ def test_user_prompt_states_exactly_the_plan_facts(plans):
     for plan in plans[:150]:
         user = facts_of(build_prompt(plan).user)
         for lab in plan.labs:
-            assert LAB_BY_KEY[lab.lab].name in user and f"{display_value(lab.value)} {lab.unit}" in user
+            unit = "" if lab.unit == "ratio" else f" {lab.unit}"
+            assert LAB_BY_KEY[lab.lab].name in user and f"{display_value(lab.value)}{unit}" in user
         stated_names = {LAB_BY_KEY[l.lab].name for l in plan.labs}
         for key, lab in LAB_BY_KEY.items():
             if lab.name not in stated_names:
@@ -158,7 +159,7 @@ def test_no_prompt_value_has_more_than_three_significant_figures(plans):
     for plan in plans[:200]:
         for line in build_prompt(plan).user.splitlines():
             if "(abbreviation " in line:
-                number = re.search(r": (-?[\d.]+) ", line).group(1)
+                number = re.search(r": (-?[\d.]+)(?: |,|$)", line).group(1)
                 assert len(number.replace("-", "").replace(".", "").lstrip("0")) <= 3, line
 
 
@@ -168,8 +169,9 @@ def test_prompts_ask_for_one_wording_per_symptom_and_never_mention_fiction():
 
     for setting in LLM_SETTINGS:
         low = system_prompt(setting).lower()
-        assert "exactly one" in low and "mention that symptom once" in low
-        assert "never restate the same finding" in low
+        assert "mention it once" in low and "never several for the same symptom" in low
+        assert "never repeating the unit" in low and "fictional on purpose" in low
+        assert "never include drafts" in low
         assert "in a study" not in low  # the old opening line the model echoed as "fictional study condition"
     assert 'never write "c/o denies"' in system_prompt("shorthand").lower()
     assert "never \"c/o denies\"" in system_prompt("copy_forward").lower()

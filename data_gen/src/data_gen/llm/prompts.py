@@ -62,7 +62,7 @@ def prompt_text_hash(setting: str) -> str:
 
 
 def _fmt_range(lo: float, hi: float, unit: str) -> str:
-    return f"reference {lo:g}-{hi:g} {unit}"
+    return f"reference range {lo:g}-{hi:g}"  # numbers only: a real report does not repeat the unit
 
 
 def display_value(value: float) -> str:
@@ -73,7 +73,8 @@ def display_value(value: float) -> str:
 
 def _lab_line(lab: PlanLabV2) -> str:
     d = LAB_BY_KEY[lab.lab]
-    parts = [f"- {d.name} (abbreviation {d.abbr}): {display_value(lab.value)} {lab.unit}"]
+    unit = "" if lab.unit == "ratio" else f" {lab.unit}"  # a ratio has no unit to print
+    parts = [f"- {d.name} (abbreviation {d.abbr}): {display_value(lab.value)}{unit}"]
     if lab.flag:
         parts.append(f"flag {lab.flag}")
     if lab.ref_range:
@@ -83,7 +84,7 @@ def _lab_line(lab: PlanLabV2) -> str:
 
 def _symptom_line(s: PlanSymptomV2) -> str:
     phrases = " | ".join(f'"{p}"' for p in s.phrases)
-    line = f"- {_STATED_WORD[s.stated]}: allowed phrases {phrases}"
+    line = f"- {_STATED_WORD[s.stated]}: wording ideas {phrases}"
     if s.quote:
         line += "; include a short quote from the patient in their own words"
     return line
@@ -100,7 +101,7 @@ def build_prompt(plan: NotePlanV2) -> Prompt:
         f"Symptom findings to state (mention no other symptoms):\n{symptoms}"
         if plan.symptoms else "State no symptom findings at all."
     )
-    parts = [f"Documentation setting: {plan.style}", labs_block, symptoms_block]
+    parts = [labs_block, symptoms_block]
     style_lines = trait_lines(plan.style, plan.traits)
     if style_lines:
         parts.append("Style for this note (these decide the layout and habits of this note; follow them):\n"
