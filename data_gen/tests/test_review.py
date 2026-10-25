@@ -318,3 +318,13 @@ def test_review_defaults_to_the_highest_round_and_writes_there(pilot, tmp_path, 
 def test_review_with_no_rounds_says_so(tmp_path, capsys):
     assert main(["review", "--dir", str(tmp_path), "--note-source", "llm", "--estimate"]) == 2
     assert "no round with a sheet.json" in capsys.readouterr().err
+
+
+def test_the_glossary_lists_alternate_units_and_says_abnormal_values_are_not_a_tell():
+    from data_gen.labs import glossary_rows
+
+    for g in glossary_rows():
+        if "alt_unit" in g:
+            assert f"also reported in {g['alt_unit']}, reference range {g['alt_ref_lo']:g}-{g['alt_ref_hi']:g}" in REVIEWER_SYSTEM
+    assert "either is normal in a real chart" in REVIEWER_SYSTEM
+    assert "outside its range" in REVIEWER_SYSTEM and "not by itself a sign of artifice" in REVIEWER_SYSTEM

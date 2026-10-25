@@ -29,7 +29,7 @@ EXEMPLAR_COUNT = 6  # exemplar notes per setting (prompts/exemplars/<setting>.tx
 TRAITS: dict[str, tuple[Trait, ...]] = {
     "shorthand": (
         _t("labs",
-           pairs='Write each lab as its abbreviation and value only, for example "ABC 123", with no unit.',
+           pairs='Write each lab as its abbreviation and value only, for example "ABC 123", with no unit (except labs marked to write the unit).',
            units='Write each lab as abbreviation, value and unit, for example "ABC 123 mg/dL".',
            words='Write each lab with its short name, a colon and the value, for example "Name: 123".'),
         _t("order",

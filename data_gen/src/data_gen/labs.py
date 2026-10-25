@@ -154,5 +154,13 @@ SYMPTOM_STEMS: dict[str, str] = {
 def glossary_rows() -> list[dict]:
     """The fictional lab panel as a rater should see it. The rating app ships a copy (rating_ui/lib/glossary.json);
     a test keeps the two identical. No weights, coefficients or scoring data."""
-    return [{"name": lab.name, "abbr": lab.abbr, "unit": "" if lab.unit == "ratio" else lab.unit,
-             "ref_lo": lab.ref_lo, "ref_hi": lab.ref_hi} for lab in LABS]
+    rows = []
+    for lab in LABS:
+        row = {"name": lab.name, "abbr": lab.abbr, "unit": "" if lab.unit == "ratio" else lab.unit,
+               "ref_lo": lab.ref_lo, "ref_hi": lab.ref_hi}
+        if lab.alt_unit:  # some labs report in a second unit; both are normal in real charts
+            row["alt_unit"] = lab.alt_unit
+            row["alt_ref_lo"] = float(f"{lab.to_alt(lab.ref_lo):.3g}")
+            row["alt_ref_hi"] = float(f"{lab.to_alt(lab.ref_hi):.3g}")
+        rows.append(row)
+    return rows

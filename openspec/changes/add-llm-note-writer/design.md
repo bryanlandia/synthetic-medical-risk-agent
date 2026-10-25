@@ -82,6 +82,15 @@ Round 1 (variety levers on) rose from 5 to 18 of 51 accepted notes rated plausib
 
 The reviewer's remaining reasons were mostly about presentation: a unit repeated inside the reference range ("(ref 0.6-1.4 ratio)"), "ratio" as a unit, and invented analytes. The first two are fixed in the prompt; for the third the reviewer (prompt version 2) is now given the glossary of the fictional panel and told not to count it against a note. Stock phrases in the polarity pools that read stilted in prose ("not tired", "not woozy") were replaced.
 
+### What round 2 taught
+
+Round 2 (writer fixes, fictional-panel glossary for the reviewer): direct review rated shorthand 19/20, copy_forward 15/20, ehr_template 13/20 and ai_scribe 6/20 plausible (66% overall, up from 5/80 and then 18/51), with the browser run on 15 notes agreeing. Exclusions were still 23 to 31%, nearly all `symptom_repeated`. Findings and changes:
+
+- **Retries repeated the same note.** The model is nearly deterministic for an identical prompt, and a retry changed only the cache nonce, so it reproduced the rejected note. Retries now carry a plain explanation of why the last attempt failed (`feedback.py`).
+- **Unit complaints were the planned noise.** Notes stating a lab in its alternate unit (Velorin index in mmol/L with range 3.89-7.21) are deliberate noise and realistic, but the glossary listed one unit per test, so the reviewer called them inconsistent. The glossary (reviewer and rating app) now gives each test's second unit and converted range, and says either unit is normal and that abnormal or unremarked values are not by themselves a tell. A value in the unusual unit must also keep its unit in the note (shorthand had dropped it, leaving "BRE 0.549" meaningless).
+- **Stale values** in copy_forward (0.55-0.8 or 1.25-1.7 times the true value) look like unremarked critical values to the reviewer. They are part of the dataset by design and realistic for copied-forward text, so they are left in; the reviewer is told that out-of-range values are normal in real charts.
+- **Flags at a boundary.** A value of 0.5996 printed as 0.6 but was flagged low. Flags are now judged on the printed value.
+
 ## Risks / Trade-offs
 
 - [A too-small output limit silently truncates notes, and a validator bug makes good notes look bad (both happened in the first real pilot: Haiku 5.5 thinks by default and thinking counts against `max_tokens`, and a lab whose name and abbreviation contain digits was misread)] → Default `max_tokens` 2000; a `max_tokens` stop is its own failure (`truncated`) and is never validated as if complete; the parser skips a lab's own parenthesised restatement; a setting is stopped early when most of its first attempts fail, and a full run stops when most notes fail, so no money is spent on retries that cannot help; every run prints live progress and `-v` logs each call.

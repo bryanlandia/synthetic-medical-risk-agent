@@ -320,3 +320,21 @@ def test_style_errors_are_part_of_the_offline_checks():
     plan = _style_plan()
     errs = offline_errors("Denies fatigue, feels tired. c/o stiff joints.", plan)
     assert "symptom_repeated:fatigue" in errs
+
+
+def test_a_value_in_the_unusual_unit_must_keep_its_unit():
+    alt = PlanLabV2(lab="velorin_index", value=7.63, unit="mmol/L")
+    plan = make_plan(labs=[alt], style="shorthand")
+    assert lab_errors("VLI 7.63 mmol/L.", plan) == []
+    assert "lab_unit:velorin_index" in lab_errors("VLI 7.63", plan)  # unit dropped: 7.63 would read as a wrong value
+    usual = make_plan(labs=[PlanLabV2(lab="velorin_index", value=99.0, unit="mg/dL")], style="shorthand")
+    assert lab_errors("VLI 99", usual) == []  # the usual unit may be dropped in shorthand
+
+
+def test_the_prompt_says_to_write_the_unit_when_it_is_not_the_usual_one():
+    from data_gen.llm.prompts import build_prompt
+
+    alt = make_plan(labs=[PlanLabV2(lab="velorin_index", value=7.63, unit="mmol/L")], style="shorthand")
+    usual = make_plan(labs=[PlanLabV2(lab="velorin_index", value=99.0, unit="mg/dL")], style="shorthand")
+    assert "write the unit for this one" in build_prompt(alt).user
+    assert "write the unit for this one" not in build_prompt(usual).user

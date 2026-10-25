@@ -121,7 +121,7 @@ def test_exclusions_are_topped_up_and_reported(items, tmp_path):
             self.seen: dict[str, int] = {}
 
         def complete(self, **kw):
-            prompt = kw["prompt"]
+            prompt = kw["prompt"].split("\n\nYour previous attempt was rejected")[0]  # same facts on a retry
             plan = self.by_prompt.get(prompt)
             if plan is not None and plan.style == "ehr_template":
                 n = self.seen.setdefault(prompt, len(self.seen))

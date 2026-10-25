@@ -234,7 +234,7 @@ def _v2_labs(profile: SettingProfile, plan_labs: list[PlanLab], noise: list[Anno
     return [
         PlanLabV2(
             lab=pl.lab, value=pl.value, unit=pl.unit,
-            flag=lab_flag(pl.lab, pl.value, pl.unit) if profile.show_flags else None,
+            flag=lab_flag(pl.lab, round_sig(pl.value, 3), pl.unit) if profile.show_flags else None,  # as printed
             ref_range=_display_range(pl.lab, pl.unit) if profile.show_ref_ranges else None,
             stale=_is_stale(noise, pl.lab),
         )

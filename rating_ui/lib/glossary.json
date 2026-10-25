@@ -4,28 +4,40 @@
     "abbr": "VLI",
     "unit": "mg/dL",
     "ref_lo": 70,
-    "ref_hi": 130
+    "ref_hi": 130,
+    "alt_unit": "mmol/L",
+    "alt_ref_lo": 3.89,
+    "alt_ref_hi": 7.21
   },
   {
     "name": "Serum K-17",
     "abbr": "K17",
     "unit": "mmol/L",
     "ref_lo": 3.4,
-    "ref_hi": 5.0
+    "ref_hi": 5.0,
+    "alt_unit": "mg/dL",
+    "alt_ref_lo": 13.3,
+    "alt_ref_hi": 19.6
   },
   {
     "name": "Tarnic acid",
     "abbr": "TAC",
     "unit": "umol/L",
     "ref_lo": 200,
-    "ref_hi": 400
+    "ref_hi": 400,
+    "alt_unit": "mg/dL",
+    "alt_ref_lo": 3.36,
+    "alt_ref_hi": 6.72
   },
   {
     "name": "Brell enzyme",
     "abbr": "BRE",
     "unit": "U/L",
     "ref_lo": 15,
-    "ref_hi": 55
+    "ref_hi": 55,
+    "alt_unit": "ukat/L",
+    "alt_ref_lo": 0.25,
+    "alt_ref_hi": 0.917
   },
   {
     "name": "Halvin titer",

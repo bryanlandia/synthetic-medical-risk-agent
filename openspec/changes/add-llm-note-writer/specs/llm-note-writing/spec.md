@@ -107,6 +107,18 @@ Notes SHALL state lab values at the precision a lab report prints (three signifi
 - **WHEN** a note contains drafts, corrections or comments about the rules (such as "Wait," or "Corrected note")
 - **THEN** it fails validation with a meta-commentary code
 
+#### Scenario: A retry is told why the last attempt failed
+- **WHEN** an attempt fails validation for a reason the writer can act on
+- **THEN** the next attempt's prompt adds a plain explanation of the failure, and the first attempt's prompt has none
+
+#### Scenario: A value in the unusual unit keeps its unit
+- **WHEN** the plan states a lab in its alternate unit
+- **THEN** the prompt asks for the unit to be written, and a note that drops the unit fails validation, while the usual unit may be dropped in shorthand
+
+#### Scenario: Flags follow the printed value
+- **WHEN** a lab's value prints at or inside a reference limit after rounding
+- **THEN** it carries no high or low flag
+
 #### Scenario: Reference ranges and ratios read like a report
 - **WHEN** the prompt lists a lab with a reference range, or a ratio
 - **THEN** the range is given as numbers only without repeating the unit, and a ratio is given without a unit

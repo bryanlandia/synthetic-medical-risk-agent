@@ -222,3 +222,12 @@ test.describe("the fictional lab glossary", () => {
     await expect(page.getByTestId("note-id")).toContainText("n01");
   });
 });
+
+test("the glossary shows the second unit of tests that have one", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("glossary-toggle").click();
+  await expect(page.getByTestId("glossary-row-VLI")).toContainText("mmol/L (3.89–7.21)");
+  await expect(page.getByTestId("glossary-row-BRE")).toContainText("ukat/L (0.25–0.917)");
+  await expect(page.getByTestId("glossary-row-DOR")).toContainText("—");
+  await expect(page.getByTestId("glossary")).toContainText("either of two units");
+});

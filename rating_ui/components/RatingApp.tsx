@@ -304,16 +304,17 @@ function Glossary() {
       <summary data-testid="glossary-toggle">Lab panel used in these notes (fictional)</summary>
       <p>
         The lab names, abbreviations and units are made up on purpose. Please do not count them against a note: judge the
-        writing, the layout and how the values are presented, and whether a unit or range in a note disagrees with this list.
+        writing, the layout and how the values are presented, and and whether a unit or range in a note disagrees with this list. Some tests are reported in either of two units, and both are normal. A value outside its range, or one a note does not comment on, is not by itself a sign of an artificial note.
       </p>
       <table>
         <thead>
-          <tr><th scope="col">Test</th><th scope="col">Abbreviation</th><th scope="col">Unit</th><th scope="col">Reference range</th></tr>
+          <tr><th scope="col">Test</th><th scope="col">Abbreviation</th><th scope="col">Unit</th><th scope="col">Reference range</th><th scope="col">Also reported in</th></tr>
         </thead>
         <tbody>
           {glossary.map((g) => (
             <tr key={g.abbr} data-testid={`glossary-row-${g.abbr}`}>
               <td>{g.name}</td><td>{g.abbr}</td><td>{g.unit || "none (a ratio)"}</td><td>{g.ref_lo}–{g.ref_hi}</td>
+              <td>{"alt_unit" in g ? `${g.alt_unit} (${g.alt_ref_lo}–${g.alt_ref_hi})` : "—"}</td>
             </tr>
           ))}
         </tbody>

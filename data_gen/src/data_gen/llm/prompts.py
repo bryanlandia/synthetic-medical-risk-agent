@@ -75,6 +75,8 @@ def _lab_line(lab: PlanLabV2) -> str:
     d = LAB_BY_KEY[lab.lab]
     unit = "" if lab.unit == "ratio" else f" {lab.unit}"  # a ratio has no unit to print
     parts = [f"- {d.name} (abbreviation {d.abbr}): {display_value(lab.value)}{unit}"]
+    if lab.unit != d.unit:
+        parts.append("write the unit for this one (it is not the usual unit)")
     if lab.flag:
         parts.append(f"flag {lab.flag}")
     if lab.ref_range:

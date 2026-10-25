@@ -159,8 +159,9 @@ def lab_errors(text: str, plan: NotePlanV2) -> list[str]:
         mine = [m for m in mentions if m.lab == lab_key]
         good = []
         for m in mine:
-            if m.unit is not None and m.unit != pl.unit:
-                errs.append(f"lab_unit:{lab_key}")  # noise integrity: the plan's unit must be the one written
+            if (m.unit is not None and m.unit != pl.unit) or (m.unit is None and pl.unit != LAB_BY_KEY[lab_key].unit):
+                errs.append(f"lab_unit:{lab_key}")  # noise integrity: the plan's unit must be the one written, and a
+                # value in the unusual unit is never left without it (it would read as a wrong value)
             elif not _within(m.value, pl.value):
                 errs.append(f"lab_wrong:{lab_key}")
             else:
