@@ -12,6 +12,7 @@ from ..config import LLMConfig
 from ..schema import NotePlanV2
 from .checks import offline_errors
 from .client import LLMCallError, LLMClient, LLMRefusal
+from .feedback import feedback_text
 from .extractor import EXTRACTOR_MAX_TOKENS, extraction_errors, extractor_prompt, parse_extraction
 from .prompts import MarkerError, build_prompt, finalize_note
 
@@ -35,6 +36,7 @@ class WriteOutcome:
     output_tokens: int = 0
     failures: list[list[str]] = field(default_factory=list)  # failure codes of each failed attempt
     extraction: dict[str, str] | None = None  # the extractor's reading of the accepted note
+    last_text: str | None = None  # the most recent note produced, accepted or not (for feedback)
 
     @property
     def accepted(self) -> bool:
@@ -50,13 +52,16 @@ class NoteWriter:
     def write(self, plan: NotePlanV2) -> WriteOutcome:
         prompt = build_prompt(plan)
         out = WriteOutcome(text=None)
+        user = prompt.user
         for attempt in range(self.cfg.max_attempts):
             out.attempts += 1
-            codes = self._attempt(plan, prompt.system, prompt.user, attempt, out)
+            codes = self._attempt(plan, prompt.system, user, attempt, out)
             if isinstance(codes, str):
                 out.text = codes
                 return out
             out.failures.append(codes)
+            if note := feedback_text(codes, plan, out.last_text):
+                user = f"{prompt.user}\n\n{note}"  # the next attempt is told why this one failed
             log.info("%s note, attempt %d/%d failed: %s", plan.style, attempt + 1, self.cfg.max_attempts,
                      ", ".join(codes))
         log.warning("%s note excluded after %d attempts", plan.style, out.attempts)
@@ -101,6 +106,7 @@ class NoteWriter:
             text = finalize_note(result.text, plan)
         except MarkerError:
             return ["marker"]
+        out.last_text = text
         codes = offline_errors(text, plan)
         if codes:
             return codes

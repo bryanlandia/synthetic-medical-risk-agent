@@ -161,7 +161,7 @@ def test_run_and_write_records_provenance(items, tmp_path):
     by_split, manifest = read_dataset(out)
     assert manifest["note_source"] == "llm" and manifest["plan_version"] == "2" and manifest["schema_version"] == "2"
     llm = manifest["llm"]
-    assert llm["model_id"] == "claude-haiku-5-5" and llm["prompt_version"] == "1"
+    assert llm["model_id"] == "claude-haiku-5-5" and llm["prompt_version"] == "2"
     assert llm["pair_groups_planned"] == 6 and llm["pair_groups_dropped"] == 0
     assert manifest["llm_calls"] == c.misses and manifest["llm_calls"] > 0
     assert llm["excluded"] == {} and manifest["excluded_records"] == 0

@@ -1,0 +1,52 @@
+SPECIALIST FOLLOW-UP
+HPI: Seen for routine follow-up. Doing well since last visit with no new concerns raised.
+ROS:
+  Neuro: negative for tremor
+  Eyes: positive for light sensitivity
+RESULTS:
+  Velorin index (VLI): 112 mg/dL (ref 70-130)
+  Brell enzyme (BRE): 61 U/L (H, ref 15-55)
+PLAN: Continue monitoring. Recheck labs at next scheduled visit.
+=====
+[Results]
+Serum K-17 (K17) 4.1 mmol/L (ref 3.4-5.0); Halvin titer (HAT) 3.4 g/dL (ref 3.0-5.0); Osmet level (OSM) 281 mOsm/kg (ref 270-310)
+
+[History]
+Return visit. Patient says things are about the same. Chart reviewed prior to visit.
+
+[Review of Systems]
+General: tired on and off. MSK: no joint stiffness.
+
+[Plan]
+1. Continue current monitoring.
+2. Return in 3 months or sooner if symptoms change.
+=====
+Follow-up visit - specialty clinic
+
+History: Interval visit, no acute issues. Medications and allergies reviewed.
+Review of systems: Positive for dizzy spells. Negative for photophobia, joint stiffness.
+Results:
+- Tarnic acid (TAC): 187 umol/L (L, ref 200-400)
+- Plexa count (PLX): 233 x10^9/L (ref 150-400)
+Plan: Recheck at next visit.
+=====
+VISIT NOTE
+Reason for visit: scheduled follow-up.
+ROS - General: possible low energy. Neuro: hands steady. Eyes: denies photophobia.
+RESULTS: DOR 1.2 ratio (ref 0.6-1.4) | VLI 131 mg/dL (H, ref 70-130) | TAC 342 umol/L (ref 200-400)
+PLAN: 1) Continue monitoring 2) Repeat panel at next visit
+=====
+Specialist follow-up. Brief typed history: patient is back for routine review, nothing new reported.
+Review of systems
+  Neuro: occasional shaky hands
+  MSK: joints feel stiff
+Results
+  Brell enzyme (BRE) 28 U/L (ref 15-55)
+  Halvin titer (HAT) 4.4 g/dL (ref 3.0-5.0)
+Plan: Monitoring continues; follow up as scheduled.
+=====
+FOLLOW-UP / RESULTS REVIEW
+Chart reviewed prior to visit. Patient seen for follow-up of ongoing specialist review.
+ROS: Negative for tremor, light sensitivity. Positive for fatigue.
+Labs: Osmet level (OSM) 304 mOsm/kg (ref 270-310); Serum K-17 (K17) 5.3 mmol/L (H, ref 3.4-5.0)
+Plan: Continue monitoring. Return in 6 weeks.

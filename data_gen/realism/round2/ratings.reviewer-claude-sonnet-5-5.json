@@ -1,0 +1,969 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "2",
+  "rater": "reviewer-claude-sonnet-5-5",
+  "ratings": {
+    "n01": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n02": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "VLI is reported in mmol/L, but the fictional analyte list defines it in mg/dL (a value of 7.63 does not fit the 70-130 range), so the unit is wrong; the symptom list is also mechanically uniform.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n03": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n04": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n05": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "VLI is reported as 5.91 mmol/L, but the Velorin index is measured in mg/dL with a range of 70-130, so the value and unit are inconsistent, and OSM 152 is far outside the reference range with no comment in the note.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n06": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n07": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Velorin index is reported as 4.61 mmol/L with a ref of 3.89-7.21, which contradicts the defined unit (mg/dL) and range (70-130), so the lab formatting is inconsistent with the analyte definitions.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n08": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n09": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n10": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n11": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n12": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n13": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n14": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n15": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n16": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Tarnic acid is reported in mg/dL with a reference range of 3.36-6.72, which disagrees with the defined unit (umol/L) and range (200-400), so the lab line is internally inconsistent with the analyte list.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n17": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n18": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "possible",
+        "tremor": "none"
+      }
+    },
+    "n19": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n20": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n21": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The Velorin index is reported in mmol/L with a value of 6.89, which contradicts its defined unit (mg/dL) and reference range of 70-130, and the prose is blandly uniform.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n22": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n23": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Serum K-17 is reported as 16.7 mg/dL, but the unit should be mmol/L (reference 3.4-5), and the value is implausibly high; the terse bullet list also looks mechanically constructed.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n24": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Velorin index is reported in mmol/L, but its unit is mg/dL and the reference range is 70-130, so 3.85 is implausible; the prose is also tidy and formulaic.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n25": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom review runs through tremor, fatigue, light sensitivity, wooziness and stiffness in a mechanical pattern, with tidy quoted patient statements and a hedge ('maybe') repeated after 'Possibly'. The labs and plan are appended in a clean, templated way that reads like generated text.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n26": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n27": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n28": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as a tidy, mechanical symptom sweep (dizziness present, tremor and photophobia denied, stiffness uncertain) with repeated 'they say' phrasing, no exam, vitals, labs or plan details, and a stock closing line, so it looks model-generated rather than clinician-written.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n29": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The prose is too tidy and mechanical: the symptoms are listed in a stock pattern (no fatigue, no dizzy spells, possible tremor with a neat hedged quote), and the lone PLX value comes with no interpretation, so it reads like a generated note.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n30": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n31": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n32": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n33": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n34": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n35": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n36": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The prose is tidy and uniform, with a mechanical tremor/stiffness/dizziness pattern and synonym-style phrasing ('wooziness or dizzy spells'). The DOR value is given to three decimals with no reference range or flag, and the closing line about the scheduled visit reads like filler.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n37": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n38": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n39": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Velorin index is reported as 5.1 mmol/L with ref 3.89-7.21, which contradicts the defined mg/dL unit and 70-130 range, and DOR 0.6 is flagged low although it sits at the lower limit of its range.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n40": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Serum K-17 is reported as 16.5 mg/dL with a reference range of 13.3-19.6, which contradicts the defined unit (mmol/L) and range (3.4-5).",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n41": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n42": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n43": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n44": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n45": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n46": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Brell enzyme is reported in ukat/L with a reference range of 0.25-0.917, which contradicts the defined unit (U/L, 15-55); the ROS is also mechanically organized by system with a uniform pattern.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n47": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n48": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "OSM 158 mOsm/kg is far below the 270-310 reference range, which would be a critical value, yet the note simply says to recheck at the next visit with no comment, and the symptom list (tired / no tremor / no bright-light trouble / denies joint stiffness) reads mechanically.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n49": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n50": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Serum K-17 is reported as 15.8 mg/dL, but the analyte is measured in mmol/L with a reference range of 3.4-5, so both the unit and the value are wrong. The prose is also tidy and formulaic.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n51": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n52": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Velorin index is reported in mmol/L with a reference range of 3.89-7.21, which contradicts the defined mg/dL and 70-130; also the redundant 'lightheadedness absent. No lightheadedness.' duplication reads as templated artifice.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n53": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n54": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n55": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n56": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n57": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as a tidy, templated summary with stock phrasing ('The patient states', 'They mention no', 'cannot pin down') and an even sentence rhythm, with no exam, plan or values; it feels generated rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n58": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Brell enzyme is reported in ukat/L, which disagrees with the defined unit U/L (and the value 0.703 would be far below the 15-55 range), and the prose is tidy and formulaic.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n59": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n60": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note repeats the same three findings in two near-identical paragraphs with stiff, mechanical phrasing ('notes that joints are not stiff', 'No lab results are included in this summary'), which reads like generated text rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n61": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as tidy and formulaic: every symptom sentence opens with 'She states/mentions/denies', and the quote and the vague closing line sound written rather than charted, with no vitals, labs or assessment.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n62": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n63": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n64": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n65": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n66": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n67": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as templated and mechanically structured, with over-explained denials ('hands are steady and describes no tremor', 'according to the patient') and a tidy lab list with all values normal, but it lacks any clinical context, assessment or plan.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n68": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n69": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n70": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n71": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "possible",
+        "tremor": "absent"
+      }
+    },
+    "n72": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n73": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "BRE 0.549 has no unit and is implausible for a U/L enzyme with a 15-55 range (looks like a ratio-scale value), and the terse symptom-denial plus unlabeled lab string reads like a synthetic fragment rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n74": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Brell enzyme is reported in ukat/L with a reference range of 0.25-0.917, which contradicts the defined unit (U/L) and range (15-55).",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n75": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n76": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The prose is tidy and formulaic, with a mechanical pattern of present/denied/uncertain symptoms and over-explained hedging ('uncertain and not clearly constant'); dizziness is never mentioned, and the lab line reads as stock text.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n77": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "VLI is reported as 7.49 mmol/L, but the Velorin index is measured in mg/dL with a reference range of 70-130, so both the unit and the magnitude are wrong.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n78": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n79": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n80": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is vague, evenly worded and padded with filler (\"managing day to day without any changes\"), and the two symptom denials read as mechanically inserted, which fits an LLM imitation better than a real chart entry.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    }
+  },
+  "version": 1
+}

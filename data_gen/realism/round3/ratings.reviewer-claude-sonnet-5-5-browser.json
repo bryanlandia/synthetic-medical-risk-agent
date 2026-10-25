@@ -1,0 +1,237 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "3",
+  "rater": "reviewer-claude-sonnet-5-5-browser",
+  "ratings": {
+    "n01": {
+      "comment": "Awkward \"reports denying\" phrasing and a mechanically varied pattern of denial, quote, and hedge across symptoms read like LLM-generated text, not a real visit note.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n02": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n03": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n04": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n05": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "possible"
+      }
+    },
+    "n06": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n07": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n08": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n09": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "possible"
+      }
+    },
+    "n10": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n11": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n12": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n13": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n14": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n15": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "possible",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n16": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n20": {
+      "comment": "Tidy, uniformly phrased prose with generic filler (\"reviewed in passing\", \"see again in a few weeks\") and mechanical symptom pattern reads like LLM-generated rather than real charting.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n21": {
+      "comment": "Reads as LLM-written: polished patient quote, symptoms covered in a tidy present/absent pattern, and a generic closing line.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n24": {
+      "comment": "Vague, lay-language paraphrase (\"someone\", \"shakiness in their hands\", lab \"mentioned in passing\") that no clinician would chart.",
+      "plausible": "n",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    }
+  },
+  "version": 1
+}

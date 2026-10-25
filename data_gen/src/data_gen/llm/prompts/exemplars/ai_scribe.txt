@@ -1,0 +1,35 @@
+Subjective:
+The patient presents for a follow-up visit and reports that things have been stable since the last appointment. The patient denies tremor and describes mild morning stiffness in the joints. No dizziness was reported.
+
+Objective:
+Laboratory results were reviewed with the patient: Velorin index 104 mg/dL and Halvin titer 4.1 g/dL.
+
+Assessment and Plan:
+Symptoms are stable. Monitoring will continue and the patient will return in a few weeks. The patient verbalized understanding.
+=====
+History of Present Illness:
+The patient returns for routine follow-up. They report feeling tired on and off over the past few weeks and are unsure whether it has worsened. They deny any sensitivity to bright light and have had no lightheadedness.
+
+Assessment and Plan:
+Results were reviewed together, including a Tarnic acid of 289 umol/L and a Brell enzyme of 33 U/L. No changes are planned today, and the next visit is already scheduled.
+=====
+Visit Summary:
+This is a follow-up visit. The patient reports occasional shakiness in the hands but says energy levels are fine and denies joint stiffness. Results discussed during the visit included a Halvin titer of 4.2 g/dL.
+
+The patient is doing well overall and nothing is being changed for now. Follow-up is planned in a couple of months. All questions were answered.
+=====
+The patient comes in for a routine check and describes a quiet few weeks with no new concerns. They deny tremor and report feeling lightheaded now and then when standing up quickly, though they could not say how often.
+
+Lab values were reviewed with the patient, including an Osmet level of 296 mOsm/kg. The next visit will be scheduled in a few weeks.
+=====
+Subjective:
+The patient reports sensitivity to bright light that comes and goes. The patient denies fatigue and joint stiffness.
+
+Objective:
+Results reviewed: Plexa count 262 x10^9/L, Dorrin ratio 1.1, and Serum K-17 4.6 mmol/L.
+
+Assessment and Plan:
+Findings are similar to the last visit. Continue monitoring and recheck at the next scheduled visit.
+=====
+Visit Summary:
+Follow-up visit. The patient states there have been no new problems since the last appointment, denies tremor, and mentions feeling woozy once or twice this month. The patient is not sure what set it off. The Velorin index was reviewed with the patient and was 98 mg/dL. No changes today, and the next visit will be as scheduled.

@@ -196,3 +196,47 @@ test.describe("file naming matches the Python side", () => {
     }
   });
 });
+
+test.describe("the fictional lab glossary", () => {
+  test("is on the start page and on the rating page and lists every analyte", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByTestId("glossary")).toBeVisible();
+    const name = uniqueName("gloss");
+    await page.keyboard.type(name);
+    await page.keyboard.press("Enter");
+    await expect(page.getByTestId("rater")).toHaveText(name);
+    await page.getByTestId("glossary-toggle").click();
+    for (const abbr of ["VLI", "K17", "TAC", "BRE", "HAT", "OSM", "PLX", "DOR"]) {
+      await expect(page.getByTestId(`glossary-row-${abbr}`)).toBeVisible();
+    }
+    await expect(page.getByTestId("glossary-row-VLI")).toContainText("mg/dL");
+    await expect(page.getByTestId("glossary-row-VLI")).toContainText("70–130");
+    await expect(page.getByTestId("glossary")).toContainText("made up on purpose");
+  });
+
+  test("opening it with the keyboard does not move to the next note", async ({ page }) => {
+    await startAs(page, uniqueName("gk"));
+    await page.getByTestId("glossary-toggle").focus();
+    await page.keyboard.press("Enter");
+    await expect(page.getByTestId("glossary-row-TAC")).toBeVisible();
+    await expect(page.getByTestId("note-id")).toContainText("n01");
+  });
+});
+
+test("the glossary shows the second unit of tests that have one", async ({ page }) => {
+  await page.goto("/");
+  await page.getByTestId("glossary-toggle").click();
+  await expect(page.getByTestId("glossary-row-VLI")).toContainText("mmol/L (3.89–7.21)");
+  await expect(page.getByTestId("glossary-row-BRE")).toContainText("ukat/L (0.25–0.917)");
+  await expect(page.getByTestId("glossary-row-DOR")).toContainText("—");
+  await expect(page.getByTestId("glossary")).toContainText("either of two units");
+});
+
+
+test("each note shows what kind of documentation it is meant to be", async ({ page }) => {
+  await startAs(page, uniqueName("kind-ui"));
+  await expect(page.getByTestId("note-kind-label")).toHaveText("AI-scribe draft.");
+  await expect(page.getByTestId("note-kind")).toContainText("tidy, formal prose is expected");
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByTestId("note-kind-label")).toHaveText("Quick shorthand note.");
+});

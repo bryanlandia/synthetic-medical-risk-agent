@@ -66,6 +66,7 @@ class OracleLLM:
             body = prompt.split('Note:\n"""\n', 1)[1].rsplit('\n"""', 1)[0].strip()
             return LLMResult(json.dumps(expected_extraction(self.by_body[body])), 400, 60, "end_turn")
         self.calls.append("writer")
+        prompt = prompt.split("\n\nYour previous attempt was rejected")[0]  # a retry adds feedback; the facts are the same
         plan = self.by_prompt[prompt]
         if self.fail_setting in (plan.style, "*"):
             n = self.ordinal[prompt]

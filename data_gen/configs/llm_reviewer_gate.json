@@ -1,0 +1,5 @@
+{
+  "llm": {
+    "gate_rater_kinds": ["llm"]
+  }
+}

@@ -44,10 +44,10 @@ def load_blind_sheet(round_dir: Path) -> dict:
     return json.loads((Path(round_dir) / "sheet.json").read_text())
 
 
-def review_note(client: LLMClient, cfg: GenConfig, text: str) -> NoteRating | None:
+def review_note(client: LLMClient, cfg: GenConfig, text: str, kind: dict | None = None) -> NoteRating | None:
     for attempt in range(cfg.llm.reviewer_max_attempts):
         try:
-            result = client.complete(system=REVIEWER_SYSTEM, prompt=review_prompt(text), model=cfg.llm.reviewer_model_id,
+            result = client.complete(system=REVIEWER_SYSTEM, prompt=review_prompt(text, kind), model=cfg.llm.reviewer_model_id,
                                      max_tokens=cfg.llm.reviewer_max_tokens, nonce=attempt)
         except LLMRefusal:
             continue
@@ -68,7 +68,7 @@ def review_round(cfg: GenConfig, client: LLMClient, round_dir: Path, progress=No
     sheet = load_blind_sheet(round_dir)
     notes = sheet["notes"]
     out = ReviewResult()
-    stream = ordered_parallel(lambda n: review_note(client, cfg, n["text"]), notes, cfg.llm.concurrency)
+    stream = ordered_parallel(lambda n: review_note(client, cfg, n["text"], n.get("kind")), notes, cfg.llm.concurrency)
     try:
         for note, rating in stream:
             if rating is None:
@@ -105,3 +105,30 @@ def controls_gap(ratings: dict[str, NoteRating], key: dict) -> dict | None:
         return None
     return {"notes_rate": notes[0], "controls_rate": controls[0], "gap": notes[0] - controls[0],
             "n_notes": notes[1], "n_controls": controls[1]}
+
+
+def with_kinds(round_dir: Path) -> tuple[dict, int]:
+    """The round's sheet with each note's kind filled in from the key where it is missing (rounds written before kinds
+    existed). Nothing is written. Returns the sheet and how many notes were filled in."""
+    from ..note_kinds import kind_for
+
+    round_dir = Path(round_dir)
+    sheet = load_blind_sheet(round_dir)
+    key_file = round_dir / "key.json"
+    if not key_file.exists():
+        return sheet, 0
+    key = json.loads(key_file.read_text())["notes"]
+    changed = 0
+    for note in sheet["notes"]:
+        if "kind" not in note and note["id"] in key:
+            note["kind"] = kind_for(key[note["id"]]["setting"])
+            changed += 1
+    return sheet, changed
+
+
+def ensure_kinds(round_dir: Path) -> int:
+    """Write the kinds into sheet.json so the rating app shows them too. Idempotent."""
+    sheet, changed = with_kinds(round_dir)
+    if changed:
+        (Path(round_dir) / "sheet.json").write_text(json.dumps(sheet, indent=2) + "\n")
+    return changed

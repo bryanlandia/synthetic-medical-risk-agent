@@ -1,0 +1,45 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "3",
+  "rater": "reviewer-claude-sonnet-5-5",
+  "ratings": {
+    "n78": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n79": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n80": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as a tidy, uniform symptom checklist (shaking, exhaustion with a quote, dizziness, then neat denials of photophobia and joint stiffness) with a generic lab sentence and no exam, assessment, or plan, which looks like LLM-generated imitation rather than a real chart entry.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    }
+  },
+  "version": 1
+}

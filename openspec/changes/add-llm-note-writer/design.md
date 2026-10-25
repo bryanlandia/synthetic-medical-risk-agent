@@ -60,6 +60,73 @@ These come from general knowledge of documentation styles and are plausible stan
 
 **Statistical power is part of the design.** With about 1,000 test notes over four settings there are roughly 250 per setting, enough for rough per-setting estimates (a rough AUC uncertainty near ±0.04) but not fine comparisons. The evals should report confidence intervals; enlarging the test split is a config change if finer slices are wanted.
 
+### Variety comes from the inputs, not from the model (added after the round-0 review)
+
+The review's complaint was uniformity: the same layout and openers on every note of a setting (round 0: 100% of copy_forward notes opened "Patient seen in", 70% of ehr_template, 40% of ai_scribe). These models take no temperature or sampling settings, so asking the model to "vary" cannot be relied on. Three levers, all seeded and recorded:
+
+1. **Polarity-specific wording pools.** Each symptom has six or more phrases for present, hedged and denied. Negating a positive pool produced "feels not exhausted, no low energy". The plan offers two or three candidates and the writer uses one.
+2. **Style traits** (`traits.py`): per note, a few habits drawn from the render seed (heading style, section order, how labs and negatives are laid out, how the note opens and closes), turned into "style lines" in the prompt. Shorthand has four traits, the documented settings five or six. The draw uses its own stream, so no other plan field moves. The traits live in the plan, so evals can slice or hold out by them.
+3. **Exemplars**: six original fictional notes per setting, written from features observed in public sample notes and abbreviation guides (grouped negatives, trend phrasing, stock "reviewed, no changes" lines, terse fragments, numbered plans, either skeletal or verbose AI-scribe summaries), not copied from them. Each note is shown two of the six, chosen by seed, with an instruction to match register and rhythm only. The copy risk is mitigated by showing few, by a code check that rejects eight consecutive words from any exemplar, and by the exemplars being fictional with this project's lab panel.
+
+Variety is measured in code (top opener share, distinct trait combinations) and reported by the pilot, in addition to the reviewer's verdict. The pilot's per-setting limits were set below the round-0 baseline. Alternatives rejected: asking the model for "variety" in the prompt (unreliable without sampling control), and scraping real notes (private, and licensing).
+
+Cost: the exemplars add about 400 input tokens per writer call (a few cents per pilot).
+
+### What round 1 taught (added after the second review)
+
+Round 1 (variety levers on) rose from 5 to 18 of 51 accepted notes rated plausible (ehr_template 7/20, copy_forward 10/20), but my own new checks rejected 20 to 62% of the writer's notes (repeated wording 103, missing phrase 40, copied exemplar 39), leaving ai_scribe and shorthand with only 8 and 3 accepted notes. Reading the rejected text showed three mistakes of mine:
+
+- **Rigid wording rules caused the stilted text.** "Use exactly one of these phrases" made the model contort ("Negative for denies fatigue", "not woozy at all") and, for shorthand, print its own reasoning ("Wait, that breaks the rule..."). Wording is now a vocabulary hint; mention detection is lenient; polarity stays with the independent extractor. Repetition is flagged only inside one sentence or at three wordings, and reasoning leaking into the output is its own failure code.
+- **The exemplar-copy check fired on result blocks** that merely share a layout with an exemplar. Numbers and lab names now break a run.
+- **Uniformity came from the profile.** ehr_template listed all eight labs in a uniform block, and several settings stated every symptom, one positive and four negatives. ehr_template now states at most six labs, ehr_template and copy_forward at most three negatives, and ai_scribe at most one patient quote.
+
+The reviewer's remaining reasons were mostly about presentation: a unit repeated inside the reference range ("(ref 0.6-1.4 ratio)"), "ratio" as a unit, and invented analytes. The first two are fixed in the prompt; for the third the reviewer (prompt version 2) is now given the glossary of the fictional panel and told not to count it against a note. Stock phrases in the polarity pools that read stilted in prose ("not tired", "not woozy") were replaced.
+
+### What round 2 taught
+
+Round 2 (writer fixes, fictional-panel glossary for the reviewer): direct review rated shorthand 19/20, copy_forward 15/20, ehr_template 13/20 and ai_scribe 6/20 plausible (66% overall, up from 5/80 and then 18/51), with the browser run on 15 notes agreeing. Exclusions were still 23 to 31%, nearly all `symptom_repeated`. Findings and changes:
+
+- **Retries repeated the same note.** The model is nearly deterministic for an identical prompt, and a retry changed only the cache nonce, so it reproduced the rejected note. Retries now carry a plain explanation of why the last attempt failed (`feedback.py`).
+- **Unit complaints were the planned noise.** Notes stating a lab in its alternate unit (Velorin index in mmol/L with range 3.89-7.21) are deliberate noise and realistic, but the glossary listed one unit per test, so the reviewer called them inconsistent. The glossary (reviewer and rating app) now gives each test's second unit and converted range, and says either unit is normal and that abnormal or unremarked values are not by themselves a tell. A value in the unusual unit must also keep its unit in the note (shorthand had dropped it, leaving "BRE 0.549" meaningless).
+- **Stale values** in copy_forward (0.55-0.8 or 1.25-1.7 times the true value) look like unremarked critical values to the reviewer. They are part of the dataset by design and realistic for copied-forward text, so they are left in; the reviewer is told that out-of-range values are normal in real charts.
+- **The recorded demo missed a setting.** `--max-notes 15` took the first 15 notes of the shuffled sheet, which by chance held one ai_scribe note. A browser run limited by `--max-notes` now rates a sample spread evenly over the four settings (interleaved, template controls left out), chosen by the command from the key; the reviewer still sees only notes.
+- **Flags at a boundary.** A value of 0.5996 printed as 0.6 but was flagged low. Flags are now judged on the printed value.
+
+### What AI scribe tools actually produce (research, added after round 3)
+
+A reviewer of the round-3 recording expected the ai_scribe setting to look like a whole conversation. Published descriptions and studies of ambient scribes (vendor documentation and evaluations; sources in the proposal notes) agree that the tool records the visit conversation, transcribes it, and then drafts a structured clinical note, usually SOAP or a variant, for the clinician to review and sign. The transcript is a separate artifact, not the note. Features that matter here:
+
+- **Structured and sectioned**, with History of Present Illness, Assessment and Plan, sometimes problem-based, and optional structured data.
+- **Third-person paraphrase** ("The patient reports improved breathing"), plain full words, not clinician shorthand, and no quoting of the patient.
+- **Only what was said aloud**: an unread-out value (a blood pressure never spoken) is simply absent. So labs appear only as results reviewed or discussed, which is what the setting now does.
+- **Longer and more thorough than clinician notes, less concise**; stock closing sentences are common; errors are mostly omissions, with some additions.
+
+The earlier setting asked for hedged flowing prose with patient quotes and "labs in passing", which matched none of this. It now uses four headed layouts as traits, no quotes, a "reviewed with the patient" treatment of results, and optional stock sentences ("The patient verbalized understanding."). The setting's opener limit is looser (45%) because scribe notes legitimately start with the same heading. A *transcript* of the conversation would be a different input type for a different eval (reading a dialogue); it is out of scope here and noted as possible later work. The copy_forward openers are now literal stock lines drawn by trait, because round 3 showed the model reused the sample opening line the prompt gave it in half of its notes.
+
+Recording labels: the demo recording shows each note's kind in a corner of the page. The driver draws it from the key; no tool returns it, so the reviewer model stays blind and the human rating app is unchanged.
+
+### Raters are told the kind of note (added after round 3)
+
+The reviewer was kept blind to the setting, which made it judge an AI-scribe draft by the standard of a human's note and reject it as "tidy" or "mechanical", which is exactly what such tools produce (see the research above). The same holds for an EHR template. So every rater now sees each note's kind and what is normal for it, in the rating app and in the reviewer's prompt; the question becomes "is this a convincing example of that kind?", which is the question the gate per setting is really asking. What stays hidden is the answer: plan, extractor reading, record and internal setting name. The template-fixture controls are described as a plain clinician-written note, because telling the reviewer they are controls would defeat the discrimination check. The per-note kinds are written into `sheet.json` for new pilots and added from the key for older rounds when the reviewer command runs (a dry run writes nothing). The recording-only label drawn by the driver was dropped, as the page itself now shows the kind. Reviewer prompt version 4.
+
+Trade-off: a reviewer told "tidy is expected" can be too generous to a genuinely bad scribe note. The reviewer still judges whether it reads like real scribe output, and the controls check still has to pass.
+
+### What round 4 showed (added after the fourth review)
+
+With the ai_scribe redesign and kind-aware raters, the direct review rated 79 of 80 notes plausible and the browser run 16 of 16. Three follow-ups:
+
+- **A lenient reviewer is not a result.** Round 4 had no template controls, so the check that the reviewer rates bad notes lower never ran. Controls now go into every pilot round, a fresh set each round, and the reviewer should also be run on round 0, whose notes were known to be weak, before its verdict on later rounds is trusted.
+- **ai_scribe was still rejecting natural wording** (26% exclusions, over the 15% gate limit). The replay of rejected attempts showed "denies any shaking or tremor" and "joint stiffness and morning stiffness" flagged as padding, which scribe prose does naturally. For ai_scribe the repetition limit is a third wording in a sentence or a fourth anywhere; terse and templated settings keep the stricter limit. The same replay passes 31 of 34 first attempts (from 9 of 39).
+- **Smaller fixes:** the exemplar-copy check now needs ten plain words in a row and exempts stock sentences as well as stock lines; the copy_forward opener limit is 45%, since 40% of 20 notes from four equal stock openers is within chance.
+
+### Round 5 and calibrating the reviewer (added after the fifth review)
+
+Round 5 used the writer with all fixes, and the reviewer prompt version 4 (told each note's kind and the fictional panel). Direct review: shorthand 19/20, ehr_template 19/20, ai_scribe 20/20, copy_forward 19/20 plausible (96% overall); exclusions 0 to 9% (limit 15%); variety passes for all four settings; extractor agreement 1.00 on every flag. The 8 fresh template controls were rated plausible 4 of 8 (50%), a 46-point gap below the LLM notes (limit 20). The gate passes with `llm` accepted, and says so ("rated by: llm (not a clinician)").
+
+Calibration: to show that a lenient reviewer is not what produced those numbers, the same reviewer was run on round 0, whose notes carried the known tells (four-digit lab values, "c/o denies", synonym padding, "fictional study condition"). It rated 44 of 80 of them plausible (shorthand 12/20, ehr_template 11/20, ai_scribe 16/20, copy_forward 5/20) and 2 of 8 round-0 controls, so it separates the old notes from the revised ones (55% against 96%). The reviewer file of an earlier prompt version left in a round's folder is not comparable and should be removed before a gate over several rounds (it was non-discriminating on one control); the final gate is run on the latest round.
+
+The cost estimate for the full run at default sizes is about $2.68 (6,020 notes; about 11,550 first-attempt calls and 2,900 expected retries, 489 already cached), calibrated from the pilot cache, well under the $15 cap.
+
 ## Risks / Trade-offs
 
 - [A too-small output limit silently truncates notes, and a validator bug makes good notes look bad (both happened in the first real pilot: Haiku 5.5 thinks by default and thinking counts against `max_tokens`, and a lab whose name and abbreviation contain digits was misread)] → Default `max_tokens` 2000; a `max_tokens` stop is its own failure (`truncated`) and is never validated as if complete; the parser skips a lab's own parenthesised restatement; a setting is stopped early when most of its first attempts fail, and a full run stops when most notes fail, so no money is spent on retries that cannot help; every run prints live progress and `-v` logs each call.

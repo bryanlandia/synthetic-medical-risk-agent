@@ -58,6 +58,7 @@ TOOLS: list[dict[str, Any]] = [
 TOOL_NAMES = {t["name"] for t in TOOLS}
 
 
+
 @dataclass
 class SessionLog:
     path: Path
@@ -73,8 +74,10 @@ class SessionLog:
 class BrowserTools:
     """The reviewer's hands: each tool maps to fixed actions on the app's test ids."""
 
-    def __init__(self, page: Any, session: SessionLog, total_notes: int, pause: float = 0.0):
+    def __init__(self, page: Any, session: SessionLog, total_notes: int, pause: float = 0.0,
+                 order: list[str] | None = None):
         self.page, self.session, self.total = page, session, total_notes
+        self.order = order  # the notes to visit, in order, when only a sample is rated; None = all, in sheet order
         self.pause = pause  # seconds to dwell where a viewer of the recording needs to read the page
         self.finished = False
 
@@ -97,12 +100,14 @@ class BrowserTools:
             "plausible": plausible, "symptoms": symptoms,
             "comment": p.get_by_test_id("comment").input_value(),
             "progress": p.get_by_test_id("progress").inner_text(),
+            "kind": (p.get_by_test_id("note-kind").inner_text() if p.get_by_test_id("note-kind").count() else ""),
         }
 
     def describe(self) -> str:
         s = self.state()
         missing = [k for k, v in s["symptoms"].items() if v is None] + (["plausible"] if s["plausible"] is None else [])
-        return (f"Note {s['note_id']} ({s['progress']}):\n\"\"\"\n{s['text']}\n\"\"\"\n"
+        kind = f"Kind of note: {s['kind']}\n" if s["kind"] else ""
+        return (f"Note {s['note_id']} ({s['progress']}):\n{kind}\"\"\"\n{s['text']}\n\"\"\"\n"
                 f"Set so far: plausible={s['plausible']}, symptoms={s['symptoms']}, comment={s['comment']!r}. "
                 f"Missing: {', '.join(missing) or 'nothing'}.")
 
@@ -125,7 +130,7 @@ class BrowserTools:
             return f"refused: wrong arguments for {name}", "refused"
 
     def _saved(self) -> None:
-        self.page.get_by_test_id("save-state").filter(has_text="Saved").wait_for(timeout=10_000)
+        self.page.get_by_test_id("save-state").filter(has_text="Saved").wait_for(timeout=20_000)
 
     def _tool_read_note(self) -> str:
         return self.describe()
@@ -164,20 +169,31 @@ class BrowserTools:
     def _tool_next_note(self) -> str:
         if missing := self._incomplete():
             raise _Rejected(f"this note is not complete yet; missing: {', '.join(missing)}")
-        button = self.page.get_by_test_id("next")
-        if button.is_disabled():
-            raise _Rejected("this is the last note; call finish instead")
-        self.show(self.pause)  # the finished note, ratings and comment stay on screen before moving on
         before = self.page.get_by_test_id("note-id").inner_text()
-        button.click()
+        if self.order is not None:
+            here = before.split()[0]
+            at = self.order.index(here) if here in self.order else -1
+            if at == len(self.order) - 1:
+                raise _Rejected("this is the last note; call finish instead")
+            self.show(self.pause)  # the finished note, ratings and comment stay on screen before moving on
+            self.page.get_by_test_id(f"chip-{self.order[at + 1]}").click()  # jump to the next note of the sample
+        else:
+            button = self.page.get_by_test_id("next")
+            if button.is_disabled():
+                raise _Rejected("this is the last note; call finish instead")
+            self.show(self.pause)
+            button.click()
         self.page.wait_for_function(
-            "(b) => document.querySelector('[data-testid=note-id]').innerText !== b", arg=before, timeout=10_000)
+            "(b) => document.querySelector('[data-testid=note-id]').innerText !== b", arg=before, timeout=20_000)
         return "moved to the next note"
 
     def _tool_finish(self) -> str:
         if missing := self._incomplete():
             raise _Rejected(f"this note is not complete yet; missing: {', '.join(missing)}")
-        if self.page.get_by_test_id("finished").count() == 0:
+        if self.order is not None:
+            if self.state()["note_id"] != self.order[-1]:
+                raise _Rejected("there are more notes to rate; call next_note")
+        elif self.page.get_by_test_id("finished").count() == 0:
             n = self.page.get_by_test_id("incomplete-count").inner_text()
             raise _Rejected(f"the round is not finished: {n}")
         self.show(self.pause)
@@ -277,6 +293,7 @@ def install_request_guard(ctx: Any, base_url: str, session: SessionLog) -> None:
 def run_browser_review(
     cfg: GenConfig, tool_client: ToolClient, budget: Budget, round_dir: Path, base_url: str, *,
     max_notes: int | None = None, headless: bool = True, record_video: bool = True, pause: float | None = None,
+    note_ids: list[str] | None = None,
 ) -> BrowserResult:
     """Operate the rating app note by note. A fresh short conversation per note keeps cost linear in the notes."""
     from playwright.sync_api import sync_playwright
@@ -300,9 +317,14 @@ def run_browser_review(
             page.goto(base_url)
             page.get_by_test_id("note-id").wait_for(timeout=15_000)
             total = int(page.get_by_test_id("progress").inner_text().split(" of ")[1].split()[0])
-            tools = BrowserTools(page, session, total, cfg.llm.reviewer_pause_seconds if pause is None else pause)
-            limit = min(total, max_notes) if max_notes else total
-            out.stopped = _drive(cfg, tool_client, budget, tools, session, out, limit, total)
+            order = list(note_ids) if note_ids else None  # an explicit sample, visited in this order
+            tools = BrowserTools(page, session, total, cfg.llm.reviewer_pause_seconds if pause is None else pause, order)
+            if order:
+                page.get_by_test_id(f"chip-{order[0]}").click()
+                page.wait_for_function("(b) => document.querySelector('[data-testid=note-id]').innerText.startsWith(b)",
+                                       arg=order[0], timeout=10_000)
+            limit = len(order) if order else (min(total, max_notes) if max_notes else total)
+            out.stopped = _drive(cfg, tool_client, budget, tools, session, out, limit, total if not order else limit)
         finally:
             video = page.video
             ctx.close()  # the video is finalised on close
@@ -418,3 +440,17 @@ class AppServer:
                 self.proc.wait(timeout=10)
             except subprocess.TimeoutExpired:
                 os.killpg(self.proc.pid, signal.SIGKILL)
+
+
+def balanced_note_ids(key_notes: dict, n: int, settings: tuple[str, ...]) -> list[str]:
+    """n notes spread evenly over the settings, interleaved, in sheet order within a setting (deterministic).
+    Controls are left out. The reviewer never sees this choice or the settings; only the developer's command does."""
+    by_setting = {s: sorted(i for i, m in key_notes.items() if m["kind"] == "note" and m["setting"] == s) for s in settings}
+    picked: list[str] = []
+    cursor = {s: 0 for s in settings}
+    while len(picked) < n and any(cursor[s] < len(by_setting[s]) for s in settings):
+        for s in settings:
+            if len(picked) < n and cursor[s] < len(by_setting[s]):
+                picked.append(by_setting[s][cursor[s]])
+                cursor[s] += 1
+    return picked

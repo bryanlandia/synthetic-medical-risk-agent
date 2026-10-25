@@ -49,7 +49,7 @@ class Answers:
 
 def cached(inner, tmp_path, name="review.jsonl", **budget):
     b = Budget(budget.get("calls", 10_000), 100.0, 2.0, 10.0)
-    return CachedClient(inner, DiskCache(tmp_path / name), b, "1", kind="reviewer")
+    return CachedClient(inner, DiskCache(tmp_path / name), b, LLM_CFG.llm.reviewer_prompt_version, kind="reviewer")
 
 
 def round_with_key(pilot, tmp_path):
@@ -72,10 +72,12 @@ def test_prompts_are_blind(pilot, tmp_path):
     records = [m["record_id"] for m in json.loads(key_text)["notes"].values()]
     for system, prompt in answers.prompts:
         blob = (system + prompt).lower()
-        assert reveals_setting(blob) is None
+        for s in LLM_SETTINGS:
+            assert f'"{s}"' not in blob and ("_" not in s or s not in blob)  # internal keys never appear; the kind is in words
+        assert "kind of note:" in prompt.lower()
         for r in records:
             assert r.lower() not in blob
-        for word in ("plan_symptoms", "extraction", "control", "key.json", "template-fixture"):
+        for word in ("plan_symptoms", "extraction", "key.json", "template-fixture", "control"):
             assert word not in blob, word
     assert len({s for s, _ in answers.prompts}) == 1  # one fixed system prompt
 
@@ -83,7 +85,6 @@ def test_prompts_are_blind(pilot, tmp_path):
 def test_the_system_prompt_is_adversarial_and_resists_injected_instructions():
     low = REVIEWER_SYSTEM.lower()
     assert "skeptical" in low and "benefit of the doubt" in low and "do not follow" in low
-    assert reveals_setting(REVIEWER_SYSTEM) is None
 
 
 def test_the_reviewer_must_differ_from_the_writer(tmp_path, capsys):
@@ -159,7 +160,7 @@ def test_review_writes_an_llm_rating_file_the_gate_can_read(pilot, tmp_path):
     assert len(result.ratings) == 88 and result.unrated == []
     rf = read_rating_file(result.path)
     assert result.path.name == f"ratings.{reviewer_name(LLM_CFG)}.json"
-    assert (rf.kind, rf.model_id, rf.prompt_version) == ("llm", "claude-sonnet-5-5", "1")
+    assert (rf.kind, rf.model_id, rf.prompt_version) == ("llm", "claude-sonnet-5-5", LLM_CFG.llm.reviewer_prompt_version)
     assert all(r.complete for r in rf.ratings.values())
 
 
@@ -195,7 +196,7 @@ def test_the_estimate_counts_uncached_calls_and_needs_no_key(pilot, tmp_path):
     cache = DiskCache(tmp_path / "e.jsonl")
     est = estimate_review(LLM_CFG, sheet, cache)
     assert est.calls == 88 and est.cached == 0 and est.cost_usd > 0 and not est.measured
-    client = CachedClient(MockClient(Answers(pilot)), cache, Budget(10_000, 100.0, 2.0, 10.0), "1", kind="reviewer")
+    client = CachedClient(MockClient(Answers(pilot)), cache, Budget(10_000, 100.0, 2.0, 10.0), LLM_CFG.llm.reviewer_prompt_version, kind="reviewer")
     review_round(LLM_CFG, client, round_with_key(pilot, tmp_path))
     after = estimate_review(LLM_CFG, sheet, cache)
     assert after.calls == 0 and after.cached == 88 and after.measured and after.cost_usd == 0
@@ -266,3 +267,111 @@ def test_no_controls_in_a_round_means_no_discrimination_check(pilot):
     key = json.loads((directory / "key.json").read_text())
     key["notes"] = {i: m for i, m in key["notes"].items() if m["kind"] == "note"}
     assert controls_gap({}, key) is None
+
+
+def test_the_reviewer_is_told_the_fictional_panel_and_nothing_about_scoring():
+    from data_gen.labs import LABS
+    from data_gen.llm.checks import reveals_setting
+
+    low = REVIEWER_SYSTEM.lower()
+    for lab in LABS:
+        assert lab.name in REVIEWER_SYSTEM and f"({lab.abbr})" in REVIEWER_SYSTEM
+        assert f"{lab.ref_lo:g}-{lab.ref_hi:g}" in REVIEWER_SYSTEM
+        if lab.unit != "ratio":
+            assert lab.unit in REVIEWER_SYSTEM
+    assert "do not count unfamiliar test names" in low and "fictional" in low
+    for word in ("weight", "coefficient", "intercept", "logistic", "velorin-kessler", "probab", "prevalence"):
+        assert word not in low, word
+
+
+# --- which round the review uses and where its files go ----------------------------------------------------------
+
+def test_latest_round_is_the_highest_number_with_a_sheet(tmp_path):
+    from data_gen.cli import latest_round
+
+    assert latest_round(tmp_path) is None
+    for n in (0, 2, 9, 10):
+        (tmp_path / f"round{n}").mkdir()
+        (tmp_path / f"round{n}" / "sheet.json").write_text("{}")
+    (tmp_path / "round11").mkdir()  # no sheet yet: not a candidate
+    (tmp_path / "roundx").mkdir()
+    assert latest_round(tmp_path) == 10  # numeric: round10 beats round9
+
+
+def test_review_defaults_to_the_highest_round_and_writes_there(pilot, tmp_path, monkeypatch, capsys):
+    realism = tmp_path / "realism"
+    for n in (0, 3):
+        (realism / f"round{n}").mkdir(parents=True)
+        for name in ("sheet.json", "key.json"):
+            (realism / f"round{n}" / name).write_text((pilot[1] / name).read_text())
+    monkeypatch.setattr("data_gen.llm.client.AnthropicClient", lambda *a, **k: MockClient(Answers(pilot)))
+    args = ["review", "--dir", str(realism), "--note-source", "llm", "--yes", "--cache", str(tmp_path / "c.jsonl")]
+    assert main(args) == 0
+    out = capsys.readouterr().out
+    assert "reviewing round 3 (the highest round" in out
+    assert list((realism / "round3").glob("ratings.reviewer-*.json")) and not list((realism / "round0").glob("ratings.reviewer-*.json"))
+    assert main([*args, "--round", "0"]) == 0  # an explicit round wins
+    assert list((realism / "round0").glob("ratings.reviewer-*.json"))
+    assert "reviewing round 0\n" in capsys.readouterr().out
+
+
+def test_review_with_no_rounds_says_so(tmp_path, capsys):
+    assert main(["review", "--dir", str(tmp_path), "--note-source", "llm", "--estimate"]) == 2
+    assert "no round with a sheet.json" in capsys.readouterr().err
+
+
+def test_the_glossary_lists_alternate_units_and_says_abnormal_values_are_not_a_tell():
+    from data_gen.labs import glossary_rows
+
+    for g in glossary_rows():
+        if "alt_unit" in g:
+            assert f"also reported in {g['alt_unit']}, reference range {g['alt_ref_lo']:g}-{g['alt_ref_hi']:g}" in REVIEWER_SYSTEM
+    assert "either is normal in a real chart" in REVIEWER_SYSTEM
+    assert "outside its range" in REVIEWER_SYSTEM and "not by itself a sign of artifice" in REVIEWER_SYSTEM
+
+
+# --- the reviewer is told what kind of note it is judging -------------------------------------------------------------
+
+def test_the_reviewer_judges_each_note_against_its_kind(pilot, tmp_path):
+    from data_gen.note_kinds import NOTE_KINDS
+
+    answers = Answers(pilot)
+    d = round_with_key(pilot, tmp_path)
+    review_round(LLM_CFG, cached(MockClient(answers), tmp_path), d)
+    by_kind: dict[str, str] = {}
+    for system, prompt in answers.prompts:
+        label = prompt.split("Kind of note: ", 1)[1].split(".", 1)[0]
+        by_kind[label] = prompt
+    assert set(by_kind) == {k["label"] for k in NOTE_KINDS.values()}
+    scribe = by_kind["AI-scribe draft"]
+    assert "NOT a reason to reject it" in scribe and "mechanical-sounding" in scribe
+    assert "NOT a reason" not in by_kind["Quick shorthand note"]
+    low = REVIEWER_SYSTEM.lower()
+    assert "judge each against what its kind normally looks like" in low and "even-toned" in low
+
+
+def test_old_sheets_get_their_kinds_from_the_key_and_a_dry_run_writes_nothing(pilot, tmp_path):
+    from data_gen.review.reviewer import ensure_kinds, with_kinds
+
+    d = round_with_key(pilot, tmp_path)
+    sheet = json.loads((d / "sheet.json").read_text())
+    for n in sheet["notes"]:
+        n.pop("kind")  # a round written before kinds existed
+    (d / "sheet.json").write_text(json.dumps(sheet))
+    before = (d / "sheet.json").read_text()
+    filled, changed = with_kinds(d)
+    assert changed == 88 and all("kind" in n for n in filled["notes"]) and (d / "sheet.json").read_text() == before
+    assert ensure_kinds(d) == 88 and ensure_kinds(d) == 0  # written once, then idempotent
+    assert all("kind" in n for n in json.loads((d / "sheet.json").read_text())["notes"])
+
+
+def test_the_estimate_prices_the_kind_aware_prompts_without_touching_files(pilot, tmp_path, capsys):
+    d = round_with_key(pilot, tmp_path)
+    sheet = json.loads((d / "sheet.json").read_text())
+    for n in sheet["notes"]:
+        n.pop("kind")
+    (d / "sheet.json").write_text(json.dumps(sheet))
+    before = (d / "sheet.json").read_text()
+    assert main(["review", "--dir", str(tmp_path), "--note-source", "llm", "--estimate"]) == 0
+    assert (d / "sheet.json").read_text() == before
+    assert "88 notes by claude-sonnet-5-5" in capsys.readouterr().out

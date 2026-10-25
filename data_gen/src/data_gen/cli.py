@@ -172,6 +172,10 @@ def cmd_pilot(args: argparse.Namespace) -> int:
     for setting, rate in meta["exclusion_rates"].items():
         flag = "  <-- above the limit: revise this setting's prompt" if rate > cfg.llm.exclusion_threshold else ""
         print(f"  exclusion rate {setting:13s} {rate:.0%}{flag}")
+    for setting, v in meta["variety"].items():
+        flag = "" if v["passed"] else "  <-- too uniform: check the traits and exemplars"
+        print(f"  variety {setting:13s} top opener '{v['top_opener']}' {v['top_opener_share']:.0%} "
+              f"(max {v['max_top_opener_share']:.0%}); {v['distinct_trait_combos']} trait combinations{flag}")
     for setting, rate in result.aborted.items():
         print(f"  ABORTED {setting}: {rate:.0%} of its notes failed validation, so it was stopped early "
               f"(mostly: {result.tally.top_failures()}). Fix the cause, then re-run with --round and --setting.",
@@ -182,12 +186,22 @@ def cmd_pilot(args: argparse.Namespace) -> int:
     return 0
 
 
+def latest_round(base: Path) -> int | None:
+    """The highest N for which base/roundN/sheet.json exists (numeric, so round10 beats round9)."""
+    import re
+
+    found = [int(m.group(1)) for d in Path(base).glob("round*")
+             if (m := re.fullmatch(r"round(\d+)", d.name)) and (d / "sheet.json").exists()]
+    return max(found) if found else None
+
+
 def cmd_gate(args: argparse.Namespace) -> int:
     from .llm.gate import evaluate, load_round, save_gate_result
 
     cfg = _config_from_args(args)
     base = Path(args.dir)
-    dirs = [base / f"round{r}" for r in args.rounds] if args.rounds else sorted(base.glob("round*"))
+    dirs = ([base / f"round{r}" for r in args.rounds] if args.rounds else
+            sorted(base.glob("round*"), key=lambda d: int(d.name[5:]) if d.name[5:].isdigit() else -1))
     if not dirs:
         print(f"error: no round directories found in {base}/", file=sys.stderr)
         return 2
@@ -206,16 +220,24 @@ def cmd_gate(args: argparse.Namespace) -> int:
 def _review_in_browser(args: argparse.Namespace, cfg: GenConfig, directory: Path) -> int:
     from .llm.client import LLMCallError, MissingApiKeyError
     from .llm.gateway import Budget
-    from .review.browser import AnthropicToolClient, AppServer, run_browser_review
+    from .config import LLM_SETTINGS
+    from .review.browser import AnthropicToolClient, AppServer, balanced_note_ids, run_browser_review
 
     budget = Budget.for_review(cfg.llm)
+    note_ids = None
+    key_file = directory / "key.json"
+    if args.max_notes and key_file.exists():  # a sample, spread evenly over the settings so each one is on the video
+        note_ids = balanced_note_ids(json.loads(key_file.read_text())["notes"], args.max_notes, LLM_SETTINGS)
+        key = json.loads(key_file.read_text())["notes"]
+        counts = {s: sum(key[i]["setting"] == s for i in note_ids) for s in LLM_SETTINGS}
+        print(f"sample of {len(note_ids)} notes, balanced over the settings: {counts}")
     try:
         tool_client = AnthropicToolClient(effort=cfg.llm.reviewer_effort)
         with AppServer(Path(args.app_dir), directory, cfg) as app:
             print(f"rating app running at {app.url} (this session only)")
             result = run_browser_review(cfg, tool_client, budget, directory, app.url, max_notes=args.max_notes,
                                         headless=not args.headed, record_video=not args.no_video,
-                                        pause=args.pause)
+                                        pause=args.pause, note_ids=note_ids)
     except MissingApiKeyError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -237,21 +259,30 @@ def cmd_review(args: argparse.Namespace) -> int:
     from .llm.gateway import Budget, CachedClient, DiskCache
     from .llm.progress import Progress
     from .review.estimate import estimate_browser, estimate_review
-    from .review.reviewer import (ReviewerConfigError, check_independent, controls_gap, load_blind_sheet,
-                                  review_round)
+    from .review.reviewer import (ReviewerConfigError, check_independent, controls_gap, ensure_kinds,
+                                  load_blind_sheet, review_round, with_kinds)
 
     cfg = _config_from_args(args)
-    directory = Path(args.dir) / f"round{args.round}"
+    round_number = args.round if args.round is not None else latest_round(Path(args.dir))
+    if round_number is None:
+        print(f"error: no round with a sheet.json in {args.dir}/; run the pilot first", file=sys.stderr)
+        return 2
+    directory = Path(args.dir) / f"round{round_number}"
     if not (directory / "sheet.json").exists():
         print(f"error: {directory}/sheet.json not found; run the pilot first", file=sys.stderr)
         return 2
+    print(f"reviewing round {round_number}" + ("" if args.round is not None else " (the highest round; use --round N to choose)"))
     try:
         check_independent(cfg)
     except ReviewerConfigError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
+    if args.estimate:
+        sheet, _ = with_kinds(directory)  # a dry run changes no file
+    else:
+        ensure_kinds(directory)  # older sheets get each note's kind from the key, so every rater is told it
+        sheet = load_blind_sheet(directory)
     cache = DiskCache(Path(args.cache))
-    sheet = load_blind_sheet(directory)
     browser = args.mode == "browser"
     if browser:
         est = estimate_browser(cfg, min(len(sheet["notes"]), args.max_notes or len(sheet["notes"])))
@@ -378,7 +409,9 @@ def main(argv: list[str] | None = None) -> int:
 
     rev = sub.add_parser("review", help="have the adversarial LLM reviewer rate a pilot round (spends a little)")
     rev.add_argument("--dir", default=str(DEFAULT_REALISM))
-    rev.add_argument("--round", type=int, default=0)
+    rev.add_argument("--round", type=int, default=None,
+                     help="round to review; default is the highest round that has a sheet.json. The recording, the "
+                          "session log and the ratings are written into that round's folder")
     rev.add_argument("--cache", default=str(DEFAULT_REVIEW_CACHE))
     rev.add_argument("--estimate", action="store_true", help="dry run: print the cost; no API call, no key needed")
     rev.add_argument("--yes", action="store_true", help="confirm that the review may spend money")

@@ -1,0 +1,1065 @@
+{
+  "kind": "llm",
+  "model_id": "claude-sonnet-5-5",
+  "prompt_version": "4",
+  "rater": "reviewer-claude-sonnet-5-5",
+  "ratings": {
+    "n01": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom list is mechanically uniform, with each item denied twice in near-synonym phrasing (e.g. 'Denies fatigue, feels not exhausted, no low energy'), which reads as generated rather than a carried-forward note; dizziness is also conspicuously omitted from the review.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n02": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note contradicts itself: it denies photophobia and then says the patient is bothered by bright lights. 'c/o denies' is also an odd construction, and 'DOR 1.051 ratio' adds a unit to a unitless value.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "possible",
+        "tremor": "none"
+      }
+    },
+    "n03": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note says \"fictional study condition\" in the history, the ROS uses odd lay phrasing (\"negative for tired\", \"dizzy spells\") in a mechanical positive/negative pattern, and results carry inconsistent decimal precision and a \"ratio\" unit on a unitless value, so it reads as generated rather than clinician-filled.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n04": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n05": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The template text reads as machine-generated: it uses awkward paraphrases like 'negative for sensitive to bright light (denies light sensitivity)' and 'fictional condition under study', and it adds a unit 'ratio' to a unitless value. The result formatting is also mechanically uniform, with odd decimal precision such as 4.431 and 38.11.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n06": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n07": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n08": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n09": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Lab values are reported with unnatural false precision (TAC 3.933, HAT 4.662, DOR 0.7242 'ratio'), and the terse fragments read as a mechanically assembled symptom list with an odd 'RTC/f/u labs' phrase.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n10": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n11": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n12": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The interval history is restated almost word for word in a mechanical symptom list with 'present/denied/possible, uncertain' labels, and the lab values carry unnatural three-decimal precision, which reads as generated rather than a copy-forward chart note.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n13": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Lab values are formatted unnaturally for a rushed shorthand note: K17 is given to three decimals and DOR carries a stray 'ratio' label though it has no unit, and the symptom list follows a mechanical present/present/denies/denies pattern.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n14": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n15": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n16": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n17": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n18": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n19": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Lab values are reported with unnatural precision (VLI 96.55, DOR 0.8711 'ratio' with a spelled-out unit for a unitless value), and the symptom list follows a mechanical possible/possible/present/denied pattern with generic closing boilerplate, which reads as generated rather than a rushed real shorthand note.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n20": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n21": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n22": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom denials are mechanically uniform and redundant (e.g. 'achy stiff joints or stiff joints', 'dizzy spells, lightheaded feeling, or dizziness'), and photophobia is skipped. The results are neatly formatted with no dates or carry-forward markers, which reads as generated rather than a copied-forward chart note.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n23": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom lines are mechanically uniform and over-explained, with paired denials such as 'Denies shaking or shaky hands; no tremor noted'. They read as generated from a symptom list rather than carried-forward chart text, and the note has no real copy-forward artifacts such as stale dates or 'unchanged' stock lines.",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n24": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The 'denies fatigue, tired, exhausted' line is an unnatural synonym list that no clinician would write, and the lab values carry mechanical two-decimal precision alongside generic boilerplate plan text.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n25": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads like a generated structure rather than a clinician's visit note: it uses a rigid pipe-delimited ROS and omits photophobia, and has no HPI, exam, or assessment. Lab values carry odd precision (96.22, 3.195) and the plan is generic.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n26": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom list reads as mechanical: each denial is phrased the same way with paired quoted lay terms, and photophobia is skipped. The lab values carry odd precision (7.403, 0.9152) and a stray 'ratio' unit on DOR, which has no unit. Nothing is said about the abnormal VLI and K17 values, and the note carries no copy-forward artifacts.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n27": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note opens with an unnatural first-person framing ('I was told by the patient'), which is inconsistent with the third-person scribe style. It also redundantly over-denies photophobia ('not bothered by bright lights or sensitive to bright light at all'), and it includes a meta-statement ('No lab results are discussed in this visit summary') that reads as generated rather than charted.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n28": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note contradicts itself: 'c/o no tired/low energy/fatigue' is garbled, and 'Denies light sensitivity, bothered by bright lights' denies and affirms photophobia in the same breath, which reads like a generated mechanical negation rather than real shorthand.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "none",
+        "photophobia": "possible",
+        "tremor": "none"
+      }
+    },
+    "n29": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "present",
+        "tremor": "present"
+      }
+    },
+    "n30": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "none",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n31": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note is mechanically structured with pipe-delimited yes/no ROS, an odd 'ratio' unit appended to the unitless Dorrin ratio, overly precise decimals, and a plan that is a generic stub with no assessment or clinical context.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n32": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n33": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n34": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS wording is unnatural: stock phrases such as 'negative for bothered by bright lights' and 'negative for stiff joints' read as mechanically generated, with parenthetical lay explanations. Lab values have inconsistent decimal precision (88.57, 4.781, 302.5), and 'ratio' is given as a unit for DOR.",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n35": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n36": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads like a generated structured dump rather than a clinician's visit note: it has a mechanical yes/no symptom list, lab values with unnatural precision (3.847, 0.9047 'ratio'), and a generic plan with no clinical narrative or context.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n37": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n38": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The interval history is too mechanically symmetric, with parallel denials ('no fatigue... not tired during daily activities', 'denies bright lights', 'denies morning stiffness or joint stiffness') and a redundant 'dizziness or dizzy spells' phrase, while the lab values carry unnaturally precise decimals (91.34, 25.16, 4.179) and the plan is generic boilerplate. It reads as generated rather than copy-forward text.",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n39": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads like a generated template: the symptom list is a mechanical 'x: no' pattern that leaves out fatigue, the Dorrin ratio carries the odd unit 'ratio' on a unitless value, and there is no clinical context, assessment or comment on the abnormal values.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n40": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The phrasing reads as templated and oddly constructed: it says 'They seem to be tremulous' even though the tremor comes from the patient's own uncertain report, the stiffness quote is formulaic, 'ratio' is attached to the unitless DOR as if it were a unit, and the lab values are given to four decimals with no clinical context, so it reads as generated rather than scribed.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "possible"
+      }
+    },
+    "n41": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom lines read like mechanically generated paraphrases (\"Denies stiff joints, achy stiff joints, or morning stiffness\"; \"not bothered by bright lights, no photophobia\"), and the lab values carry unnaturally precise 3-decimal formatting, unlike a real copy-forward note.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n42": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n43": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n44": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n45": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS reads as mechanically generated: the synonym lists ('tremor, tremulous, and shaking') and gloss phrases ('bothered by bright lights', 'feels exhausted') are unnatural, and the lab values carry inconsistent decimal precision and a 'ratio' unit on a unitless analyte, with a generic plan that ignores the flagged low OSM.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n46": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n47": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n48": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n49": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n50": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS reads as a mechanical synonym dump (\"tremor, shaky hands, tremulous, lightheaded, dizziness\"; \"low energy, exhausted\"), the lab values carry inconsistent decimal precision (4.449, 36.75, 4.225), and the unit \"ratio\" is attached to a unitless value, none of which looks like a real template.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n51": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "Contains awkward, copy-pasted phrasing ('achy stiff joints', 'shaky hands at times') and the odd 'so this is recorded as uncertain' meta-statement, with an over-enumerated dizziness denial and unnaturally precise lab values (90.05, 4.834), which reads as generated rather than real scribe output.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n52": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n53": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n54": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n55": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS lines stack synonym triplets ('tremulous, shaking, or shaky hands'; 'bothered by bright lights, light sensitivity, or photophobia') that read like a symptom-lexicon dump rather than a template, and the lab values carry mechanical 3-decimal precision with a unit 'ratio' on a unitless analyte.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n56": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as too clean and mechanical: three symptom denials in the same 'Denies...' pattern with redundant restatements, lab values with overly precise decimals (4.835, 0.7738 'ratio' though DOR has no unit), and a generic assessment line that merely says it was carried forward.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n57": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n58": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as generic filler: it opens by narrating that the ambient scribe recorded the visit, gives paired, redundant denials (\"dizzy spells\" and \"woozy\"), and leaves out any chief complaint, assessment or plan detail, which real scribe output would normally include.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n59": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "possible",
+        "photophobia": "none",
+        "tremor": "possible"
+      }
+    },
+    "n60": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as machine-generated: every analyte is listed with a mechanically identical value and reference-range format, odd precision such as 3.866 and 0.8712, and 'ratio' attached as a unit for a unitless value. The ROS wording is paraphrased ('shaky hands or shaking', 'Denies feeling tired, fatigue, or low energy') and the HPI opens with 'fictional condition under study'.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n61": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The photophobia line is over-explained and redundant (denies, no sensitivity, not bothered), and the unit 'ratio' on a unitless DOR with 4-decimal precision plus a mechanically tidy structure reads as generated rather than a real copy-forward note.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n62": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom list is too mechanical, with one bullet per symptom, each in a different paraphrase (exhausted, woozy, achy stiff joints) plus explicit hedging ('uncertain on review'), and the lab values carry odd precision (78.34, 3.654); the note reads as generated rather than copy-forward text.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "possible",
+        "tremor": "absent"
+      }
+    },
+    "n63": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n64": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "possible",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "none"
+      }
+    },
+    "n65": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom list is mechanically uniform, and the denials are over-elaborated with synonym strings ('stiff joints, achy stiff joints, or morning stiffness'; 'woozy spells, lightheaded episodes, or dizzy spells'). This reads like generated paraphrase, not copy-forward charting. The note also has no real carried-over artifacts, such as dates, medication names or a specific interval-history reference.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n66": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n67": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "All five symptoms are denied in a mechanical, parallel 'Denies ... or ...' pattern with awkward lay-phrased wording (e.g., 'Denies bothered by bright lights'), and the note lacks the carried-over specifics (medications, dates, names) a real copy-forward note would have.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n68": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n69": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n70": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n71": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The phrase 'Denies tired, exhausted fatigue' is an unnatural, over-explained denial, and the note otherwise reads as mechanically generated, with the labs listed bare and generic closing boilerplate.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n72": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n73": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "possible",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n74": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom lines are mechanically parallel and over-explained (e.g. 'fatigue and feeling exhausted', 'light sensitivity or being bothered by bright lights'), with no sign of copy-forward artifacts. 'Dorrin ratio 1.169 ratio' also gives a unit to a unitless value.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n75": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom block is too mechanically uniform (each denial restated with a 'no X reported' echo), K17 is reported to an unnatural three decimals, and the assessment and plan are generic filler with no comment on the markedly low OSM or the photophobia, so it reads as generated rather than copy-forwarded.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "present",
+        "tremor": "absent"
+      }
+    },
+    "n76": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n77": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as mechanically generated: DOR is given a unit ('ratio') even though it is unitless, and the symptom denials follow a uniform pattern ('no', 'no', 'denies', 'denies') with no joint stiffness mentioned and no clinical context.",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "absent"
+      }
+    },
+    "n78": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom lines are too mechanically parallel and over-explained (e.g. 'Denies achy stiff joints and joint stiffness'), and the lab values carry unnaturally precise decimals (6.199, 50.47, 277.9), so the note reads as generated rather than copied forward from a real chart.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "possible",
+        "tremor": "present"
+      }
+    },
+    "n79": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The symptom lines pair each term with a mechanically generated synonym (\"tremor, tremulous\", \"?exhausted\", \"stiff joints\"), which reads like templated paraphrase lists rather than real shorthand, and the lab values are given to an unnatural two-decimal precision.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n80": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads as machine-generated: lab values carry inconsistent decimal precision (4.224, 38.75, 277.8), the reference range is repeated mechanically on every line, the plan is generic, and phrasing like 'positive for tremulous; shaky hands' is unnatural.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "possible",
+        "joint_stiffness": "present",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n81": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n82": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "present",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "present"
+      }
+    },
+    "n83": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "none",
+        "tremor": "none"
+      }
+    },
+    "n84": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The note reads like a machine-generated key-value dump: lab values carry unnaturally precise decimals (5.456, 0.9264), 'ratio' is appended as a unit to a unitless Dorrin ratio, and there is no HPI, assessment, or clinical context beyond a generic plan line.",
+      "symptoms": {
+        "dizziness": "none",
+        "fatigue": "absent",
+        "joint_stiffness": "none",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n85": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "present",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "present"
+      }
+    },
+    "n86": {
+      "comment": "",
+      "plausible": "n",
+      "reason": "The ROS phrasing is mechanically paraphrased ('Negative for exhausted, tired, or low energy'; 'denies being sensitive to bright light'), the results use inconsistent decimal precision (4.201, 385, 5, 1.2) with a spurious 'ratio' unit, and the template has no tremor entry, so it reads as generated rather than a real clinician-filled template.",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "absent",
+        "joint_stiffness": "absent",
+        "photophobia": "absent",
+        "tremor": "none"
+      }
+    },
+    "n87": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "absent",
+        "fatigue": "present",
+        "joint_stiffness": "present",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    },
+    "n88": {
+      "comment": "",
+      "plausible": "y",
+      "reason": "",
+      "symptoms": {
+        "dizziness": "present",
+        "fatigue": "none",
+        "joint_stiffness": "absent",
+        "photophobia": "none",
+        "tremor": "absent"
+      }
+    }
+  },
+  "version": 1
+}

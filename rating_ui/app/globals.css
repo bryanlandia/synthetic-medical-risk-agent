@@ -55,6 +55,11 @@ kbd { font: 12px ui-monospace, monospace; border: 1px solid var(--line); border-
 .hint { color: var(--muted); font-size: 13px; margin: 8px 0 4px; }
 label { display: block; font-size: 14px; margin: 10px 0 4px; }
 input, textarea { width: 100%; font: inherit; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); }
+.kind { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 6px; padding: 6px 10px; margin: 0 0 8px; font-size: 14px; }
+.glossary { margin: 8px 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: 14px; }
+.glossary summary { cursor: pointer; }
+.glossary table { border-collapse: collapse; width: 100%; margin: 6px 0; }
+.glossary th, .glossary td { text-align: left; padding: 3px 8px; border-bottom: 1px solid var(--line); }
 .nav { display: flex; gap: 8px; margin-top: 10px; }
 .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 20px; }
 .chips button { min-width: 36px; padding: 2px 6px; font-size: 12px; }

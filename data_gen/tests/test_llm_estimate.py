@@ -23,7 +23,7 @@ def items():
 
 
 def run_to_cache(items, path, max_calls=100000):
-    c = CachedClient(OracleLLM(items), DiskCache(path), Budget(max_calls, 1000.0, 0.1, 0.5), "1")
+    c = CachedClient(OracleLLM(items), DiskCache(path), Budget(max_calls, 1000.0, 0.1, 0.5), CFG.llm.prompt_version)
     try:
         generate_llm(CFG, c, items)
     except BudgetExceeded:

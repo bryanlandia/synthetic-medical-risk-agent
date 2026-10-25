@@ -88,6 +88,99 @@ Each LLM-written note SHALL be validated before acceptance: stated lab values ar
 - **WHEN** accepted notes are scanned for SSN-, MRN- and phone-shaped strings and denylisted facility names
 - **THEN** there are zero matches
 
+### Requirement: Notes avoid tells of machine writing
+Notes SHALL state lab values at the precision a lab report prints (three significant figures), state each symptom once with one wording, and contain no contradictory shorthand and no mention that anything is fictional, synthetic or a study. These are checked offline, and a failing note is retried then excluded like any other failure.
+
+#### Scenario: Lab values have realistic precision
+- **WHEN** the prompt lists a lab value
+- **THEN** it is shown with at most three significant figures and stays within 0.5% of the plan value, so it passes the 1% validation
+
+#### Scenario: One wording per symptom
+- **WHEN** a note states a symptom with two or more different wordings in one sentence, or with three or more anywhere (three in one sentence, or four anywhere, for ai_scribe prose), where no wording is nested in another
+- **THEN** it fails validation with a repeated-symptom code, while repeating the same wording, a wording nested in a longer one, or two wordings in separate sentences is accepted
+
+#### Scenario: Offered wording is a hint, not a requirement
+- **WHEN** a note mentions a listed symptom in a natural form that is not one of the offered phrases (for example "denies A, B" grouped)
+- **THEN** it is accepted if the symptom is recognisably mentioned, and its polarity is judged by the independent extractor
+
+#### Scenario: No reasoning in the output
+- **WHEN** a note contains drafts, corrections or comments about the rules (such as "Wait," or "Corrected note")
+- **THEN** it fails validation with a meta-commentary code
+
+#### Scenario: A retry is told why the last attempt failed
+- **WHEN** an attempt fails validation for a reason the writer can act on
+- **THEN** the next attempt's prompt adds a plain explanation of the failure, and the first attempt's prompt has none
+
+#### Scenario: A value in the unusual unit keeps its unit
+- **WHEN** the plan states a lab in its alternate unit
+- **THEN** the prompt asks for the unit to be written, and a note that drops the unit fails validation, while the usual unit may be dropped in shorthand
+
+#### Scenario: Flags follow the printed value
+- **WHEN** a lab's value prints at or inside a reference limit after rounding
+- **THEN** it carries no high or low flag
+
+#### Scenario: Reference ranges and ratios read like a report
+- **WHEN** the prompt lists a lab with a reference range, or a ratio
+- **THEN** the range is given as numbers only without repeating the unit, and a ratio is given without a unit
+
+#### Scenario: Contradictory shorthand is rejected
+- **WHEN** a note says "c/o denies", "c/o no" or "c/o neg"
+- **THEN** it fails validation with a contradictory-phrasing code
+
+#### Scenario: No mention of the fiction
+- **WHEN** a note contains "fictional", "synthetic", "simulated", "test data", "this study" or "study condition"
+- **THEN** it fails validation with a meta-mention code
+
+#### Scenario: Prompt revisions are versioned
+- **WHEN** a prompt or a display rule changes
+- **THEN** `llm.prompt_version` changes so cached notes from the older prompt are never reused, and the affected settings are re-piloted and re-rated
+
+### Requirement: Notes vary like real documentation
+Each note SHALL be written with style traits drawn from its seed (layout, order, wording habits), symptom wording drawn from a pool specific to how the symptom is stated, and two exemplar notes about other patients. Quick settings SHALL have fewer traits than documented ones. The traits and exemplar choices are recorded in the plan.
+
+#### Scenario: Wording matches the polarity
+- **WHEN** a symptom is stated as present, hedged or denied
+- **THEN** its allowed wording comes from a pool of at least six phrases for that polarity, and no denied pool is made by negating a positive phrase ("feels not exhausted")
+
+#### Scenario: Traits are reproducible and independent
+- **WHEN** the plan for a patient is built twice with the same seed
+- **THEN** the traits and exemplar picks are identical, and drawing them does not change any other plan field
+
+#### Scenario: Traits cover their values without dominating
+- **WHEN** 120 plans are built for a setting
+- **THEN** every value of every trait is used, and no value is used by more than 60% of the plans
+
+#### Scenario: Quick notes vary less
+- **WHEN** the number of traits per setting is compared
+- **THEN** shorthand has fewer traits than each documented setting
+
+#### Scenario: Exemplars are original and clean
+- **WHEN** the exemplar files are scanned
+- **THEN** each setting has six distinct notes, each passes the claims and identifier scans, none mentions the fiction, and every lab flag in them agrees with its reference range
+
+#### Scenario: Copying an exemplar is rejected
+- **WHEN** a note contains ten consecutive plain words (numbers and lab names break a run) from any exemplar of its setting, other than a stock line or sentence the traits asked for
+- **THEN** it fails validation with an exemplar-copied code
+
+#### Scenario: Pilot reports variety against limits
+- **WHEN** a pilot is written
+- **THEN** it reports per setting the share of notes sharing the most common first three words and the number of distinct trait combinations, and flags a setting above 35% (40% for shorthand) or below 8 combinations (6 for shorthand) out of 20 notes
+
+### Requirement: AI scribe notes are structured notes drafted from a conversation
+The ai_scribe setting SHALL read like the note an ambient AI scribe drafts from a recorded visit: a structured note under headings, in plain full-word third-person sentences, that paraphrases the patient (no quotation marks), mentions a lab value only as a result reviewed or discussed with the patient, and never reproduces the conversation as a transcript.
+
+#### Scenario: Headed layouts vary
+- **WHEN** 60 ai_scribe plans are built
+- **THEN** all four layouts (Subjective/Objective/Assessment and Plan, History of Present Illness with Assessment and Plan, one Visit Summary heading, and plain paragraphs) occur and none exceeds half of the plans
+
+#### Scenario: No quotes and no abbreviations
+- **WHEN** ai_scribe plans and exemplars are inspected
+- **THEN** no plan asks for a patient quote and no exemplar contains quotation marks or shorthand such as "c/o"
+
+#### Scenario: Prompt states what an AI scribe produces
+- **WHEN** the ai_scribe prompt is read
+- **THEN** it says the note is not a transcript, is in the third person under headings, paraphrases rather than quotes, records only what was discussed, uses full words and presents labs only as reviewed results
+
 ### Requirement: Symptom extraction quality is measured
 The symptom extractor used for validation SHALL be measured against a hand-checked sample so that validation results can be trusted.
 
@@ -100,14 +193,14 @@ Before the full paid run, the project owner SHALL blind-rate a pilot sample of 2
 
 #### Scenario: Rating sheet is blind
 - **WHEN** the rating sheet is generated
-- **THEN** the notes are shuffled across settings, the sheet contains no setting names, and the mapping from note id to setting is stored separately
+- **THEN** the notes are shuffled across settings, the sheet shows each note's kind (what it is meant to be) but no internal setting names, plans or record ids, and the mapping from note id to setting is stored separately
 
 #### Scenario: Gate result per setting
 - **WHEN** the owner's ratings are loaded
 - **THEN** a report shows the plausible count and rate for each setting, marks each setting pass or fail at 80%, and the full run proceeds only if all four pass
 
 #### Scenario: Controls reveal rater discrimination
-- **WHEN** template-fixture notes are mixed into the sheet as controls
+- **WHEN** template-fixture notes are mixed into the sheet as controls in every pilot round, a fresh set each time
 - **THEN** their plausible rate is reported separately and excluded from the gate
 
 #### Scenario: Failed setting is revised and re-rated

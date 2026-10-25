@@ -5,7 +5,7 @@ import pytest
 
 from data_gen.cohort import sample_features
 from data_gen.config import LLM_SETTINGS, GenConfig
-from data_gen.labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY
+from data_gen.labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, symptom_phrase_pool
 from data_gen.plan import CASE_TYPES, lab_flag, plan_note
 from data_gen.render import parse_back_errors, render
 from data_gen.schema import NotePlan, NotePlanV2
@@ -71,7 +71,7 @@ def test_symptoms_carry_allowed_phrases_and_quotes_only_where_allowed(v2_plans):
         prof = PROFILES[p.plan.style]
         for s in p.plan.symptoms:
             assert 2 <= len(s.phrases) <= 3
-            assert set(s.phrases) <= set(SYMPTOM_BY_KEY[s.flag].phrases)
+            assert set(s.phrases) <= set(symptom_phrase_pool(s.flag, s.stated))
             if s.quote:
                 assert prof.quote_patient and s.stated in ("present", "hedged")
 
@@ -104,7 +104,7 @@ def test_ehr_template_flags_match_stated_values(v2_plans):
         if p.plan.style != "ehr_template":
             continue
         for lab in p.plan.labs:
-            assert lab.flag == lab_flag(lab.lab, lab.value, lab.unit)
+            assert lab.flag == lab_flag(lab.lab, float(f"{lab.value:.3g}"), lab.unit)  # judged on the printed value
             lo, hi = lab.ref_range
             assert lo < hi
             checked += 1
@@ -155,3 +155,15 @@ def test_template_renderers_still_pass_parse_back_on_v2_plans(v2_plans):
             plan = p.plan.model_copy(update={"style": style})
             failures += parse_back_errors(plan, render(plan))
     assert failures == []
+
+
+def test_flags_are_judged_on_the_value_as_printed():
+    from data_gen.plan import _v2_labs
+    from data_gen.schema import PlanLab
+    from data_gen.settings import PROFILES
+
+    profile = PROFILES["ehr_template"]
+    at_limit = _v2_labs(profile, [PlanLab(lab="dorrin_ratio", value=0.5996, unit="ratio")], [])[0]
+    below = _v2_labs(profile, [PlanLab(lab="dorrin_ratio", value=0.5949, unit="ratio")], [])[0]
+    assert at_limit.flag is None  # prints as 0.6, which is the lower limit, not below it
+    assert below.flag == "L"

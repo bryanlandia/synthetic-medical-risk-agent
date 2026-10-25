@@ -11,8 +11,10 @@ You will read short clinical notes about a made-up syndrome and say, for each on
    describe it? **Present**, **Possible** (uncertain or hedged), **Absent** (denied), or **Not mentioned**.
 
 You are not judging whether the note is medically correct for a real disease (there is none), only whether it
-looks like real documentation and what it says about the symptoms. Notes are shuffled and do not say where they
-came from. That is deliberate.
+looks like real documentation and what it says about the symptoms. Notes are shuffled and nothing says which patient they are about. Each note is labelled with the **kind** of
+documentation it is meant to be (an AI-scribe draft, an EHR template note, a quick shorthand note, a copy-forward
+progress note) and what is normal for that kind: judge it as that kind. An AI-scribe draft, for example, is expected
+to be structured and even-toned, so tidy prose is not by itself a reason to say it reads wrong.
 
 ## Run it (clinician)
 
@@ -30,6 +32,10 @@ show as rated, tell the developer. Do not open `key.json` in that folder until y
 
 Keyboard: `y` / `n` for plausible, then `1` present, `2` possible, `3` absent, `4` not mentioned for each symptom in
 turn (arrow keys move between fields), `Enter` for the next note, `←` for the previous, `c` for a comment.
+
+## The lab panel is fictional
+
+The notes mention eight made-up lab tests. A collapsible "Lab panel used in these notes (fictional)" box on every page lists them with their units and reference ranges. Please do not count the invented names against a note; judge the writing, the layout, and whether a unit or range in a note disagrees with that list.
 
 ## Run the gate (developer)
 

@@ -86,4 +86,4 @@ def test_template_dataset_config_hash_is_unchanged():
 
 
 def test_changing_llm_settings_changes_the_hash():
-    assert GenConfig().config_hash() != GenConfig(llm=LLMConfig(prompt_version="2")).config_hash()
+    assert GenConfig().config_hash() != GenConfig(llm=LLMConfig(prompt_version="3")).config_hash()

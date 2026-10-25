@@ -131,7 +131,7 @@ def test_note_with_a_medication_is_retried_without_calling_the_extractor():  # t
     [
         (GOOD_NOTE.replace("128.9", "150"), "lab_wrong:velorin_index"),
         (GOOD_NOTE.replace("VLI 128.9 mg/dL, ", ""), "lab_missing:velorin_index"),
-        (GOOD_NOTE.replace("shaky hands", "a tremor"), "phrase_missing:tremor"),
+        (GOOD_NOTE.replace("shaky hands", "nothing remarkable"), "phrase_missing:tremor"),
         (GOOD_NOTE + " Also bothered by bright lights.", "symptom_extra:photophobia"),  # not in the plan
         (GOOD_NOTE + " Call 555-867-5309.", "identifier:phone"),
         ("", "empty"),
@@ -221,3 +221,45 @@ def test_tally_counts_accepted_and_excluded_per_setting_and_noise_type():
     assert d["failure_codes"] == {"empty": 6}
     assert d["calls"] == 2 + 3 + 3 and d["attempts"] == 1 + 3 + 3
     assert tally.exclusion_rate("shorthand") == 0.5 and tally.exclusion_rate("copy_forward") == 0.0
+
+
+# --- retries are told why the last attempt failed -----------------------------------------------------------------------
+
+def test_a_retry_explains_the_rejection_and_the_first_attempt_has_no_feedback():
+    padded = GOOD_NOTE.replace("shaky hands", "shaky hands, tremor, shaking")
+    llm = ScriptedLLM([padded, GOOD_NOTE], [GOOD_EXTRACTION])
+    out = writer(llm).write(plan())
+    assert out.accepted and out.attempts == 2
+    first, second = [c["prompt"] for c in llm.calls if c["kind"] == "writer"]
+    assert "previous attempt was rejected" not in first
+    assert "previous attempt was rejected" in second and second.startswith(first)
+    assert "described tremor in several ways" in second and "'shaky hands'" in second
+    assert second.rstrip().endswith("output only the note.")
+
+
+def test_each_failure_kind_gets_a_plain_explanation():
+    from data_gen.llm.feedback import explain, feedback_text
+
+    p = plan()
+    for code, needle in [
+        ("phrase_missing:tremor", "not mentioned"), ("symptom_extra:photophobia", "not listed"),
+        ("polarity:fatigue", "possible (uncertain)"), ("lab_wrong:velorin_index", "differs from the list"),
+        ("lab_missing:serum_k17", "is missing"), ("lab_flag:velorin_index", "flags only where listed"),
+        ("meta_mention", "fictional"), ("contradictory_phrasing", "c/o"), ("meta_commentary", "only the final note"),
+        ("exemplar_copied", "copied"), ("claim:dose", "diagnosis, risk, dose"), ("identifier:phone", "identifier"),
+        ("truncated", "cut off"), ("setting_name", "names its own kind"),
+    ]:
+        assert needle in (explain(code, p, GOOD_NOTE) or ""), code
+    assert explain("refusal", p, None) is None and feedback_text(["refusal"], p, None) == ""
+    both = feedback_text(["meta_mention", "meta_mention", "exemplar_copied"], p, None)
+    assert both.count("fictional") == 1 and "copied" in both
+
+
+def test_a_repeat_failure_with_feedback_can_still_end_in_exclusion():
+    padded = GOOD_NOTE.replace("shaky hands", "shaky hands, tremor, shaking")
+    llm = ScriptedLLM([padded] * 3)
+    out = writer(llm).write(plan())
+    assert not out.accepted and out.attempts == 3
+    calls = [c for c in llm.calls if c["kind"] == "writer"]
+    assert [c["nonce"] for c in calls] == [0, 1, 2]  # distinct cache keys, so a failure is never replayed
+    assert calls[0]["prompt"] != calls[1]["prompt"]  # and the retry says what went wrong

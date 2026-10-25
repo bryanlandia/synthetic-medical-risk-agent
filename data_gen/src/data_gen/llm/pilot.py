@@ -18,7 +18,9 @@ from ..cohort import generate_cohort
 from ..config import LLM_SETTINGS, GenConfig
 from ..labs import SYMPTOM_KEYS
 from ..seeds import rng_for
+from ..note_kinds import kind_for
 from .checks import reveals_setting
+from .variety import variety_report
 from .client import LLMClient
 from .pool import ordered_parallel
 from .run import PlanItem, plan_all
@@ -59,6 +61,7 @@ class PilotNote:
     text: str
     plan_symptoms: dict[str, str]  # flag -> present | possible | absent (what the plan said)
     extraction: dict[str, str]  # the extractor's reading of the accepted note
+    traits: dict[str, str] = field(default_factory=dict)  # the style traits the note was written with
 
 
 @dataclass
@@ -100,7 +103,7 @@ def run_pilot(
                     notes.append(PilotNote(
                         record_id=item.record_id, setting=setting, text=outcome.text,
                         plan_symptoms={s.flag: _PLAN_TO_LABEL[s.stated] for s in plan.symptoms},
-                        extraction=outcome.extraction or {}))
+                        extraction=outcome.extraction or {}, traits=dict(plan.traits)))
                 else:
                     excluded += 1
                 if progress:
@@ -131,7 +134,7 @@ def used_record_ids(realism_dir, settings: tuple[str, ...]) -> set[str]:
     return used
 
 
-def control_notes(cfg: GenConfig) -> list[tuple[str, str]]:
+def control_notes(cfg: GenConfig, round_: int = 0) -> list[tuple[str, str]]:
     """Template-fixture notes (the old, unrealistic kind) to mix into the sheet, alternating the two styles."""
     n = cfg.llm.pilot_controls
     if n == 0:
@@ -139,7 +142,7 @@ def control_notes(cfg: GenConfig) -> list[tuple[str, str]]:
     tcfg = GenConfig(seed=cfg.seed, n_train=cfg.n_train, n_test=cfg.n_test,
                      n_per_adversarial_type=cfg.n_per_adversarial_type, target_prevalence=cfg.target_prevalence)
     patients = [p for p in generate_cohort(tcfg) if p.split == "train"]
-    order = rng_for(cfg.seed, "notes", 997).permutation(len(patients))
+    order = rng_for(cfg.seed, "notes", 997 + 1000 * round_).permutation(len(patients))  # round 0 keeps its set
     out = []
     for k, idx in enumerate(order[: n * 4]):
         rec = build_record(tcfg, patients[int(idx)], "train", None)
@@ -187,7 +190,7 @@ def build_sheet(cfg: GenConfig, notes: list[PilotNote], controls: list[tuple[str
         text, kind, meta = entries[int(idx)]
         note_id = f"n{pos:02d}"
         key[note_id] = {"kind": kind, **meta}
-        blind_notes.append({"id": note_id, "text": text})
+        blind_notes.append({"id": note_id, "text": text, "kind": kind_for(meta["setting"])})
         fields = "\n".join(f"{k}:" for k in ("plausible", *SYMPTOM_KEYS, "comment"))
         parts.append(f"---\n\n## {note_id}\n\n```\n{text}\n```\n\n{fields}\n")
     blind = {"version": 1, "notice": SYNTHETIC_NOTICE, "symptom_keys": list(SYMPTOM_KEYS),
@@ -206,7 +209,7 @@ def write_pilot(
 
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    controls = control_notes(cfg) if round_ == 0 else []  # controls go into the first sheet only
+    controls = control_notes(cfg, round_)  # every round, a fresh set: the discrimination check needs them each time
     sheet, notes_key, blind = build_sheet(cfg, result.notes, controls)
     meta = {
         "round": round_,
@@ -218,6 +221,8 @@ def write_pilot(
         "aborted_early": result.aborted,
         "estimated_spend_usd": estimated_spend_usd,
         "tally": result.tally.as_dict(),
+        "variety": {s: variety_report(s, [n.text for n in result.notes if n.setting == s],
+                                      [n.traits for n in result.notes if n.setting == s]) for s in settings},
     }
     (directory / "sheet.md").write_text(sheet)
     (directory / "sheet.json").write_text(json.dumps(blind, indent=2) + "\n")

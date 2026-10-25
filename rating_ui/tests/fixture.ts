@@ -15,7 +15,13 @@ export function makeFixtureRound(): void {
     symptom_keys: ["tremor", "fatigue", "photophobia", "joint_stiffness", "dizziness"],
     plausible_values: ["y", "n"],
     symptom_values: ["present", "possible", "absent", "none"],
-    notes: NOTE_IDS.map((id) => ({ id, text: `Synthetic follow-up note ${id}.\nDenies tremor. Reports fatigue.` })),
+    notes: NOTE_IDS.map((id, i) => ({
+      id,
+      text: `Synthetic follow-up note ${id}.\nDenies tremor. Reports fatigue.`,
+      kind: i % 2 === 0
+        ? { label: "AI-scribe draft", expect: "Drafted by an ambient AI scribe; tidy, formal prose is expected." }
+        : { label: "Quick shorthand note", expect: "A rushed note in clinician shorthand." },
+    })),
   };
   fs.writeFileSync(path.join(ROUND_DIR, "sheet.json"), JSON.stringify(sheet, null, 2));
   fs.writeFileSync(path.join(ROUND_DIR, "key.json"), JSON.stringify({ secret: KEY_SENTINEL }));

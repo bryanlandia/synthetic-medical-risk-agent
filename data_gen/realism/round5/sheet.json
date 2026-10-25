@@ -1,0 +1,727 @@
+{
+  "version": 1,
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "symptom_keys": [
+    "tremor",
+    "fatigue",
+    "photophobia",
+    "joint_stiffness",
+    "dizziness"
+  ],
+  "plausible_values": [
+    "y",
+    "n"
+  ],
+  "symptom_values": [
+    "present",
+    "possible",
+    "absent",
+    "none"
+  ],
+  "notes": [
+    {
+      "id": "n01",
+      "text": "Follow-up note.\nMedications reviewed with patient.\nReports shaking of the hands. No trouble with bright lights. Denies joint stiffness.\nResults: K17 19.5 mg/dL; TAC 400 umol/L; OSM 435 mOsm/kg; PLX 346 x10^9/L; DOR 0.662.\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n02",
+      "text": "c/o poss occasional stiff joints, maybe some AM stiffness. Denies tremor, lightheadedness.\nK17: 4.72 mmol/L; TAC: 6.17 mg/dL; DOR: 1.19\nRTC 6 wks",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n03",
+      "text": "Medications and allergies reviewed.\n\nHistory: Specialist follow-up visit. Patient reports ongoing morning stiffness.\n\nResults:\n- Velorin index (VLI): 114 mg/dL (ref 70-130)\n- Serum K-17 (K17): 4.75 mmol/L (ref 3.4-5)\n- Tarnic acid (TAC): 291 umol/L (ref 200-400)\n- Halvin titer (HAT): 3.64 g/dL (ref 3-5)\n- Osmet level (OSM): 268 mOsm/kg (L, ref 270-310)\n\nReview of Systems:\nPositive for joint stiffness (MSK).\nNegative for fatigue (General), light sensitivity (Eyes), and dizziness (Neuro).\n\nPlan: Continue monitoring and recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n04",
+      "text": "[History] Specialist follow-up visit. Patient returns for routine review; no new concerns reported in the chart.\n\n[ROS]\nNeuro: positive for dizzy spells; negative for shaky hands.\nGeneral: positive for feeling wiped out.\nMSK: positive for joint stiffness.\n\n[Results]\nSerum K-17 (K17) 3.8 mmol/L (ref 3.4-5); Osmet level (OSM) 287 mOsm/kg (ref 270-310); Plexa count (PLX) 251 x10^9/L (ref 150-400)\n\n[Plan]\nMonitoring continues; recheck labs at next scheduled visit or sooner if symptoms change.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n05",
+      "text": "[History]\nFollow-up visit. Chart reviewed prior to visit; patient seen for ongoing specialist review.\n\n[Results]\nHalvin titer (HAT) 4.01 g/dL (ref 3-5)\nOsmet level (OSM) 290 mOsm/kg (ref 270-310)\nDorrin ratio (DOR) 0.843 (ref 0.6-1.4)\n\n[Review of Systems]\nGeneral: no fatigue.\nNeuro: steady hands, no tremor reported.\nEyes: no light sensitivity.\n\n[Plan]\n1. Continue current monitoring.\n2. Return in 3 months or sooner if symptoms change.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n06",
+      "text": "History of Present Illness:\nThe patient describes ongoing joint discomfort, saying the joints feel stiff, particularly in the morning. The patient says there is no exhaustion and no tiredness during daily activities. The patient denies dizziness and reports no dizzy spells over the past several weeks.\n\nAssessment and Plan:\nSymptoms were reviewed with the patient, and the patient says the stiffness is the main concern at this time. Monitoring of symptoms will continue. All questions were answered. The patient will return for a follow-up visit in a few weeks.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n07",
+      "text": "History of Present Illness:\nThe patient describes being bothered by bright lights, which he says has been going on for a while. He says he has noticed joint stiffness as well. The patient denies any shaky hands and says he has had no wooziness. The Brell enzyme (BRE) result of 47.4 U/L was reviewed with the patient, and he was given a chance to ask questions about what it means for him.\n\nAssessment and Plan:\nThe patient's symptoms of light sensitivity and joint stiffness were discussed in detail, along with the reviewed Brell enzyme result. The patient says he feels clearer about what was discussed today. Nothing is being changed for now. Monitoring will continue, and the patient will return for recheck as scheduled. The patient verbalized understanding.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n08",
+      "text": "OSM: 273 mOsm/kg\nDOR: 0.889\nc/o possible low energy at times, possibly stiff joints occasionally. no photophobia. no wooziness. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n09",
+      "text": "no fatigue. no light sensitivity.\nTAC: 324 umol/L. BRE: 44.1 U/L. HAT: 4.09 g/dL. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n10",
+      "text": "Denies shaking. C/o tired, stiff joints, dizziness.\nOSM: 309 mOsm/kg\nDOR: 0.928",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n11",
+      "text": "HISTORY: Specialist follow-up visit. Patient returns for routine review, no new complaints reported.\n\nROS:\nGeneral: tires easily.\nNeuro: hands steady.\nMSK: denies joint stiffness.\nNeuro: denies lightheadedness.\n\nRESULTS:\n- Brell enzyme (BRE): 29.2 U/L, ref 15-55\n- Dorrin ratio (DOR): 0.676, ref 0.6-1.4\n\nPLAN: Monitoring continues; recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n12",
+      "text": "Follow-up note.\nPast history reviewed, unchanged.\nInterval: no shaky hands, denies fatigue, no dizziness.\n- VLI 112 mg/dL\n- TAC 381 umol/L\n- BRE 71.1 U/L\n- HAT 3.95 g/dL\n- OSM 276 mOsm/kg\nPlan: continue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n13",
+      "text": "OSM: 296 mOsm/kg PLX: 325 x10^9/L\nno fatigue. energy level normal. no sensitivity to bright light. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n14",
+      "text": "History of Present Illness:\nThe patient states that hands do not shake and mentions no tremor at all. The patient is possibly fatigued, reporting low energy at times without a clear pattern. The patient denies morning stiffness and reports no joint stiffness on waking. The patient mentions dizzy spells that have occurred recently.\n\nAssessment and Plan:\nSymptoms were reviewed with the patient, including the dizzy spells, which the patient describes as intermittent. No changes to the plan were made at this time, and monitoring of symptoms will continue. The patient verbalized understanding. The patient will return for a follow-up visit in a few weeks.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n15",
+      "text": "The patient returns for a routine check and describes joint stiffness that has been present for some time. They deny tremor and say their energy level has been normal, with no exhaustion or fatigue reported during the visit.\n\nResults were reviewed with the patient, including an Osmet level of 305 mOsm/kg, a Plexa count of 221 x10^9/L, and a Dorrin ratio of 1.01. No changes to care were discussed beyond continuing current monitoring. A return visit will be scheduled in a few weeks to recheck these values.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n16",
+      "text": "Seen in clinic for follow-up.\nFamily history reviewed, no changes.\nMedications and past history reviewed, no other changes.\n\nToday: possible tremor, tires easily, no photophobia, denies stiffness.\n\nResults: BRE 38.4 U/L, DOR 1.36.\n\nRecheck at next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n17",
+      "text": "c/o maybe more tired than usual. c/o light sensitivity. no morning stiffness. no dizziness.\nBRE: 44 U/L PLX: 267 x10^9/L DOR: 0.679\nRTC 6 wks",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n18",
+      "text": "Interval visit.\nFamily history reviewed, no changes.\nPast history reviewed, unchanged.\n\nInterval: tires easily. No light sensitivity. Denies joint stiffness. No wooziness.\n\nLabs:\n- K17 4.19 mmol/L\n- BRE 41 U/L\n- OSM 293 mOsm/kg\n\nPlan: continue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n19",
+      "text": "K17 3.58 PLX 289 DOR 0.844\nc/o possibly fatigued, possible joint stiffness. Denies tremor, photophobia.\nRTC 6 wks",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n20",
+      "text": "Follow-up visit. The patient states the hands are steady and denies any shaking or tremor. The patient mentions mild fatigue at times and is unsure whether this is affecting daily energy. The patient also denies any light sensitivity. Serum K-17 at 4.3 mmol/L, Brell enzyme at 35.9 U/L, and Dorrin ratio at 0.608 were reviewed with the patient.\n\nNothing is being changed for now, and monitoring will continue at the next scheduled visit. The patient verbalized understanding.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n21",
+      "text": "History of Present Illness:\nThe patient states that there have been no new concerns since the last visit. The patient denies photophobia and mentions no lightheadedness or dizziness.\n\nAssessment and Plan:\nThe Velorin index (VLI) was reviewed with the patient and was 122 mg/dL. The Brell enzyme (BRE) was reviewed with the patient and was 28 U/L. Monitoring will continue with no changes today. The next visit is already scheduled. All questions were answered.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n22",
+      "text": "Interval visit.\nFamily history reviewed, no changes.\nToday: possibly fatigued, no dizzy spells.\nResults: VLI 137 mg/dL, HAT 4.12 g/dL, PLX 72.5 x10^9/L, DOR 0.932.\nRecheck these at the next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n23",
+      "text": "Return visit.\nMedications reviewed with patient.\nInterval: no new concerns reported since last visit.\n\nSymptoms:\n- Denies tremor.\n- Energy level normal.\n- Denies joint stiffness.\n\nResults:\n- VLI 62.3 mg/dL\n- K17 17.1 mg/dL\n- TAC 319 umol/L\n- DOR 1.27\n\nPlan: continue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n24",
+      "text": "c/o stiff joints. Denies shaking, lightheadedness. HAT 3.23 OSM 289 PLX 278. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n25",
+      "text": "VISIT NOTE - follow-up\nSYMPTOMS: tremor: yes | fatigue: no | photophobia: no | joint stiffness: possible | dizziness: no\nLABS: Serum K-17 4.076 mmol/L; Brell enzyme 30.9 U/L; Plexa count 293.4 x10^9/L\nPLAN: continue current monitoring.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n26",
+      "text": "Return visit.\nPast history reviewed, unchanged.\nSymptoms: trembling hands; maybe more tired than usual; no photophobia; no morning stiffness; no wooziness.\nResults: K17 4.78 mmol/L; BRE 0.601 ukat/L; OSM 447 mOsm/kg; PLX 276 x10^9/L; DOR 1.29.\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n27",
+      "text": "Visit Summary:\nThe patient returns for a follow-up visit. The patient describes no recent problems and says the overall picture has been steady since the last appointment. The patient denies joint stiffness and denies dizziness, reporting no wooziness at any point during the past few weeks.\n\nLaboratory results were reviewed with the patient, including a Velorin index of 70.9 mg/dL, a Tarnic acid of 272 umol/L, and a Plexa count of 263 x10^9/L. The patient says these results were discussed in detail and that the questions raised about them were answered.\n\nNothing is being changed for now. Monitoring will continue and the patient will return for the next scheduled visit.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n28",
+      "text": "c/o wiped out, light bothers the eyes. Denies stiffness. No dizzy spells.\nVLI 79.3, DOR 1.23. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n29",
+      "text": "Visit Summary:\nThe patient describes a routine follow-up with no new concerns since the last appointment. The patient says they have no lightheadedness at present and denies any wooziness.\n\nSerum K-17 (K17) was reviewed with the patient and was 4.09 mmol/L. No changes to the plan were discussed today, and the next visit is already scheduled.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n30",
+      "text": "Visit Summary:\n\nThe patient reports joints that feel stiff, with morning stiffness noted. The patient denies low energy and denies fatigue. No lightheadedness is reported, and the patient denies dizziness.\n\nBrell enzyme (BRE) was reviewed with the patient and was 24.6 U/L. The patient notes understanding of this result.\n\nThe next visit is already scheduled. The patient verbalized understanding.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n31",
+      "text": "Pt seen for f/u. Labs: PLX 249.2 x10^9/L, DOR 0.909 ratio. Sx: no tremor; no photophobia; +joint stiffness; no dizziness. RTC 2wk.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n32",
+      "text": "Seen in clinic for follow-up.\nPast history reviewed, unchanged.\nUpdated: no tiredness, no light sensitivity, no stiff joints.\nResults: TAC 5.03 mg/dL, PLX 258 x10^9/L, DOR 0.981.\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n33",
+      "text": "TAC 152 umol/L, OSM 289 mOsm/kg. No stiff joints. No lightheadedness. RTC 6 wks.",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n34",
+      "text": "Medications and allergies reviewed.\n\nResults:\n- Velorin index (VLI): 111 mg/dL (ref 70-130)\n- Brell enzyme (BRE): 30.9 U/L (ref 15-55)\n- Osmet level (OSM): 286 mOsm/kg (ref 270-310)\n\nHistory: Specialist follow-up visit. Patient returns for scheduled review.\n\nReview of Systems:\nPositive for fatigue. Negative for shaking, dizziness and joint stiffness.\n\nPlan:\n1. Monitoring continues; follow up as scheduled.\n2. Repeat labs at next visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n35",
+      "text": "c/o dizzy spells, ?tremor, ?photophobia. Denies tiredness, joint stiffness.\nVLI 4.44 mmol/L, PLX 304 x10^9/L, DOR 1.2. RTC 6 wks",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n36",
+      "text": "Pt in for recheck. Labs: VLI 132 mg/dL, BRE 48.12 U/L, HAT 3.152 g/dL. Sx: no tremor; denies fatigue; denies photophobia; denies joint stiffness; c/o dizziness. Recheck prn.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n37",
+      "text": "VLI: 111 mg/dL. K17: 18.8 mg/dL. PLX: 316 x10^9/L. c/o low energy. c/o poss joint stiffness. No photophobia. No dizzy spells. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n38",
+      "text": "Follow-up note.\nPast history reviewed, unchanged.\nSymptoms: low energy, light bothers the eyes, lightheaded. No tremor. No joint stiffness.\nResults: HAT 3.45 g/dL, OSM 277 mOsm/kg, PLX 169 x10^9/L, DOR 0.755.\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n39",
+      "text": "Routine check. Sx: no tremor; poss fatigue; no photophobia; c/o joint stiffness; c/o dizziness. Labs: BRE 36.33 U/L, OSM 293.4 mOsm/kg, PLX 166.5 x10^9/L. Recheck prn.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n40",
+      "text": "Visit Summary:\nThe patient describes feeling well since the last visit and says there have been no new concerns. The patient denies tremor and denies fatigue.\n\nLab values were reviewed with the patient, including a Serum K-17 level of 3.46 mmol/L and a Brell enzyme (BRE) level of 60.4 U/L. The patient says these results were discussed and questions were clarified.\n\nAll questions were answered. The next visit is already scheduled.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n41",
+      "text": "Return visit.\nPast history reviewed, unchanged.\n\nUpdated:\n- No tremor.\n- Energy level normal.\n- No light sensitivity.\n\nLabs:\n- VLI 64.1 mg/dL\n- TAC 316 umol/L\n- BRE 40.3 U/L\n- HAT 3.83 g/dL\n- OSM 297 mOsm/kg\n\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n42",
+      "text": "HISTORY: Follow-up specialist visit. Medications and allergies reviewed.\n\nROS:\n  MSK: positive for joint stiffness\n  Neuro: negative for shaky hands and dizziness\n  General: negative for low energy\n\nRESULTS:\n  - Velorin index (VLI): 93.6 mg/dL (ref 70-130)\n  - Tarnic acid (TAC): 448 umol/L (H, ref 200-400)\n  - Brell enzyme (BRE): 44.6 U/L (ref 15-55)\n  - Plexa count (PLX): 291 x10^9/L (ref 150-400)\n  - Dorrin ratio (DOR): 1.34 (ref 0.6-1.4)\n\nPLAN:\n  1. Continue monitoring and recheck Tarnic acid at next scheduled visit.\n  2. Return for follow-up as scheduled.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n43",
+      "text": "Subjective:\nThe patient reports possibly feeling fatigued, describing mild fatigue at times that the patient is unsure is related to anything in particular. The patient reports achy stiff joints. The patient denies trouble with bright lights and denies dizziness.\n\nObjective:\nLaboratory results were reviewed with the patient: Dorrin ratio (DOR) 1.1.\n\nAssessment and Plan:\nSymptoms will continue to be monitored, and the patient will be asked to report any change in the fatigue or joint stiffness. The next visit is already scheduled. The patient verbalized understanding.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n44",
+      "text": "Visit Summary:\nThe patient states that the hands feel shaky and tremulous at times. The patient mentions no exhaustion and says energy level is normal. The patient is unsure whether bright light is occasionally bothersome, and reports possible light sensitivity. The patient also mentions joint stiffness that has been noticeable recently.\n\nLaboratory results were reviewed with the patient during the visit. The Velorin index was 120 mg/dL, serum K-17 was 4.36 mmol/L, and the Plexa count was 119 x10^9/L. The patient was given the opportunity to ask questions about these results, and the discussion was completed before the visit ended.\n\nThe next visit is already scheduled.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n45",
+      "text": "Results:\n  Tarnic acid (TAC): 356 umol/L (ref 200-400)\n  Brell enzyme (BRE): 30.9 U/L (ref 15-55)\n  Halvin titer (HAT): 4.12 g/dL (ref 3-5)\n  Plexa count (PLX): 311 x10^9/L (ref 150-400)\n  Dorrin ratio (DOR): 1.04 (ref 0.6-1.4)\n\nHistory: Specialist follow-up. Patient is seen for routine review with no new concerns raised.\n\nReview of Systems:\n  Neuro: negative for tremor; positive for dizziness\n  General: possible fatigue at times\n  Eyes: negative for photophobia\n\nPlan:\n1. Continue monitoring and follow up at next scheduled visit.\n2. Recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n46",
+      "text": "Specialist follow-up. History: Patient returns for routine review. Medications and allergies reviewed.\n\nReview of Systems:\nGeneral: positive for low energy.\nEyes: no photophobia.\nMSK: no morning stiffness.\nNeuro: no dizziness.\n\nResults:\nSerum K-17 (K17) 5.7 mmol/L (H) (ref 3.4-5)\nBrell enzyme (BRE) 49.6 U/L (ref 15-55)\nOsmet level (OSM) 298 mOsm/kg (ref 270-310)\nPlexa count (PLX) 201 x10^9/L (ref 150-400)\nDorrin ratio (DOR) 0.633 (ref 0.6-1.4)\n\nPlan:\n1. Repeat K17 at next visit.\n2. Monitoring continues; return as scheduled.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n47",
+      "text": "RESULTS: Serum K-17 (K17): 4.03 mmol/L (ref 3.4-5)\nHISTORY: Specialist follow-up visit.\nROS:\n  Neuro: negative for tremor\n  MSK: negative for morning stiffness\n  Eyes: negative for photophobia\nPLAN: 1) Continue monitoring. 2) Recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n48",
+      "text": "OSM 315 mOsm/kg. PLX 177 x10^9/L. DOR 1.34. c/o exhausted. no tremor. no stiffness.",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n49",
+      "text": "SPECIALIST FOLLOW-UP\n\nResults: Tarnic acid (TAC) 382 umol/L (ref 200-400); Brell enzyme (BRE) 29.6 U/L (ref 15-55); Halvin titer (HAT) 4.3 g/dL (ref 3-5); Osmet level (OSM) 308 mOsm/kg (ref 270-310); Dorrin ratio (DOR) 0.746 (ref 0.6-1.4)\n\nHistory: Follow-up visit. Chart reviewed prior to visit.\n\nReview of Systems:\nGeneral: denies fatigue.\nEyes: no light sensitivity.\nMSK: joints not stiff.\n\nPlan:\n1. Continue current monitoring.\n2. Return for follow-up at next scheduled visit, sooner if symptoms change.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n50",
+      "text": "Review of systems is a single item per symptom, so I will state the three denied symptoms once each under their systems.\n\nSpecialist Follow-Up\n\nHistory: Patient returns for routine specialist follow-up. No new concerns reported since last visit.\n\nReview of Systems:\n  General: no tiredness\n  Eyes: no photophobia\n  Neuro: denies lightheadedness\n\nResults:\n  - Velorin index (VLI): 97.4 mg/dL (ref 70-130)\n  - Brell enzyme (BRE): 40.7 U/L (ref 15-55)\n  - Halvin titer (HAT): 4.48 g/dL (ref 3-5)\n  - Osmet level (OSM): 294 mOsm/kg (ref 270-310)\n  - Plexa count (PLX): 287 x10^9/L (ref 150-400)\n  - Dorrin ratio (DOR): 1.12 (ref 0.6-1.4)\n\nPlan:\n  1. Continue monitoring at next scheduled visit.\n  2. Recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n51",
+      "text": "Subjective:\nThe patient states she has maybe some shaking, possibly a tremor, that she is unsure about. She mentions being tired on and off, and may be more tired than usual. The patient denies any sensitivity to bright light and reports no dizzy spells.\n\nObjective:\nResults reviewed with the patient: Brell enzyme (BRE) 44.9 U/L, Halvin titer (HAT) 4.42 g/dL, and Plexa count (PLX) 302 x10^9/L.\n\nAssessment and Plan:\nSymptoms are being monitored, and the patient will recheck at the next scheduled visit. The patient verbalized understanding. Nothing is being changed for now.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n52",
+      "text": "HAT: 3.81 g/dL\nOSM: 314 mOsm/kg\nc/o bothered by bright lights. denies shaking, dizziness. RTC 6 wks",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n53",
+      "text": "[History]\nSpecialist follow-up. Patient returns for routine review; no new concerns reported.\n\n[ROS]\nPositive for photophobia and joint stiffness. Negative for tremor and lightheadedness.\n\n[Results]\nTarnic acid (TAC) 406 umol/L (H) (ref 200-400); Brell enzyme (BRE) 29.6 U/L (ref 15-55); Halvin titer (HAT) 2.82 g/dL (L) (ref 3-5); Osmet level (OSM) 283 mOsm/kg (ref 270-310); Plexa count (PLX) 244 x10^9/L (ref 150-400)\n\n[Plan]\nMonitoring continues; recheck results and review symptoms at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n54",
+      "text": "Subjective:\nThe patient states that things have been generally stable since the last visit. The patient mentions no shaking and reports that the hands feel steady. The patient denies any stiff joints. The patient states feeling dizziness at times, though the frequency was not described.\n\nObjective:\nLaboratory results were reviewed with the patient, including a Brell enzyme (BRE) of 36.7 U/L, a Halvin titer (HAT) of 3.75 g/dL, and a Plexa count (PLX) of 336 x10^9/L.\n\nAssessment and Plan:\nMonitoring will continue, and the patient will be rechecked as clinically indicated. The patient will return for a follow-up visit in a few weeks. The patient verbalized understanding.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n55",
+      "text": "SPECIALIST FOLLOW-UP\nMedications and allergies reviewed.\nHistory: Seen for scheduled specialist follow-up.\n\nReview of Systems:\nGeneral: positive for fatigue\nNeuro: negative for shaking\nEyes: denies photophobia\nMSK: positive for stiff joints\n\nResults:\nVelorin index (VLI): 4.47 mmol/L (ref 3.89-7.21)\nSerum K-17 (K17): 4.34 mmol/L (ref 3.4-5)\nHalvin titer (HAT): 4.38 g/dL (ref 3-5)\nOsmet level (OSM): 300 mOsm/kg (ref 270-310)\nDorrin ratio (DOR): 1.38 (ref 0.6-1.4)\n\nPlan: Continue monitoring and repeat labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n56",
+      "text": "Interval visit.\nMedications reviewed with patient.\nToday: no light sensitivity, no morning stiffness, no wooziness.\nResults: K17 4 mmol/L, OSM 287 mOsm/kg.\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n57",
+      "text": "[Results]\nTarnic acid (TAC) 248 umol/L (ref 200-400)\n\n[History]\nSpecialist follow-up visit. Medications and allergies reviewed. Chart reviewed prior to visit.\n\n[Review of Systems]\nNeuro: positive for hand tremor and dizziness. General: positive for tired. Eyes: negative for light sensitivity. MSK: no joint stiffness.\n\n[Plan]\nContinue current monitoring and recheck at next scheduled specialist visit, sooner if symptoms change.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n58",
+      "text": "History of Present Illness:\nThe patient describes ongoing joint discomfort and says the joints feel achy and stiff, particularly in the morning. The patient denies shaking and reports that the hands feel steady. The patient denies fatigue and says energy levels have been normal. The patient is unsure whether lightheadedness has occurred, noting it may happen occasionally without a clear pattern.\n\nAssessment and Plan:\nLab results were reviewed with the patient, including a Tarnic acid (TAC) level of 5.25 mg/dL and a Brell enzyme (BRE) level of 42.7 U/L. All questions were answered. Monitoring will continue, and the patient will return for a follow-up visit in a few weeks.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n59",
+      "text": "Return visit.\nMedications reviewed with patient.\nToday: shaky hands, tires easily, possible brief dizzy spells. Denies light sensitivity, no stiff joints.\nResults: Velorin index (VLI) 111 mg/dL, Dorrin ratio (DOR) 0.782.\nPast history reviewed, unchanged. Continue current monitoring plan; recheck VLI and DOR at next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n60",
+      "text": "Chart reviewed prior to visit.\n\nHistory: Specialist follow-up visit. Patient reports exhaustion and tires easily during the day.\n\nReview of Systems:\nGeneral: Positive for low energy.\nEyes: Negative for photophobia.\nMSK: Negative for joint stiffness.\nNeuro: Possible dizziness.\n\nResults:\n- Tarnic acid (TAC): 329 umol/L (ref 200-400)\n\nPlan:\n1. Recheck Tarnic acid at next visit.\n2. Continue monitoring symptoms.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n61",
+      "text": "Interval visit.\nFamily history reviewed, no changes.\nUpdated:\n- Denies light sensitivity.\n- No joint stiffness.\n- Denies dizziness.\n\nResults:\n- Brell enzyme (BRE): 52.8 U/L\n- Plexa count (PLX): 299 x10^9/L\n- Dorrin ratio (DOR): 0.989\n\nRecheck at next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n62",
+      "text": "Return visit.\nPast history reviewed, unchanged.\n\nToday:\n- Feels dizzy.\n- No shaky hands.\n- No trouble with bright lights.\n- No stiff joints.\n\nResults:\n- Velorin index (VLI): 95.8 mg/dL\n- Serum K-17 (K17): 4.66 mmol/L\n- Osmet level (OSM): 304 mOsm/kg\n- Dorrin ratio (DOR): 0.793\n\nContinue current monitoring plan.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n63",
+      "text": "SPECIALIST FOLLOW-UP\nHPI: Seen for routine follow-up. No new concerns raised since last visit.\nROS:\n  General: positive for fatigue\n  Neuro: negative for tremor, negative for dizziness\n  Eyes: negative for light sensitivity\n  MSK: positive for joint stiffness\nRESULTS:\n  - Tarnic acid (TAC): 296 umol/L (ref 200-400)\n  - Halvin titer (HAT): 3.94 g/dL (ref 3-5)\n  - Dorrin ratio (DOR): 0.613 (ref 0.6-1.4)\nPLAN: Continue monitoring; recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n64",
+      "text": "c/o dizzy. no fatigue. no photophobia. VLI 111 mg/dL, OSM 279 mOsm/kg. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n65",
+      "text": "Interval visit.\nPast history reviewed, unchanged.\nSymptoms: denies tremor, no photophobia, no joint stiffness.\nResults: VLI 2.11 mmol/L, K17 3.6 mmol/L, TAC 326 umol/L, OSM 286 mOsm/kg.\nRecheck at next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n66",
+      "text": "Return visit.\nFamily history reviewed, no changes.\nInterval: no shaking. Wiped out with stiffness in the joints, and feels dizzy.\nLabs: K17 4.64 mmol/L; BRE 54.8 U/L; HAT 3.71 g/dL; PLX 300 x10^9/L\nOther stock lines reviewed, unchanged from prior visit.\nPlan: recheck these labs at the next scheduled visit and continue current monitoring.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n67",
+      "text": "Follow-up note.\nPast history reviewed, unchanged.\nToday:\n - hand tremor\n - no morning stiffness\n\nResults:\n - Velorin index (VLI): 171 mg/dL\n - Serum K-17 (K17): 3.04 mmol/L\n - Tarnic acid (TAC): 274 umol/L\n - Osmet level (OSM): 294 mOsm/kg\n - Plexa count (PLX): 251 x10^9/L\n\nRecheck these at the next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n68",
+      "text": "Visit Summary:\nThe patient describes no new concerns since the last visit and says the hands are steady, with no tremor. The patient denies any trouble with bright lights. The patient says he is maybe a little woozy at times, though he is unsure whether it is dizziness. The Halvin titer, 4.08 g/dL, was reviewed with the patient during the visit.\n\nNo changes to care are being made today. The patient says he understands the plan and has no further questions. The patient will return in a few weeks to recheck how things are going.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n69",
+      "text": "SPECIALIST FOLLOW-UP\n\nHISTORY: Return visit for scheduled specialist follow-up. Chart reviewed prior to visit.\n\nRESULTS:\n- Velorin index (VLI): 109 mg/dL (ref 70-130)\n- Serum K-17 (K17): 4.82 mmol/L (ref 3.4-5)\n- Tarnic acid (TAC): 362 umol/L (ref 200-400)\n- Brell enzyme (BRE): 38.6 U/L (ref 15-55)\n- Halvin titer (HAT): 3.22 g/dL (ref 3-5)\n- Plexa count (PLX): 255 x10^9/L (ref 150-400)\n\nROS: Positive for none. Negative for photophobia in Eyes, joint stiffness in MSK, and dizziness in Neuro.\n\nPLAN:\n1. Continue current monitoring.\n2. Recheck labs and return visit as scheduled, sooner if symptoms change.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n70",
+      "text": "denies shaking, lightheadedness. K17 3.27 mmol/L, TAC 313 umol/L. f/u if worse",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n71",
+      "text": "c/o sensitive to bright light. denies exhaustion, lightheadedness\nTAC: 329 umol/L\nHAT: 4.22 g/dL",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n72",
+      "text": "Visit Summary:\nThe patient states that the Velorin index and Tarnic acid results were reviewed together, with the Velorin index at 101 mg/dL and Tarnic acid at 292 umol/L. The patient denies any shaky hands or tremor. The patient mentions feeling dizzy and is possibly fatigued, and is unsure whether the stiffness in the joints is related. No light sensitivity is reported.\n\nThe patient mentions that joints are a bit stiff at times, though this is uncertain. Monitoring will continue, and the patient will return for a visit in a few weeks. All questions were answered.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n73",
+      "text": "TAC 285 PLX 172 DOR 0.61\nc/o poss dizzy on and off. Denies photophobia. RTC 6 wks",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n74",
+      "text": "Seen in clinic for follow-up. Family history reviewed, no changes. Medications reviewed, no changes.\nToday: Denies tremor. Denies joint stiffness. Denies dizziness.\nResults: TAC 444 umol/L, BRE 27 U/L, HAT 4.21 g/dL, OSM 288 mOsm/kg, DOR 1.18.\nRecheck at next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n75",
+      "text": "Return visit.\nFamily history reviewed, no changes.\nToday: exhausted, stiffness in the joints, denies tremor, maybe some dizziness.\nResults: TAC 479 umol/L, HAT 4.19 g/dL.\nRecheck at next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n76",
+      "text": "Medications and allergies reviewed.\n\nHPI: Specialist follow-up visit. Stiffness in the joints reported at this visit.\n\nReview of Systems:\n  Neuro: no shaky hands\n  General: no fatigue\n  Eyes: denies photophobia\n  MSK: stiffness in the joints\n\nResults:\n  Tarnic acid (TAC): 5.21 mg/dL (ref 3.36-6.72)\n  Halvin titer (HAT): 3.78 g/dL (ref 3-5)\n  Osmet level (OSM): 262 mOsm/kg (L, ref 270-310)\n  Plexa count (PLX): 217 x10^9/L (ref 150-400)\n  Dorrin ratio (DOR): 0.505 (L, ref 0.6-1.4)\n\nPlan: Continue monitoring and repeat labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n77",
+      "text": "VISIT NOTE - follow-up\nSYMPTOMS: tremor: no | joint stiffness: possible | dizziness: no\nRESULTS: Serum K-17 3.864 mmol/L; Halvin titer 4.59 g/dL\nPLAN: review at next visit.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n78",
+      "text": "Interval visit.\nPast history reviewed, unchanged.\nSymptoms: denies joint stiffness, no wooziness.\nResults: VLI 81.2 mg/dL, K17 3.9 mmol/L, HAT 6.9 g/dL, DOR 0.745.\nRecheck these at the next scheduled visit.",
+      "kind": {
+        "label": "Copy-forward progress note",
+        "expect": "Built from the previous visit's note with some lines updated: stock reviewed-and-unchanged lines, carried-over text and uneven tidiness are expected."
+      }
+    },
+    {
+      "id": "n79",
+      "text": "BRE: 27.4 U/L, OSM: 304 mOsm/kg? No, I must use the style: \"Name: 123\" with short name and value. Symptoms first.\n\nposs mild morning stiffness at times. no light sensitivity. no shaking.\nBRE: 27.4 U/L\nOSM: 304 mOsm/kg",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n80",
+      "text": "RESULTS: Velorin index (VLI) 102 mg/dL (ref 70-130); Serum K-17 (K17) 4.72 mmol/L (ref 3.4-5); Tarnic acid (TAC) 330 umol/L (ref 200-400); Brell enzyme (BRE) 24.8 U/L (ref 15-55); Plexa count (PLX) 242 x10^9/L (ref 150-400); Dorrin ratio (DOR) 0.302 (L, ref 0.6-1.4)\n\nHISTORY: Specialist follow-up visit. Chart reviewed prior to visit.\n\nROS:\nNeuro: negative for shaky hands.\nEyes: negative for photophobia.\nMSK: no stiff joints.\n\nPLAN:\n1. Continue current monitoring.\n2. Recheck labs at next scheduled visit, sooner if symptoms change.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n81",
+      "text": "History of Present Illness:\nThe patient reports feeling dizzy. The patient denies any trouble with bright lights and notes no light sensitivity. The patient also reports that energy level has been normal and denies fatigue. Symptoms were discussed in detail during the visit, and the patient was asked to describe how often the dizziness occurs and what seems to bring it on.\n\nAssessment and Plan:\nSymptoms were reviewed with the patient, and the patient's history was discussed in the context of the current presentation. Monitoring will continue, and the patient will return for reassessment if symptoms change or worsen. Nothing is being changed for now.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n82",
+      "text": "VISIT NOTE - follow-up\nREVIEW OF SYSTEMS: tremor: no | fatigue: no | dizziness: no\nLABS: Brell enzyme 32 U/L; Osmet level 263.7 mOsm/kg\nPLAN: no change to follow-up schedule.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n83",
+      "text": "The patient reports that things have been fairly stable since the last visit. The patient denies tremor and denies light sensitivity. The patient notes being somewhat tired at times, though the patient is unsure whether this is more than usual.\n\nLaboratory results were reviewed with the patient, including a Velorin index (VLI) of 84.8 mg/dL. The patient was given an opportunity to ask questions about these results and verbalized understanding of the plan to continue monitoring. The next visit is already scheduled.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    },
+    {
+      "id": "n84",
+      "text": "Pt in for recheck. Labs: BRE 0.5174 ukat/L, HAT 4.187 g/dL, OSM 273.4 mOsm/kg, PLX 291.1 x10^9/L. Sx: no tremor; +fatigue; no joint stiffness; no dizziness. Cont monitoring.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n85",
+      "text": "VISIT NOTE - follow-up\nSYMPTOMS: fatigue: no | photophobia: no | joint stiffness: yes | dizziness: no\nLABS: Serum K-17 4.643 mmol/L; Tarnic acid 194.5 umol/L; Brell enzyme 42.13 U/L; Osmet level 287.9 mOsm/kg\nPLAN: continue current monitoring.",
+      "kind": {
+        "label": "Clinician-written visit note",
+        "expect": "A visit note written by a clinician, with no particular template implied."
+      }
+    },
+    {
+      "id": "n86",
+      "text": "[Results]\nVelorin index (VLI) 118 mg/dL (ref 70-130); Serum K-17 (K17) 18.4 mg/dL (ref 13.3-19.6); Tarnic acid (TAC) 304 umol/L (ref 200-400); Halvin titer (HAT) 3.52 g/dL (ref 3-5); Dorrin ratio (DOR) 1.23 (ref 0.6-1.4)\n\n[History]\nSpecialist follow-up. Patient reports lightheaded spells. Chart reviewed prior to visit.\n\n[Review of Systems]\nGeneral: no tiredness.\nEyes: denies light sensitivity.\nMSK: denies joint stiffness.\nNeuro: lightheaded.\n\n[Plan]\nMonitoring continues; recheck labs at next scheduled visit.",
+      "kind": {
+        "label": "EHR template note",
+        "expect": "Typed into a structured electronic-health-record template: labelled sections, tidy lists of results and stock lines are expected. Judge whether it reads like a template a real clinician filled in."
+      }
+    },
+    {
+      "id": "n87",
+      "text": "BRE 24.6, PLX 216, DOR 1.33. c/o shaking of the hands. Poss tired on and off. Denies joint stiffness.",
+      "kind": {
+        "label": "Quick shorthand note",
+        "expect": "A rushed note in clinician shorthand: abbreviations and sentence fragments are normal, and the style differs from clinician to clinician."
+      }
+    },
+    {
+      "id": "n88",
+      "text": "The patient describes no tremor and says there have been no lightheaded or dizzy spells. Tarnic acid (TAC) was reviewed with the patient and was 280 umol/L, and the Halvin titer (HAT) was 1.68 g/dL. These results were discussed during the visit, and the patient was given the opportunity to ask questions about them.\n\nThe patient says the overall plan is to continue current monitoring with no changes at this time. Repeat laboratory values will be reviewed at the next scheduled visit, and the patient was told to report any new symptoms before then. The next visit is already scheduled. The patient verbalized understanding.",
+      "kind": {
+        "label": "AI-scribe draft",
+        "expect": "Drafted by an ambient AI scribe from the recorded visit conversation: structured, formal, third-person, even-toned and somewhat wordy text is what such tools produce, so mechanical-sounding or tidy prose is NOT a reason to reject it. Judge whether it reads like real scribe output, not like a human's terse note."
+      }
+    }
+  ]
+}

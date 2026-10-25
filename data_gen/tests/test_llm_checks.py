@@ -172,7 +172,7 @@ def test_phrases_must_appear_and_unplanned_symptoms_must_not():
                                sym("fatigue", "negated", ["tired", "low energy"])])
     assert phrase_errors("Reports shaky hands. Denies feeling tired.", plan) == []
     assert phrase_errors("SHAKING noted; not Tired.", plan) == []
-    assert "phrase_missing:tremor" in phrase_errors("Reports a tremor. Not tired.", plan)
+    assert "phrase_missing:tremor" in phrase_errors("Nothing new today. Not tired.", plan)
     assert "symptom_extra:dizziness" in phrase_errors("Shaky hands, not tired, lightheaded at times.", plan)
 
 
@@ -281,3 +281,91 @@ def test_a_note_that_names_its_documentation_setting_is_a_validation_failure():
 
     assert reveals_setting("Specialist follow-up visit, EHR template.\nHistory: stable") == "ehr_template"
     assert reveals_setting("Pt seen, labs reviewed.") is None
+
+
+# --- tells of artifice found by the round-0 review -----------------------------------------------------------------------
+
+def _style_plan():
+    return make_plan(symptoms=[
+        PlanSymptomV2(flag="fatigue", stated="negated", phrases=("fatigue", "tired", "low energy", "exhausted")),
+        PlanSymptomV2(flag="joint_stiffness", stated="present",
+                      phrases=("joint stiffness", "stiff joints", "achy stiff joints", "morning stiffness")),
+    ], style="shorthand")
+
+
+def test_style_errors_flag_meta_mentions_contradictory_c_o_and_repeated_wording():
+    from data_gen.llm.checks import style_errors
+
+    plan = _style_plan()
+    assert style_errors("Pt denies fatigue. c/o stiff joints.", plan) == []
+    assert "meta_mention" in style_errors("Fictional study condition. Denies fatigue. c/o stiff joints.", plan)
+    assert "meta_mention" in style_errors("Synthetic data. Denies fatigue.", plan)
+    assert "contradictory_phrasing" in style_errors("c/o denies fatigue; c/o stiff joints.", plan)
+    assert "contradictory_phrasing" in style_errors("C/O no fatigue.", plan)
+    assert "symptom_repeated:fatigue" in style_errors("Denies fatigue, feels not exhausted, no low energy.", plan)
+    assert "symptom_repeated:joint_stiffness" in style_errors("Reports joint stiffness and stiff joints.", plan)
+
+
+def test_the_same_phrase_twice_or_a_nested_phrase_is_not_repetition():
+    from data_gen.llm.checks import style_errors
+
+    plan = _style_plan()
+    assert style_errors("Denies fatigue. Fatigue not an issue today.", plan) == []  # one wording, mentioned twice
+    assert style_errors("Reports achy stiff joints.", plan) == []  # 'stiff joints' sits inside 'achy stiff joints'
+
+
+def test_style_errors_are_part_of_the_offline_checks():
+    from data_gen.llm.checks import offline_errors
+
+    plan = _style_plan()
+    errs = offline_errors("Denies fatigue, feels tired. c/o stiff joints.", plan)
+    assert "symptom_repeated:fatigue" in errs
+
+
+def test_a_value_in_the_unusual_unit_must_keep_its_unit():
+    alt = PlanLabV2(lab="velorin_index", value=7.63, unit="mmol/L")
+    plan = make_plan(labs=[alt], style="shorthand")
+    assert lab_errors("VLI 7.63 mmol/L.", plan) == []
+    assert "lab_unit:velorin_index" in lab_errors("VLI 7.63", plan)  # unit dropped: 7.63 would read as a wrong value
+    usual = make_plan(labs=[PlanLabV2(lab="velorin_index", value=99.0, unit="mg/dL")], style="shorthand")
+    assert lab_errors("VLI 99", usual) == []  # the usual unit may be dropped in shorthand
+
+
+def test_the_prompt_says_to_write_the_unit_when_it_is_not_the_usual_one():
+    from data_gen.llm.prompts import build_prompt
+
+    alt = make_plan(labs=[PlanLabV2(lab="velorin_index", value=7.63, unit="mmol/L")], style="shorthand")
+    usual = make_plan(labs=[PlanLabV2(lab="velorin_index", value=99.0, unit="mg/dL")], style="shorthand")
+    assert "write the unit for this one" in build_prompt(alt).user
+    assert "write the unit for this one" not in build_prompt(usual).user
+
+
+def test_scribe_prose_may_restate_a_finding_but_not_pad_it():
+    from data_gen.llm.checks import style_errors
+
+    symptoms = [PlanSymptomV2(flag="tremor", stated="negated", phrases=("no tremor", "denies shaking"))]
+    scribe = make_plan(symptoms=symptoms, style="ai_scribe")
+    terse = make_plan(symptoms=symptoms, style="shorthand")
+    two = "The patient denies any shaking or tremor and says their hands feel steady."
+    assert style_errors(two, scribe) == []  # natural in scribe prose
+    assert "symptom_repeated:tremor" in style_errors(two, terse)  # but padding in a terse note
+    three = "The patient denies tremor, notes no shaking, and describes hands steady."
+    assert "symptom_repeated:tremor" in style_errors(three, scribe)  # a third wording in one sentence is padding
+    four = "No tremor. Denies shaking. Hands steady. The patient has shaky hands? No."
+    assert "symptom_repeated:tremor" in style_errors(four, scribe)  # four wordings across the note
+
+
+def test_stock_sentences_and_short_runs_are_not_copying(plans_by_style=None):
+    from data_gen.llm.checks import exemplar_errors
+    from data_gen.llm.prompts import exemplars
+    from data_gen.traits import stock_lines
+
+    plan = make_plan(symptoms=[], style="ai_scribe")
+    plan = plan.model_copy(update={"traits": {"filler": "understanding"}})
+    assert stock_lines("ai_scribe", plan.traits) == ["The patient verbalized understanding."]
+    example = exemplars("ai_scribe")[0]
+    import re
+
+    words = re.findall(r"[a-z']+", example.lower())  # plain words, as the check counts them
+    assert exemplar_errors(" ".join(words[:9]) + " zzz and then something else entirely", plan) == []  # 9 in a row: too short
+    assert exemplar_errors(" ".join(words[:12]), plan) == ["exemplar_copied"]
