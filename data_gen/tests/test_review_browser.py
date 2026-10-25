@@ -2,6 +2,7 @@
 
 import json
 import shutil
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -33,8 +34,9 @@ CFG = GenConfig(note_source="llm", seed=7, llm=LLMConfig(reviewer_max_steps=500,
 class Script:
     """A scripted 'model': reads the note id from the user message and answers with tool calls."""
 
-    def __init__(self, key, sheet, plausible=lambda meta: "y", extra=None):
+    def __init__(self, key, sheet, plausible=lambda meta: "y", extra=None, last_id=None):
         self.key = key
+        self.last_id = last_id or sorted(key)[-1]
         self.id_of = {n["text"]: n["id"] for n in sheet["notes"]}
         self.plausible = plausible
         self.extra = extra or {}
@@ -66,7 +68,7 @@ class Script:
             if verdict == "n":
                 use("add_comment", text="reads like boilerplate")
         else:  # second turn: move on (or finish on the last note)
-            last = note_id == sorted(self.key)[-1]
+            last = note_id == self.last_id
             use("finish" if last else "next_note")
         return Turn(uses, [{"type": "tool_use", "id": u.id, "name": u.name, "input": u.input} for u in uses],
                     "tool_use", 1200, 150)
@@ -337,3 +339,61 @@ def test_the_recording_goes_into_the_highest_round_folder_by_default(setup, monk
     assert code == 0 and "reviewing round 2" in out
     assert (higher / "review.webm").stat().st_size > 0 and (higher / "review-session.jsonl").exists()
     assert not (d / "review.webm").exists()
+
+
+# --- a balanced sample so every setting is on the video ---------------------------------------------------------------
+
+def test_balanced_note_ids_spread_over_the_settings(setup):
+    from data_gen.config import LLM_SETTINGS
+    from data_gen.review.browser import balanced_note_ids
+
+    d, key, sheet = setup
+    for n in (4, 8, 15, 20, 80):
+        ids = balanced_note_ids(key, n, LLM_SETTINGS)
+        counts = Counter(key[i]["setting"] for i in ids)
+        assert len(ids) == n == len(set(ids))
+        assert set(counts) == set(LLM_SETTINGS) and max(counts.values()) - min(counts.values()) <= 1, (n, counts)
+        assert all(key[i]["kind"] == "note" for i in ids)  # no template controls
+        assert ids == balanced_note_ids(key, n, LLM_SETTINGS)  # deterministic
+        assert [key[i]["setting"] for i in ids[:4]] == list(LLM_SETTINGS)  # interleaved: every setting early on
+    assert len(balanced_note_ids(key, 500, LLM_SETTINGS)) == 80  # asking for more than exist gives all of them
+
+
+@needs_app
+def test_a_sample_run_visits_exactly_the_chosen_notes_in_order(setup):
+    from data_gen.config import LLM_SETTINGS
+    from data_gen.review.browser import balanced_note_ids
+
+    d, key, sheet = setup
+    ids = balanced_note_ids(key, 8, LLM_SETTINGS)
+    script = Script(key, sheet, last_id=ids[-1])
+    with AppServer(APP_DIR, d, CFG) as app:
+        result = run_browser_review(CFG, script, budget(), d, app.url, record_video=False, note_ids=ids)
+    assert result.stopped is None and result.refused == 0
+    rf = read_rating_file(d / f"ratings.{browser_reviewer_name(CFG)}.json")
+    assert set(rf.ratings) == set(ids) and all(r.complete for r in rf.ratings.values())
+    visited = [e["note"] for e in map(json.loads, (d / "review-session.jsonl").read_text().splitlines()) if e.get("tool") == "next_note"]
+    assert visited == list(range(1, 8))  # moved on seven times, once per note but the last
+    assert Counter(key[i]["setting"] for i in rf.ratings) == {s: 2 for s in LLM_SETTINGS}
+
+
+@needs_app
+def test_the_command_samples_every_setting_when_given_max_notes(setup, monkeypatch, capsys):
+    from data_gen.cli import main
+
+    d, key, sheet = setup
+    ids = None
+
+    def tool_client(**k):
+        from data_gen.config import LLM_SETTINGS
+        from data_gen.review.browser import balanced_note_ids
+
+        return Script(key, sheet, last_id=balanced_note_ids(key, 12, LLM_SETTINGS)[-1])
+
+    monkeypatch.setattr("data_gen.review.browser.AnthropicToolClient", tool_client)
+    code = main(["review", "--dir", str(d.parent), "--note-source", "llm", "--mode", "browser", "--max-notes", "12",
+                 "--yes", "--pause", "0", "--no-video", "--app-dir", str(APP_DIR)])
+    out = capsys.readouterr().out
+    assert code == 0 and "balanced over the settings" in out and "12 notes visited" in out
+    rf = read_rating_file(d / f"ratings.{browser_reviewer_name(GenConfig(note_source='llm'))}.json")
+    assert Counter(key[i]["setting"] for i in rf.ratings) == {"shorthand": 3, "ehr_template": 3, "ai_scribe": 3, "copy_forward": 3}

@@ -220,16 +220,24 @@ def cmd_gate(args: argparse.Namespace) -> int:
 def _review_in_browser(args: argparse.Namespace, cfg: GenConfig, directory: Path) -> int:
     from .llm.client import LLMCallError, MissingApiKeyError
     from .llm.gateway import Budget
-    from .review.browser import AnthropicToolClient, AppServer, run_browser_review
+    from .config import LLM_SETTINGS
+    from .review.browser import AnthropicToolClient, AppServer, balanced_note_ids, run_browser_review
 
     budget = Budget.for_review(cfg.llm)
+    note_ids = None
+    key_file = directory / "key.json"
+    if args.max_notes and key_file.exists():  # a sample, spread evenly over the settings so each one is on the video
+        note_ids = balanced_note_ids(json.loads(key_file.read_text())["notes"], args.max_notes, LLM_SETTINGS)
+        key = json.loads(key_file.read_text())["notes"]
+        counts = {s: sum(key[i]["setting"] == s for i in note_ids) for s in LLM_SETTINGS}
+        print(f"sample of {len(note_ids)} notes, balanced over the settings: {counts}")
     try:
         tool_client = AnthropicToolClient(effort=cfg.llm.reviewer_effort)
         with AppServer(Path(args.app_dir), directory, cfg) as app:
             print(f"rating app running at {app.url} (this session only)")
             result = run_browser_review(cfg, tool_client, budget, directory, app.url, max_notes=args.max_notes,
                                         headless=not args.headed, record_video=not args.no_video,
-                                        pause=args.pause)
+                                        pause=args.pause, note_ids=note_ids)
     except MissingApiKeyError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
