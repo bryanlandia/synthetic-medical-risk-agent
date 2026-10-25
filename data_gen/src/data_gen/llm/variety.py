@@ -10,7 +10,8 @@ import re
 from collections import Counter
 
 # A setting's notes may open the same way at most this often. Quick notes open more freely.
-MAX_TOP_OPENER_SHARE = {"shorthand": 0.40, "ehr_template": 0.35, "ai_scribe": 0.35, "copy_forward": 0.35}
+# (scribe notes follow a template, so a shared first heading is expected)
+MAX_TOP_OPENER_SHARE = {"shorthand": 0.40, "ehr_template": 0.35, "ai_scribe": 0.45, "copy_forward": 0.35}
 MIN_DISTINCT_TRAIT_COMBOS = 8  # of a pilot's 20 notes per setting (6 for shorthand, which has fewer traits)
 
 

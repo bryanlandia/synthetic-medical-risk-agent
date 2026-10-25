@@ -231,3 +231,12 @@ test("the glossary shows the second unit of tests that have one", async ({ page 
   await expect(page.getByTestId("glossary-row-DOR")).toContainText("—");
   await expect(page.getByTestId("glossary")).toContainText("either of two units");
 });
+
+
+test("each note shows what kind of documentation it is meant to be", async ({ page }) => {
+  await startAs(page, uniqueName("kind-ui"));
+  await expect(page.getByTestId("note-kind-label")).toHaveText("AI-scribe draft.");
+  await expect(page.getByTestId("note-kind")).toContainText("tidy, formal prose is expected");
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByTestId("note-kind-label")).toHaveText("Quick shorthand note.");
+});

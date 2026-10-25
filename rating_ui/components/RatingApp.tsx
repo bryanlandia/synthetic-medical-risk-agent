@@ -190,7 +190,7 @@ export default function RatingApp() {
         <h1>Note realism rating</h1>
         <p>
           You will read {total} short clinical notes about a <strong>fictional</strong> syndrome and say whether each reads
-          like real documentation. Your answers save as you go, and you can stop and come back.
+          like real documentation of the kind it is meant to be (each note says which kind: an AI-scribe draft, an EHR template, a quick shorthand note, and so on, and what is normal for it). Your answers save as you go, and you can stop and come back.
         </p>
         <Glossary />
         <form
@@ -238,6 +238,11 @@ export default function RatingApp() {
         <section className="work">
           <div className="note">
             <h2 data-testid="note-id">{note.id} <small>({index + 1} of {total})</small></h2>
+            {note.kind && (
+              <aside className="kind" data-testid="note-kind">
+                <strong data-testid="note-kind-label">{note.kind.label}.</strong> {note.kind.expect}
+              </aside>
+            )}
             <pre data-testid="note-text" tabIndex={0}>{note.text}</pre>
           </div>
 

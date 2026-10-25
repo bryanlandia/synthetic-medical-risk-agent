@@ -13,7 +13,7 @@ export interface Sheet {
   symptom_keys: string[];
   plausible_values: string[];
   symptom_values: string[];
-  notes: { id: string; text: string }[];
+  notes: { id: string; text: string; kind?: { label: string; expect: string } }[];
 }
 
 export interface NoteRating {

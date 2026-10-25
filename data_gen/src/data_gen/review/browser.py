@@ -58,6 +58,7 @@ TOOLS: list[dict[str, Any]] = [
 TOOL_NAMES = {t["name"] for t in TOOLS}
 
 
+
 @dataclass
 class SessionLog:
     path: Path
@@ -99,12 +100,14 @@ class BrowserTools:
             "plausible": plausible, "symptoms": symptoms,
             "comment": p.get_by_test_id("comment").input_value(),
             "progress": p.get_by_test_id("progress").inner_text(),
+            "kind": (p.get_by_test_id("note-kind").inner_text() if p.get_by_test_id("note-kind").count() else ""),
         }
 
     def describe(self) -> str:
         s = self.state()
         missing = [k for k, v in s["symptoms"].items() if v is None] + (["plausible"] if s["plausible"] is None else [])
-        return (f"Note {s['note_id']} ({s['progress']}):\n\"\"\"\n{s['text']}\n\"\"\"\n"
+        kind = f"Kind of note: {s['kind']}\n" if s["kind"] else ""
+        return (f"Note {s['note_id']} ({s['progress']}):\n{kind}\"\"\"\n{s['text']}\n\"\"\"\n"
                 f"Set so far: plausible={s['plausible']}, symptoms={s['symptoms']}, comment={s['comment']!r}. "
                 f"Missing: {', '.join(missing) or 'nothing'}.")
 

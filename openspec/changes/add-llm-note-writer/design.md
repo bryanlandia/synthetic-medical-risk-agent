@@ -92,6 +92,25 @@ Round 2 (writer fixes, fictional-panel glossary for the reviewer): direct review
 - **The recorded demo missed a setting.** `--max-notes 15` took the first 15 notes of the shuffled sheet, which by chance held one ai_scribe note. A browser run limited by `--max-notes` now rates a sample spread evenly over the four settings (interleaved, template controls left out), chosen by the command from the key; the reviewer still sees only notes.
 - **Flags at a boundary.** A value of 0.5996 printed as 0.6 but was flagged low. Flags are now judged on the printed value.
 
+### What AI scribe tools actually produce (research, added after round 3)
+
+A reviewer of the round-3 recording expected the ai_scribe setting to look like a whole conversation. Published descriptions and studies of ambient scribes (vendor documentation and evaluations; sources in the proposal notes) agree that the tool records the visit conversation, transcribes it, and then drafts a structured clinical note, usually SOAP or a variant, for the clinician to review and sign. The transcript is a separate artifact, not the note. Features that matter here:
+
+- **Structured and sectioned**, with History of Present Illness, Assessment and Plan, sometimes problem-based, and optional structured data.
+- **Third-person paraphrase** ("The patient reports improved breathing"), plain full words, not clinician shorthand, and no quoting of the patient.
+- **Only what was said aloud**: an unread-out value (a blood pressure never spoken) is simply absent. So labs appear only as results reviewed or discussed, which is what the setting now does.
+- **Longer and more thorough than clinician notes, less concise**; stock closing sentences are common; errors are mostly omissions, with some additions.
+
+The earlier setting asked for hedged flowing prose with patient quotes and "labs in passing", which matched none of this. It now uses four headed layouts as traits, no quotes, a "reviewed with the patient" treatment of results, and optional stock sentences ("The patient verbalized understanding."). The setting's opener limit is looser (45%) because scribe notes legitimately start with the same heading. A *transcript* of the conversation would be a different input type for a different eval (reading a dialogue); it is out of scope here and noted as possible later work. The copy_forward openers are now literal stock lines drawn by trait, because round 3 showed the model reused the sample opening line the prompt gave it in half of its notes.
+
+Recording labels: the demo recording shows each note's kind in a corner of the page. The driver draws it from the key; no tool returns it, so the reviewer model stays blind and the human rating app is unchanged.
+
+### Raters are told the kind of note (added after round 3)
+
+The reviewer was kept blind to the setting, which made it judge an AI-scribe draft by the standard of a human's note and reject it as "tidy" or "mechanical", which is exactly what such tools produce (see the research above). The same holds for an EHR template. So every rater now sees each note's kind and what is normal for it, in the rating app and in the reviewer's prompt; the question becomes "is this a convincing example of that kind?", which is the question the gate per setting is really asking. What stays hidden is the answer: plan, extractor reading, record and internal setting name. The template-fixture controls are described as a plain clinician-written note, because telling the reviewer they are controls would defeat the discrimination check. The per-note kinds are written into `sheet.json` for new pilots and added from the key for older rounds when the reviewer command runs (a dry run writes nothing). The recording-only label drawn by the driver was dropped, as the page itself now shows the kind. Reviewer prompt version 4.
+
+Trade-off: a reviewer told "tidy is expected" can be too generous to a genuinely bad scribe note. The reviewer still judges whether it reads like real scribe output, and the controls check still has to pass.
+
 ## Risks / Trade-offs
 
 - [A too-small output limit silently truncates notes, and a validator bug makes good notes look bad (both happened in the first real pilot: Haiku 5.5 thinks by default and thinking counts against `max_tokens`, and a lab whose name and abbreviation contain digits was misread)] → Default `max_tokens` 2000; a `max_tokens` stop is its own failure (`truncated`) and is never validated as if complete; the parser skips a lab's own parenthesised restatement; a setting is stopped early when most of its first attempts fail, and a full run stops when most notes fail, so no money is spent on retries that cannot help; every run prints live progress and `-v` logs each call.

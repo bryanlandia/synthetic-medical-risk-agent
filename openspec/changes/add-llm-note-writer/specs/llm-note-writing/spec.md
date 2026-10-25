@@ -166,6 +166,21 @@ Each note SHALL be written with style traits drawn from its seed (layout, order,
 - **WHEN** a pilot is written
 - **THEN** it reports per setting the share of notes sharing the most common first three words and the number of distinct trait combinations, and flags a setting above 35% (40% for shorthand) or below 8 combinations (6 for shorthand) out of 20 notes
 
+### Requirement: AI scribe notes are structured notes drafted from a conversation
+The ai_scribe setting SHALL read like the note an ambient AI scribe drafts from a recorded visit: a structured note under headings, in plain full-word third-person sentences, that paraphrases the patient (no quotation marks), mentions a lab value only as a result reviewed or discussed with the patient, and never reproduces the conversation as a transcript.
+
+#### Scenario: Headed layouts vary
+- **WHEN** 60 ai_scribe plans are built
+- **THEN** all four layouts (Subjective/Objective/Assessment and Plan, History of Present Illness with Assessment and Plan, one Visit Summary heading, and plain paragraphs) occur and none exceeds half of the plans
+
+#### Scenario: No quotes and no abbreviations
+- **WHEN** ai_scribe plans and exemplars are inspected
+- **THEN** no plan asks for a patient quote and no exemplar contains quotation marks or shorthand such as "c/o"
+
+#### Scenario: Prompt states what an AI scribe produces
+- **WHEN** the ai_scribe prompt is read
+- **THEN** it says the note is not a transcript, is in the third person under headings, paraphrases rather than quotes, records only what was discussed, uses full words and presents labs only as reviewed results
+
 ### Requirement: Symptom extraction quality is measured
 The symptom extractor used for validation SHALL be measured against a hand-checked sample so that validation results can be trusted.
 
@@ -178,7 +193,7 @@ Before the full paid run, the project owner SHALL blind-rate a pilot sample of 2
 
 #### Scenario: Rating sheet is blind
 - **WHEN** the rating sheet is generated
-- **THEN** the notes are shuffled across settings, the sheet contains no setting names, and the mapping from note id to setting is stored separately
+- **THEN** the notes are shuffled across settings, the sheet shows each note's kind (what it is meant to be) but no internal setting names, plans or record ids, and the mapping from note id to setting is stored separately
 
 #### Scenario: Gate result per setting
 - **WHEN** the owner's ratings are loaded

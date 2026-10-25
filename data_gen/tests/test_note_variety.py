@@ -195,6 +195,38 @@ def test_opener_and_report():
 
 
 def test_the_limits_are_below_the_round_zero_baseline():
-    baseline = {"copy_forward": 1.0, "ehr_template": 0.70, "ai_scribe": 0.40}
+    baseline = {"copy_forward": 1.0, "ehr_template": 0.70}
     for setting, share in baseline.items():
         assert MAX_TOP_OPENER_SHARE[setting] < share
+    # AI scribe notes follow a template and share a first heading by design, so their limit is looser
+    assert MAX_TOP_OPENER_SHARE["ai_scribe"] > MAX_TOP_OPENER_SHARE["ehr_template"]
+
+
+# --- the ambient AI scribe setting matches what such tools produce ----------------------------------------------------
+
+def test_ai_scribe_is_a_structured_third_person_note_not_a_transcript_or_a_quoted_conversation():
+    low = system_prompt("ai_scribe").lower()
+    for needle in ("not a transcript", "third person", "under headings", "paraphrases the patient instead of quoting",
+                   "only what was discussed", "full words, not abbreviations", "never as a table"):
+        assert needle in low, needle
+    for plan in [plan_of(i, "ai_scribe") for i in range(60)]:
+        assert not any(s.quote for s in plan.symptoms)  # no patient quotes
+        assert "layout" in plan.traits and plan.traits["layout"] in {"soap", "hpi", "summary", "plain"}
+    exemplar_text = " ".join(exemplars("ai_scribe"))
+    assert '"' not in exemplar_text and "c/o" not in exemplar_text and "pt " not in exemplar_text.lower()
+    assert sum("The patient" in e or "the patient" in e or "They" in e for e in exemplars("ai_scribe")) == EXEMPLAR_COUNT
+
+
+def test_the_ai_scribe_layouts_cover_headed_and_plain_notes(plans):
+    layouts = Counter(p.traits["layout"] for p in plans["ai_scribe"])
+    assert set(layouts) == {"soap", "hpi", "summary", "plain"}
+    assert max(layouts.values()) / len(plans["ai_scribe"]) <= 0.5
+
+
+def test_copy_forward_openers_are_literal_stock_lines_that_the_copy_check_allows(plans):
+    seen = set()
+    for plan in plans["copy_forward"]:
+        line = stock_lines("copy_forward", plan.traits)
+        assert any(l in {"Seen in clinic for follow-up.", "Return visit.", "Follow-up note.", "Interval visit."} for l in line)
+        seen.update(l for l in line)
+    assert {"Seen in clinic for follow-up.", "Return visit.", "Follow-up note.", "Interval visit."} <= seen

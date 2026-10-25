@@ -36,7 +36,8 @@ def test_profiles_encode_the_documented_differences():
     assert PROFILES["ehr_template"].max_labs == 6  # a results block rarely lists the whole panel
     assert not PROFILES["shorthand"].show_flags
     assert PROFILES["shorthand"].max_labs <= 3 and PROFILES["shorthand"].max_negatives <= 2
-    assert PROFILES["ai_scribe"].quote_patient and PROFILES["ai_scribe"].hedge_rate_multiplier > 1
+    assert not PROFILES["ai_scribe"].quote_patient  # scribes paraphrase the patient, they do not quote
+    assert PROFILES["ai_scribe"].hedge_rate_multiplier > 1
     assert PROFILES["copy_forward"].stale_rate_multiplier > 1
     others = [p.stale_rate_multiplier for n, p in PROFILES.items() if n != "copy_forward"]
     assert PROFILES["copy_forward"].stale_rate_multiplier > max(others)

@@ -49,7 +49,7 @@ class LLMConfig(BaseModel):
     # The adversarial LLM reviewer (rating the pilot notes in place of, or beside, a clinician). It must be a
     # different model from model_id. None of these change the dataset, so none are part of the config hash.
     reviewer_model_id: str = "claude-sonnet-5-5"
-    reviewer_prompt_version: str = Field(default="3", min_length=1)  # 3: glossary with alternate units; abnormal values are not a tell
+    reviewer_prompt_version: str = Field(default="4", min_length=1)  # 4: told each note's kind; 3: glossary with alternate units
     reviewer_effort: Literal["low", "medium", "high"] = "medium"
     reviewer_max_attempts: int = Field(default=2, ge=1, le=5)
     reviewer_max_tokens: int = Field(default=3000, ge=200, le=8000)  # thinking counts against it

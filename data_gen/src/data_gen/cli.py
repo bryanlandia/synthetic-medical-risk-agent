@@ -259,8 +259,8 @@ def cmd_review(args: argparse.Namespace) -> int:
     from .llm.gateway import Budget, CachedClient, DiskCache
     from .llm.progress import Progress
     from .review.estimate import estimate_browser, estimate_review
-    from .review.reviewer import (ReviewerConfigError, check_independent, controls_gap, load_blind_sheet,
-                                  review_round)
+    from .review.reviewer import (ReviewerConfigError, check_independent, controls_gap, ensure_kinds,
+                                  load_blind_sheet, review_round, with_kinds)
 
     cfg = _config_from_args(args)
     round_number = args.round if args.round is not None else latest_round(Path(args.dir))
@@ -277,8 +277,12 @@ def cmd_review(args: argparse.Namespace) -> int:
     except ReviewerConfigError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
+    if args.estimate:
+        sheet, _ = with_kinds(directory)  # a dry run changes no file
+    else:
+        ensure_kinds(directory)  # older sheets get each note's kind from the key, so every rater is told it
+        sheet = load_blind_sheet(directory)
     cache = DiskCache(Path(args.cache))
-    sheet = load_blind_sheet(directory)
     browser = args.mode == "browser"
     if browser:
         est = estimate_browser(cfg, min(len(sheet["notes"]), args.max_notes or len(sheet["notes"])))

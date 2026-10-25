@@ -57,14 +57,24 @@ def report_for(d, kinds=("human",), cfg=CFG):
 
 def test_blind_sheet_has_no_setting_names_plans_or_key_contents(pilot):
     _, directory, _ = pilot
+    from data_gen.note_kinds import NOTE_KINDS
+
     text = (directory / "sheet.json").read_text().lower()
     for s in LLM_SETTINGS:
-        assert s not in text and s.replace("_", " ") not in text
+        assert f'"{s}"' not in text and ("_" not in s or s not in text)  # internal keys never appear (the word "shorthand" may, in a label)
     key = json.loads((directory / "key.json").read_text())["notes"]
     for meta in key.values():
         assert meta["record_id"].lower() not in text
-    for field in ("plan_symptoms", "extraction", '"setting"', '"kind"', "control"):
+    for field in ("plan_symptoms", "extraction", '"setting"', "template-fixture"):
         assert field not in text
+    # each note says what KIND of documentation it is meant to be (so it is judged by that standard), and only that
+    labels = {k["label"] for k in NOTE_KINDS.values()}
+    for note in blind(directory)["notes"]:
+        assert set(note) == {"id", "text", "kind"} and set(note["kind"]) == {"label", "expect"}
+        assert note["kind"]["label"] in labels
+        assert note["kind"] == NOTE_KINDS[key[note["id"]]["setting"]]
+    controls = [n for n in blind(directory)["notes"] if key[n["id"]]["kind"] == "control"]
+    assert controls and all(n["kind"]["label"] == "Clinician-written visit note" for n in controls)  # not labelled as controls
     assert set(blind(directory)) == {"version", "notice", "symptom_keys", "plausible_values", "symptom_values", "notes"}
 
 

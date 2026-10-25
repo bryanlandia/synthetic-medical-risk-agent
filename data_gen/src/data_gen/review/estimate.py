@@ -39,7 +39,7 @@ def estimate_review(cfg: GenConfig, sheet: dict, cache: DiskCache | None = None)
     calls = cached = 0
     in_tok = 0.0
     for note in sheet["notes"]:
-        prompt = review_prompt(note["text"])
+        prompt = review_prompt(note["text"], note.get("kind"))
         key = cache_key(lc.reviewer_prompt_version, REVIEWER_SYSTEM, prompt, lc.reviewer_model_id,
                         lc.reviewer_max_tokens, 0)
         if cache and cache.get(key) is not None:

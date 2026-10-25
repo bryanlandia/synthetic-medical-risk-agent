@@ -18,6 +18,7 @@ from ..cohort import generate_cohort
 from ..config import LLM_SETTINGS, GenConfig
 from ..labs import SYMPTOM_KEYS
 from ..seeds import rng_for
+from ..note_kinds import kind_for
 from .checks import reveals_setting
 from .variety import variety_report
 from .client import LLMClient
@@ -189,7 +190,7 @@ def build_sheet(cfg: GenConfig, notes: list[PilotNote], controls: list[tuple[str
         text, kind, meta = entries[int(idx)]
         note_id = f"n{pos:02d}"
         key[note_id] = {"kind": kind, **meta}
-        blind_notes.append({"id": note_id, "text": text})
+        blind_notes.append({"id": note_id, "text": text, "kind": kind_for(meta["setting"])})
         fields = "\n".join(f"{k}:" for k in ("plausible", *SYMPTOM_KEYS, "comment"))
         parts.append(f"---\n\n## {note_id}\n\n```\n{text}\n```\n\n{fields}\n")
     blind = {"version": 1, "notice": SYNTHETIC_NOTICE, "symptom_keys": list(SYMPTOM_KEYS),

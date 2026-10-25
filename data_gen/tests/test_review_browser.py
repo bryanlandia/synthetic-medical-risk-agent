@@ -397,3 +397,31 @@ def test_the_command_samples_every_setting_when_given_max_notes(setup, monkeypat
     assert code == 0 and "balanced over the settings" in out and "12 notes visited" in out
     rf = read_rating_file(d / f"ratings.{browser_reviewer_name(GenConfig(note_source='llm'))}.json")
     assert Counter(key[i]["setting"] for i in rf.ratings) == {"shorthand": 3, "ehr_template": 3, "ai_scribe": 3, "copy_forward": 3}
+
+
+# --- the page shows each note's kind, and the reviewer model is told it ----------------------------------------------
+
+@needs_app
+def test_the_reviewer_is_told_each_notes_kind_through_the_page(setup):
+    from data_gen.config import LLM_SETTINGS
+    from data_gen.note_kinds import NOTE_KINDS
+    from data_gen.review.browser import balanced_note_ids
+
+    d, key, sheet = setup
+    ids = balanced_note_ids(key, 4, LLM_SETTINGS)
+    first_messages: list[str] = []
+
+    class Spy(Script):
+        def step(self, **kw):
+            if len(kw["messages"]) == 1:
+                first_messages.append(kw["messages"][0]["content"])
+            return super().step(**kw)
+
+    with AppServer(APP_DIR, d, CFG) as app:
+        run_browser_review(CFG, Spy(key, sheet, last_id=ids[-1]), budget(), d, app.url, record_video=False, note_ids=ids)
+    assert len(first_messages) == 4
+    for note_id, message in zip(ids, first_messages):
+        kind = NOTE_KINDS[key[note_id]["setting"]]
+        assert f"Kind of note: {kind['label']}." in message and kind["expect"].split(".")[0] in message
+        for setting in LLM_SETTINGS:  # internal keys never appear (the word "shorthand" may, in a label)
+            assert f'"{setting}"' not in message and ("_" not in setting or setting not in message)

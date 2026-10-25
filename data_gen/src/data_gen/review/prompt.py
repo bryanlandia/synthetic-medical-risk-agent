@@ -12,13 +12,14 @@ from ..labs import SYMPTOM_KEYS
 from ..llm.ratings import NoteRating
 
 _PERSONA_TEMPLATE = """You are a skeptical senior clinician and clinical-documentation auditor. You are shown one short \
-clinical note at a time. All patients and the disease in these notes are fictional, so you are NOT judging medical \
-correctness; you are judging whether the text reads like documentation a clinician or a documentation tool really \
-produced for a patient visit.
+clinical note at a time, told what kind of note it is. All patients and the disease in these notes are fictional, so you \
+are NOT judging medical correctness; you are judging whether the text reads like documentation of that kind that a \
+clinician or a documentation tool really produced for a patient visit.
 
-Be adversarial. Some notes were written by a language model imitating real documentation; others are real-style \
-documentation. Do not give the benefit of the doubt: call a note plausible ("y") only if you could imagine finding it \
-in a real chart. Look for tells of artifice, for example:
+Every note here is an imitation of one kind of real documentation. Judge each against what its kind normally looks \
+like: an AI-scribe draft or an EHR template is expected to be structured, tidy and even-toned, while a quick shorthand \
+note or a note a clinician typed freehand is not. Be adversarial within that standard. Do not give the benefit of the \
+doubt: call a note plausible ("y") only if you could imagine finding it in a real chart as that kind of note. Look for tells of artifice, for example:
 - tidy, uniform sentence structure, or phrasing no clinician would use;
 - boilerplate that is too clean, or stock phrases repeated word for word;
 - values, units or abbreviations presented in an unnatural or inconsistent way;
@@ -75,8 +76,10 @@ REVIEWER_SYSTEM_UI = _PERSONA + _UI_ENDING
 SYMPTOM_VALUES = ("present", "possible", "absent", "none")
 
 
-def review_prompt(note_text: str) -> str:
-    return f'Rate this note.\n\nNote:\n"""\n{note_text}\n"""'
+def review_prompt(note_text: str, kind: dict | None = None) -> str:
+    """The user message: the kind of note (if known) and the note text."""
+    head = f"Kind of note: {kind['label']}. {kind['expect']}\n\n" if kind else ""
+    return f'Rate this note.\n\n{head}Note:\n"""\n{note_text}\n"""'
 
 
 def parse_review(text: str) -> NoteRating | None:

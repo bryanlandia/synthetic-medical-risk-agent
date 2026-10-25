@@ -11,8 +11,10 @@ You will read short clinical notes about a made-up syndrome and say, for each on
    describe it? **Present**, **Possible** (uncertain or hedged), **Absent** (denied), or **Not mentioned**.
 
 You are not judging whether the note is medically correct for a real disease (there is none), only whether it
-looks like real documentation and what it says about the symptoms. Notes are shuffled and do not say where they
-came from. That is deliberate.
+looks like real documentation and what it says about the symptoms. Notes are shuffled and nothing says which patient they are about. Each note is labelled with the **kind** of
+documentation it is meant to be (an AI-scribe draft, an EHR template note, a quick shorthand note, a copy-forward
+progress note) and what is normal for that kind: judge it as that kind. An AI-scribe draft, for example, is expected
+to be structured and even-toned, so tidy prose is not by itself a reason to say it reads wrong.
 
 ## Run it (clinician)
 
