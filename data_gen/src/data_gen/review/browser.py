@@ -73,9 +73,17 @@ class SessionLog:
 class BrowserTools:
     """The reviewer's hands: each tool maps to fixed actions on the app's test ids."""
 
-    def __init__(self, page: Any, session: SessionLog, total_notes: int):
+    def __init__(self, page: Any, session: SessionLog, total_notes: int, pause: float = 0.0):
         self.page, self.session, self.total = page, session, total_notes
+        self.pause = pause  # seconds to dwell where a viewer of the recording needs to read the page
         self.finished = False
+
+    def show(self, seconds: float) -> None:
+        """Scroll to the top of the page (the note, the ratings and the comment are all in view there) and dwell."""
+        if seconds <= 0:
+            return
+        self.page.evaluate("window.scrollTo(0, 0)")
+        self.page.wait_for_timeout(int(seconds * 1000))
 
     # ---- reading -----------------------------------------------------------------------------
     def state(self) -> dict:
@@ -143,6 +151,7 @@ class BrowserTools:
         box.fill(text.strip())
         box.blur()
         self._saved()
+        self.show(self.pause)  # let a viewer read the comment
         return "comment saved"
 
     def _incomplete(self) -> list[str]:
@@ -158,6 +167,7 @@ class BrowserTools:
         button = self.page.get_by_test_id("next")
         if button.is_disabled():
             raise _Rejected("this is the last note; call finish instead")
+        self.show(self.pause)  # the finished note, ratings and comment stay on screen before moving on
         before = self.page.get_by_test_id("note-id").inner_text()
         button.click()
         self.page.wait_for_function(
@@ -170,6 +180,7 @@ class BrowserTools:
         if self.page.get_by_test_id("finished").count() == 0:
             n = self.page.get_by_test_id("incomplete-count").inner_text()
             raise _Rejected(f"the round is not finished: {n}")
+        self.show(self.pause)
         self.finished = True
         return "round finished"
 
@@ -265,7 +276,7 @@ def install_request_guard(ctx: Any, base_url: str, session: SessionLog) -> None:
 
 def run_browser_review(
     cfg: GenConfig, tool_client: ToolClient, budget: Budget, round_dir: Path, base_url: str, *,
-    max_notes: int | None = None, headless: bool = True, record_video: bool = True,
+    max_notes: int | None = None, headless: bool = True, record_video: bool = True, pause: float | None = None,
 ) -> BrowserResult:
     """Operate the rating app note by note. A fresh short conversation per note keeps cost linear in the notes."""
     from playwright.sync_api import sync_playwright
@@ -279,9 +290,9 @@ def run_browser_review(
     shutil.rmtree(video_dir, ignore_errors=True)
     with sync_playwright() as pw:
         browser = pw.chromium.launch(headless=headless)
-        ctx = browser.new_context(viewport={"width": 1280, "height": 800},
+        ctx = browser.new_context(viewport={"width": 1280, "height": 1000},
                                   record_video_dir=str(video_dir) if record_video else None,
-                                  record_video_size={"width": 1280, "height": 800})
+                                  record_video_size={"width": 1280, "height": 1000})
 
         install_request_guard(ctx, base_url, session)
         page = ctx.new_page()
@@ -289,7 +300,7 @@ def run_browser_review(
             page.goto(base_url)
             page.get_by_test_id("note-id").wait_for(timeout=15_000)
             total = int(page.get_by_test_id("progress").inner_text().split(" of ")[1].split()[0])
-            tools = BrowserTools(page, session, total)
+            tools = BrowserTools(page, session, total, cfg.llm.reviewer_pause_seconds if pause is None else pause)
             limit = min(total, max_notes) if max_notes else total
             out.stopped = _drive(cfg, tool_client, budget, tools, session, out, limit, total)
         finally:
@@ -316,6 +327,7 @@ def _drive(cfg, tool_client, budget, tools: BrowserTools, session: SessionLog, o
     lc = cfg.llm
     for position in range(limit):
         out.notes_attempted += 1
+        tools.show(tools.pause / 2)  # a new note: let a viewer see it at the top of the page
         first = tools.describe()
         messages: list[dict] = [{"role": "user", "content": f"{first}\n\nRate this note, then move on."}]
         done_with_note = False

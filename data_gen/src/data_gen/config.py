@@ -56,6 +56,7 @@ class LLMConfig(BaseModel):
     reviewer_max_calls: int = Field(default=400, ge=1)
     reviewer_max_spend_usd: float = Field(default=3.0, gt=0)
     reviewer_max_steps: int = Field(default=500, ge=10)  # browser-mode model turns
+    reviewer_pause_seconds: float = Field(default=3.0, ge=0, le=30)  # browser mode: dwell time so a video is readable
     reviewer_min_control_gap: float = Field(default=0.20, ge=0, le=1)  # controls must score this far lower
     reviewer_price_input_per_mtok: float = Field(default=2.0, ge=0)
     reviewer_price_output_per_mtok: float = Field(default=10.0, ge=0)

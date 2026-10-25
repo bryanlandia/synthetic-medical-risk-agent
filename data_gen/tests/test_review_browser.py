@@ -13,7 +13,11 @@ from data_gen.llm.gate import evaluate, load_round  # noqa: E402
 from data_gen.llm.gateway import Budget  # noqa: E402
 from data_gen.llm.ratings import read_rating_file  # noqa: E402
 from data_gen.review.browser import (TOOL_NAMES, TOOLS, AppServer, BrowserTools, ToolUse, Turn,  # noqa: E402
-                                     browser_reviewer_name, run_browser_review)
+                                     browser_reviewer_name)
+from data_gen.review import browser as _browser  # noqa: E402
+import functools  # noqa: E402
+
+run_browser_review = functools.partial(_browser.run_browser_review, pause=0)  # tests do not need to dwell
 
 from test_llm_gate import LABEL_OF, items, pilot  # noqa: E402,F401  (fixtures)
 
@@ -230,7 +234,7 @@ def test_command_runs_a_short_recorded_session(setup, monkeypatch, capsys):
     d, key, sheet = setup
     monkeypatch.setattr("data_gen.review.browser.AnthropicToolClient", lambda **k: Script(key, sheet))
     code = main(["review", "--dir", str(d.parent), "--note-source", "llm", "--mode", "browser", "--max-notes", "3",
-                 "--yes", "--app-dir", str(APP_DIR)])
+                 "--yes", "--pause", "0", "--app-dir", str(APP_DIR)])
     out = capsys.readouterr().out
     assert code == 0 and "3 notes visited" in out and "video:" in out
     assert (d / "review.webm").stat().st_size > 0 and (d / "review-session.jsonl").exists()
@@ -274,3 +278,44 @@ def test_the_tool_client_sends_a_plain_tool_request_and_reads_tool_calls(monkeyp
     assert sent["output_config"] == {"effort": "medium"} and sent["tools"] == TOOLS
     for rejected in ("tool_choice", "temperature", "top_p", "top_k"):
         assert rejected not in sent
+
+
+# --- the recording is readable ---------------------------------------------------------------------------------------------
+
+@needs_app
+def test_the_note_and_comment_are_in_view_at_the_top_of_the_page(setup):
+    from playwright.sync_api import sync_playwright
+
+    d, key, sheet = setup
+    with AppServer(APP_DIR, d, CFG) as app, sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        page = browser.new_page(viewport={"width": 1280, "height": 1000})
+        page.goto(app.url)
+        page.get_by_test_id("note-id").wait_for()
+        tools = BrowserTools(page, _browser.SessionLog(d / "s.jsonl"), 88)
+        tools.call("set_plausible", {"value": "n"})
+        tools.call("add_comment", {"text": "Mechanical, redundant symptom denials with synonym padding in every line."})
+        page.evaluate("window.scrollTo(0, 0)")
+        for tid in ("notice", "note-id", "note-text", "comment", "progress"):
+            box = page.get_by_test_id(tid).bounding_box()
+            assert box and box["y"] >= 0 and box["y"] + min(box["height"], 60) <= 1000, tid
+        browser.close()
+
+
+@needs_app
+def test_the_reviewer_dwells_on_each_finished_note_and_comment(setup):
+    import time
+
+    d, key, sheet = setup
+    script = Script(key, sheet, plausible=lambda m: "n")  # an n carries a comment too
+    with AppServer(APP_DIR, d, CFG) as app:
+        t0 = time.monotonic()
+        _browser.run_browser_review(CFG, script, budget(), d, app.url, max_notes=1, record_video=False, pause=0)
+        quick = time.monotonic() - t0
+    shutil.rmtree(d / "ratings.reviewer-claude-sonnet-5-5-browser.json", ignore_errors=True)
+    (d / f"ratings.{browser_reviewer_name(CFG)}.json").unlink(missing_ok=True)
+    with AppServer(APP_DIR, d, CFG) as app:
+        t0 = time.monotonic()
+        _browser.run_browser_review(CFG, script, budget(), d, app.url, max_notes=1, record_video=False, pause=2.0)
+        slow = time.monotonic() - t0
+    assert slow - quick >= 3.0  # about 1s on arrival + 2s after the comment + 2s before moving on, minus noise

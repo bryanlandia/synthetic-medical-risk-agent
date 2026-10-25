@@ -214,7 +214,8 @@ def _review_in_browser(args: argparse.Namespace, cfg: GenConfig, directory: Path
         with AppServer(Path(args.app_dir), directory, cfg) as app:
             print(f"rating app running at {app.url} (this session only)")
             result = run_browser_review(cfg, tool_client, budget, directory, app.url, max_notes=args.max_notes,
-                                        headless=not args.headed, record_video=not args.no_video)
+                                        headless=not args.headed, record_video=not args.no_video,
+                                        pause=args.pause)
     except MissingApiKeyError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -385,6 +386,8 @@ def main(argv: list[str] | None = None) -> int:
                      help="direct: rate from the note text; browser: operate the rating app on video (needs the review extra)")
     rev.add_argument("--app-dir", default="../rating_ui", help="the built rating app (browser mode)")
     rev.add_argument("--max-notes", type=int, help="browser mode: rate only the first N notes (a short demo)")
+    rev.add_argument("--pause", type=float, help="browser mode: seconds to dwell on each finished note and comment "
+                     "(default llm.reviewer_pause_seconds, 3)")
     rev.add_argument("--headed", action="store_true", help="browser mode: show the browser window")
     rev.add_argument("--no-video", action="store_true", help="browser mode: do not record a video")
     _add_config_args(rev)
