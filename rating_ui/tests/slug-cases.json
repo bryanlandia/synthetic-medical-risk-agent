@@ -1,0 +1,10 @@
+[
+  ["Dr. Reyes", "dr.-reyes"],
+  ["Dr. Reyes / ../etc", "dr.-reyes-..-etc"],
+  ["../../x", "x"],
+  ["  Ana María  ", "ana-mar-a"],
+  ["UPPER_case-1.2", "upper_case-1.2"],
+  ["...", null],
+  ["///", null],
+  ["", null]
+]

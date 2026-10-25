@@ -20,6 +20,9 @@ def supported_styles(source: str) -> tuple[str, ...]:
     return AVAILABLE_STYLES if source == "template" else LLM_SETTINGS
 
 
+LLM_NON_DATA_FIELDS = ("concurrency", "gate_rater_kinds")
+
+
 class LLMConfig(BaseModel):
     """Settings for LLM-written notes. Holds no secret: the API key comes only from the environment."""
 
@@ -40,6 +43,23 @@ class LLMConfig(BaseModel):
     matched_pairs: int = Field(default=200, ge=0)  # test patients written in all four settings
     exclusion_threshold: float = Field(default=0.15, ge=0, le=1)  # max pilot exclusion rate per setting
     concurrency: int = Field(default=8, ge=1, le=32)  # parallel API calls; never changes the data
+    # Which kinds of rater the realism gate counts. A developer who is not a clinician may accept "llm" for a
+    # demo run, but that is a visible choice (reported by the gate and recorded in the manifest).
+    gate_rater_kinds: list[Literal["human", "llm"]] = Field(default_factory=lambda: ["human"], min_length=1)
+    # The adversarial LLM reviewer (rating the pilot notes in place of, or beside, a clinician). It must be a
+    # different model from model_id. None of these change the dataset, so none are part of the config hash.
+    reviewer_model_id: str = "claude-sonnet-5-5"
+    reviewer_prompt_version: str = Field(default="1", min_length=1)
+    reviewer_effort: Literal["low", "medium", "high"] = "medium"
+    reviewer_max_attempts: int = Field(default=2, ge=1, le=5)
+    reviewer_max_tokens: int = Field(default=3000, ge=200, le=8000)  # thinking counts against it
+    reviewer_max_calls: int = Field(default=400, ge=1)
+    reviewer_max_spend_usd: float = Field(default=3.0, gt=0)
+    reviewer_max_steps: int = Field(default=500, ge=10)  # browser-mode model turns
+    reviewer_pause_seconds: float = Field(default=3.0, ge=0, le=30)  # browser mode: dwell time so a video is readable
+    reviewer_min_control_gap: float = Field(default=0.20, ge=0, le=1)  # controls must score this far lower
+    reviewer_price_input_per_mtok: float = Field(default=2.0, ge=0)
+    reviewer_price_output_per_mtok: float = Field(default=10.0, ge=0)
     # Prices in USD per million tokens, used only for estimates and the spend cap.
     price_input_per_mtok: float = Field(default=0.10, ge=0)
     price_output_per_mtok: float = Field(default=0.50, ge=0)
@@ -102,12 +122,14 @@ class GenConfig(BaseModel):
         """JSON-ready config. Fields added after the first dataset are omitted while they hold their
         defaults, so existing manifests and config hashes stay byte-identical."""
         data = self.model_dump(mode="json")
-        data["llm"].pop("concurrency", None)  # speed only: the worker count cannot change the dataset
+        for name in [k for k in data["llm"] if k in LLM_NON_DATA_FIELDS or k.startswith("reviewer_")]:
+            data["llm"].pop(name)  # speed, gate and reviewer policy only: they cannot change the dataset
         for name in ("note_source", "llm"):
             default = type(self).model_fields[name].get_default(call_default_factory=True)
             default_dump = default.model_dump(mode="json") if isinstance(default, BaseModel) else default
             if name == "llm":
-                default_dump = {k: v for k, v in default_dump.items() if k != "concurrency"}
+                default_dump = {k: v for k, v in default_dump.items()
+                                if k not in LLM_NON_DATA_FIELDS and not k.startswith("reviewer_")}
             if data[name] == default_dump:
                 data.pop(name)
         return data

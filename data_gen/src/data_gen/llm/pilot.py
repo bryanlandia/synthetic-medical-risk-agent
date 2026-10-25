@@ -12,6 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from .. import SYNTHETIC_NOTICE
 from ..builder import build_record
 from ..cohort import generate_cohort
 from ..config import LLM_SETTINGS, GenConfig
@@ -166,8 +167,9 @@ Save the filled sheet as `ratings.md` next to this file.
 """
 
 
-def build_sheet(cfg: GenConfig, notes: list[PilotNote], controls: list[tuple[str, str]]) -> tuple[str, dict]:
-    """(sheet markdown, key). Shuffled, no setting names; the key maps every note id back."""
+def build_sheet(cfg: GenConfig, notes: list[PilotNote], controls: list[tuple[str, str]]) -> tuple[str, dict, dict]:
+    """(sheet markdown, key, blind sheet for the rating app). Shuffled, no setting names; the key maps every
+    note id back and is never part of the blind sheet."""
     for text in [n.text for n in notes] + [t for _, t in controls]:
         if (leak := reveals_setting(text)):
             raise ValueError(f"a note names its own setting ({leak!r}); the sheet would not be blind")
@@ -180,13 +182,18 @@ def build_sheet(cfg: GenConfig, notes: list[PilotNote], controls: list[tuple[str
     order = rng_for(cfg.seed, "notes", 998).permutation(len(entries))
     parts = [SHEET_HEADER]
     key: dict[str, dict] = {}
+    blind_notes: list[dict] = []
     for pos, idx in enumerate(order, start=1):
         text, kind, meta = entries[int(idx)]
         note_id = f"n{pos:02d}"
         key[note_id] = {"kind": kind, **meta}
+        blind_notes.append({"id": note_id, "text": text})
         fields = "\n".join(f"{k}:" for k in ("plausible", *SYMPTOM_KEYS, "comment"))
         parts.append(f"---\n\n## {note_id}\n\n```\n{text}\n```\n\n{fields}\n")
-    return "\n".join(parts), key
+    blind = {"version": 1, "notice": SYNTHETIC_NOTICE, "symptom_keys": list(SYMPTOM_KEYS),
+             "plausible_values": list(PLAUSIBLE_VALUES), "symptom_values": list(SYMPTOM_VALUES),
+             "notes": blind_notes}
+    return "\n".join(parts), key, blind
 
 
 def write_pilot(
@@ -200,7 +207,7 @@ def write_pilot(
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     controls = control_notes(cfg) if round_ == 0 else []  # controls go into the first sheet only
-    sheet, notes_key = build_sheet(cfg, result.notes, controls)
+    sheet, notes_key, blind = build_sheet(cfg, result.notes, controls)
     meta = {
         "round": round_,
         "settings": list(settings),
@@ -213,5 +220,6 @@ def write_pilot(
         "tally": result.tally.as_dict(),
     }
     (directory / "sheet.md").write_text(sheet)
+    (directory / "sheet.json").write_text(json.dumps(blind, indent=2) + "\n")
     (directory / "key.json").write_text(json.dumps({"meta": meta, "notes": notes_key}, indent=2, sort_keys=True) + "\n")
     return meta
