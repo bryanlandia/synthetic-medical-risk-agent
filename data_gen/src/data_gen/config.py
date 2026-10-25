@@ -29,7 +29,7 @@ class LLMConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     model_id: str = "claude-haiku-5-5"
-    prompt_version: str = Field(default="1", min_length=1)
+    prompt_version: str = Field(default="2", min_length=1)  # 2: realistic lab precision, one wording per symptom
     max_attempts: int = Field(default=3, ge=1, le=10)  # writing attempts per note
     # Output limit per note. Thinking tokens count against it, and a limit that is too small silently
     # truncates notes (the first pilot lost most ehr_template notes at 700), so keep generous headroom.

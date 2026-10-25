@@ -7,7 +7,8 @@ from data_gen.cohort import sample_features
 from data_gen.config import LLM_SETTINGS, GenConfig
 from data_gen.injections import all_texts
 from data_gen.labs import LAB_BY_KEY, SYMPTOM_BY_KEY
-from data_gen.llm.prompts import ADDENDUM_MARKER, MarkerError, build_prompt, finalize_note, prompt_text_hash
+from data_gen.llm.prompts import (ADDENDUM_MARKER, EXEMPLAR_INTRO, MarkerError, build_prompt, display_value, finalize_note,
+                                  prompt_text_hash)
 from data_gen.plan import CASE_TYPES, plan_note
 from data_gen.render import ADDENDUM
 from data_gen.rule import LAB_WEIGHTS
@@ -61,11 +62,16 @@ def test_prompts_contain_no_ground_truth_or_rule_material(plans):
         assert not any(t.lower() in text for t in all_texts())
 
 
+def facts_of(user: str) -> str:
+    """The part of the user message that states the plan; the exemplar notes after it are about other patients."""
+    return user.split(EXEMPLAR_INTRO)[0]
+
+
 def test_user_prompt_states_exactly_the_plan_facts(plans):
     for plan in plans[:150]:
-        user = build_prompt(plan).user
+        user = facts_of(build_prompt(plan).user)
         for lab in plan.labs:
-            assert LAB_BY_KEY[lab.lab].name in user and f"{lab.value:g} {lab.unit}" in user
+            assert LAB_BY_KEY[lab.lab].name in user and f"{display_value(lab.value)} {lab.unit}" in user
         stated_names = {LAB_BY_KEY[l.lab].name for l in plan.labs}
         for key, lab in LAB_BY_KEY.items():
             if lab.name not in stated_names:
@@ -80,14 +86,14 @@ def test_user_prompt_states_exactly_the_plan_facts(plans):
 
 def test_flags_and_ranges_appear_only_when_the_plan_has_them(plans):
     for plan in plans:
-        user = build_prompt(plan).user
+        user = facts_of(build_prompt(plan).user)
         assert ("reference" in user) == any(l.ref_range for l in plan.labs)
         assert ("flag H" in user or "flag L" in user) == any(l.flag for l in plan.labs)
 
 
 def test_polarity_words_follow_the_plan(plans):
     for plan in plans[:150]:
-        user = build_prompt(plan).user
+        user = facts_of(build_prompt(plan).user)
         for stated, word in (("present", "- present:"), ("hedged", "- possible (uncertain):"), ("negated", "- denied:")):
             assert (word in user) == any(s.stated == stated for s in plan.symptoms)
 
@@ -136,3 +142,34 @@ def test_prompts_forbid_inventing_flags_and_unlisted_review_of_systems_entries()
     assert "never add a flag" in ehr and "do not add a system" in ehr
     for setting in LLM_SETTINGS:
         assert "do not interpret any lab result" in system_prompt(setting).lower()
+
+
+# --- the tells a clinician reviewer rejected (round 0): precision, padding, c/o denies, fiction -------------------------------
+
+@pytest.mark.parametrize("value,shown", [(4.199, "4.2"), (30.93, "30.9"), (0.6902, "0.69"), (315.0, "315"),
+                                         (55.04, "55"), (106.9, "107"), (1234.5, "1230"), (3.031, "3.03"), (0.05, "0.05")])
+def test_lab_values_are_shown_the_way_a_lab_report_prints_them(value, shown):
+    assert display_value(value) == shown
+    assert abs(float(shown) - value) <= 0.005 * abs(value) + 1e-9  # inside the 1% the checks allow, so notes still pass
+
+
+def test_no_prompt_value_has_more_than_three_significant_figures(plans):
+    import re
+    for plan in plans[:200]:
+        for line in build_prompt(plan).user.splitlines():
+            if "(abbreviation " in line:
+                number = re.search(r": (-?[\d.]+) ", line).group(1)
+                assert len(number.replace("-", "").replace(".", "").lstrip("0")) <= 3, line
+
+
+def test_prompts_ask_for_one_wording_per_symptom_and_never_mention_fiction():
+    from data_gen.config import LLM_SETTINGS
+    from data_gen.llm.prompts import system_prompt
+
+    for setting in LLM_SETTINGS:
+        low = system_prompt(setting).lower()
+        assert "exactly one" in low and "mention that symptom once" in low
+        assert "never restate the same finding" in low
+        assert "in a study" not in low  # the old opening line the model echoed as "fictional study condition"
+    assert 'never write "c/o denies"' in system_prompt("shorthand").lower()
+    assert "never \"c/o denies\"" in system_prompt("copy_forward").lower()

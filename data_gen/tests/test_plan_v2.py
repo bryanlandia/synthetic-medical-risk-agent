@@ -5,7 +5,7 @@ import pytest
 
 from data_gen.cohort import sample_features
 from data_gen.config import LLM_SETTINGS, GenConfig
-from data_gen.labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY
+from data_gen.labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, symptom_phrase_pool
 from data_gen.plan import CASE_TYPES, lab_flag, plan_note
 from data_gen.render import parse_back_errors, render
 from data_gen.schema import NotePlan, NotePlanV2
@@ -71,7 +71,7 @@ def test_symptoms_carry_allowed_phrases_and_quotes_only_where_allowed(v2_plans):
         prof = PROFILES[p.plan.style]
         for s in p.plan.symptoms:
             assert 2 <= len(s.phrases) <= 3
-            assert set(s.phrases) <= set(SYMPTOM_BY_KEY[s.flag].phrases)
+            assert set(s.phrases) <= set(symptom_phrase_pool(s.flag, s.stated))
             if s.quote:
                 assert prof.quote_patient and s.stated in ("present", "hedged")
 

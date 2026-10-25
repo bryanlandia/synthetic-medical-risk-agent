@@ -11,7 +11,7 @@ import re
 from dataclasses import dataclass
 
 from ..config import LLM_SETTINGS
-from ..labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, LabDef
+from ..labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, LabDef, all_symptom_phrases
 from ..render import ADDENDUM
 from ..schema import NotePlanV2, PlanLabV2
 from ..scan import scan_text
@@ -192,8 +192,8 @@ def phrase_errors(text: str, plan: NotePlanV2) -> list[str]:
     body = body_without_addendum(text)
     errs = [f"phrase_missing:{s.flag}" for s in plan.symptoms if not any(_has_phrase(body, p) for p in s.phrases)]
     planned = {s.flag for s in plan.symptoms}
-    for key, sym in SYMPTOM_BY_KEY.items():
-        if key not in planned and any(_has_phrase(body, p) for p in sym.phrases):
+    for key in SYMPTOM_BY_KEY:
+        if key not in planned and any(_has_phrase(body, p) for p in all_symptom_phrases(key)):
             errs.append(f"symptom_extra:{key}")
     return errs
 
@@ -206,6 +206,26 @@ def reveals_setting(text: str) -> str | None:
     return next((s for s in LLM_SETTINGS if s.replace("_", " ") in lowered), None)
 
 
+_META = re.compile(r"\b(fictional|synthetic|simulated|test data|this study|study condition|made[- ]up)\b", re.I)
+_CO_DENIES = re.compile(r"\bc/o\s+(denies|deny|no|neg|negative)\b", re.I)
+
+
+def style_errors(text: str, plan: NotePlanV2) -> list[str]:
+    """Tells that make a note read as machine-written, which a clinician reviewer rejects."""
+    body = body_without_addendum(text)
+    errs: list[str] = []
+    if _META.search(body):
+        errs.append("meta_mention")
+    if _CO_DENIES.search(body):
+        errs.append("contradictory_phrasing")
+    for s in plan.symptoms:
+        used = [p for p in all_symptom_phrases(s.flag) if _has_phrase(body, p)]  # any polarity: one wording only
+        distinct = [p for p in used if not any(p != q and p.lower() in q.lower() for q in used)]  # drop nested ones
+        if len(distinct) > 1:
+            errs.append(f"symptom_repeated:{s.flag}")
+    return errs
+
+
 def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
     """All offline failure codes for a finalized note (marker already replaced by the injection text)."""
     errs: list[str] = []
@@ -215,6 +235,36 @@ def offline_errors(text: str, plan: NotePlanV2) -> list[str]:
     errs += [f"identifier:{f}" for f in scan_text(body_without_addendum(text))]
     errs += lab_errors(text, plan)
     errs += phrase_errors(text, plan)
+    errs += style_errors(text, plan)
+    errs += exemplar_errors(text, plan)
     if reveals_setting(text):
         errs.append("setting_name")
     return errs
+
+
+# --- copying the exemplars ---------------------------------------------------------------------------------------
+
+EXEMPLAR_SHINGLE = 8  # words in a row that may not be taken from an exemplar note
+
+
+def _shingles(text: str, n: int = EXEMPLAR_SHINGLE) -> set[tuple[str, ...]]:
+    words = re.findall(r"[a-z0-9']+", text.lower())
+    return {tuple(words[i:i + n]) for i in range(len(words) - n + 1)}
+
+
+def exemplar_errors(text: str, plan: NotePlanV2) -> list[str]:
+    """The note must not reproduce a run of eight words from any exemplar of its setting, except the stock lines
+    the style traits ask for."""
+    from ..traits import stock_lines
+    from .prompts import exemplars
+
+    body = body_without_addendum(text)
+    for line in stock_lines(plan.style, plan.traits):
+        body = re.sub(re.escape(line), " ", body, flags=re.IGNORECASE)
+    mine = _shingles(body)
+    if not mine:
+        return []
+    for example in exemplars(plan.style):
+        if mine & _shingles(example):
+            return ["exemplar_copied"]
+    return []

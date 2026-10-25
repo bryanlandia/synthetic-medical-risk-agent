@@ -53,6 +53,26 @@
 - [x] 9.2 Make the cache and budget thread-safe with an exact reserved call cap, back off on rate limits without consuming attempts, and run the pilot and full run through the pool, and verify the dataset, counts and pilot sample are identical at 1 and 8 workers, calls overlap, the cap is exact at 8 workers, and backoff behaves as specified
 - [x] 9.3 Compact the cache into sorted order after a successful run so the committed file is deterministic, and verify a test that compaction keeps every entry and orders the lines
 
+## 10. Revise the writer after the first LLM review (added after the round-0 review)
+
+Round 0 was rated 5 of 80 plausible by the adversarial reviewer. Its reasons, tallied against the notes: three-to-four significant-figure lab values in 58 of 80 notes, several synonyms for one symptom in 33, "c/o denies" in 14, "fictional study condition" in 5.
+
+- [x] 10.1 Show lab values with three significant figures in the prompt and verify tests of the formatting, its 0.5% bound, and that no prompt value exceeds three significant figures
+- [x] 10.2 Reword the prompts (one allowed phrase per symptom, no padding, no "c/o denies", no mention of fiction or a study) and bump `llm.prompt_version` to 2, and verify tests on the prompt text and the version
+- [x] 10.3 Add offline checks for repeated symptom wording, contradictory shorthand and meta mentions and verify unit tests including the nested-phrase and same-phrase exceptions
+- [ ] 10.4 Pilot round 1 for all four settings with the new prompts and verify the exclusion rate is at most 15% per setting (loosen or reword a check if it is the cause)
+- [ ] 10.5 Review round 1 with the adversarial reviewer and then the owner, and verify the gate output; record the plausible rates and what changed in design.md
+
+## 11. Natural variety (added after the web research on how real notes read)
+
+- [x] 11.1 Add polarity-specific wording pools and use them in the plan and the checks, and verify tests that pools are large enough, cross-symptom phrases never overlap, and plans only offer wording for their polarity
+- [x] 11.2 Add seeded style traits per setting (fewer for shorthand), record them in the plan, and put them in the prompt as style lines; verify tests of reproducibility, independence from other plan fields, value coverage and the prompt text
+- [x] 11.3 Write six original exemplar notes per setting, show two per note chosen by seed, and bump the prompt hash input; verify the exemplars are clean, original, flag-consistent and that the prompt shows exactly two
+- [x] 11.4 Reject a note that reproduces eight consecutive words of an exemplar (except stock lines the traits ask for) and verify the check and the stock-line exception
+- [x] 11.5 Measure variety (top opener share, distinct trait combinations), report it in the pilot output and key meta, and verify the limits are below the round-0 baseline
+- [ ] 11.6 Pilot round 1 with the revised writer, then verify the variety report and the exclusion rate per setting; adjust a trait, exemplar or check if one is the cause (replaces the pilot in 10.4)
+- [ ] 11.7 Review round 1 with the adversarial reviewer (and the owner), and verify the plausible rates and controls gap in the gate output; record what changed in design.md (replaces 10.5)
+
 ## Workflow follow-up
 
 - Archive the change after review.

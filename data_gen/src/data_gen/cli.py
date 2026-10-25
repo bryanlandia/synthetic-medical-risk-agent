@@ -172,6 +172,10 @@ def cmd_pilot(args: argparse.Namespace) -> int:
     for setting, rate in meta["exclusion_rates"].items():
         flag = "  <-- above the limit: revise this setting's prompt" if rate > cfg.llm.exclusion_threshold else ""
         print(f"  exclusion rate {setting:13s} {rate:.0%}{flag}")
+    for setting, v in meta["variety"].items():
+        flag = "" if v["passed"] else "  <-- too uniform: check the traits and exemplars"
+        print(f"  variety {setting:13s} top opener '{v['top_opener']}' {v['top_opener_share']:.0%} "
+              f"(max {v['max_top_opener_share']:.0%}); {v['distinct_trait_combos']} trait combinations{flag}")
     for setting, rate in result.aborted.items():
         print(f"  ABORTED {setting}: {rate:.0%} of its notes failed validation, so it was stopped early "
               f"(mostly: {result.tally.top_failures()}). Fix the cause, then re-run with --round and --setting.",

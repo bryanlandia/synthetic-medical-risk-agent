@@ -1,0 +1,41 @@
+Follow-up note
+Past history reviewed, unchanged.
+Seen in clinic for routine follow-up.
+Interval: no tremor, no dizziness. Reports tiredness on and off.
+- VLI 117 mg/dL
+- BRE 36 U/L
+Plan: continue current monitoring plan.
+=====
+Patient returns for follow-up. Family history reviewed, no changes. Medications reviewed with patient.
+Updated: joints feel stiff in the mornings. Denies photophobia.
+Results: TAC 268 umol/L, HAT 4.0 g/dL, OSM 290 mOsm/kg.
+Recheck at next scheduled visit.
+=====
+PROGRESS NOTE - FOLLOW-UP
+Medications reviewed with patient. Past history unchanged.
+Today:
+ - possible tremor
+ - no light sensitivity
+Results:
+ - Serum K-17: 4.0 mmol/L
+ - Plexa count: 244 x10^9/L
+ - Dorrin ratio: 1.0
+Continue current monitoring plan.
+=====
+Seen for follow-up. Family history reviewed, no changes.
+No fatigue. Occasionally lightheaded. No joint stiffness.
+Labs: VLI 126 mg/dL; BRE 52 U/L; K17 4.4 mmol/L
+Return for scheduled follow-up.
+=====
+Follow-up visit. Past history reviewed, unchanged.
+Interval: denies dizziness. Mild light sensitivity at times.
+Velorin index 109 mg/dL, Halvin titer 3.8 g/dL, Osmet level 283 mOsm/kg.
+Continue current monitoring plan.
+=====
+Return visit - routine follow-up.
+Medications reviewed with patient.
+Updated: tired, no tremor, no stiff joints.
+TAC 311 umol/L
+PLX 198 x10^9/L
+DOR 1.3 ratio
+Recheck at next visit.

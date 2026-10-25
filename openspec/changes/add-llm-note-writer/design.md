@@ -60,6 +60,18 @@ These come from general knowledge of documentation styles and are plausible stan
 
 **Statistical power is part of the design.** With about 1,000 test notes over four settings there are roughly 250 per setting, enough for rough per-setting estimates (a rough AUC uncertainty near ±0.04) but not fine comparisons. The evals should report confidence intervals; enlarging the test split is a config change if finer slices are wanted.
 
+### Variety comes from the inputs, not from the model (added after the round-0 review)
+
+The review's complaint was uniformity: the same layout and openers on every note of a setting (round 0: 100% of copy_forward notes opened "Patient seen in", 70% of ehr_template, 40% of ai_scribe). These models take no temperature or sampling settings, so asking the model to "vary" cannot be relied on. Three levers, all seeded and recorded:
+
+1. **Polarity-specific wording pools.** Each symptom has six or more phrases for present, hedged and denied. Negating a positive pool produced "feels not exhausted, no low energy". The plan offers two or three candidates and the writer uses one.
+2. **Style traits** (`traits.py`): per note, a few habits drawn from the render seed (heading style, section order, how labs and negatives are laid out, how the note opens and closes), turned into "style lines" in the prompt. Shorthand has four traits, the documented settings five or six. The draw uses its own stream, so no other plan field moves. The traits live in the plan, so evals can slice or hold out by them.
+3. **Exemplars**: six original fictional notes per setting, written from features observed in public sample notes and abbreviation guides (grouped negatives, trend phrasing, stock "reviewed, no changes" lines, terse fragments, numbered plans, either skeletal or verbose AI-scribe summaries), not copied from them. Each note is shown two of the six, chosen by seed, with an instruction to match register and rhythm only. The copy risk is mitigated by showing few, by a code check that rejects eight consecutive words from any exemplar, and by the exemplars being fictional with this project's lab panel.
+
+Variety is measured in code (top opener share, distinct trait combinations) and reported by the pilot, in addition to the reviewer's verdict. The pilot's per-setting limits were set below the round-0 baseline. Alternatives rejected: asking the model for "variety" in the prompt (unreliable without sampling control), and scraping real notes (private, and licensing).
+
+Cost: the exemplars add about 400 input tokens per writer call (a few cents per pilot).
+
 ## Risks / Trade-offs
 
 - [A too-small output limit silently truncates notes, and a validator bug makes good notes look bad (both happened in the first real pilot: Haiku 5.5 thinks by default and thinking counts against `max_tokens`, and a lab whose name and abbreviation contain digits was misread)] → Default `max_tokens` 2000; a `max_tokens` stop is its own failure (`truncated`) and is never validated as if complete; the parser skips a lab's own parenthesised restatement; a setting is stopped early when most of its first attempts fail, and a full run stops when most notes fail, so no money is spent on retries that cannot help; every run prints live progress and `-v` logs each call.

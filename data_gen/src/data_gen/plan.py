@@ -14,7 +14,8 @@ import numpy as np
 from . import PLAN_VERSION, PLAN_VERSION_LLM
 from .config import STALE_VALUE_STYLES, GenConfig, supported_styles
 from .injections import entries as injection_entries
-from .labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, SYMPTOM_KEYS
+from .traits import EXEMPLAR_COUNT, choose_traits, exemplar_picks
+from .labs import LAB_BY_KEY, LABS, SYMPTOM_BY_KEY, SYMPTOM_KEYS, symptom_phrase_pool
 from .rule import round_sig
 from .schema import (
     Annotation,
@@ -255,7 +256,7 @@ def _v2_symptoms(
     for i, s in enumerate(symptoms):
         if i in dropped:
             continue
-        pool = SYMPTOM_BY_KEY[s.flag].phrases
+        pool = symptom_phrase_pool(s.flag, s.stated)  # wording for how the note states it
         picked = rng.choice(len(pool), size=min(int(rng.integers(2, 4)), len(pool)), replace=False)
         quote = bool(
             profile.quote_patient and s.stated in ("present", "hedged") and rng.random() < 0.5
@@ -345,5 +346,7 @@ def plan_note(
             version=PLAN_VERSION_LLM, style=style, labs=_v2_labs(profile, plan_labs, noise),
             symptoms=_v2_symptoms(rng, profile, symptoms, disagree),
             injection=injection, render_seed=render_seed,
+            traits=choose_traits(style, render_seed),
+            exemplars=exemplar_picks(style, render_seed, EXEMPLAR_COUNT),
         )
     return PlannedNote(plan=plan, noise=noise, tags=tags, missing=missing, panel_overrides=overrides)

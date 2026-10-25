@@ -210,7 +210,7 @@ def evaluate(cfg: GenConfig, rounds: list[Round], format_problems: list[str] | N
     return GateReport(
         settings=settings,
         extractor_accuracy={k: (agree[k] / n if n else 0.0) for k in SYMPTOM_KEYS},
-        extractor_notes=n, extractor_needed=needed * len(LLM_SETTINGS),
+        extractor_notes=notes_labelled, extractor_needed=needed * len(LLM_SETTINGS),
         fidelity={k: (fid[k] / n if n else 0.0) for k in SYMPTOM_KEYS},
         controls_rated=len(rated_controls), controls_plausible=sum(c.plausible == "y" for c in rated_controls),
         exclusion_rates=exclusion, exclusion_threshold=cfg.llm.exclusion_threshold, problems=problems,

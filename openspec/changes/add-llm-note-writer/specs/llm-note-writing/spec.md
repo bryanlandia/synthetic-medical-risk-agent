@@ -88,6 +88,60 @@ Each LLM-written note SHALL be validated before acceptance: stated lab values ar
 - **WHEN** accepted notes are scanned for SSN-, MRN- and phone-shaped strings and denylisted facility names
 - **THEN** there are zero matches
 
+### Requirement: Notes avoid tells of machine writing
+Notes SHALL state lab values at the precision a lab report prints (three significant figures), state each symptom once with one wording, and contain no contradictory shorthand and no mention that anything is fictional, synthetic or a study. These are checked offline, and a failing note is retried then excluded like any other failure.
+
+#### Scenario: Lab values have realistic precision
+- **WHEN** the prompt lists a lab value
+- **THEN** it is shown with at most three significant figures and stays within 0.5% of the plan value, so it passes the 1% validation
+
+#### Scenario: One wording per symptom
+- **WHEN** a note states a symptom with two or more different allowed phrases that are not nested in one another
+- **THEN** it fails validation with a repeated-symptom code, while repeating the same phrase, or a phrase nested in a longer one, is accepted
+
+#### Scenario: Contradictory shorthand is rejected
+- **WHEN** a note says "c/o denies", "c/o no" or "c/o neg"
+- **THEN** it fails validation with a contradictory-phrasing code
+
+#### Scenario: No mention of the fiction
+- **WHEN** a note contains "fictional", "synthetic", "simulated", "test data", "this study" or "study condition"
+- **THEN** it fails validation with a meta-mention code
+
+#### Scenario: Prompt revisions are versioned
+- **WHEN** a prompt or a display rule changes
+- **THEN** `llm.prompt_version` changes so cached notes from the older prompt are never reused, and the affected settings are re-piloted and re-rated
+
+### Requirement: Notes vary like real documentation
+Each note SHALL be written with style traits drawn from its seed (layout, order, wording habits), symptom wording drawn from a pool specific to how the symptom is stated, and two exemplar notes about other patients. Quick settings SHALL have fewer traits than documented ones. The traits and exemplar choices are recorded in the plan.
+
+#### Scenario: Wording matches the polarity
+- **WHEN** a symptom is stated as present, hedged or denied
+- **THEN** its allowed wording comes from a pool of at least six phrases for that polarity, and no denied pool is made by negating a positive phrase ("feels not exhausted")
+
+#### Scenario: Traits are reproducible and independent
+- **WHEN** the plan for a patient is built twice with the same seed
+- **THEN** the traits and exemplar picks are identical, and drawing them does not change any other plan field
+
+#### Scenario: Traits cover their values without dominating
+- **WHEN** 120 plans are built for a setting
+- **THEN** every value of every trait is used, and no value is used by more than 60% of the plans
+
+#### Scenario: Quick notes vary less
+- **WHEN** the number of traits per setting is compared
+- **THEN** shorthand has fewer traits than each documented setting
+
+#### Scenario: Exemplars are original and clean
+- **WHEN** the exemplar files are scanned
+- **THEN** each setting has six distinct notes, each passes the claims and identifier scans, none mentions the fiction, and every lab flag in them agrees with its reference range
+
+#### Scenario: Copying an exemplar is rejected
+- **WHEN** a note contains eight consecutive words from any exemplar of its setting, other than a stock line the traits asked for
+- **THEN** it fails validation with an exemplar-copied code
+
+#### Scenario: Pilot reports variety against limits
+- **WHEN** a pilot is written
+- **THEN** it reports per setting the share of notes sharing the most common first three words and the number of distinct trait combinations, and flags a setting above 35% (40% for shorthand) or below 8 combinations (6 for shorthand) out of 20 notes
+
 ### Requirement: Symptom extraction quality is measured
 The symptom extractor used for validation SHALL be measured against a hand-checked sample so that validation results can be trusted.
 

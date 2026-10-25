@@ -19,6 +19,7 @@ from ..config import LLM_SETTINGS, GenConfig
 from ..labs import SYMPTOM_KEYS
 from ..seeds import rng_for
 from .checks import reveals_setting
+from .variety import variety_report
 from .client import LLMClient
 from .pool import ordered_parallel
 from .run import PlanItem, plan_all
@@ -59,6 +60,7 @@ class PilotNote:
     text: str
     plan_symptoms: dict[str, str]  # flag -> present | possible | absent (what the plan said)
     extraction: dict[str, str]  # the extractor's reading of the accepted note
+    traits: dict[str, str] = field(default_factory=dict)  # the style traits the note was written with
 
 
 @dataclass
@@ -100,7 +102,7 @@ def run_pilot(
                     notes.append(PilotNote(
                         record_id=item.record_id, setting=setting, text=outcome.text,
                         plan_symptoms={s.flag: _PLAN_TO_LABEL[s.stated] for s in plan.symptoms},
-                        extraction=outcome.extraction or {}))
+                        extraction=outcome.extraction or {}, traits=dict(plan.traits)))
                 else:
                     excluded += 1
                 if progress:
@@ -218,6 +220,8 @@ def write_pilot(
         "aborted_early": result.aborted,
         "estimated_spend_usd": estimated_spend_usd,
         "tally": result.tally.as_dict(),
+        "variety": {s: variety_report(s, [n.text for n in result.notes if n.setting == s],
+                                      [n.traits for n in result.notes if n.setting == s]) for s in settings},
     }
     (directory / "sheet.md").write_text(sheet)
     (directory / "sheet.json").write_text(json.dumps(blind, indent=2) + "\n")

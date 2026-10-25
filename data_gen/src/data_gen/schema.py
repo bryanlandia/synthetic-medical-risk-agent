@@ -81,6 +81,8 @@ class NotePlanV2(NotePlan):
     version: Literal["2"]
     labs: list[PlanLabV2]
     symptoms: list[PlanSymptomV2]
+    traits: dict[str, str] = Field(default_factory=dict)  # style habits drawn for this note (see traits.py)
+    exemplars: list[int] = Field(default_factory=list)  # which exemplar notes the writer is shown
 
 
 class ModelInput(Strict):

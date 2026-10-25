@@ -83,3 +83,58 @@ REAL_TEST_DENYLIST: tuple[str, ...] = (
     "tsh", "ferritin", "troponin", "crp", "esr", "alt", "ast", "wbc", "rbc", "inr",
     "lactate", "magnesium", "phosphate", "uric",
 )
+
+
+# Wording an LLM-written note may use, by how the note states the symptom. Separate pools for each polarity avoid
+# the awkward negations ("feels not exhausted") that come from negating a pool of positive phrases. No phrase of one
+# symptom equals or contains a phrase of another, so a mention maps to one symptom (tested). Notes use ONE phrase.
+PHRASEBANK: dict[str, dict[str, tuple[str, ...]]] = {
+    "tremor": {
+        "present": ("tremor", "shaky hands", "hand tremor", "trembling hands", "tremulous", "shaking of the hands"),
+        "hedged": ("possible tremor", "maybe some shaking", "slight tremor at times", "?tremor",
+                   "occasional shaky hands", "hands feel a little shaky"),
+        "negated": ("no tremor", "denies tremor", "no shaking", "hands steady", "no shaky hands", "denies shaking"),
+    },
+    "fatigue": {
+        "present": ("fatigue", "tired", "low energy", "exhausted", "wiped out", "tires easily"),
+        "hedged": ("possibly fatigued", "somewhat tired", "tired on and off", "low energy at times",
+                   "maybe more tired than usual", "mild fatigue at times"),
+        "negated": ("no fatigue", "denies fatigue", "not tired", "energy level normal", "denies low energy",
+                    "no exhaustion"),
+    },
+    "photophobia": {
+        "present": ("photophobia", "light sensitivity", "sensitive to bright light", "bothered by bright lights",
+                    "light bothers the eyes", "squinting in bright light"),
+        "hedged": ("possible light sensitivity", "mild light sensitivity at times", "maybe bothered by bright lights",
+                   "slightly sensitive to bright light", "?photophobia", "bright light occasionally bothersome"),
+        "negated": ("no photophobia", "denies photophobia", "no light sensitivity", "not bothered by bright lights",
+                    "no sensitivity to bright light", "denies light sensitivity"),
+    },
+    "joint_stiffness": {
+        "present": ("joint stiffness", "stiff joints", "achy stiff joints", "morning stiffness",
+                    "stiffness in the joints", "joints feel stiff"),
+        "hedged": ("possible joint stiffness", "some morning stiffness at times", "joints a bit stiff",
+                   "occasional stiff joints", "mild stiffness in the joints", "maybe some stiff joints"),
+        "negated": ("no joint stiffness", "denies joint stiffness", "joints not stiff", "no morning stiffness",
+                    "no stiff joints", "denies stiffness"),
+    },
+    "dizziness": {
+        "present": ("dizziness", "lightheaded", "woozy", "dizzy spells", "feels dizzy", "dizzy"),
+        "hedged": ("possible dizziness", "occasionally lightheaded", "a little woozy at times", "dizzy on and off",
+                   "maybe some dizziness", "brief dizzy spells"),
+        "negated": ("no dizziness", "denies dizziness", "not lightheaded", "no dizzy spells", "denies lightheadedness",
+                    "not woozy"),
+    },
+}
+_STATED_TO_POOL = {"present": "present", "hedged": "hedged", "negated": "negated"}
+
+
+def symptom_phrase_pool(key: str, stated: str) -> tuple[str, ...]:
+    """The wording options for a symptom stated as present, hedged or negated."""
+    return PHRASEBANK[key][_STATED_TO_POOL[stated]]
+
+
+def all_symptom_phrases(key: str) -> tuple[str, ...]:
+    """Every phrase that counts as a mention of this symptom, whatever its polarity."""
+    pools = PHRASEBANK[key].values()
+    return tuple(dict.fromkeys([*SYMPTOM_BY_KEY[key].phrases, *(p for pool in pools for p in pool)]))

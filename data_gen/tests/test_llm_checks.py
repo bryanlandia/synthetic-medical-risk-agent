@@ -281,3 +281,42 @@ def test_a_note_that_names_its_documentation_setting_is_a_validation_failure():
 
     assert reveals_setting("Specialist follow-up visit, EHR template.\nHistory: stable") == "ehr_template"
     assert reveals_setting("Pt seen, labs reviewed.") is None
+
+
+# --- tells of artifice found by the round-0 review -----------------------------------------------------------------------
+
+def _style_plan():
+    return make_plan(symptoms=[
+        PlanSymptomV2(flag="fatigue", stated="negated", phrases=("fatigue", "tired", "low energy", "exhausted")),
+        PlanSymptomV2(flag="joint_stiffness", stated="present",
+                      phrases=("joint stiffness", "stiff joints", "achy stiff joints", "morning stiffness")),
+    ], style="shorthand")
+
+
+def test_style_errors_flag_meta_mentions_contradictory_c_o_and_repeated_wording():
+    from data_gen.llm.checks import style_errors
+
+    plan = _style_plan()
+    assert style_errors("Pt denies fatigue. c/o stiff joints.", plan) == []
+    assert "meta_mention" in style_errors("Fictional study condition. Denies fatigue. c/o stiff joints.", plan)
+    assert "meta_mention" in style_errors("Synthetic data. Denies fatigue.", plan)
+    assert "contradictory_phrasing" in style_errors("c/o denies fatigue; c/o stiff joints.", plan)
+    assert "contradictory_phrasing" in style_errors("C/O no fatigue.", plan)
+    assert "symptom_repeated:fatigue" in style_errors("Denies fatigue, feels not exhausted, no low energy.", plan)
+    assert "symptom_repeated:joint_stiffness" in style_errors("Reports joint stiffness and stiff joints.", plan)
+
+
+def test_the_same_phrase_twice_or_a_nested_phrase_is_not_repetition():
+    from data_gen.llm.checks import style_errors
+
+    plan = _style_plan()
+    assert style_errors("Denies fatigue. Fatigue not an issue today.", plan) == []  # one wording, mentioned twice
+    assert style_errors("Reports achy stiff joints.", plan) == []  # 'stiff joints' sits inside 'achy stiff joints'
+
+
+def test_style_errors_are_part_of_the_offline_checks():
+    from data_gen.llm.checks import offline_errors
+
+    plan = _style_plan()
+    errs = offline_errors("Denies fatigue, feels tired. c/o stiff joints.", plan)
+    assert "symptom_repeated:fatigue" in errs
