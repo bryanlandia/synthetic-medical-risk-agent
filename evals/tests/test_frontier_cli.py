@@ -131,3 +131,13 @@ def test_a_repeated_final_run_is_refused_unless_forced_and_the_trials_stage_is_i
         assert run("--split", "test", "--suites", "happy_path", "--limit", "5", "--force") == 0
     stages = [e.get("stage") for e in json.loads(ledger.read_text())["entries"]]
     assert stages == ["test", "trials", "test"]
+
+
+def test_iterate_prints_progress_lines_and_quiet_hides_them(dataset, env, capsys):
+    _, paths = env
+    assert iterate(dataset, paths, "--yes", "--limit", "60") == 0
+    lines = [l for l in capsys.readouterr().err.splitlines() if l.startswith("[dev v1]")]
+    assert any("happy_path 25/60" in l for l in lines) and any("happy_path 60/60 (100%)" in l for l in lines)
+    assert all("paid calls" in l and "invalid reports" in l and "$" in l for l in lines)
+    assert iterate(dataset, paths, "--yes", "--limit", "60", "--quiet") == 0
+    assert "[dev v1]" not in capsys.readouterr().err

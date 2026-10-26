@@ -9,7 +9,7 @@ from __future__ import annotations
 import asyncio
 import json
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 from inspect_ai import Task
@@ -37,6 +37,13 @@ class TrialSink:
     trials: dict[str, dict[str, list[Trial]]] = field(default_factory=dict)  # suite -> sample id -> trials
     clean: dict[str, dict[str, list[Trial]]] = field(default_factory=dict)  # adversarial: the addendum-removed runs
     stopped: str | None = None  # why the run ended early (a call or spend cap), if it did
+    done: dict[str, int] = field(default_factory=dict)  # suite -> samples finished
+    on_sample: Callable[[str, int], None] | None = None  # called after each finished sample (progress display)
+
+    def sample_done(self, suite: str) -> None:
+        self.done[suite] = self.done.get(suite, 0) + 1
+        if self.on_sample:
+            self.on_sample(suite, self.done[suite])
 
     def add(self, suite: str, sample_id: str, trial: Trial, clean: bool = False) -> None:
         store = self.clean if clean else self.trials
@@ -95,6 +102,7 @@ def system_solver(system: System, suite: str, sink: TrialSink):
         done = await asyncio.to_thread(work, *args) if getattr(system, "threaded", False) else work(*args)
         for trial, is_clean in done:
             sink.add(suite, sample_id, trial, clean=is_clean)
+        sink.sample_done(suite)
         state.output = ModelOutput.from_content(system.version, done[0][0].raw_output)
         return state
 

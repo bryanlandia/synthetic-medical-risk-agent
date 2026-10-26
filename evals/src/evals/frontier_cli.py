@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -74,6 +75,29 @@ def _write_stage(out: Path, system: PromptSystem, stage: Stage, run: Any, summar
     (out / "run.json").write_text(json.dumps(info, indent=2, sort_keys=True) + "\n")
 
 
+class Progress:
+    """One line on stderr every ``every`` finished samples (and when a suite ends): how far along, calls paid for
+    and served from the cache, invalid reports so far, spend, elapsed time and a rough time left."""
+
+    def __init__(self, system: PromptSystem, label: str, every: int = 25, out: Any = None):
+        self.system, self.label, self.every, self.out = system, label, every, out or sys.stderr
+        self.started = time.monotonic()
+
+    def __call__(self, suite: str, done: int, total: int, sink: Any) -> None:
+        if done % self.every and done != total:
+            return
+        elapsed = time.monotonic() - self.started
+        c = self.system.client
+        trials = sink.all_trials()
+        bad = sum(not t.parsed for t in trials)
+        finished = sum(sink.done.values())
+        rate = finished / elapsed if elapsed > 0 else 0
+        left = f", about {max(total - done, 0) / rate:.0f}s left in this suite" if rate and done < total else ""
+        print(f"[{self.label}] {suite} {done}/{total} ({100 * done // max(total, 1)}%) | paid calls {c.misses}, "
+              f"cached {c.hits} | invalid reports {bad} | ${self.system.budget.spend_usd:.2f} | "
+              f"{elapsed:.0f}s{left}", file=self.out, flush=True)
+
+
 def _paid(args: Any, system_factory: Any, stage: Stage, dataset: Any, limit: int | None) -> tuple[PromptSystem, bool]:
     """Estimate, check the cap, and require --yes. Returns the system, or None-ish via exit code on refusal."""
     est = estimate_stage(system_factory(_NoClient()), dataset, stage, limit)
@@ -83,6 +107,10 @@ def _paid(args: Any, system_factory: Any, stage: Stage, dataset: Any, limit: int
         print("this spends money: re-run with --yes (the key is read from ANTHROPIC_API_KEY)", file=sys.stderr)
         return None, False  # type: ignore[return-value]
     return system_factory(make_client() if est.uncached else _NoClient()), True
+
+
+def _progress(args: Any, system: PromptSystem, label: str) -> Progress | None:
+    return None if getattr(args, "quiet", False) else Progress(system, label)
 
 
 def cmd_iterate(args: Any, dataset: Any, protocol_path: Path | None = None, out_root: Path | None = None,
@@ -105,7 +133,7 @@ def cmd_iterate(args: Any, dataset: Any, protocol_path: Path | None = None, out_
         return 2
     out = (out_root or RESULTS_DIR) / "dev" / f"{args.prompt}_{system.model}{'_smoke' if smoke else ''}"
     run = run_suites(dataset, system, "dev", limit=args.limit, log_dir=out / "inspect", protocol_path=protocol_path,
-                     workers=getattr(args, "workers", 8))
+                     workers=getattr(args, "workers", 8), progress=_progress(args, system, f"dev {args.prompt}"))
     summary = summarize(dataset, run, reference=False)
     _write_stage(out, system, stage, run, summary)
     print(render_markdown(summary))
@@ -167,7 +195,7 @@ def cmd_run(args: Any, dataset: Any, protocol_path: Path | None = None, out_root
     run = run_suites(dataset, system, stage.split, suites=args.suites, limit=args.limit, trials=stage.trials,
                      final=args.final, log_dir=out / "inspect", ledger_path=ledger_path, protocol_path=protocol_path,
                      ledger_stage=stage.name if stage.split in ("test", "adversarial") else None,
-                     workers=getattr(args, "workers", 8))
+                     workers=getattr(args, "workers", 8), progress=_progress(args, system, stage.name))
     summary = summarize(dataset, run, reference=False)
     _write_stage(out, system, stage, run, summary)
     print(render_markdown(summary))

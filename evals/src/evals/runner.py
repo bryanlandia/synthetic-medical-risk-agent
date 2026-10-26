@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from inspect_ai import eval as inspect_eval
 
@@ -32,7 +32,8 @@ class RunResult:
 def run_suites(dataset: Dataset, system: System, split: str, *, suites: list[str] | None = None, limit: int | None = None,
                trials: int = 1, final: bool = False, log_dir: Path | str = "logs",
                ledger_path: Path | None = None, workers: int = 8, protocol_path: Path | None = None,
-               ledger_stage: str | None = None) -> RunResult:
+               ledger_stage: str | None = None,
+               progress: Callable[[str, int, int, TrialSink], None] | None = None) -> RunResult:
     """Run the chosen suites of a split. ``test`` and ``adversarial`` need ``final=True`` and are recorded.
     API-backed systems run ``workers`` samples at a time; the results do not depend on the worker count."""
     if split in PROTECTED and getattr(system, "requires_freeze", False):
@@ -42,6 +43,8 @@ def run_suites(dataset: Dataset, system: System, split: str, *, suites: list[str
     available = suite_records(dataset, split)
     chosen = {s: (available[s][:limit] if limit else available[s]) for s in wanted if s in available}
     sink = TrialSink()
+    if progress:
+        sink.on_sample = lambda suite, n: progress(suite, n, len(chosen[suite]) * trials, sink)
     tasks = [build_task(s, dataset, recs, system, sink) for s, recs in chosen.items()]
     logs = inspect_eval(tasks, model="mockllm/model", log_dir=str(log_dir), display="none", epochs=trials,
                         log_samples=True, fail_on_error=True,

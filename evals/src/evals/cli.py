@@ -31,6 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--model", default="sonnet", help="frontier: haiku or sonnet (or a model id)")
     run.add_argument("--yes", action="store_true", help="frontier: confirm the spend")
     run.add_argument("--workers", type=int, default=8, help="frontier: samples in flight at once")
+    run.add_argument("--quiet", action="store_true", help="frontier: no progress lines")
     run.add_argument("--force", action="store_true", help="frontier: repeat a final run (recorded and warned about)")
 
     est = sub.add_parser("estimate", help="frontier: the calls, tokens and cost of each stage; no call, no key")
@@ -46,6 +47,7 @@ def build_parser() -> argparse.ArgumentParser:
     it.add_argument("--note", help="what changed and what you decided; stored with the version")
     it.add_argument("--yes", action="store_true")
     it.add_argument("--workers", type=int, default=8)
+    it.add_argument("--quiet", action="store_true", help="no progress lines")
     it.add_argument("--dataset", default=None)
 
     rep = sub.add_parser("report", help="frontier: write results/frontier/report.md; exit 1 if it is incomplete")
