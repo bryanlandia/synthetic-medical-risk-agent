@@ -10,7 +10,7 @@ from inspect_ai import eval as inspect_eval
 
 from . import HARNESS_VERSION
 from .inspect_tasks import TrialSink, build_task
-from .ledger import LEDGER_PATH, record_final_run
+from .ledger import record_final_run
 from .records import Dataset
 from .suites import SUITE_NAMES, suite_records
 from .systems import System
@@ -25,11 +25,12 @@ class RunResult:
     sink: TrialSink
     logs: list[Any]
     rows: list[dict[str, Any]]
+    stopped: str | None = None  # a call or spend cap ended the run early
 
 
 def run_suites(dataset: Dataset, system: System, split: str, *, suites: list[str] | None = None, limit: int | None = None,
                trials: int = 1, final: bool = False, log_dir: Path | str = "logs",
-               ledger_path: Path = LEDGER_PATH) -> RunResult:
+               ledger_path: Path | None = None) -> RunResult:
     """Run the chosen suites of a split. ``test`` and ``adversarial`` need ``final=True`` and are recorded."""
     record_final_run(system.version, split, final=final, path=ledger_path)
     wanted = suites or list(SUITE_NAMES)
@@ -41,4 +42,4 @@ def run_suites(dataset: Dataset, system: System, split: str, *, suites: list[str
                         log_samples=True, fail_on_error=True, max_samples=64)
     run_info = {"split": split, "harness_version": HARNESS_VERSION, "dataset_config_hash": dataset.config_hash}
     rows = transcript_rows(dataset, sink, run=run_info)
-    return RunResult(system.version, split, {s: len(r) for s, r in chosen.items()}, sink, logs, rows)
+    return RunResult(system.version, split, {s: len(r) for s, r in chosen.items()}, sink, logs, rows, sink.stopped)

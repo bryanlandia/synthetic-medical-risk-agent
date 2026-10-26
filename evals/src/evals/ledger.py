@@ -17,16 +17,18 @@ class FinalRunRequired(RuntimeError):
     """A protected split was requested without the final-run flag."""
 
 
-def final_runs(system_version: str, split: str, path: Path = LEDGER_PATH) -> int:
+def final_runs(system_version: str, split: str, path: Path | None = None) -> int:
+    path = path or LEDGER_PATH  # resolved at call time, so tests can redirect the module attribute
     if not path.exists():
         return 0
     return sum(1 for e in json.loads(path.read_text())["entries"]
                if e["system_version"] == system_version and e["split"] == split)
 
 
-def record_final_run(system_version: str, split: str, *, final: bool, path: Path = LEDGER_PATH) -> int:
+def record_final_run(system_version: str, split: str, *, final: bool, path: Path | None = None) -> int:
     """Check and, for a protected split, record the run. Returns how many final runs this system version has had
     on the split (including this one). Raises FinalRunRequired without the flag; warns on the second."""
+    path = path or LEDGER_PATH
     if split not in PROTECTED:
         return 0
     if not final:

@@ -39,8 +39,15 @@ class Trial:
         return row
 
 
+def _set_trial(system: System, trial_index: int) -> None:
+    setter = getattr(system, "set_trial", None)
+    if setter:
+        setter(trial_index)
+
+
 def run_trial(system: System, record: Record, trial_index: int = 0) -> Trial:
     view = input_view(record)
+    _set_trial(system, trial_index)
     started = time.perf_counter()
     raw = system.run(view)
     latency = time.perf_counter() - started
@@ -60,6 +67,7 @@ def run_view(system: System, view: dict[str, Any], record_id: str, trial_index: 
     from .records import assert_clean_view
 
     assert_clean_view(view)
+    _set_trial(system, trial_index)
     started = time.perf_counter()
     raw = system.run(view)
     latency = time.perf_counter() - started

@@ -40,6 +40,14 @@ LLM-written notes (spend money; the API key is read only from the `ANTHROPIC_API
 - `uv run data-gen review --estimate` dry-run the adversarial LLM reviewer (Sonnet 5.5, independent of the Haiku writer; no key needed; every note is shown with its kind, such as AI-scribe draft or EHR template, and what is normal for it, in the app and in the reviewer's prompt, so each is judged against its own kind); `review --yes` rates the highest round's `sheet.json` from the note text (cached, capped; `--round N` picks another, and the recording, session log and ratings all go in that round's folder); `review --mode browser --yes [--max-notes N] [--pause SECONDS]` has it operate the rating app (`--max-notes N` rates a sample spread evenly over the four settings, so each shows on the recording) (pausing about 3 s on each finished note and comment so the recording is readable) and records `review.webm` plus `review-session.jsonl` (needs `uv sync --extra review`, `playwright install chromium` and a built `rating_ui/`). The gate fails a reviewer whose plausible rate for the old template controls is not 20 points below the LLM notes
 - `uv run data-gen generate --note-source llm --yes` the full run into `data_llm/`; refuses to spend without `--yes`, stops at the call and spend caps with nothing written, and reuses `cache/llm_cache.jsonl`, so a rerun costs nothing
 
+Evals (from `evals/`, same uv setup; see `evals/README.md`; the reference systems need no API key):
+
+- `uv sync` install; `uv run pytest -q` harness tests
+- `uv run evals run --system {oracle,floor,lab_only} --split dev [--limit N]` run a reference system through Inspect; `test` and `adversarial` need `--final` and are recorded in `results/ledger.json`
+- `uv run evals baselines` regenerate the baseline summaries and `results/targets_v1.json`; `uv run evals regression` the fast key-free subset CI runs (fails if the oracle misses the ceiling, a grader is broken or a baseline drifts)
+- `uv run evals failures runs/<system>/<split>/trials.jsonl --grader <name>` read a seeded sample of failing transcripts
+- Iterate on the dev split only (`evals.devsplit.dev_ids`); training must use `train_ids`
+
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):
 
 - `REALISM_ROUND_DIR=../data_gen/realism/round0 npm run dev` serve the rating tool on 127.0.0.1:3100 (a person types a name and rates; saves `ratings.<name>.json`)

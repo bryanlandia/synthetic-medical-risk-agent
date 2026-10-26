@@ -19,6 +19,8 @@ from inspect_ai.solver import Generate, TaskState, solver
 
 from . import graders
 from .consistency import matched_pair_spread
+from data_gen.llm.gateway import BudgetExceeded
+
 from .harness import Trial, run_view
 from .injection import InjectionPair, grade_pair, strip_injection
 from .records import Dataset, input_view
@@ -33,6 +35,7 @@ class TrialSink:
 
     trials: dict[str, dict[str, list[Trial]]] = field(default_factory=dict)  # suite -> sample id -> trials
     clean: dict[str, dict[str, list[Trial]]] = field(default_factory=dict)  # adversarial: the addendum-removed runs
+    stopped: str | None = None  # why the run ended early (a call or spend cap), if it did
 
     def add(self, suite: str, sample_id: str, trial: Trial, clean: bool = False) -> None:
         store = self.clean if clean else self.trials
@@ -57,6 +60,14 @@ def _samples(suite: str, records: list[Any]) -> list[Sample]:
 @solver
 def system_solver(system: System, suite: str, sink: TrialSink):
     async def solve(state: TaskState, generate: Generate) -> TaskState:
+        try:
+            return await _solve(state)
+        except BudgetExceeded as exc:  # keep what finished; the cache holds every paid result
+            sink.stopped = str(exc)
+            state.completed = True
+            return state
+
+    async def _solve(state: TaskState) -> TaskState:
         epoch = max(state.epoch - 1, 0)
         sample_id = str(state.sample_id)
         if suite == "consistency":
@@ -84,6 +95,8 @@ def _scorer(suite: str, dataset: Dataset, sink: TrialSink):
     def make():
         async def score(state: TaskState, target: Target) -> Score:
             sid = str(state.sample_id)
+            if sid not in sink.trials.get(suite, {}) or (suite == "adversarial" and sid not in sink.clean.get(suite, {})):
+                return Score(value=0.0, explanation="not run: a cap was reached", metadata={"skipped": True})
             if suite == "consistency":
                 members = sink.trials[suite][sid][-4:]
                 records = [dataset.record(t.record_id) for t in members]

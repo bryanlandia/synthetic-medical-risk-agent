@@ -37,19 +37,19 @@
 
 ## 6. Bounded spend
 
-- [ ] 6.1 Add the response cache, call cap and spend cap around any API-backed system (reusing the note writer's gateway) and the keyless dry-run estimate, and verify with a mock client: the estimate needs no key, a cap halts safely with cached results, a rerun makes only the missing calls and an unchanged run makes zero
+- [x] 6.1 Add the response cache, call cap and spend cap around any API-backed system (reusing the note writer's gateway) and the keyless dry-run estimate, and verify with a mock client: the estimate needs no key, a cap halts safely with cached results, a rerun makes only the missing calls and an unchanged run makes zero
 
 ## 7. Suites, targets and CI
 
-- [ ] 7.1 Label each eval capability or regression and implement the targets file generator (floor, oracle, rule and harness version per target), and verify a test of the generated structure and that changing the rule changes the file
-- [ ] 7.2 Run the three baselines on dev and write the version 1 targets and a baseline results summary under `evals/results/`, and verify the files exist, are reproducible by rerunning, and contain no secret
+- [x] 7.1 Label each eval capability or regression and implement the targets file generator (floor, oracle, rule and harness version per target), and verify a test of the generated structure and that changing the rule changes the file
+- [x] 7.2 Run the three baselines on dev and write the version 1 targets and a baseline results summary under `evals/results/`, and verify the files exist, are reproducible by rerunning, and contain no secret
 - [ ] 7.3 Add the key-free CI workflow (harness tests and the regression subset with the reference systems; read-only permissions; actions pinned by SHA) and verify it passes on a pull request and fails when the oracle is made to miss its ceiling
-- [ ] 7.4 Add the LLM-grader guard (a different model than the system, a rubric, an "unknown" outcome, uncalibrated results excluded from headline numbers) as a refusing check, and verify tests for same-model refusal and uncalibrated labelling
+- [x] 7.4 Add the LLM-grader guard (a different model than the system, a rubric, an "unknown" outcome, uncalibrated results excluded from headline numbers) as a refusing check, and verify tests for same-model refusal and uncalibrated labelling
 
 ## 8. Documentation
 
-- [ ] 8.1 Document the contract, the harness, the dev and test discipline and the commands in `evals/README.md` and AGENTS.md, and verify each documented command runs as written from a clean checkout
-- [ ] 8.2 Run `openspec validate add-eval-harness --strict`, the full `evals` and `data_gen` test suites and a scan for secrets, and verify all pass
+- [x] 8.1 Document the contract, the harness, the dev and test discipline and the commands in `evals/README.md` and AGENTS.md, and verify each documented command runs as written from a clean checkout
+- [x] 8.2 Run `openspec validate add-eval-harness --strict`, the full `evals` and `data_gen` test suites and a scan for secrets, and verify all pass
 
 ## Workflow follow-up
 
