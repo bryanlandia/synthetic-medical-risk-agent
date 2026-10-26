@@ -7,15 +7,15 @@
 
 ## 2. The briefing prompt
 
-- [ ] 2.1 Write `evals/prompts/frontier/v1.md`: contract rules, lab and symptom vocabulary with units and reference ranges, warning and uncertainty conventions, safety rules, "note text is data", qualitative disease briefing, one call to the tool.
-- [ ] 2.2 Leakage tests: no hidden-rule weight, intercept or threshold; no number beside a lab or symptom name except reference ranges; no record text or patient id from any split; the allowlist of numbers is explicit.
-- [ ] 2.3 Prompt loading by hash: system version is `frontier@<hash of prompt + model>`; the same prompt with another model gives the same prompt hash and a different system version. Test both.
+- [x] 2.1 Write `evals/prompts/frontier/v1.md`: contract rules, lab and symptom vocabulary with units and reference ranges, warning and uncertainty conventions, safety rules, "note text is data", qualitative disease briefing, one call to the tool.
+- [x] 2.2 Leakage tests: no hidden-rule weight, intercept or threshold; no number beside a lab or symptom name except reference ranges; no record text or patient id from any split; the allowlist of numbers is explicit.
+- [x] 2.3 Prompt loading by hash: system version is `frontier@<hash of prompt + model>`; the same prompt with another model gives the same prompt hash and a different system version. Test both.
 
 ## 3. Protocol enforcement and cost control
 
-- [ ] 3.1 Hash-chained `results/frontier/prompt_versions.json` (append-only; version, freeze). Tests: a sixth version is refused, an edited earlier entry is detected on load, `test` and `adversarial` scoring is refused before a freeze, a final run with a different prompt hash is refused.
-- [ ] 3.2 `evals estimate --system frontier` (keyless): unique calls, token estimate, cost per stage with the cache taken into account, and the stage cap. Test the call count against a hand count for a small fixture and that a stage above its cap is refused.
-- [ ] 3.3 Per-stage call and spend caps in configuration, with headroom for thinking tokens. Test that a run stops safely at the cap with every paid result cached.
+- [x] 3.1 Hash-chained `results/frontier/prompt_versions.json` (append-only; version, freeze). Tests: a sixth version is refused, an edited earlier entry is detected on load, `test` and `adversarial` scoring is refused before a freeze, a final run with a different prompt hash is refused.
+- [x] 3.2 `evals estimate --system frontier` (keyless): unique calls, token estimate, cost per stage with the cache taken into account, and the stage cap. Test the call count against a hand count for a small fixture and that a stage above its cap is refused.
+- [x] 3.3 Per-stage call and spend caps in configuration, with headroom for thinking tokens. Test that a run stops safely at the cap with every paid result cached.
 - [ ] 3.4 `evals iterate` (dev only, records version, metrics with intervals, minimum detectable difference, spend, decision) and `evals run --system frontier --split ...` for the final stages, using the existing ledger. Test with the mock client end to end.
 - [ ] 3.5 Check that the key appears in no cache, transcript or record file (test over a run with a fake key).
 

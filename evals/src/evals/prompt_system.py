@@ -35,13 +35,20 @@ class CallOutput:
     output_tokens: int = 0
 
 
+def prompt_hash(text: str) -> str:
+    """Identifies the prompt alone, so the development and final models can be shown to share one prompt."""
+    return hashlib.sha256(text.strip().encode()).hexdigest()[:12]
+
+
 class PromptSystem:
     reference = False
     threaded = True  # ``run_call`` keeps no shared state, so the harness may call it from several threads
 
     def __init__(self, name: str, system_prompt: str, model: str, client: LLMClient, cache_path: Path | str,
-                 budget: Budget, max_tokens: int = 1500, *, sleep=time.sleep):
+                 budget: Budget, max_tokens: int = 1500, *, sleep=time.sleep, requires_freeze: bool = False):
         self._sleep = sleep
+        self.requires_freeze = requires_freeze  # protected splits need the frozen prompt (see protocol.py)
+        self.prompt_hash = prompt_hash(system_prompt)
         self.name, self.system_prompt, self.model, self.max_tokens = name, system_prompt, model, max_tokens
         self.version = f"{name}@{hashlib.sha256((system_prompt + model).encode()).hexdigest()[:8]}"
         self.cache = DiskCache(Path(cache_path))
@@ -96,7 +103,8 @@ class RunEstimate:
         return self.calls - self.cached
 
 
-def estimate_calls(system: PromptSystem, records: list[Any], trials: int = 1, *, injection_pairs: bool = False) -> RunEstimate:
+def estimate_calls(system: PromptSystem, records: list[Any], trials: int = 1, *, injection_pairs: bool = False,
+                   assumed_output_tokens: int = ASSUMED_OUTPUT_TOKENS) -> RunEstimate:
     """Dry run: the calls a run would make, what is already cached, and the cost. Needs no key and makes no call."""
     from .injection import injection_tag, strip_injection
 
@@ -108,7 +116,7 @@ def estimate_calls(system: PromptSystem, records: list[Any], trials: int = 1, *,
             views.append(strip_injection(view))
     rows = [e for e in system.cache.entries.values() if e.get("kind") == "eval"]
     measured = len(rows) >= 10
-    out_tokens = sum(e["o"] for e in rows) / len(rows) if measured else ASSUMED_OUTPUT_TOKENS
+    out_tokens = sum(e["o"] for e in rows) / len(rows) if measured else assumed_output_tokens
     calls = cached = 0
     in_total = 0.0
     for view in views:
@@ -124,4 +132,4 @@ def estimate_calls(system: PromptSystem, records: list[Any], trials: int = 1, *,
     return RunEstimate(calls, cached, int(in_total), int(uncached * out_tokens), round(cost, 4), measured)
 
 
-__all__ = ["CallOutput", "PromptSystem", "RunEstimate", "estimate_calls", "BudgetExceeded"]
+__all__ = ["CallOutput", "PromptSystem", "prompt_hash", "RunEstimate", "estimate_calls", "BudgetExceeded"]
