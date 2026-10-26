@@ -9,15 +9,15 @@
 
 ## 2. Records, views and the dev split
 
-- [ ] 2.1 Load records from a dataset directory and build the input view the adapter passes (patient id, panel, note only), and verify a test that serializes the view for every record of every split and finds no flag, probability, label, tag, noise or plan field
-- [ ] 2.2 Implement the deterministic dev split (500 patients from train, stratified by label, seeded) with `dev_ids()` and `train_ids()`, and verify tests for determinism, disjointness from test and adversarial, prevalence within 2 points and that `train_ids()` plus dev equals train
-- [ ] 2.3 Implement the final-run flag and the committed ledger of final runs per system version, and verify tests that `test` and `adversarial` are refused without the flag, are counted with it, and warn on a second final run
+- [x] 2.1 Load records from a dataset directory and build the input view the adapter passes (patient id, panel, note only), and verify a test that serializes the view for every record of every split and finds no flag, probability, label, tag, noise or plan field
+- [x] 2.2 Implement the deterministic dev split (500 patients from train, stratified by label, seeded) with `dev_ids()` and `train_ids()`, and verify tests for determinism, disjointness from test and adversarial, prevalence within 2 points and that `train_ids()` plus dev equals train
+- [x] 2.3 Implement the final-run flag and the committed ledger of final runs per system version, and verify tests that `test` and `adversarial` are refused without the flag, are counted with it, and warn on a second final run
 
 ## 3. Reference systems and statistics
 
-- [ ] 3.1 Implement the adapter protocol and the three reference systems (oracle, floor, lab-only logistic fit on train excluding dev), producing valid reports, and verify tests of their report validity
-- [ ] 3.2 Implement the metrics (AUC, Brier, log-loss, expected calibration error), the patient-level seeded bootstrap and the minimum detectable difference, and verify tests against hand-computed values, patient clustering widening the interval, seed reproducibility, and the reporting of a difference below the minimum
-- [ ] 3.3 Verify the harness on the real data: the oracle's test AUC, Brier and log-loss match the manifest ceiling within 0.0005, the floor's AUC is 0.5 and its Brier within 0.002 of p(1-p), and the lab-only baseline's dev AUC lies between 0.55 and the oracle's
+- [x] 3.1 Implement the adapter protocol and the three reference systems (oracle, floor, lab-only logistic fit on train excluding dev), producing valid reports, and verify tests of their report validity
+- [x] 3.2 Implement the metrics (AUC, Brier, log-loss, expected calibration error), the patient-level seeded bootstrap and the minimum detectable difference, and verify tests against hand-computed values, patient clustering widening the interval, seed reproducibility, and the reporting of a difference below the minimum
+- [x] 3.3 Verify the harness on the real data: the oracle's test AUC, Brier and log-loss match the manifest ceiling within 0.0005, the floor's AUC is 0.5 and its Brier within 0.002 of p(1-p), and the lab-only baseline's dev AUC lies between 0.55 and the oracle's
 
 ## 4. Graders
 
