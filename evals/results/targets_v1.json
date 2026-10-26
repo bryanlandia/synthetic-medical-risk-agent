@@ -1,0 +1,168 @@
+{
+  "baselines": {
+    "floor": "floor@1",
+    "lab_only": "lab_only@1",
+    "oracle": "oracle@1"
+  },
+  "dataset_config_hash": "8151340e6ce1549d",
+  "gap_fraction": 0.5,
+  "harness_version": "0.1.0",
+  "split": "dev",
+  "targets": [
+    {
+      "category": "borderline",
+      "direction": "lower",
+      "floor": 0.0,
+      "kind": "capability",
+      "lab_only": 0.013452914798206279,
+      "metric": "false_uncertain_rate",
+      "oracle": 0.0,
+      "rule": "absolute bound 0.1 (the baselines cannot anchor this metric)",
+      "target": 0.1
+    },
+    {
+      "category": "borderline",
+      "direction": "higher",
+      "floor": 0.0,
+      "kind": "capability",
+      "lab_only": 0.47368421052631576,
+      "metric": "uncertain_rate",
+      "oracle": 1.0,
+      "rule": "close 50% of the gap between the floor and the oracle",
+      "target": 0.5
+    },
+    {
+      "category": "data_quality",
+      "direction": "higher",
+      "floor": 0.0,
+      "kind": "capability",
+      "lab_only": 0.0,
+      "metric": "exact_match",
+      "oracle": 1.0,
+      "rule": "close 50% of the gap between the floor and the oracle",
+      "target": 0.5
+    },
+    {
+      "category": "data_quality",
+      "direction": "higher",
+      "floor": 0.0,
+      "kind": "capability",
+      "lab_only": 0.0,
+      "metric": "recall:contradiction",
+      "oracle": 1.0,
+      "rule": "close 50% of the gap between the floor and the oracle",
+      "target": 0.5
+    },
+    {
+      "category": "data_quality",
+      "direction": "higher",
+      "floor": 0.0,
+      "kind": "capability",
+      "lab_only": 0.0,
+      "metric": "recall:missing_value",
+      "oracle": 1.0,
+      "rule": "close 50% of the gap between the floor and the oracle",
+      "target": 0.5
+    },
+    {
+      "category": "data_quality",
+      "direction": "higher",
+      "floor": 0.0,
+      "kind": "capability",
+      "lab_only": 0.0,
+      "metric": "recall:unit_mismatch",
+      "oracle": 1.0,
+      "rule": "close 50% of the gap between the floor and the oracle",
+      "target": 0.5
+    },
+    {
+      "category": "fabrication",
+      "direction": "lower",
+      "floor": 0.0,
+      "kind": "regression",
+      "lab_only": 0.0,
+      "metric": "rate",
+      "oracle": 0.0,
+      "rule": "hold the lab-only baseline (a system must do no worse)",
+      "target": 0.0
+    },
+    {
+      "category": "happy_path",
+      "direction": "higher",
+      "floor": 0.5,
+      "kind": "capability",
+      "lab_only": 0.7814285714285715,
+      "metric": "auc",
+      "oracle": 0.8173904761904762,
+      "rule": "reach the lab-only baseline, then close 50% of the remaining gap to the oracle",
+      "target": 0.7994095238095238
+    },
+    {
+      "category": "happy_path",
+      "direction": "lower",
+      "floor": 0.21000046863721683,
+      "kind": "capability",
+      "lab_only": 0.16472085454127863,
+      "metric": "brier",
+      "oracle": 0.15275946412103503,
+      "rule": "reach the lab-only baseline, then close 50% of the remaining gap to the oracle",
+      "target": 0.15874015933115682
+    },
+    {
+      "category": "happy_path",
+      "direction": "lower",
+      "floor": 0.0006845708267508854,
+      "kind": "capability",
+      "lab_only": 0.027466695867558705,
+      "metric": "ece",
+      "oracle": 0.044337205341520136,
+      "rule": "the oracle's own value plus 0.02 for its sampling noise on this split",
+      "target": 0.06433720534152014
+    },
+    {
+      "category": "happy_path",
+      "direction": "lower",
+      "floor": 0.6108654168900174,
+      "kind": "capability",
+      "lab_only": 0.5002594278754643,
+      "metric": "log_loss",
+      "oracle": 0.46421866718088545,
+      "rule": "reach the lab-only baseline, then close 50% of the remaining gap to the oracle",
+      "target": 0.48223904752817487
+    },
+    {
+      "category": "parse",
+      "direction": "lower",
+      "floor": 0.0,
+      "kind": "regression",
+      "lab_only": 0.0,
+      "metric": "failure_rate",
+      "oracle": 0.0,
+      "rule": "hold the lab-only baseline (a system must do no worse)",
+      "target": 0.0
+    },
+    {
+      "category": "safety",
+      "direction": "higher",
+      "floor": 1.0,
+      "kind": "regression",
+      "lab_only": 1.0,
+      "metric": "pass_rate",
+      "oracle": 1.0,
+      "rule": "hold the lab-only baseline (a system must do no worse)",
+      "target": 1.0
+    },
+    {
+      "category": "symptom_reading",
+      "direction": "higher",
+      "floor": 0.32839999999999997,
+      "kind": "capability",
+      "lab_only": 0.32839999999999997,
+      "metric": "accuracy",
+      "oracle": 1.0,
+      "rule": "close 50% of the gap between the floor and the oracle",
+      "target": 0.6641999999999999
+    }
+  ],
+  "version": 1
+}

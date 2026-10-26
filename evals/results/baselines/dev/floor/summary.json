@@ -1,0 +1,158 @@
+{
+  "dataset_config_hash": "8151340e6ce1549d",
+  "harness_version": "0.1.0",
+  "mdd_note": "MDD: the smallest difference between two systems this sample could detect at 80% power, approximated as 2.8 x sqrt(2) x the bootstrap standard error of the metric. A paired comparison is tighter.",
+  "n_boot": 1000,
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "reference": true,
+  "rows": [
+    {
+      "category": "happy_path",
+      "hi": 0.5,
+      "lo": 0.5,
+      "mdd": 0.0,
+      "metric": "auc",
+      "n": 500,
+      "patients": 500,
+      "value": 0.5
+    },
+    {
+      "category": "happy_path",
+      "hi": 0.22594570297107675,
+      "lo": 0.1940552343033569,
+      "mdd": 0.03180050384886644,
+      "metric": "brier",
+      "n": 500,
+      "patients": 500,
+      "value": 0.21000046863721683
+    },
+    {
+      "category": "happy_path",
+      "hi": 0.6446270217052322,
+      "lo": 0.5771038120748025,
+      "mdd": 0.0673327228305616,
+      "metric": "log_loss",
+      "n": 500,
+      "patients": 500,
+      "value": 0.6108654168900174
+    },
+    {
+      "category": "happy_path",
+      "hi": 0.04468457082675087,
+      "lo": 0.0006845708267508854,
+      "mdd": 0.048137524134593046,
+      "metric": "ece",
+      "n": 500,
+      "patients": 500,
+      "value": 0.0006845708267508854
+    },
+    {
+      "category": "symptom_reading",
+      "hi": 0.34520000000000006,
+      "lo": 0.31199,
+      "mdd": 0.03325380865689364,
+      "metric": "accuracy",
+      "n": 500,
+      "patients": 500,
+      "value": 0.32839999999999997
+    },
+    {
+      "category": "fabrication",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "rate",
+      "n": 1030,
+      "patients": 500,
+      "value": 0.0
+    },
+    {
+      "category": "safety",
+      "hi": 1.0,
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "pass_rate",
+      "n": 1030,
+      "patients": 500,
+      "value": 1.0
+    },
+    {
+      "category": "parse",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "failure_rate",
+      "n": 1030,
+      "patients": 500,
+      "value": 0.0
+    },
+    {
+      "category": "data_quality",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "recall:missing_value",
+      "n": 156,
+      "patients": 156,
+      "value": 0.0
+    },
+    {
+      "category": "data_quality",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "recall:unit_mismatch",
+      "n": 58,
+      "patients": 58,
+      "value": 0.0
+    },
+    {
+      "category": "data_quality",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "recall:contradiction",
+      "n": 65,
+      "patients": 65,
+      "value": 0.0
+    },
+    {
+      "category": "data_quality",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "exact_match",
+      "n": 231,
+      "patients": 231,
+      "value": 0.0
+    },
+    {
+      "category": "borderline",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "uncertain_rate",
+      "n": 76,
+      "patients": 76,
+      "value": 0.0
+    },
+    {
+      "category": "borderline",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "false_uncertain_rate",
+      "n": 223,
+      "patients": 223,
+      "value": 0.0
+    }
+  ],
+  "seed": 0,
+  "split": "dev",
+  "suites": {
+    "borderline": 299,
+    "data_quality": 231,
+    "happy_path": 500
+  },
+  "system_version": "floor@1"
+}

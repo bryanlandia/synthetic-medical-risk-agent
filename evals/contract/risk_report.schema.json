@@ -1,0 +1,217 @@
+{
+  "$defs": {
+    "DataQualityWarning": {
+      "additionalProperties": false,
+      "properties": {
+        "lab": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lab"
+        },
+        "type": {
+          "enum": [
+            "missing_value",
+            "unit_mismatch",
+            "impossible_value",
+            "contradiction",
+            "note_flag_disagreement"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "DataQualityWarning",
+      "type": "object"
+    },
+    "LabUsed": {
+      "additionalProperties": false,
+      "properties": {
+        "lab": {
+          "title": "Lab",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lab",
+        "value",
+        "unit"
+      ],
+      "title": "LabUsed",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One report per record. ``status`` decides which of the other fields apply.",
+  "properties": {
+    "data_quality": {
+      "items": {
+        "$ref": "#/$defs/DataQualityWarning"
+      },
+      "title": "Data Quality",
+      "type": "array"
+    },
+    "disclaimer": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Disclaimer"
+    },
+    "evidence": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Evidence",
+      "type": "array"
+    },
+    "interval": {
+      "anyOf": [
+        {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Interval"
+    },
+    "labs_used": {
+      "items": {
+        "$ref": "#/$defs/LabUsed"
+      },
+      "title": "Labs Used",
+      "type": "array"
+    },
+    "message": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Message"
+    },
+    "probability": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Probability"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "enum": [
+            "out_of_scope",
+            "treatment_request",
+            "real_disease",
+            "phi",
+            "other"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reason"
+    },
+    "report_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Report Version",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "scored",
+        "declined"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "symptoms": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "enum": [
+              "present",
+              "possible",
+              "absent",
+              "not_mentioned"
+            ],
+            "type": "string"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Symptoms"
+    },
+    "uncertain": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Uncertain"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "RiskReport",
+  "type": "object"
+}

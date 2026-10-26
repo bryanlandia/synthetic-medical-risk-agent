@@ -21,11 +21,11 @@ The harness SHALL give a system under test only the record's model-visible input
 The harness SHALL include an oracle that uses the hidden rule, a floor that always reports the training prevalence, and a lab-only logistic baseline fit on train excluding the dev split. These SHALL run without any API. Their results define the floor and ceiling that success targets are set against.
 
 #### Scenario: Oracle reaches the ceiling
-- **WHEN** the oracle is scored on the test split
+- **WHEN** the oracle is scored on the test split, one record per patient (the first of each matched-pair group, as the manifest counts)
 - **THEN** its AUC, Brier score and log-loss equal the manifest's best-possible values to within 0.0005, and all of its graded checks pass
 
 #### Scenario: Floor sits at the floor
-- **WHEN** the floor is scored on the test split
+- **WHEN** the floor is scored on the test split, one record per patient
 - **THEN** its AUC is 0.5, and its Brier score is within 0.002 of p(1-p) for the split prevalence p
 
 #### Scenario: Lab-only baseline lies between
@@ -55,7 +55,7 @@ The harness SHALL define a dev split of 500 patients selected from train, determ
 Each eval category SHALL have code-based graders with measurable outputs, and every record SHALL be assigned to the categories its tags and noise imply. Output that is not a valid report SHALL be scored as a failure, never dropped.
 
 #### Scenario: Happy path metrics
-- **WHEN** ordinary test records are graded
+- **WHEN** ordinary test records are graded, one record per patient so a patient written in four settings counts once
 - **THEN** the harness reports AUC, Brier score, log-loss and expected calibration error for the probability against the label
 
 #### Scenario: Symptom reading
