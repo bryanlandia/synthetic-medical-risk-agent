@@ -48,6 +48,13 @@ Evals (from `evals/`, same uv setup; see `evals/README.md`; the reference system
 - `uv run evals failures runs/<system>/<split>/trials.jsonl --grader <name>` read a seeded sample of failing transcripts
 - Iterate on the dev split only (`evals.devsplit.dev_ids`); training must use `train_ids`
 
+Frontier baseline (from `evals/`; paid steps need `--yes` and `ANTHROPIC_API_KEY` exported in your own shell; see `evals/README.md`):
+
+- `uv run evals estimate [--prompt v1] [--model haiku|sonnet] [--stage all|dev|test|adversarial|trials]` calls, tokens and cost per stage against its cap; no call, no key
+- `uv run evals iterate --prompt vN [--model haiku] [--limit N] [--note "..."] --yes` score a prompt version on dev (at most 5 versions; `--limit` is an unrecorded smoke run); `uv run evals freeze --prompt vN` ends iteration
+- `uv run evals run --system frontier --prompt vN --model sonnet --split {dev,test,adversarial} [--suites consistency --trials 3] --final --yes` the stages; `test` and `adversarial` need a freeze and are one look each (`--force` repeats, warned)
+- `uv run evals report` writes `results/frontier/report.md`; it is INCOMPLETE (exit 1) until `results/frontier/reading.json` records the failing transcripts read for each failed grader
+
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):
 
 - `REALISM_ROUND_DIR=../data_gen/realism/round0 npm run dev` serve the rating tool on 127.0.0.1:3100 (a person types a name and rates; saves `ratings.<name>.json`)

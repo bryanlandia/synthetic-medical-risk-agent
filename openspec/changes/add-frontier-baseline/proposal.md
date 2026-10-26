@@ -35,5 +35,5 @@ All of them get their first real-model row: happy path, symptom reading, data qu
 ## Impact
 
 - Extends `evals/` only (a tool-use client, the baseline prompt, a protocol recorder, concurrency, a few CLI commands); no change to `data_gen/` or the data.
-- Spend: roughly $0.50 to $1 for each Haiku dev pass (about $5 for five), then about $17 for the Sonnet runs on `test` and `adversarial`, about $12 more with three trials on the matched-pair subset, and about $3 for the Sonnet dev run; caps are set per stage. The runs are done by the owner, since they need the API key.
+- Spend: roughly $0.50 to $1 for each Haiku dev pass (about $1.50 for five), then about $20 for the Sonnet runs on `test` and `adversarial`, about $15 more with three trials on the matched-pair subset, and about $5 for the Sonnet dev run (keyless estimates, assuming 700 output tokens a call until the cache holds measurements); caps are set per stage. The runs are done by the owner, since they need the API key.
 - Results, prompt versions and the final prompt are committed; the key never is.

@@ -22,8 +22,8 @@
 ## 4. Results, targets and reading
 
 - [x] 4.1 Add the "Results state which targets are met" labels (reaches the target; clearly met, not distinguishable, clearly not met) to the summary generator. Test against the 0.70 and Brier examples in the spec.
-- [ ] 4.2 Reading file format (`results/frontier/reading.md` or JSON): per failed grader the transcripts read, count and findings; the report generator marks the report incomplete without at least 10 per failed grader (or all). Test both outcomes.
-- [ ] 4.3 Baseline report generator: results against targets v1 next to the oracle, floor and lab-only baselines, the Haiku to Sonnet dev comparison, trial consistency, cost, and the briefing's content.
+- [x] 4.2 Reading file format (`results/frontier/reading.md` or JSON): per failed grader the transcripts read, count and findings; the report generator marks the report incomplete without at least 10 per failed grader (or all). Test both outcomes.
+- [x] 4.3 Baseline report generator: results against targets v1 next to the oracle, floor and lab-only baselines, the Haiku to Sonnet dev comparison, trial consistency, cost, and the briefing's content.
 
 ## 5. Owner-run paid stages (the owner exports the key in their own shell)
 
@@ -31,9 +31,9 @@
 - [ ] 5.2 Dev iteration on Haiku 5.5: up to five prompt versions, each scored on dev only; record each version and the decision; freeze one.
 - [ ] 5.3 Run the frozen prompt on Sonnet 5.5 on dev for the comparison.
 - [ ] 5.4 One run each of `test` and `adversarial` with Sonnet 5.5, then three trials on the matched-pair subset.
-- [ ] 5.5 Read failing transcripts, write the reading file, generate the baseline report and commit the compacted caches, results and report.
+- [ ] 5.5 Read failing transcripts, write the reading file, generate the baseline report and commit the compacted caches, results and report, and add the baseline headline row to the README, labelled as the frontier baseline with its briefing.
 
 ## 6. Documentation and validation
 
-- [ ] 6.1 Update the README and `AGENTS.md` commands (estimate, iterate, run) and add the baseline headline row, labelled as the frontier baseline with its briefing.
-- [ ] 6.2 Run the key-free regression and the full test suites; `openspec validate add-frontier-baseline --strict`.
+- [x] 6.1 Update the README and `AGENTS.md` commands (estimate, iterate, freeze, run, report).
+- [x] 6.2 Run the key-free regression and the full test suites; `openspec validate add-frontier-baseline --strict`.

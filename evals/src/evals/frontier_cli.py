@@ -104,7 +104,8 @@ def cmd_iterate(args: Any, dataset: Any, protocol_path: Path | None = None, out_
     if not go:
         return 2
     out = (out_root or RESULTS_DIR) / "dev" / f"{args.prompt}_{system.model}{'_smoke' if smoke else ''}"
-    run = run_suites(dataset, system, "dev", limit=args.limit, log_dir=out / "inspect", protocol_path=protocol_path)
+    run = run_suites(dataset, system, "dev", limit=args.limit, log_dir=out / "inspect", protocol_path=protocol_path,
+                     workers=getattr(args, "workers", 8))
     summary = summarize(dataset, run, reference=False)
     _write_stage(out, system, stage, run, summary)
     print(render_markdown(summary))
@@ -165,7 +166,8 @@ def cmd_run(args: Any, dataset: Any, protocol_path: Path | None = None, out_root
     out = (out_root or RESULTS_DIR) / system.model / stage.name
     run = run_suites(dataset, system, stage.split, suites=args.suites, limit=args.limit, trials=stage.trials,
                      final=args.final, log_dir=out / "inspect", ledger_path=ledger_path, protocol_path=protocol_path,
-                     ledger_stage=stage.name if stage.split in ("test", "adversarial") else None)
+                     ledger_stage=stage.name if stage.split in ("test", "adversarial") else None,
+                     workers=getattr(args, "workers", 8))
     summary = summarize(dataset, run, reference=False)
     _write_stage(out, system, stage, run, summary)
     print(render_markdown(summary))
@@ -174,3 +176,15 @@ def cmd_run(args: Any, dataset: Any, protocol_path: Path | None = None, out_root
         return 2
     print(f"wrote {out}/ ({len(run.rows)} transcripts); spend ${system.budget.spend_usd:.3f}")
     return 0
+
+
+def cmd_report(args: Any, root: Path | None = None, protocol_path: Path | None = None) -> int:
+    from .baseline_report import generate
+
+    root = root or RESULTS_DIR
+    text, missing = generate(root, MODELS[args.model], protocol_path=protocol_path)
+    (root / "report.md").write_text(text + "\n")
+    print(f"wrote {root / 'report.md'}")
+    for item in missing:
+        print(f"INCOMPLETE: {item}", file=sys.stderr)
+    return 1 if missing else 0
