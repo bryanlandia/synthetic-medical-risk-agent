@@ -89,7 +89,8 @@ def interval(statistic: Callable[..., float], arrays: Sequence[np.ndarray], keys
     draws = bootstrap(statistic, arrays, keys, n_boot=n_boot, seed=seed, cluster=cluster)
     draws = draws[~np.isnan(draws)]
     lo, hi = np.percentile(draws, [2.5, 97.5]) if len(draws) else (float("nan"), float("nan"))
-    return {"value": point, "lo": float(lo), "hi": float(hi), "n": len(keys), "patients": len(_clusters(keys))}
+    se = float(np.std(draws, ddof=1)) if len(draws) > 1 else float("nan")
+    return {"value": point, "lo": float(lo), "hi": float(hi), "se": se, "n": len(keys), "patients": len(_clusters(keys))}
 
 
 def compare(statistic: Callable[..., float], arrays_a: Sequence[np.ndarray], arrays_b: Sequence[np.ndarray],

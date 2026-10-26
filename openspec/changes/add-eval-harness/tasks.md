@@ -30,10 +30,10 @@
 
 ## 5. Inspect integration, transcripts and results
 
-- [ ] 5.1 Build the Inspect tasks per suite (happy path, data quality, borderline, consistency, adversarial), the solver that calls the adapter, and the scorers wrapping the graders, and verify the oracle and floor run end to end on dev through Inspect with no model
-- [ ] 5.2 Save a complete trial record for every trial (input id, system version, raw output, parsed report, tokens, latency, grader results) and verify the count of trials equals the count of transcripts and no field is missing
-- [ ] 5.3 Implement the failure-sampling command (seeded sample of failing transcripts for a chosen grader, with the reason) and verify it on a system built to fail one grader
-- [ ] 5.4 Implement the results summary (metric, 95% interval, n and minimum detectable difference per category and system, harness version, synthetic-data notice) and verify the content with a test and by reading the summary for the three baselines
+- [x] 5.1 Build the Inspect tasks per suite (happy path, data quality, borderline, consistency, adversarial), the solver that calls the adapter, and the scorers wrapping the graders, and verify the oracle and floor run end to end on dev through Inspect with no model
+- [x] 5.2 Save a complete trial record for every trial (input id, system version, raw output, parsed report, tokens, latency, grader results) and verify the count of trials equals the count of transcripts and no field is missing
+- [x] 5.3 Implement the failure-sampling command (seeded sample of failing transcripts for a chosen grader, with the reason) and verify it on a system built to fail one grader
+- [x] 5.4 Implement the results summary (metric, 95% interval, n and minimum detectable difference per category and system, harness version, synthetic-data notice) and verify the content with a test and by reading the summary for the three baselines
 
 ## 6. Bounded spend
 
