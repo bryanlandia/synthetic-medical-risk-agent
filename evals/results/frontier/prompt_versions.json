@@ -96,6 +96,103 @@
       "prompt_hash": "bd278f0af885",
       "prompt_version": "v1",
       "spend_usd": 0.5902
+    },
+    {
+      "hash": "3703fdef302d3dfe",
+      "index": 1,
+      "kind": "version",
+      "metrics": {
+        "borderline.false_uncertain_rate": {
+          "hi": 0.2825112107623318,
+          "lo": 0.17937219730941703,
+          "mdd": 0.1037743089551691,
+          "value": 0.22869955156950672
+        },
+        "borderline.uncertain_rate": {
+          "hi": 0.5921052631578947,
+          "lo": 0.3815789473684211,
+          "mdd": 0.22507053709042987,
+          "value": 0.4868421052631579
+        },
+        "data_quality.exact_match": {
+          "hi": 1.0,
+          "lo": 0.9696969696969697,
+          "mdd": 0.028759703757133916,
+          "value": 0.987012987012987
+        },
+        "data_quality.recall:contradiction": {
+          "hi": 1.0,
+          "lo": 0.9538461538461539,
+          "mdd": 0.06317099311450744,
+          "value": 0.9846153846153847
+        },
+        "data_quality.recall:missing_value": {
+          "hi": 1.0,
+          "lo": 1.0,
+          "mdd": 0.0,
+          "value": 1.0
+        },
+        "data_quality.recall:unit_mismatch": {
+          "hi": 1.0,
+          "lo": 0.9137931034482759,
+          "mdd": 0.09504749542213334,
+          "value": 0.9655172413793104
+        },
+        "fabrication.rate": {
+          "hi": 0.0,
+          "lo": 0.0,
+          "mdd": 0.0,
+          "value": 0.0
+        },
+        "happy_path.auc": {
+          "hi": 0.7248602031545807,
+          "lo": 0.6174171651785715,
+          "mdd": 0.10765402287666509,
+          "value": 0.6712380952380952
+        },
+        "happy_path.brier": {
+          "hi": 0.212539745,
+          "lo": 0.17890986,
+          "mdd": 0.034609547868225246,
+          "value": 0.1957112
+        },
+        "happy_path.ece": {
+          "hi": 0.08986050000000002,
+          "lo": 0.029559500000000034,
+          "mdd": 0.060283560944983786,
+          "value": 0.04412000000000003
+        },
+        "happy_path.log_loss": {
+          "hi": 0.6180583623674366,
+          "lo": 0.5387843256650189,
+          "mdd": 0.08153661359020603,
+          "value": 0.5782362658197696
+        },
+        "parse.failure_rate": {
+          "hi": 0.0,
+          "lo": 0.0,
+          "mdd": 0.0,
+          "value": 0.0
+        },
+        "safety.pass_rate": {
+          "hi": 1.0,
+          "lo": 1.0,
+          "mdd": 0.0,
+          "value": 1.0
+        },
+        "symptom_reading.accuracy": {
+          "hi": 0.9987999999999999,
+          "lo": 0.9936,
+          "mdd": 0.005181320991535039,
+          "value": 0.9964
+        }
+      },
+      "model": "claude-haiku-5-5",
+      "note": "evidence cap, full range, uncertainty band, multi-clinic framing",
+      "prev": "05bcfcf0c696c47f",
+      "prompt_hash": "75e1d8467c41",
+      "prompt_version": "v2",
+      "spend_usd": 0.5417
     }
   ]
 }
