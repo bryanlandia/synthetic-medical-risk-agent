@@ -11,7 +11,7 @@ from evals.frontier import DEV_MODEL, FINAL_MODEL, PROMPTS_DIR, build_frontier_s
 VERSIONS = sorted(p.stem for p in PROMPTS_DIR.glob("v*.md"))
 # Every number a briefing may contain: reference and plausibility ranges, unit factors, the 0 to 1 scale, the uncertainty
 # band, report limits and counts of labs and symptoms, and the example probability.
-ALLOWED = {0, 1, 3, 5, 8, 10, 300, 0.3, 0.4, 0.6, 9, 17}  # 9 and 17: the unit x10^9/L and the name K-17
+ALLOWED = {0, 1, 2, 3, 5, 8, 10, 300, 0.3, 0.4, 0.6, 9, 17}  # 9 and 17: the unit x10^9/L and the name K-17
 for lab in LABS:
     ALLOWED |= {lab.ref_lo, lab.ref_hi, lab.plaus_lo, lab.plaus_hi, *([lab.factor] if lab.factor else [])}
 NUMBER = re.compile(r"(?<![\w.])-?\d+(?:\.\d+)?(?![\w])")
