@@ -43,7 +43,7 @@
 
 - [x] 7.1 Label each eval capability or regression and implement the targets file generator (floor, oracle, rule and harness version per target), and verify a test of the generated structure and that changing the rule changes the file
 - [x] 7.2 Run the three baselines on dev and write the version 1 targets and a baseline results summary under `evals/results/`, and verify the files exist, are reproducible by rerunning, and contain no secret
-- [ ] 7.3 Add the key-free CI workflow (harness tests and the regression subset with the reference systems; read-only permissions; actions pinned by SHA) and verify it passes on a pull request and fails when the oracle is made to miss its ceiling
+- [x] 7.3 Add the key-free CI workflow (harness tests and the regression subset with the reference systems; read-only permissions; actions pinned by SHA) and verify it passes on a pull request and fails when the oracle is made to miss its ceiling
 - [x] 7.4 Add the LLM-grader guard (a different model than the system, a rubric, an "unknown" outcome, uncalibrated results excluded from headline numbers) as a refusing check, and verify tests for same-model refusal and uncalibrated labelling
 
 ## 8. Documentation
