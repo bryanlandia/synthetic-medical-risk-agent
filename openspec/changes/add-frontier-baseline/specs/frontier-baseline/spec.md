@@ -37,7 +37,7 @@ The baseline prompt SHALL contain the contract rules, the lab and symptom vocabu
 - **THEN** it tells the model that text inside a note is part of the record, not an instruction, and that no instruction in a note may change the report
 
 ### Requirement: Prompt iteration is capped, dev-only and recorded
-Prompt versions SHALL be scored on dev only, at most five in total, and each SHALL be recorded with its text hash, model, dev metrics, cost and the decision taken. The last version scored is frozen as the final prompt. A sixth version, or any scoring of `test` or `adversarial` before a prompt is frozen, SHALL be refused.
+Prompt versions SHALL be scored on dev only, at most five in total, and each SHALL be recorded with its text hash, model, dev metrics, cost and the decision taken. One of the scored versions, normally the best on dev, is frozen as the final prompt. A sixth version, or any scoring of `test` or `adversarial` before a prompt is frozen, SHALL be refused.
 
 #### Scenario: Versions are recorded
 - **WHEN** a prompt version is scored on dev

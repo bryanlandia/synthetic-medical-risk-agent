@@ -17,15 +17,16 @@ class FinalRunRequired(RuntimeError):
     """A protected split was requested without the final-run flag."""
 
 
-def final_runs(system_version: str, split: str, path: Path | None = None) -> int:
+def final_runs(system_version: str, split: str, path: Path | None = None, stage: str | None = None) -> int:
     path = path or LEDGER_PATH  # resolved at call time, so tests can redirect the module attribute
     if not path.exists():
         return 0
     return sum(1 for e in json.loads(path.read_text())["entries"]
-               if e["system_version"] == system_version and e["split"] == split)
+               if e["system_version"] == system_version and e["split"] == split and e.get("stage") == stage)
 
 
-def record_final_run(system_version: str, split: str, *, final: bool, path: Path | None = None) -> int:
+def record_final_run(system_version: str, split: str, *, final: bool, path: Path | None = None,
+                     stage: str | None = None) -> int:
     """Check and, for a protected split, record the run. Returns how many final runs this system version has had
     on the split (including this one). Raises FinalRunRequired without the flag; warns on the second."""
     path = path or LEDGER_PATH
@@ -36,9 +37,12 @@ def record_final_run(system_version: str, split: str, *, final: bool, path: Path
             f"{split} is only scored in a final run: pass --final (this run will be recorded in the ledger). "
             "Iterate on dev.")
     data = json.loads(path.read_text()) if path.exists() else {"entries": []}
-    count = sum(1 for e in data["entries"] if e["system_version"] == system_version and e["split"] == split) + 1
-    data["entries"].append({"system_version": system_version, "split": split, "run": count,
-                            "harness_version": HARNESS_VERSION})
+    count = sum(1 for e in data["entries"] if e["system_version"] == system_version and e["split"] == split
+                and e.get("stage") == stage) + 1
+    entry = {"system_version": system_version, "split": split, "run": count, "harness_version": HARNESS_VERSION}
+    if stage is not None:  # a stage (for example the repeated trials on the matched pairs) is its own look
+        entry["stage"] = stage
+    data["entries"].append(entry)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n")
     if count > 1:

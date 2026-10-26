@@ -31,12 +31,13 @@ class RunResult:
 
 def run_suites(dataset: Dataset, system: System, split: str, *, suites: list[str] | None = None, limit: int | None = None,
                trials: int = 1, final: bool = False, log_dir: Path | str = "logs",
-               ledger_path: Path | None = None, workers: int = 8, protocol_path: Path | None = None) -> RunResult:
+               ledger_path: Path | None = None, workers: int = 8, protocol_path: Path | None = None,
+               ledger_stage: str | None = None) -> RunResult:
     """Run the chosen suites of a split. ``test`` and ``adversarial`` need ``final=True`` and are recorded.
     API-backed systems run ``workers`` samples at a time; the results do not depend on the worker count."""
     if split in PROTECTED and getattr(system, "requires_freeze", False):
         require_frozen(system.prompt_hash, split, protocol_path)
-    record_final_run(system.version, split, final=final, path=ledger_path)
+    record_final_run(system.version, split, final=final, path=ledger_path, stage=ledger_stage)
     wanted = suites or list(SUITE_NAMES)
     available = suite_records(dataset, split)
     chosen = {s: (available[s][:limit] if limit else available[s]) for s in wanted if s in available}

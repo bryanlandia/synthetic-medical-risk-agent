@@ -13,7 +13,7 @@ from data_gen.llm.client import LLMResult, MissingApiKeyError
 from . import protocol
 from .frontier import (DEV_MODEL, FINAL_MODEL, RESULTS_DIR, STAGES, Stage, StageOverCap, build_frontier_system,
                        cache_path, check_cap, estimate_stage, load_prompt, make_budget, stage_for)
-from .ledger import FinalRunRequired
+from .ledger import FinalRunRequired, final_runs
 from .prompt_system import PromptSystem
 from .runner import run_suites
 from .summary import render_markdown, summarize, write_summary
@@ -152,6 +152,10 @@ def cmd_run(args: Any, dataset: Any, protocol_path: Path | None = None, out_root
             protocol.require_frozen(factory(_NoClient()).prompt_hash, stage.split, protocol_path)
             if not args.final:
                 raise FinalRunRequired(f"{stage.split} is only scored in a final run: pass --final")
+            if final_runs(factory(_NoClient()).version, stage.split, ledger_path, stage.name) and not args.force:
+                raise FinalRunRequired(f"{stage.name} has already had its final run for this system version: a "
+                                       "repeat is a second look at the protected data. Pass --force to repeat it "
+                                       "anyway (it is recorded and warned about).")
         system, go = _paid(args, factory, stage, dataset, args.limit)
     except (protocol.ProtocolError, FinalRunRequired, StageOverCap, MissingApiKeyError) as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -160,7 +164,8 @@ def cmd_run(args: Any, dataset: Any, protocol_path: Path | None = None, out_root
         return 2
     out = (out_root or RESULTS_DIR) / system.model / stage.name
     run = run_suites(dataset, system, stage.split, suites=args.suites, limit=args.limit, trials=stage.trials,
-                     final=args.final, log_dir=out / "inspect", ledger_path=ledger_path, protocol_path=protocol_path)
+                     final=args.final, log_dir=out / "inspect", ledger_path=ledger_path, protocol_path=protocol_path,
+                     ledger_stage=stage.name if stage.split in ("test", "adversarial") else None)
     summary = summarize(dataset, run, reference=False)
     _write_stage(out, system, stage, run, summary)
     print(render_markdown(summary))

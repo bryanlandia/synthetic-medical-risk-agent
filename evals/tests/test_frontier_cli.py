@@ -112,3 +112,22 @@ def test_estimate_needs_no_key_and_writes_nothing(dataset, tmp_path, monkeypatch
     assert frontier_cli.cmd_estimate(parse("estimate", "--model", "sonnet"), dataset, cache=tmp_path / "c.jsonl") == 0
     out = capsys.readouterr().out
     assert "dev" in out and "adversarial" in out and "no key was needed" in out and not (tmp_path / "c.jsonl").exists()
+
+
+def test_a_repeated_final_run_is_refused_unless_forced_and_the_trials_stage_is_its_own_look(dataset, env, tmp_path, capsys):
+    client, paths = env
+    ledger = tmp_path / "ledger.json"
+    protocol.record_dev_score(prompt_hash(load_prompt("v1")), "v1", "claude-haiku-5-5", {}, spend_usd=0.1,
+                              path=paths["protocol_path"])
+    frontier_cli.cmd_freeze(parse("freeze", "--prompt", "v1"), paths["protocol_path"])
+    run = lambda *a: frontier_cli.cmd_run(parse("run", "--system", "frontier", "--prompt", "v1", "--final", "--yes", *a),  # noqa: E731
+                                          dataset, ledger_path=ledger, **paths)
+    assert run("--split", "test", "--suites", "happy_path", "--limit", "5") == 0
+    calls = len(client.calls)
+    assert run("--split", "test", "--suites", "happy_path", "--limit", "5") == 2 and len(client.calls) == calls
+    assert "second look" in capsys.readouterr().err
+    assert run("--split", "test", "--suites", "consistency", "--trials", "3", "--limit", "5") == 0  # a different stage
+    with pytest.warns(UserWarning, match="scored on test 2 times"):
+        assert run("--split", "test", "--suites", "happy_path", "--limit", "5", "--force") == 0
+    stages = [e.get("stage") for e in json.loads(ledger.read_text())["entries"]]
+    assert stages == ["test", "trials", "test"]

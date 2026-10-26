@@ -17,6 +17,7 @@ from .injection import InjectionPair, grade_pair
 from .metrics import Z_ALPHA, Z_POWER, auc, brier, ece, interval, log_loss
 from .records import patient_key, unique_patients
 from .report import WARNING_TYPES
+from .targets import attach_targets, load_targets
 from .runner import RunResult
 
 MDD_NOTE = ("MDD: the smallest difference between two systems this sample could detect at 80% power, approximated "
@@ -36,7 +37,9 @@ def _rate(category: str, metric: str, outcomes: list[bool | float], keys: list[s
     return _row(category, metric, interval(np.mean, [np.array(outcomes, dtype=float)], keys, n_boot=n_boot, seed=seed))
 
 
-def summarize(dataset: Any, run: RunResult, *, n_boot: int = 1000, seed: int = 0, reference: bool = True) -> dict[str, Any]:
+def summarize(dataset: Any, run: RunResult, *, n_boot: int = 1000, seed: int = 0, reference: bool = True,
+              targets: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Every metric with its interval. A system under test is also compared with the targets file (or ``targets``)."""
     sink, rows = run.sink, []
 
     def add(row: dict[str, Any] | None) -> None:
@@ -98,6 +101,10 @@ def summarize(dataset: Any, run: RunResult, *, n_boot: int = 1000, seed: int = 0
         sds = np.array([s["max_sd"] if s["incomplete_groups"] == 0 else 1.0 for _, s in groups])
         add(_row("consistency", "mean_sd", interval(np.mean, [sds], [sid for sid, _ in groups], n_boot=n_boot, seed=seed)))
         add(_rate("consistency", "pass_rate", [bool(v <= CONSISTENCY_MAX_SD) for v in sds], [sid for sid, _ in groups], n_boot, seed))
+    if targets is None and not reference:
+        targets = load_targets()
+    if targets is not None:
+        attach_targets(rows, targets)
     return {"notice": SYNTHETIC_NOTICE, "harness_version": HARNESS_VERSION, "system_version": run.system_version,
             "reference": reference, "split": run.split, "dataset_config_hash": dataset.config_hash, "seed": seed,
             "n_boot": n_boot, "suites": run.suites, "rows": rows, "mdd_note": MDD_NOTE}
@@ -114,9 +121,17 @@ def render_markdown(summary: dict[str, Any]) -> str:
              f"{summary['n_boot']} patient-level bootstrap resamples (seed {summary['seed']}).",
              "A reference system" if summary["reference"] else "A system under test", "",
              "| Category | Metric | Value | 95% interval | n (patients) | MDD |", "|---|---|---|---|---|---|"]
+    with_targets = any("target" in r for r in summary["rows"])
+    if with_targets:
+        lines[-2:] = ["| Category | Metric | Value | 95% interval | n (patients) | MDD | Target | Against target |",
+                      "|---|---|---|---|---|---|---|---|"]
     for r in summary["rows"]:
-        lines.append(f"| {r['category']} | {r['metric']} | {r['value']:.4f} | [{r['lo']:.4f}, {r['hi']:.4f}] | "
-                     f"{r['n']} ({r['patients']}) | {r['mdd']:.4f} |")
+        row = (f"| {r['category']} | {r['metric']} | {r['value']:.4f} | [{r['lo']:.4f}, {r['hi']:.4f}] | "
+               f"{r['n']} ({r['patients']}) | {r['mdd']:.4f} |")
+        if with_targets:
+            row += (f" {'>=' if r['direction'] == 'higher' else '<='} {r['target']:.4f} | "
+                    f"{'reached' if r['reached'] else 'not reached'}, {r['label']} |") if "target" in r else " | |"
+        lines.append(row)
     lines += ["", summary["mdd_note"], ""]
     return "\n".join(lines)
 

@@ -21,7 +21,7 @@
 
 ## 4. Results, targets and reading
 
-- [ ] 4.1 Add the "Results state which targets are met" labels (reaches the target; clearly met, not distinguishable, clearly not met) to the summary generator. Test against the 0.70 and Brier examples in the spec.
+- [x] 4.1 Add the "Results state which targets are met" labels (reaches the target; clearly met, not distinguishable, clearly not met) to the summary generator. Test against the 0.70 and Brier examples in the spec.
 - [ ] 4.2 Reading file format (`results/frontier/reading.md` or JSON): per failed grader the transcripts read, count and findings; the report generator marks the report incomplete without at least 10 per failed grader (or all). Test both outcomes.
 - [ ] 4.3 Baseline report generator: results against targets v1 next to the oracle, floor and lab-only baselines, the Haiku to Sonnet dev comparison, trial consistency, cost, and the briefing's content.
 
