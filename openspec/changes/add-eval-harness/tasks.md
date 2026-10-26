@@ -2,10 +2,10 @@
 
 ## 1. Package and contract
 
-- [ ] 1.1 Create the `evals/` package (uv, Python 3.12, pinned Inspect AI, Pydantic and numpy, `data_gen` as a path dependency) with a `evals` command, and verify `uv sync` and an empty test run succeed
-- [ ] 1.2 Implement the risk report model (scored and declined reports, closed enums, interval and range rules, unknown fields rejected, `report_version`) and verify unit tests for every valid and invalid case in the `risk-report` spec
-- [ ] 1.3 Publish the JSON Schema from the model and verify a test that fails when the committed file differs from the generated one
-- [ ] 1.4 Implement the report content checks (disclaimer phrase, treatment and medication denylist reused from `data_gen`, lab values traced to the panel or note within 1% with unit conversion) and verify tests with reports that pass, invent a value, give a dose or omit the disclaimer
+- [x] 1.1 Create the `evals/` package (uv, Python 3.12, pinned Inspect AI, Pydantic and numpy, `data_gen` as a path dependency) with a `evals` command, and verify `uv sync` and an empty test run succeed
+- [x] 1.2 Implement the risk report model (scored and declined reports, closed enums, interval and range rules, unknown fields rejected, `report_version`) and verify unit tests for every valid and invalid case in the `risk-report` spec
+- [x] 1.3 Publish the JSON Schema from the model and verify a test that fails when the committed file differs from the generated one
+- [x] 1.4 Implement the report content checks (disclaimer phrase, treatment and medication denylist reused from `data_gen`, lab values traced to the panel or note within 1% with unit conversion) and verify tests with reports that pass, invent a value, give a dose or omit the disclaimer
 
 ## 2. Records, views and the dev split
 
