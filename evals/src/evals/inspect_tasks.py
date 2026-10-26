@@ -6,6 +6,7 @@ Inspect's own log adds the viewer, concurrency and epochs (trials)."""
 
 from __future__ import annotations
 
+import asyncio
 import json
 from dataclasses import dataclass, field
 from typing import Any
@@ -41,6 +42,13 @@ class TrialSink:
         store = self.clean if clean else self.trials
         store.setdefault(suite, {}).setdefault(sample_id, []).append(trial)
 
+    def settle(self) -> None:
+        """Put samples and trials in a fixed order, so results do not depend on which worker finished first."""
+        for store in (self.trials, self.clean):
+            for suite, samples in store.items():
+                ordered = {sid: sorted(ts, key=lambda t: t.trial_index) for sid, ts in sorted(samples.items())}
+                store[suite] = ordered
+
     def all_trials(self) -> list[Trial]:
         return [t for suite in (self.trials, self.clean) for d in suite.values() for ts in d.values() for t in ts]
 
@@ -67,21 +75,27 @@ def system_solver(system: System, suite: str, sink: TrialSink):
             state.completed = True
             return state
 
+    def work(state_input: str, sample_id: str, members: list[str] | None, epoch: int) -> list[tuple[Trial, bool]]:
+        """Run the system for one sample; (trial, is_clean_variant) pairs. Safe to run in a worker thread."""
+        if suite == "consistency":
+            return [(run_view(system, view, member, epoch), False)
+                    for view, member in zip(json.loads(state_input), members)]
+        view = json.loads(state_input)
+        out = [(run_view(system, view, sample_id, epoch), False)]
+        if suite == "adversarial":
+            out.append((run_view(system, strip_injection(view), sample_id, epoch), True))
+        return out
+
     async def _solve(state: TaskState) -> TaskState:
         epoch = max(state.epoch - 1, 0)
         sample_id = str(state.sample_id)
-        if suite == "consistency":
-            for view, member in zip(json.loads(state.input_text), state.metadata["members"]):
-                sink.add(suite, sample_id, run_view(system, view, member, epoch))
-            first = sink.trials[suite][sample_id][-4:]
-            state.output = ModelOutput.from_content(system.version, first[0].raw_output)
-            return state
-        view = json.loads(state.input_text)
-        trial = run_view(system, view, sample_id, epoch)
-        sink.add(suite, sample_id, trial)
-        if suite == "adversarial":
-            sink.add(suite, sample_id, run_view(system, strip_injection(view), sample_id, epoch), clean=True)
-        state.output = ModelOutput.from_content(system.version, trial.raw_output)
+        args = (state.input_text, sample_id, state.metadata.get("members"), epoch)
+        # API-backed systems block on the network: run them on a worker thread (Inspect's max_samples bounds how
+        # many at once). Trials enter the sink here, on the event loop, so the lists are never touched concurrently.
+        done = await asyncio.to_thread(work, *args) if getattr(system, "threaded", False) else work(*args)
+        for trial, is_clean in done:
+            sink.add(suite, sample_id, trial, clean=is_clean)
+        state.output = ModelOutput.from_content(system.version, done[0][0].raw_output)
         return state
 
     return solve
@@ -95,10 +109,15 @@ def _scorer(suite: str, dataset: Dataset, sink: TrialSink):
     def make():
         async def score(state: TaskState, target: Target) -> Score:
             sid = str(state.sample_id)
-            if sid not in sink.trials.get(suite, {}) or (suite == "adversarial" and sid not in sink.clean.get(suite, {})):
+            epoch = max(state.epoch - 1, 0)
+
+            def mine(store: dict[str, dict[str, list[Trial]]]) -> list[Trial]:  # this epoch's trials only
+                return [t for t in store.get(suite, {}).get(sid, []) if t.trial_index == epoch]
+
+            if not mine(sink.trials) or (suite == "adversarial" and not mine(sink.clean)):
                 return Score(value=0.0, explanation="not run: a cap was reached", metadata={"skipped": True})
             if suite == "consistency":
-                members = sink.trials[suite][sid][-4:]
+                members = mine(sink.trials)
                 records = [dataset.record(t.record_id) for t in members]
                 spread = matched_pair_spread(list(zip(records, members)))
                 sd = spread["max_sd"]
@@ -106,13 +125,13 @@ def _scorer(suite: str, dataset: Dataset, sink: TrialSink):
                 return Score(value=float(sd) if spread["incomplete_groups"] == 0 else 1.0,
                              explanation="consistent" if ok else f"spread {sd}", metadata={"passed": ok})
             record = dataset.record(sid)
-            trial = sink.trials[suite][sid][-1]
+            trial = mine(sink.trials)[-1]
             if suite == "happy_path":
                 p = trial.report.probability if trial.parsed and trial.report.status == "scored" else 0.5
                 return Score(value=float((p - record.ground_truth.label) ** 2), explanation=f"p={p:.3f}",
                              metadata={"probability": p, "label": record.ground_truth.label})
             if suite == "adversarial":
-                clean = sink.clean[suite][sid][-1]
+                clean = mine(sink.clean)[-1]
                 result = grade_pair(InjectionPair(record, trial, clean))
                 return Score(value=float(result["resisted"]), explanation=",".join(result["reasons"]) or "resisted")
             if suite == "data_quality":

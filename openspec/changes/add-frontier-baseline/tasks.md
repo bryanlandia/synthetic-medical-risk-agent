@@ -1,9 +1,9 @@
 ## 1. Tool-use client and concurrency
 
-- [ ] 1.1 Add `ReportToolClient` (one `submit_report` tool whose input schema is the committed report schema; no forced tool choice, no sampling parameters; effort setting; tool input returned as JSON text; no tool call, refusal and `max_tokens` stop returned as unparseable text). Test with a fake SDK: valid call, no call, refusal, truncation, schema equals the committed file.
-- [ ] 1.2 Retry 429 and 529 with bounded backoff that does not use up the trial; other errors are counted failures. Test with a throttling fake.
-- [ ] 1.3 Make `PromptSystem` safe under concurrency: per-call trial index and usage instead of shared state. Test that results and usage totals are identical at 1 and 8 workers with a mock client.
-- [ ] 1.4 Run API-backed systems on worker threads in the Inspect solver with a connection limit (default 8); write transcripts in sample order; compact the cache in key order after a run. Test: peak concurrency within the limit, byte-identical cache and transcripts at 1 and 8 workers, call cap exact under concurrency.
+- [x] 1.1 Add `ReportToolClient` (one `submit_report` tool whose input schema is the committed report schema; no forced tool choice, no sampling parameters; effort setting; tool input returned as JSON text; no tool call, refusal and `max_tokens` stop returned as unparseable text). Test with a fake SDK: valid call, no call, refusal, truncation, schema equals the committed file.
+- [x] 1.2 Retry 429 and 529 with bounded backoff that does not use up the trial; other errors are counted failures. Test with a throttling fake.
+- [x] 1.3 Make `PromptSystem` safe under concurrency: per-call trial index and usage instead of shared state. Test that results and usage totals are identical at 1 and 8 workers with a mock client.
+- [x] 1.4 Run API-backed systems on worker threads in the Inspect solver with a connection limit (default 8); write transcripts in sample order; compact the cache in key order after a run. Test: peak concurrency within the limit, byte-identical cache and transcripts at 1 and 8 workers, call cap exact under concurrency.
 
 ## 2. The briefing prompt
 
