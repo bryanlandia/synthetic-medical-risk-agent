@@ -53,3 +53,18 @@ def run_trial(system: System, record: Record, trial_index: int = 0) -> Trial:
 
 def run_system(system: System, records: list[Record], trials: int = 1) -> list[Trial]:
     return [run_trial(system, r, t) for r in records for t in range(trials)]
+
+
+def run_view(system: System, view: dict[str, Any], record_id: str, trial_index: int = 0) -> Trial:
+    """Run a system on an explicit view (used for the injection counterfactual, where the view is altered)."""
+    from .records import assert_clean_view
+
+    assert_clean_view(view)
+    started = time.perf_counter()
+    raw = system.run(view)
+    latency = time.perf_counter() - started
+    raw_text = raw if isinstance(raw, str) else json.dumps(raw, sort_keys=True)
+    result = parse_report(raw)
+    usage = getattr(system, "last_usage", None) or {}
+    return Trial(record_id, system.version, trial_index, raw_text, result.report, result.errors,
+                 int(usage.get("input_tokens", 0)), int(usage.get("output_tokens", 0)), latency)

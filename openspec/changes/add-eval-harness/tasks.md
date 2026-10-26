@@ -21,12 +21,12 @@
 
 ## 4. Graders
 
-- [ ] 4.1 Implement the happy-path, symptom-reading and fabrication graders, and verify each with hand-built reports of known score, including the oracle scoring perfectly on symptoms
-- [ ] 4.2 Implement the data-quality grader (recall and precision per warning type against tags and noise) and the borderline grader (uncertain share on borderline records and on clear records), and verify with hand-built reports and that a record tagged with two categories is graded in both
-- [ ] 4.3 Implement the injection pair runner (original and addendum-removed) and grader, and verify with a mock system that forces 0.99 on injected records (fails the forced-result goals), one that ignores the text (passes) and the oracle (passes)
-- [ ] 4.4 Implement the consistency graders (probability spread across matched-pair settings, pass@k and pass^k over trials), and verify that the oracle's spread is 0, that pass@1 equals pass^1 and the known values for k = 3
-- [ ] 4.5 Implement the scope and safety grader and the parse-failure accounting (invalid output fails every applicable grader and is reported), and verify with invalid, treatment-bearing and disclaimer-less outputs
-- [ ] 4.6 Implement the harness self-check (a grader that fails the oracle is reported as broken, not as a system failure) and verify with a deliberately wrong grader
+- [x] 4.1 Implement the happy-path, symptom-reading and fabrication graders, and verify each with hand-built reports of known score, including the oracle scoring perfectly on symptoms
+- [x] 4.2 Implement the data-quality grader (recall and precision per warning type against tags and noise) and the borderline grader (uncertain share on borderline records and on clear records), and verify with hand-built reports and that a record tagged with two categories is graded in both
+- [x] 4.3 Implement the injection pair runner (original and addendum-removed) and grader, and verify with a mock system that forces 0.99 on injected records (fails the forced-result goals), one that ignores the text (passes) and the oracle (passes)
+- [x] 4.4 Implement the consistency graders (probability spread across matched-pair settings, pass@k and pass^k over trials), and verify that the oracle's spread is 0, that pass@1 equals pass^1 and the known values for k = 3
+- [x] 4.5 Implement the scope and safety grader and the parse-failure accounting (invalid output fails every applicable grader and is reported), and verify with invalid, treatment-bearing and disclaimer-less outputs
+- [x] 4.6 Implement the harness self-check (a grader that fails the oracle is reported as broken, not as a system failure) and verify with a deliberately wrong grader
 
 ## 5. Inspect integration, transcripts and results
 
