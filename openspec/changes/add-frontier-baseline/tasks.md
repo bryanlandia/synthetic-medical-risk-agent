@@ -16,8 +16,8 @@
 - [x] 3.1 Hash-chained `results/frontier/prompt_versions.json` (append-only; version, freeze). Tests: a sixth version is refused, an edited earlier entry is detected on load, `test` and `adversarial` scoring is refused before a freeze, a final run with a different prompt hash is refused.
 - [x] 3.2 `evals estimate --system frontier` (keyless): unique calls, token estimate, cost per stage with the cache taken into account, and the stage cap. Test the call count against a hand count for a small fixture and that a stage above its cap is refused.
 - [x] 3.3 Per-stage call and spend caps in configuration, with headroom for thinking tokens. Test that a run stops safely at the cap with every paid result cached.
-- [ ] 3.4 `evals iterate` (dev only, records version, metrics with intervals, minimum detectable difference, spend, decision) and `evals run --system frontier --split ...` for the final stages, using the existing ledger. Test with the mock client end to end.
-- [ ] 3.5 Check that the key appears in no cache, transcript or record file (test over a run with a fake key).
+- [x] 3.4 `evals iterate` (dev only, records version, metrics with intervals, minimum detectable difference, spend, decision) and `evals run --system frontier --split ...` for the final stages, using the existing ledger. Test with the mock client end to end.
+- [x] 3.5 Check that the key appears in no cache, transcript or record file (test over a run with a fake key).
 
 ## 4. Results, targets and reading
 
