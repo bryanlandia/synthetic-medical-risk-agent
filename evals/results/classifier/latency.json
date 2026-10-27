@@ -1,0 +1,13 @@
+{
+  "limits": {
+    "bytes": 10000000,
+    "p95_ms": 100.0
+  },
+  "max_ms": 3.286292077973485,
+  "median_ms": 0.2470420440658927,
+  "meets_limits": true,
+  "model_bytes": 197293,
+  "p95_ms": 0.8034316299017518,
+  "records": 500,
+  "threads": 1
+}

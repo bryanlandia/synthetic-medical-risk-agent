@@ -1,0 +1,36 @@
+[project]
+name = "training"
+version = "0.1.0"
+description = "Note reader and CPU risk classifier for the FICTIONAL disease. All data is synthetic."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "data-gen",
+    "evals",
+    "mlflow-skinny==3.17.2",
+    "numpy>=2.1,<3",
+    "scikit-learn==1.9.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<9",
+]
+
+[project.scripts]
+training = "training.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+# risk_model is the numpy-only inference package; training is everything that fits and evaluates.
+packages = ["src/training", "src/risk_model"]
+
+[tool.uv.sources]
+data-gen = { path = "../data_gen", editable = true }
+evals = { path = "../evals", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

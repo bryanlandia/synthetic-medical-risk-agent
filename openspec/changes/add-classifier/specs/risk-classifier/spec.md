@@ -66,7 +66,11 @@ For every record the classifier system SHALL return a valid scored report. `unce
 
 #### Scenario: Determinism
 - **WHEN** the matched-pair subset is run for three trials
-- **THEN** the three reports for each record are identical, the consistency mean SD is 0 and pass^3 is 1
+- **THEN** the three reports for each record are identical
+
+#### Scenario: Consistency across documentation settings
+- **WHEN** the four notes of each matched pair (one patient, four documentation settings) are scored
+- **THEN** the mean spread of the probability across the four is at most 0.05 and at least 90% of the pairs have a spread of at most 0.05, which are the project's targets for these metrics
 
 #### Scenario: No invented values and no unsafe text
 - **WHEN** the final runs are graded

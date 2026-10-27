@@ -20,6 +20,27 @@
       "split": "test",
       "stage": "trials",
       "system_version": "frontier@979e3134"
+    },
+    {
+      "harness_version": "0.1.0",
+      "run": 1,
+      "split": "test",
+      "stage": "test",
+      "system_version": "classifier@414c2d467c87+r1"
+    },
+    {
+      "harness_version": "0.1.0",
+      "run": 1,
+      "split": "adversarial",
+      "stage": "adversarial",
+      "system_version": "classifier@414c2d467c87+r1"
+    },
+    {
+      "harness_version": "0.1.0",
+      "run": 1,
+      "split": "test",
+      "stage": "trials",
+      "system_version": "classifier@414c2d467c87+r1"
     }
   ]
 }
