@@ -26,7 +26,7 @@
 | Training Details | data and splits, the note reader and its leave-one-setting-out finding, hyperparameters, size and speed, reproduction |
 | Evaluation | testing data, metrics, dev results, then test, adversarial and trials results |
 | Model Examination | the reader's held-out and injection findings and where the lexicon and coefficients are |
-| Environmental Impact | "not measured": it trains in seconds on a CPU; no figure is given |
+| Environmental Impact | "not measured": no energy or time figure is given |
 | Technical Specifications | architecture, the two model files and their sizes, the inference-only package |
 | Citation | none |
 | Glossary | the fictional labs, units and typical values and the five symptoms, generated from `risk_model.labs` |
