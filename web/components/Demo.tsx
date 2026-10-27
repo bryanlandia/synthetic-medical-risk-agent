@@ -2,17 +2,19 @@
 
 import { useMemo, useState } from "react";
 import { Banner } from "./Banner";
+import { AboutTab } from "./AboutTab";
 import { ChartTab } from "./ChartTab";
 import { FreeTextTab } from "./FreeTextTab";
 import { ModelCardTab } from "./ModelCardTab";
 import type { Outcome } from "./ReportCard";
 import type { Analysis, DemoPatient, ShownError } from "@/lib/types";
 
-type Tab = "chart" | "free" | "card";
+type Tab = "chart" | "free" | "card" | "about";
 const TABS: { id: Tab; label: string }[] = [
   { id: "chart", label: "Patient chart" },
   { id: "free", label: "Try the agent" },
   { id: "card", label: "Model card" },
+  { id: "about", label: "About this project" },
 ];
 
 /** One message in, one result out. Nothing is kept between sends: a new result replaces the last. */
@@ -31,7 +33,7 @@ async function send(message: string): Promise<Outcome> {
   }
 }
 
-export function Demo({ patients, cardBody, cardHash }: { patients: DemoPatient[]; cardBody: string; cardHash: string | null }) {
+export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPatient[]; cardBody: string; cardHash: string | null; about: string }) {
   const [tab, setTab] = useState<Tab>("chart");
   const [slug, setSlug] = useState(patients[0].slug);
   const [chartOutcome, setChartOutcome] = useState<Outcome>({ kind: "idle" });
@@ -73,6 +75,7 @@ export function Demo({ patients, cardBody, cardHash }: { patients: DemoPatient[]
           )}
           {tab === "free" && <FreeTextTab onSend={runFree} outcome={freeOutcome} labNames={labNames} />}
           {tab === "card" && <ModelCardTab body={cardBody} hash={cardHash} />}
+          {tab === "about" && <AboutTab body={about} />}
         </div>
       </main>
     </>

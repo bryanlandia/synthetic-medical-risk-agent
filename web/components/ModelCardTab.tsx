@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { Markdown } from "./Markdown";
 
 type Status = "checking" | "match" | "mismatch" | "unknown";
 
@@ -23,7 +22,7 @@ export function ModelCardTab({ body, hash }: { body: string; hash: string | null
   return (
     <section aria-label="Model card">
       <p className={`hash ${status}`} data-testid="hash-status" role="status">{text[status]}</p>
-      <article className="card-doc"><ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown></article>
+      <Markdown>{body}</Markdown>
     </section>
   );
 }

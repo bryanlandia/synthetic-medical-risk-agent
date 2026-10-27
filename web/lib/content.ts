@@ -16,3 +16,8 @@ export function modelCard(): { body: string; hash: string | null } {
   const hash = /\*\*Model hash:\*\* `([0-9a-f]{64})`/.exec(body)?.[1] ?? null;
   return { body, hash };
 }
+
+/** The About text the owner writes, as markdown. */
+export function aboutText(): string {
+  return fs.readFileSync(path.join(dir, "about.md"), "utf8");
+}
