@@ -19,7 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
     schema.add_argument("--write", action="store_true", help="write contract/risk_report.schema.json")
 
     run = sub.add_parser("run", help="run a reference system on a split and write transcripts and a summary")
-    run.add_argument("--system", choices=["oracle", "floor", "lab_only", "frontier", "classifier"], required=True)
+    run.add_argument("--system", choices=["oracle", "floor", "lab_only", "frontier", "classifier", "agent"], required=True)
     run.add_argument("--split", choices=["dev", "test", "adversarial"], default="dev")
     run.add_argument("--suites", nargs="*", help="default: every suite that applies to the split")
     run.add_argument("--limit", type=int, help="at most this many samples per suite")
@@ -32,9 +32,19 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--yes", action="store_true", help="frontier: confirm the spend")
     run.add_argument("--workers", type=int, default=8, help="frontier: samples in flight at once")
     run.add_argument("--quiet", action="store_true", help="frontier: no progress lines")
-    run.add_argument("--force", action="store_true", help="frontier, classifier: repeat a final run (recorded and warned about)")
+    run.add_argument("--force", action="store_true", help="frontier, classifier, agent: repeat a final run (recorded and warned about)")
+    run.add_argument("--live", action="store_true", help="agent: use the real model (needs ANTHROPIC_API_KEY and --yes); without it the scripted model runs")
+    run.add_argument("--base-url", default=None, help="agent: score a service that is already running (secret from --secret or AGENT_SHARED_SECRET)")
+    run.add_argument("--secret", default=None, help="agent: the shared secret of a running service")
 
-    est = sub.add_parser("estimate", help="frontier: the calls, tokens and cost of each stage; no call, no key")
+    scope = sub.add_parser("agent-scope", help="agent: run the scope prompt set (declines, legitimate notes, injected instructions)")
+    scope.add_argument("--live", action="store_true")
+    scope.add_argument("--yes", action="store_true")
+    scope.add_argument("--base-url", default=None)
+    scope.add_argument("--secret", default=None)
+
+    est = sub.add_parser("estimate", help="frontier or agent: the calls and cost of each stage; no call, no key")
+    est.add_argument("--system", choices=["frontier", "agent"], default="frontier")
     est.add_argument("--prompt", default="v1")
     est.add_argument("--model", default="haiku")
     est.add_argument("--stage", choices=["all", "dev", "test", "adversarial", "trials"], default="all")
@@ -83,7 +93,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
-    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare"):
+    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope"):
         return _dispatch(args)
     if args.command == "schema":
         from .report import schema_text, write_schema
@@ -123,6 +133,18 @@ def _dispatch(args: argparse.Namespace) -> int:
             print(format_failure(row, args.grader))
         return 0
     dataset = load_dataset(getattr(args, "dataset", None) or DEFAULT_DATASET)
+    if args.command == "agent-scope":
+        from .agent_cli import cmd_scope
+
+        return cmd_scope(args, dataset)
+    if args.command == "estimate" and args.system == "agent":
+        from .agent_cli import cmd_estimate
+
+        return cmd_estimate(args, dataset)
+    if args.command == "run" and args.system == "agent":
+        from .agent_cli import cmd_run
+
+        return cmd_run(args, dataset)
     if args.command == "compare":
         from .compare import cmd_compare
 

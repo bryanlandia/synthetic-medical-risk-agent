@@ -4,10 +4,13 @@ reference system's dev results drift from the committed baselines."""
 from __future__ import annotations
 
 import json
+import os
+import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
 
+from .agent_service import REPO_ROOT, _uv
 from .records import Dataset
 from .report import SCHEMA_PATH, schema_text
 from .runner import run_suites
@@ -33,9 +36,28 @@ def baseline_summaries(dataset: Dataset, log_dir: Path, *, n_boot: int = 1000, s
     return out
 
 
+# The agent service's guard tests: every status path, the one-tool-call limit, the output guard, the log check. They use the
+# scripted model, need no key and make no network call; if a guard is removed one of them fails.
+AGENT_GUARD_TESTS = ("tests/test_guards.py", "tests/test_spend.py", "tests/test_logs.py", "tests/test_config.py",
+                     "tests/test_guard.py", "tests/test_agent_flow.py", "tests/test_tools.py")
+
+
+def agent_guard_failures(timeout: float = 300.0) -> list[str]:
+    env = {k: v for k, v in os.environ.items() if k in ("PATH", "HOME", "LANG", "TMPDIR")}
+    env["UV_PYTHON_PREFERENCE"] = "only-managed"  # no ANTHROPIC_API_KEY is passed on
+    try:
+        proc = subprocess.run([_uv(), "run", "--project", str(REPO_ROOT / "agent"), "pytest", "-q", "-x", *AGENT_GUARD_TESTS],
+                              cwd=REPO_ROOT / "agent", env=env, capture_output=True, text=True, timeout=timeout)
+    except (RuntimeError, subprocess.TimeoutExpired) as exc:
+        return [f"the agent guard tests could not run: {exc}"]
+    if proc.returncode != 0:
+        return [f"agent guard tests failed: {(proc.stdout + proc.stderr)[-400:].strip()}"]
+    return []
+
+
 def run_regression(dataset: Dataset) -> list[str]:
     """Returns the list of failures; empty means the regression subset passes."""
-    failures: list[str] = []
+    failures: list[str] = agent_guard_failures()
     for name, problem in self_check(dataset, OracleSystem(dataset)).items():
         failures.append(f"grader {name} is broken or the oracle missed its ceiling: {problem}")
     if SCHEMA_PATH.read_text() != schema_text():

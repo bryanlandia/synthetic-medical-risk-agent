@@ -24,6 +24,7 @@ class StrandsOrchestrator:
         self.settings = settings
         self._model = model
         self.model_id = model_id or settings.model_id
+        self.prompt_hash = PROMPT_HASH
         self._tools = make_tools(risk)
 
     def run(self, message: str) -> Outcome:

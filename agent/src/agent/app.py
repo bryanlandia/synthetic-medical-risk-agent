@@ -49,7 +49,8 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
 
     @app.get("/healthz")
     async def healthz() -> dict[str, Any]:
-        return {"status": "ok", "model_hash": model_hash, "version": VERSION, "logic_version": risk_model.LOGIC_VERSION}
+        return {"status": "ok", "model_hash": model_hash, "version": VERSION, "logic_version": risk_model.LOGIC_VERSION,
+                "model_id": orchestrator.model_id, "prompt_hash": getattr(orchestrator, "prompt_hash", "")}
 
     @app.post("/analyze")
     async def analyze(request: Request) -> JSONResponse:

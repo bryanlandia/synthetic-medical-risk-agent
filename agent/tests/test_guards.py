@@ -112,3 +112,15 @@ def test_a_rejected_request_never_reaches_the_model_in_any_path(make):
     post(client, headers={})                     # 401
     post(client, {"message": ""})                # 422
     assert orch.calls == calls
+
+
+def test_health_names_the_model_and_the_prompt_the_evals_will_score(make):
+    from agent.runtime import PROMPT_HASH, StrandsOrchestrator
+    from agent.scripted import ScriptedModel
+    import risk_model
+
+    client, _, settings = make()
+    orch = StrandsOrchestrator(settings, ScriptedModel(), risk_model.load(), model_id="scripted")
+    client2, _, _ = make(orch)
+    body = client2.get("/healthz").json()
+    assert body["model_id"] == "scripted" and body["prompt_hash"] == PROMPT_HASH
