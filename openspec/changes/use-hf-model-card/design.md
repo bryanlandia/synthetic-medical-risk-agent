@@ -18,7 +18,7 @@
 
 | Template section | Content |
 |---|---|
-| Model Details | developed by (the repository owner, with the repository URL), type (note reader plus logistic risk classifier), language (English, synthetic notes), license, finetuned from: none (trained from scratch), the model hash, seed, dataset config hash, MLflow run |
+| Model Details | developed by (Bryan Wilson, with the repository URL), type (note reader plus logistic risk classifier), language (English, synthetic notes), license, finetuned from: none (trained from scratch), the model hash, seed, dataset config hash, MLflow run |
 | Model Sources | repository; demo: none yet |
 | Uses | Direct Use (the portfolio demo), Downstream Use (the agent service calls it as a tool), Out-of-Scope Use (any real patient, disease or decision) |
 | Bias, Risks, and Limitations | today's "Known weaknesses", plus the dev-optimism and synthetic-rule caveats |
@@ -42,11 +42,12 @@
 
 ## Risks / Trade-offs
 
-- **License.** The repository has no license file. The card says `license: other` with the line "No license is granted; this is a portfolio demonstration" until the owner picks one; changing it is a one-line edit and a regeneration. Flagged for the owner, not decided here.
+- **License.** The repository has no license file, and the owner has chosen none: the card says `license: other` with the line "No license is granted; this is purely for demonstration". Adding a real license later is a one-line edit and a regeneration.
 - **Template fit.** Some template sections (Citation, Environmental Impact) do not apply. The card keeps them with a one-line "not applicable" or "not measured" so a reader sees they were considered; the cost is a few near-empty headings.
 - **The metadata duplicates the body.** The numbers appear in both; the test that compares them to the result files is what keeps them honest.
 - **Hub validation.** The `model-index` is shaped for the Hub but is not validated against it here, since nothing is pushed. If the card is published later, a validation step belongs to that change.
 
+
 ## Open Questions
 
-- The license (above). Default until answered: `other`, with the sentence above.
+None.
