@@ -69,6 +69,7 @@ def cmd_run(args: Any, dataset: Any, directory: Path = MODEL_DIR, out_root: Path
     summary = summarize(dataset, run, reference=False)
     write_transcripts(run.rows, out / "trials.jsonl")
     write_summary(summary, out)
+    out.mkdir(parents=True, exist_ok=True)
     info = {"model_hash": system.model_hash, "system_version": system.version, "stage": stage.name,
             "limit": args.limit, "stopped": run.stopped}
     (out / "run.json").write_text(json.dumps(info, indent=2, sort_keys=True) + "\n")

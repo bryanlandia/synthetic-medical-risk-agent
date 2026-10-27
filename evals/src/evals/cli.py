@@ -59,6 +59,16 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("baselines", help="run the three reference systems on dev; write baseline summaries and targets v1")
     sub.add_parser("regression", help="the fast key-free regression subset (used by CI); exit 1 on any failure")
 
+    cmp_ = sub.add_parser("compare", help="two systems on the same patients: paired differences with intervals")
+    cmp_.add_argument("--a", default="classifier", help="classifier or frontier (or a name, with --a-dir)")
+    cmp_.add_argument("--b", default="frontier")
+    cmp_.add_argument("--split", choices=["dev", "test"], default="test")
+    cmp_.add_argument("--model", default="haiku", help="the frontier model: haiku or sonnet")
+    cmp_.add_argument("--a-dir", default=None, help="a run directory (trials.jsonl and summary.json) instead of a named system")
+    cmp_.add_argument("--b-dir", default=None)
+    cmp_.add_argument("--out", default=None)
+    cmp_.add_argument("--dataset", default=None)
+
     fail = sub.add_parser("failures", help="print a seeded sample of failing transcripts for a grader")
     fail.add_argument("transcripts")
     fail.add_argument("--grader", required=True)
@@ -73,7 +83,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
-    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report"):
+    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare"):
         return _dispatch(args)
     if args.command == "schema":
         from .report import schema_text, write_schema
@@ -113,6 +123,10 @@ def _dispatch(args: argparse.Namespace) -> int:
             print(format_failure(row, args.grader))
         return 0
     dataset = load_dataset(getattr(args, "dataset", None) or DEFAULT_DATASET)
+    if args.command == "compare":
+        from .compare import cmd_compare
+
+        return cmd_compare(args, dataset)
     if args.command == "run" and args.system == "classifier":
         try:
             from training import eval_cli  # lives in training/, which depends on evals and not the other way round

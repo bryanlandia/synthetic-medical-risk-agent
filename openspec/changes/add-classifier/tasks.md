@@ -33,9 +33,9 @@
 
 ## 5. Final runs and comparison
 
-- [ ] 5.1 Freeze the model hash on dev and add the one-look rule for the `classifier` system to the ledger (a second final run for the same hash is refused unless forced). Test the refusal and the recorded forced run.
+- [x] 5.1 Freeze the model hash on dev and add the one-look rule for the `classifier` system to the ledger (a second final run for the same hash is refused unless forced). Test the refusal and the recorded forced run.
 - [ ] 5.2 Run `test` and `adversarial` with `--final`, and the three-trial consistency run on the matched-pair subset. Eval: consistency mean SD 0 and pass^3 of 1.
-- [ ] 5.3 Add `uv run evals compare --a classifier --b frontier`: pairs the two systems' transcripts by patient and writes the values, paired differences with patient-clustered bootstrap intervals and verdicts for AUC, Brier and log loss to `results/classifier/comparison.md`. Test on two mock systems with a known difference and on identical systems (difference zero, not distinguishable).
+- [x] 5.3 Add `uv run evals compare --a classifier --b frontier`: pairs the two systems' transcripts by patient and writes the values, paired differences with patient-clustered bootstrap intervals and verdicts for AUC, Brier and log loss to `results/classifier/comparison.md`. Test on two mock systems with a known difference and on identical systems (difference zero, not distinguishable).
 - [ ] 5.4 Read failing transcripts for each target the classifier misses, record them in a reading file as the frontier baseline did, and generate the comparison report. Eval: the report is complete (no missing readings).
 
 ## 6. Documentation and validation
