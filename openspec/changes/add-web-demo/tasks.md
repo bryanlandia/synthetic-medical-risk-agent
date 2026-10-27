@@ -12,8 +12,8 @@
 
 ## 3. Demo patients and the model-card copy
 
-- [ ] 3.1 Add `evals demo-patients`: choose the demo patients from the dev split by the rules in Decision 5, render each with `render_message`, and write `web/content/demo_patients.json` with chart, message, patient id and split and no ground-truth field. Eval: tests that every id is dev, every message equals a fresh render, no ground-truth key is present, and the committed file equals the command's output.
-- [ ] 3.2 Add the model-card copy command and the freshness test in `training/` (the copy in `web/content/model-card.md` equals `training/model/MODEL_CARD.md`). Eval: the test fails when the copy is edited.
+- [x] 3.1 Add `evals demo-patients`: choose the demo patients from the dev split by the rules in Decision 5, render each with `render_message`, and write `web/content/demo_patients.json` with chart, message, patient id and split and no ground-truth field. Eval: tests that every id is dev, every message equals a fresh render, no ground-truth key is present, and the committed file equals the command's output.
+- [x] 3.2 Add the model-card copy command and the freshness test in `training/` (the copy in `web/content/model-card.md` equals `training/model/MODEL_CARD.md`). Eval: the test fails when the copy is edited.
 
 ## 4. The web app
 

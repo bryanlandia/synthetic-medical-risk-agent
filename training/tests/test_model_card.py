@@ -82,3 +82,14 @@ def test_the_example_in_the_card_runs_against_the_committed_model():
     scope: dict = {}
     exec(compile(block, "model-card-example", "exec"), scope)  # noqa: S102 - the card is our own generated file
     assert 0.0 <= scope["report"]["probability"] <= 1.0
+
+
+def test_the_web_copy_of_the_card_is_the_committed_card():
+    assert model_card.WEB_COPY.read_text() == _card(), "run `uv run training card` to refresh web/content/model-card.md"
+
+
+def test_a_stale_web_copy_is_detected(tmp_path):
+    copy = model_card.copy_to_web(MODEL, tmp_path / "model-card.md")
+    assert copy.read_text() == _card()
+    copy.write_text(copy.read_text() + "\nedited\n")
+    assert copy.read_text() != _card()

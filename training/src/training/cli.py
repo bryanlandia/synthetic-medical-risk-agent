@@ -19,7 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
     t.add_argument("--tracking-dir", default=None, help="MLflow file store (default training/mlruns)")
     sub.add_parser("report", help="write evals/results/classifier/report.md; exit 1 if a missed target has no readings")
     sub.add_parser("agreement", help="dev records through render, intake and the classifier against the structured path")
-    sub.add_parser("card", help="rewrite model/MODEL_CARD.md from the manifest and the result files")
+    sub.add_parser("card", help="rewrite model/MODEL_CARD.md from the manifest and the result files, and copy it to web/content/model-card.md")
     sub.add_parser("latency", help="time one report at a time over 500 dev records and measure the model size")
     sub.add_parser("freeze", help="record the model hash as the one test and adversarial may be scored with (needs a dev run)")
     return p
@@ -70,6 +70,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if res["meets_requirement"] else 1
     if args.command == "card":
         print(f"wrote {model_card.write()}")
+        print(f"wrote {model_card.copy_to_web()}")
         return 0
     if args.command == "latency":
         res = latency.measure()

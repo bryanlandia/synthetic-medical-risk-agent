@@ -209,3 +209,13 @@ def write(model_dir: Path = pipeline.MODEL_DIR, results_dir: Path = RESULTS_DIR)
     path = model_dir / CARD_NAME
     path.write_text(render(model_dir, results_dir))
     return path
+
+
+WEB_COPY = Path(__file__).resolve().parents[3] / "web" / "content" / "model-card.md"
+
+
+def copy_to_web(model_dir: Path = pipeline.MODEL_DIR, dest: Path = WEB_COPY) -> Path:
+    """The web page shows this copy; a test fails if it differs from the card in ``model/``."""
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text((model_dir / CARD_NAME).read_text())
+    return dest
