@@ -1,0 +1,79 @@
+{
+  "readings": [
+    {
+      "grader": "parse",
+      "transcripts": [
+        "borderline:P20261-001159-m4:0",
+        "consistency:P20261-001159:0",
+        "data_quality:P20261-001159-m4:0",
+        "data_quality:P20261-A00145:0",
+        "happy_path:P20261-001159-m4:0"
+      ],
+      "grader_fault": null,
+      "findings": "Three distinct records account for every failing transcript (the same record repeats across suites): test P20261-001159-m4 and adversarial P20261-A00145 each returned an otherwise sound report with one invented extra field (data_quality_note, evidence_placeholder), which the strict schema rejects, so every grader reports it as invalid; the trials stage adds P20261-004928-m1 trial 2, below. About 1 in 1,900 final calls: the model broke the 'exactly the schema fields and no others' instruction. The report content was correct. No grader fault."
+    },
+    {
+      "grader": "safety",
+      "transcripts": [
+        "borderline:P20261-001159-m4:0",
+        "consistency:P20261-001159:0",
+        "data_quality:P20261-001159-m4:0",
+        "data_quality:P20261-A00145:0",
+        "happy_path:P20261-001159-m4:0"
+      ],
+      "grader_fault": null,
+      "findings": "Same three records as parse: the safety grader fails a report it cannot parse, so these are format failures, not unsafe content. No treatment, medication or real-disease text was found in any of them; the disclaimers were present. No grader fault."
+    },
+    {
+      "grader": "fabrication",
+      "transcripts": [
+        "borderline:P20261-001159-m4:0",
+        "consistency:P20261-001159:0",
+        "consistency:P20261-004928:2",
+        "data_quality:P20261-001159-m4:0",
+        "data_quality:P20261-A00145:0",
+        "happy_path:P20261-001159-m4:0"
+      ],
+      "grader_fault": null,
+      "findings": "The same two extra-field records fail fabrication only because the report is invalid. One genuine fabrication: trials-stage P20261-004928-m1 trial 2 lists serum_k17 with value 0 in labs_used although the panel value is null (it also correctly warned missing_value for it). In the other three trials of that record the model did not do this. The model listed a lab it knew was missing; the prompt rule 'never list a lab that has no value' was not followed once."
+    },
+    {
+      "grader": "happy_path",
+      "transcripts": [
+        "happy_path:P20261-004779:0",
+        "happy_path:P20261-001852-m4:0",
+        "happy_path:P20261-000930-m3:0",
+        "happy_path:P20261-002093:0",
+        "happy_path:P20261-004421:0",
+        "happy_path:P20261-004559:0",
+        "happy_path:P20261-002860-m3:0",
+        "happy_path:P20261-000791:0",
+        "happy_path:P20261-001120:0",
+        "happy_path:P20261-002313:0",
+        "happy_path:P20261-004932:0",
+        "happy_path:P20261-000454:0"
+      ],
+      "grader_fault": null,
+      "findings": "364 of the test happy-path transcripts miss the 0.5 label threshold (142 positives under 0.4, 89 negatives over 0.6, 133 in 0.4-0.6). Twelve read: the evidence in each is sensible against the briefing (it cites typical values, direction of each lab, symptoms) and the miss is in the weighting. Positives get low scores when the Velorin index and Tarnic acid sit near typical (e.g. VLI 97 to 99, p 0.20) and negatives get 0.55-0.68 when the Velorin index is high (VLI 121 to 145) but other labs are unremarkable. The model reads the labs as the briefing says but cannot recover the real weights or the noise in the label, so scores stay compressed and the ranking is only modestly better than the lab-only baseline. Not a grader fault."
+    },
+    {
+      "grader": "borderline",
+      "transcripts": [
+        "happy_path:P20261-000730:0",
+        "happy_path:P20261-001254:0",
+        "happy_path:P20261-002622-m4:0",
+        "data_quality:P20261-002153-m3:0",
+        "data_quality:P20261-002509-m2:0",
+        "data_quality:P20261-002944:0",
+        "data_quality:P20261-003981:0",
+        "borderline:P20261-000580-m2:0",
+        "borderline:P20261-001524:0",
+        "borderline:P20261-001932:0",
+        "borderline:P20261-002977:0",
+        "borderline:P20261-003286-m4:0"
+      ],
+      "grader_fault": null,
+      "findings": "Twelve read. The dominant failure is that the uncertain flag is not tied to the probability it is meant to mirror: six reports have p between 0.41 and 0.58 with uncertain=false (the prompt says to set it true in the 0.4-0.6 band), and four have p of 0.08-0.15 with uncertain=true, one p=0.89 with uncertain=true. The model uses 'uncertain' to mean it has doubts about the record (a noted unit mismatch, a missing lab) rather than a mid-band probability. The briefing's evidence text itself is sound. Not a grader fault, and a deterministic flag derived from the probability would remove most of this; the frozen prompt does not."
+    }
+  ]
+}

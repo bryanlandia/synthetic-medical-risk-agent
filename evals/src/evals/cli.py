@@ -19,7 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
     schema.add_argument("--write", action="store_true", help="write contract/risk_report.schema.json")
 
     run = sub.add_parser("run", help="run a reference system on a split and write transcripts and a summary")
-    run.add_argument("--system", choices=["oracle", "floor", "lab_only"], required=True)
+    run.add_argument("--system", choices=["oracle", "floor", "lab_only", "frontier"], required=True)
     run.add_argument("--split", choices=["dev", "test", "adversarial"], default="dev")
     run.add_argument("--suites", nargs="*", help="default: every suite that applies to the split")
     run.add_argument("--limit", type=int, help="at most this many samples per suite")
@@ -27,6 +27,34 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--final", action="store_true", help="required for test and adversarial; recorded in the ledger")
     run.add_argument("--dataset", default=None)
     run.add_argument("--out", default=None, help="output directory (default runs/<system>/<split>)")
+    run.add_argument("--prompt", default="v1", help="frontier: the prompt file in prompts/frontier (without .md)")
+    run.add_argument("--model", default="haiku", help="frontier: haiku or sonnet (or a model id)")
+    run.add_argument("--yes", action="store_true", help="frontier: confirm the spend")
+    run.add_argument("--workers", type=int, default=8, help="frontier: samples in flight at once")
+    run.add_argument("--quiet", action="store_true", help="frontier: no progress lines")
+    run.add_argument("--force", action="store_true", help="frontier: repeat a final run (recorded and warned about)")
+
+    est = sub.add_parser("estimate", help="frontier: the calls, tokens and cost of each stage; no call, no key")
+    est.add_argument("--prompt", default="v1")
+    est.add_argument("--model", default="haiku")
+    est.add_argument("--stage", choices=["all", "dev", "test", "adversarial", "trials"], default="all")
+    est.add_argument("--dataset", default=None)
+
+    it = sub.add_parser("iterate", help="frontier: score a prompt version on dev (at most 5 versions) and record it")
+    it.add_argument("--prompt", required=True)
+    it.add_argument("--model", default="haiku")
+    it.add_argument("--limit", type=int, help="a smoke run on fewer samples; not recorded")
+    it.add_argument("--note", help="what changed and what you decided; stored with the version")
+    it.add_argument("--yes", action="store_true")
+    it.add_argument("--workers", type=int, default=8)
+    it.add_argument("--quiet", action="store_true", help="no progress lines")
+    it.add_argument("--dataset", default=None)
+
+    rep = sub.add_parser("report", help="frontier: write results/frontier/report.md; exit 1 if it is incomplete")
+    rep.add_argument("--model", default="haiku")
+
+    fr = sub.add_parser("freeze", help="frontier: choose the prompt for the protected splits; ends dev iteration")
+    fr.add_argument("--prompt", required=True)
 
     sub.add_parser("baselines", help="run the three reference systems on dev; write baseline summaries and targets v1")
     sub.add_parser("regression", help="the fast key-free regression subset (used by CI); exit 1 on any failure")
@@ -45,7 +73,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
-    if args.command in ("run", "baselines", "regression", "failures"):
+    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report"):
         return _dispatch(args)
     if args.command == "schema":
         from .report import schema_text, write_schema
@@ -67,6 +95,14 @@ def _dispatch(args: argparse.Namespace) -> int:
     from .records import DEFAULT_DATASET, load_dataset
 
     print(SYNTHETIC_NOTICE)
+    if args.command == "report":
+        from .frontier_cli import cmd_report
+
+        return cmd_report(args)
+    if args.command == "freeze":
+        from .frontier_cli import cmd_freeze
+
+        return cmd_freeze(args)
     if args.command == "failures":
         from .transcripts import failure_sample, format_failure, read_transcripts
 
@@ -77,6 +113,14 @@ def _dispatch(args: argparse.Namespace) -> int:
             print(format_failure(row, args.grader))
         return 0
     dataset = load_dataset(getattr(args, "dataset", None) or DEFAULT_DATASET)
+    if args.command in ("estimate", "iterate") or (args.command == "run" and args.system == "frontier"):
+        from . import frontier_cli
+
+        if args.command == "estimate":
+            return frontier_cli.cmd_estimate(args, dataset)
+        if args.command == "iterate":
+            return frontier_cli.cmd_iterate(args, dataset)
+        return frontier_cli.cmd_run(args, dataset)
     if args.command == "regression":
         from .regression import run_regression
 

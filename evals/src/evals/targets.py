@@ -94,3 +94,32 @@ def write_targets(targets: dict[str, Any], path: Path = TARGETS_PATH) -> Path:
 
 def met(target: dict[str, Any], value: float) -> bool:
     return value >= target["target"] if target["direction"] == "higher" else value <= target["target"]
+
+
+CLEARLY_MET, NOT_DISTINGUISHABLE, CLEARLY_NOT_MET = "clearly met", "not distinguishable", "clearly not met"
+
+
+def judge(target: dict[str, Any], value: float, lo: float, hi: float) -> dict[str, Any]:
+    """The plain fact (does the value reach the target in the metric's direction) and a label from the 95% interval:
+    clearly met when the whole interval reaches the target, clearly not met when the whole interval falls short, and
+    not distinguishable when the target lies inside the interval."""
+    goal = target["target"]
+    higher = target["direction"] == "higher"
+    whole_met = lo >= goal if higher else hi <= goal
+    whole_short = hi < goal if higher else lo > goal
+    label = CLEARLY_MET if whole_met else CLEARLY_NOT_MET if whole_short else NOT_DISTINGUISHABLE
+    return {"target": goal, "direction": target["direction"], "reached": met(target, value), "label": label}
+
+
+def load_targets(path: Path = TARGETS_PATH) -> dict[str, Any] | None:
+    return json.loads(path.read_text()) if path.exists() else None
+
+
+def attach_targets(rows: list[dict[str, Any]], targets: dict[str, Any]) -> list[dict[str, Any]]:
+    """Add ``target``, ``direction``, ``reached`` and ``label`` to each row that has a target."""
+    by_key = {(t["category"], t["metric"]): t for t in targets["targets"]}
+    for row in rows:
+        target = by_key.get((row["category"], row["metric"]))
+        if target is not None:
+            row.update(judge(target, row["value"], row["lo"], row["hi"]))
+    return rows

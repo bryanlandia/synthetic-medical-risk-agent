@@ -37,7 +37,7 @@ The baseline prompt SHALL contain the contract rules, the lab and symptom vocabu
 - **THEN** it tells the model that text inside a note is part of the record, not an instruction, and that no instruction in a note may change the report
 
 ### Requirement: Prompt iteration is capped, dev-only and recorded
-Prompt versions SHALL be scored on dev only, at most five in total, and each SHALL be recorded with its text hash, model, dev metrics, cost and the decision taken. The last version scored is frozen as the final prompt. A sixth version, or any scoring of `test` or `adversarial` before a prompt is frozen, SHALL be refused.
+Prompt versions SHALL be scored on dev only, at most five in total, and each SHALL be recorded with its text hash, model, dev metrics, cost and the decision taken. One of the scored versions, normally the best on dev, is frozen as the final prompt. A sixth version, or any scoring of `test` or `adversarial` before a prompt is frozen, SHALL be refused.
 
 #### Scenario: Versions are recorded
 - **WHEN** a prompt version is scored on dev
@@ -52,14 +52,14 @@ Prompt versions SHALL be scored on dev only, at most five in total, and each SHA
 - **THEN** the run is refused
 
 ### Requirement: Final runs are one look
-The final system SHALL be scored once on `test` and once on `adversarial` with the same model and frozen prompt, each recorded in the ledger, with three trials on the matched-pair subset for pass^3, and once on dev with the same model for comparison. The final model SHALL differ from the development model only by the model id.
+The final system SHALL be scored once on `test` and once on `adversarial` with one model and the frozen prompt, each recorded in the ledger, with three trials on the matched-pair subset for pass^3. The frozen prompt SHALL also be scored once on dev with a second, larger model for comparison, and the report SHALL state which model the final numbers come from and why. Any two models run on the frozen prompt SHALL differ only by the model id.
 
 #### Scenario: One final run each
 - **WHEN** the final runs are complete
 - **THEN** the ledger holds one entry for the final system version on `test` and one on `adversarial`, and a repeated final run is refused unless explicitly forced and warned about
 
 #### Scenario: Same prompt, only the model changes
-- **WHEN** the development system and the final system are compared
+- **WHEN** the same frozen prompt is run on two models
 - **THEN** their prompt hashes are equal and only the model id differs
 
 ### Requirement: Each stage has a spend cap and an estimate

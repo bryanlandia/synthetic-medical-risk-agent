@@ -39,21 +39,26 @@ class Trial:
         return row
 
 
-def _set_trial(system: System, trial_index: int) -> None:
+def _call(system: System, view: dict[str, Any], trial_index: int) -> tuple[str | dict[str, Any], dict[str, int]]:
+    """Run the system once. A system with ``run_call`` returns its own usage and is safe in threads; the others
+    are single-threaded and report usage through ``last_usage``."""
+    if hasattr(system, "run_call"):
+        out = system.run_call(view, trial_index)
+        return out.text, {"input_tokens": out.input_tokens, "output_tokens": out.output_tokens}
     setter = getattr(system, "set_trial", None)
     if setter:
         setter(trial_index)
+    raw = system.run(view)
+    return raw, getattr(system, "last_usage", None) or {}
 
 
 def run_trial(system: System, record: Record, trial_index: int = 0) -> Trial:
     view = input_view(record)
-    _set_trial(system, trial_index)
     started = time.perf_counter()
-    raw = system.run(view)
+    raw, usage = _call(system, view, trial_index)
     latency = time.perf_counter() - started
     raw_text = raw if isinstance(raw, str) else json.dumps(raw, sort_keys=True)
     result = parse_report(raw)
-    usage = getattr(system, "last_usage", None) or {}
     return Trial(record.patient_id, system.version, trial_index, raw_text, result.report, result.errors,
                  int(usage.get("input_tokens", 0)), int(usage.get("output_tokens", 0)), latency)
 
@@ -67,12 +72,10 @@ def run_view(system: System, view: dict[str, Any], record_id: str, trial_index: 
     from .records import assert_clean_view
 
     assert_clean_view(view)
-    _set_trial(system, trial_index)
     started = time.perf_counter()
-    raw = system.run(view)
+    raw, usage = _call(system, view, trial_index)
     latency = time.perf_counter() - started
     raw_text = raw if isinstance(raw, str) else json.dumps(raw, sort_keys=True)
     result = parse_report(raw)
-    usage = getattr(system, "last_usage", None) or {}
     return Trial(record_id, system.version, trial_index, raw_text, result.report, result.errors,
                  int(usage.get("input_tokens", 0)), int(usage.get("output_tokens", 0)), latency)

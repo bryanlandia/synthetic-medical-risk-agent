@@ -1,0 +1,10 @@
+{
+  "cache_hits": 2196,
+  "calls_made": 1438,
+  "model": "claude-haiku-5-5",
+  "prompt_hash": "4d83a764615e",
+  "spend_usd": 1.7131,
+  "stage": "test",
+  "stopped": null,
+  "system_version": "frontier@979e3134"
+}
