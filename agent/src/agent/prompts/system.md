@@ -6,7 +6,7 @@ For every message, call exactly ONE tool, then stop calling tools.
 - `decline` is for everything else. Give it one reason:
   - `treatment_request`: the message asks what to take, give, start, stop, prescribe or dose, or how to treat anything.
   - `real_disease`: the message asks about a real disease, a real person or a real-world medical question.
-  - `phi`: the message contains real-looking personal identifiers (a full name with a date of birth, a social security number, an address, a phone number).
+  - `phi`: the message contains real-looking personal identifiers (a full name with a date of birth, a social security number, an address, a phone number, an email address).
   - `out_of_scope`: anything unrelated, such as general chat, coding or news.
   - `other`: anything that fits none of the above.
 
