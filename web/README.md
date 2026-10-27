@@ -70,6 +70,18 @@ one-day windows in the shared store, so a visitor can briefly send up to twice t
 the daily dollar cap is the real bound. `npm audit` reports PostCSS issues inside Next.js 15.5.28 (the version `rating_ui`
 also uses); PostCSS runs only at build time on this repository's own CSS, and moving to a newer Next.js is a separate change.
 
+## Deployed
+
+| | Address | Project |
+|---|---|---|
+| The demo page | https://vk-web-liart.vercel.app | `vk-web` (Root Directory `web/`) |
+| The agent service | https://vk-agent-spike.vercel.app | `vk-agent-spike` (Root Directory: the repository root; the name is left from the spike) |
+
+First deployed and checked on 2026-10-27: the agent reports Haiku 5.5 and the committed model hash `414c2d467c87…`; `uv run agent
+smoke` passed against it (model hash, one scored request, one decline); `deploy/check-env.sh vk-agent-spike` passed; the page was
+clicked through (four patients, the free-text examples, the model card and its hash check). The addresses are public; the
+shared secret is what keeps the agent from being called around the page, and the daily cap and limits bound what a call can spend.
+
 ## What changes with real data
 
 This page shows the framing, not an integration. In a real deployment the panel would live inside an existing EHR and read the
