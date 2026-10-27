@@ -17,11 +17,11 @@
 
 ## 3. Classifier
 
-- [ ] 3.1 Implement the logistic model and the gradient-boosted comparison on the feature set, with the candidate grid (at most 12) declared in a config file before any dev scoring. Test that the grid is read from the file and that a larger grid is refused.
+- [ ] 3.1 Implement the logistic model (the served one) and the gradient-boosted diagnostic on the same feature set, with the logistic candidate grid (at most 12) declared in a config file before any dev scoring. Test that the grid is read from the file and that a larger grid is refused.
 - [ ] 3.2 Implement cross-fitted Platt calibration on train without dev, dropped when it does not improve out-of-fold log loss. Test on a synthetic miscalibrated model and on an already calibrated one.
 - [ ] 3.3 Wire MLflow tracking: parameters, seed, data hash, train-ids hash, dev metrics with intervals, held-out table, model files. Test with a temporary file store that the run holds each of them.
 - [ ] 3.4 Export the chosen model and test that two training runs with the same seed give the same file hashes, and that a different seed changes them.
-- [ ] 3.5 Choose the model on dev by log loss, record the choice, and report AUC, Brier, log loss and ECE with intervals against targets v1. Eval: ECE at most 0.0643 and the 5th and 95th probability percentiles at most 0.10 and at least 0.60.
+- [ ] 3.5 Choose the logistic settings on dev by log loss and record the choice; report AUC, Brier, log loss and ECE with intervals against targets v1, and report the gradient-boosted diagnostic next to them without serving it. Eval: ECE at most 0.0643 and the 5th and 95th probability percentiles at most 0.10 and at least 0.60.
 
 ## 4. Report and system
 
