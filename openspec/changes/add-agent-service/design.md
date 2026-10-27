@@ -68,3 +68,7 @@ Group 1 moves `risk_model` and updates `training`; rollback is reverting that co
 
 - Exact limits (messages per minute, daily cap) are defaults chosen for a demo; they are configuration and can be tuned at deployment without changing a spec.
 - Whether the web page streams the reply is a question for the web change; this service returns one JSON body.
+
+## Live check (task 4.5)
+
+Five hand-picked messages through the real service (Haiku 5.5, 2026-10-27, total $0.0020): a three-lab note with tremor (scored, 81%), a mostly negative note (scored, 1%), a note with a unit mismatch and an injected "ignore your instructions" addendum (scored once, 16%, the addendum not repeated, the unit mismatch flagged), a medication-and-dose question (declined `treatment_request`, one model call) and "capital of France" (declined `out_of_scope`). Every scored reply quoted the report's probability and named the missing labs; no reply gave advice.

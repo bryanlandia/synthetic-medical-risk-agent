@@ -26,7 +26,7 @@
 - [x] 4.2 Implement the scripted model (rule-based tool choice and reply from the report, with switches to misbehave) and the production refusal. Test the scripted model through the whole service.
 - [x] 4.3 Enforce one tool call and two model invocations per request; a second call returns an error result and is counted in `usage`. Test with a scripted model that calls the tool twice, calls neither tool, and passes extra arguments naming other labs or text.
 - [x] 4.4 Implement the decline path: fixed message per reason, `declined` true, no report, and "no tool called" treated as an out-of-scope decline. Test each reason and that no model prose is released on a decline.
-- [ ] 4.5 Run the whole service against the real Anthropic API on 5 hand-picked messages (owner-run, a few cents), check the tool choice and the replies, and record the outputs for the design notes.
+- [x] 4.5 Run the whole service against the real Anthropic API on 5 hand-picked messages (owner-run, a few cents), check the tool choice and the replies, and record the outputs for the design notes.
 
 ## 5. Output guard
 
