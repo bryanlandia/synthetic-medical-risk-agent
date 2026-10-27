@@ -40,6 +40,6 @@
 
 ## 6. Documentation and validation
 
-- [ ] 6.1 Write the model card (intended use, data, train and dev split, held-out table, weaknesses, the note that the synthetic rule is logistic, the model hash and MLflow run id) and a test that fails if its hash disagrees with the committed model files.
+- [x] 6.1 Write the model card (intended use, data, train and dev split, held-out table, weaknesses, the note that the synthetic rule is logistic, the model hash and MLflow run id) and a test that fails if its hash disagrees with the committed model files.
 - [ ] 6.2 Update `AGENTS.md` and the READMEs with the training and classifier commands, and add the classifier row to the evals README headline table next to the frontier baseline.
 - [ ] 6.3 Run the full test suites for `training/` and `evals/`, the fast regression and `openspec validate add-classifier --strict`.

@@ -94,4 +94,7 @@ def train(out_dir: Path = MODEL_DIR, tracking_dir: Path | None = tracking.DEFAUL
                   "train_ids_sha256": manifest["train_ids_sha256"], "reader_conflict_rule": reader_rep["reader"]["conflict_rule"]}
         run_id = tracking.log_run(Path(tracking_dir), params, flat, out_dir, tags={"model_hash": manifest["model_hash"]})
         (out_dir / "run.json").write_text(_dump({"mlflow_run_id": run_id, "tracking_dir": "training/mlruns (not committed)"}))
+    from . import model_card
+
+    model_card.write(out_dir)
     return {"manifest": manifest, "summary": summary, "reader": reader_rep}

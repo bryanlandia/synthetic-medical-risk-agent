@@ -55,6 +55,15 @@ Frontier baseline (from `evals/`; paid steps need `--yes` and `ANTHROPIC_API_KEY
 - `uv run evals run --system frontier --prompt vN --model haiku --split {dev,test,adversarial} [--suites consistency --trials 3] --final --yes` the stages; `test` and `adversarial` need a freeze and are one look each (`--force` repeats, warned)
 - `uv run evals report` writes `results/frontier/report.md`; it is INCOMPLETE (exit 1) until `results/frontier/reading.json` records the failing transcripts read for each failed grader
 
+Classifier (from `training/`, same uv setup; no API key and no spend; see `training/README.md` and `training/model/MODEL_CARD.md`):
+
+- `uv sync` install; `uv run pytest -q` tests (about 1.5 minutes)
+- `uv run training train` fit the note reader and the classifier on train **without dev**, choose the settings on dev, write `model/` (JSON files, manifest with the model hash, metrics, model card) and log an MLflow run to the local `mlruns/`; two runs with the same seed give byte-identical files. `training reader` fits only the reader; `training lexicon`, `training card` and `training latency` refresh the lexicon, the card and the speed/size file
+- `uv run evals run --system classifier --split dev` score the committed model through the harness (run from `training/`: the classifier system lives there; results go to `evals/results/classifier/`)
+- `uv run training freeze` records the model hash after a dev run; then `uv run evals run --system classifier --split {test,adversarial} --final` once each, and `--split test --suites consistency --trials 3 --final` once; a repeat needs `--force` (recorded and warned about)
+- `uv run evals compare [--split {dev,test}] [--model haiku]` (from `evals/` or `training/`): classifier against the frontier baseline on the same patients, paired differences with patient-clustered intervals, written to `evals/results/classifier/comparison_<split>.md`
+- Inference uses `risk_model` (numpy only: `risk_model.load("training/model").report(view)`); training code never imports from the agent, and `evals` does not import `training` except to run the `classifier` system
+
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):
 
 - `REALISM_ROUND_DIR=../data_gen/realism/round0 npm run dev` serve the rating tool on 127.0.0.1:3100 (a person types a name and rates; saves `ratings.<name>.json`)
