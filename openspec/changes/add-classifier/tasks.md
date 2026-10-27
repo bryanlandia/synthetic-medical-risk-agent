@@ -1,19 +1,19 @@
 ## 1. Project and data access
 
-- [ ] 1.1 Create the `training/` uv project (Python 3.12, pinned numpy, scikit-learn and MLflow; `data_gen` as a path dependency) with a `training` package, a CLI entry point and a README stating the synthetic-data notice.
-- [ ] 1.2 Add the record loader: reads `data_gen/data_llm/` train records, drops the dev ids with `evals.devsplit.train_ids`, and raises an error naming the record if given a `test`, `adversarial` or dev record. Test all three refusals and that the loader returns exactly the train-without-dev ids.
-- [ ] 1.3 Add the feature builder over the input view only, rejecting any ground-truth key (reuse the harness's clean-view check). Test the rejection, zero-fill with missing indicator for null and impossible values, and conversion of an alternate panel unit.
+- [x] 1.1 Create the `training/` uv project (Python 3.12, pinned numpy, scikit-learn and MLflow; `data_gen` as a path dependency) with a `training` package, a CLI entry point and a README stating the synthetic-data notice.
+- [x] 1.2 Add the record loader: reads `data_gen/data_llm/` train records, drops the dev ids with `evals.devsplit.train_ids`, and raises an error naming the record if given a `test`, `adversarial` or dev record. Test all three refusals and that the loader returns exactly the train-without-dev ids.
+- [x] 1.3 Add the feature builder over the input view only, rejecting any ground-truth key (reuse the harness's clean-view check). Test the rejection, zero-fill with missing indicator for null and impossible values, and conversion of an alternate panel unit.
 
 ## 2. Note reader
 
-- [ ] 2.1 Build the symptom lexicon as repository data from the generator's vocabulary and the train notes, with a script that regenerates it; test that every term is lowercase, deduplicated and maps to one of the five symptoms.
-- [ ] 2.2 Implement mention finding and the mention-context classifier (word and character n-grams, logistic regression), with training labels from the plan symptoms of train-without-dev records. Test on hand-written notes covering negation, hedging, two symptoms in one sentence and no mention.
-- [ ] 2.3 Implement the stated-lab-value reader for the result-line and inline-list forms. Test on each documentation setting's forms, on an alternate-unit value and on a note with no values.
-- [ ] 2.4 Implement the conflicting-mention rule and pick its variant (last mention or the more specific one) on dev. Test both variants and that the choice is recorded.
-- [ ] 2.5 Export the reader (JSON and `.npz`, sorted keys, full-precision floats) and a numpy-only inference path. Test that it matches the scikit-learn output to 1e-9 on 200 records and that it runs with the network disabled and no API key.
-- [ ] 2.6 Score the reader on dev with the symptom-reading grader and write the accuracy with its interval. Eval: at least 0.95, otherwise record the miss and read 20 failing notes.
-- [ ] 2.7 Run the leave-one-setting-out experiment and write the held-out table. Eval: any setting below 0.90 is listed with its failing phrases in the model card.
-- [ ] 2.8 Score the reader on the adversarial injection pairs with and without the addendum. Eval: readings identical for at least 95% of pairs, differences listed.
+- [x] 2.1 Build the symptom lexicon as repository data from the generator's vocabulary and the train notes, with a script that regenerates it; test that every term is lowercase, deduplicated and maps to one of the five symptoms.
+- [x] 2.2 Implement mention finding and the mention-context classifier (the clause's words and word pairs, the previous clause's words, logistic regression), with training labels from the plan symptoms of train-without-dev records. Test on hand-written notes covering negation, hedging, two symptoms in one sentence and no mention.
+- [x] 2.3 Implement the stated-lab-value reader for the result-line and inline-list forms. Test on each documentation setting's forms, on an alternate-unit value and on a note with no values.
+- [x] 2.4 Implement the conflicting-mention rule and pick its variant (last mention or the more specific one) on dev. Test both variants and that the choice is recorded.
+- [x] 2.5 Export the reader (one JSON file with the arrays inline, sorted keys, full-precision floats) and a numpy-only inference path. Test that it matches the scikit-learn output to 1e-9 on 200 records and that it runs with the network disabled and no API key.
+- [x] 2.6 Score the reader on dev with the symptom-reading grader and write the accuracy with its interval. Eval: at least 0.95, otherwise record the miss and read 20 failing notes.
+- [x] 2.7 Run the leave-one-setting-out experiment and write the held-out table. Eval: any setting below 0.90 is listed with its failing phrases in the model card.
+- [x] 2.8 Score the reader on dev notes with each catalog injection addendum appended, against the same notes without it (the real injection records are in the protected adversarial split, which only a `--final` run reads). Eval: readings identical for at least 95% of pairs, differences listed.
 
 ## 3. Classifier
 

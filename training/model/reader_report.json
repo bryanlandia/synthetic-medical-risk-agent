@@ -1,0 +1,156 @@
+{
+  "dev": {
+    "accuracy": {
+      "hi": 0.998,
+      "lo": 0.9924,
+      "n": 2500,
+      "patients": 500,
+      "se": 0.001450846482407949,
+      "value": 0.9952
+    },
+    "floor": 0.95,
+    "meets_floor": true,
+    "per_setting": {
+      "ai_scribe": {
+        "hi": 1.0,
+        "lo": 0.990909090909091,
+        "n": 550,
+        "patients": 110,
+        "se": 0.002561691773825051,
+        "value": 0.9963636363636363
+      },
+      "copy_forward": {
+        "hi": 0.9964912280701754,
+        "lo": 0.980701754385965,
+        "n": 570,
+        "patients": 114,
+        "se": 0.004215994611012095,
+        "value": 0.9894736842105263
+      },
+      "ehr_template": {
+        "hi": 1.0,
+        "lo": 0.9903448275862069,
+        "n": 725,
+        "patients": 145,
+        "se": 0.002349235563020548,
+        "value": 0.9958620689655172
+      },
+      "shorthand": {
+        "hi": 1.0,
+        "lo": 0.9954198473282443,
+        "n": 655,
+        "patients": 131,
+        "se": 0.0015444937809475487,
+        "value": 0.9984732824427481
+      }
+    }
+  },
+  "held_out": {
+    "floor": 0.9,
+    "with_cues": [
+      {
+        "below_floor": false,
+        "cues": true,
+        "held_out": "shorthand",
+        "hi": 0.9880753138075313,
+        "in_distribution": 0.9984732824427481,
+        "lo": 0.9811715481171548,
+        "n_records": 956,
+        "value": 0.9847280334728034
+      },
+      {
+        "below_floor": false,
+        "cues": true,
+        "held_out": "ehr_template",
+        "hi": 0.9662172088142708,
+        "in_distribution": 0.9958620689655172,
+        "lo": 0.9532004197271773,
+        "n_records": 953,
+        "value": 0.9599160545645331
+      },
+      {
+        "below_floor": false,
+        "cues": true,
+        "held_out": "ai_scribe",
+        "hi": 0.9811122770199371,
+        "in_distribution": 0.9963636363636363,
+        "lo": 0.9727177334732424,
+        "n_records": 953,
+        "value": 0.9771248688352571
+      },
+      {
+        "below_floor": false,
+        "cues": true,
+        "held_out": "copy_forward",
+        "hi": 0.9829059829059829,
+        "in_distribution": 0.9894736842105263,
+        "lo": 0.9741399572649573,
+        "n_records": 936,
+        "value": 0.9786324786324786
+      }
+    ],
+    "without_cues": [
+      {
+        "below_floor": false,
+        "cues": false,
+        "held_out": "shorthand",
+        "hi": 0.9700836820083683,
+        "in_distribution": 0.9984732824427481,
+        "lo": 0.9600366108786611,
+        "n_records": 956,
+        "value": 0.9650627615062761
+      },
+      {
+        "below_floor": true,
+        "cues": false,
+        "held_out": "ehr_template",
+        "hi": 0.7573976915005246,
+        "in_distribution": 0.9958620689655172,
+        "lo": 0.7259181532004197,
+        "n_records": 953,
+        "value": 0.7416579223504722
+      },
+      {
+        "below_floor": false,
+        "cues": false,
+        "held_out": "ai_scribe",
+        "hi": 0.9496379853095488,
+        "in_distribution": 0.9963636363636363,
+        "lo": 0.9366211962224554,
+        "n_records": 953,
+        "value": 0.9433368310598111
+      },
+      {
+        "below_floor": false,
+        "cues": false,
+        "held_out": "copy_forward",
+        "hi": 0.9833333333333333,
+        "in_distribution": 0.9894736842105263,
+        "lo": 0.9752136752136752,
+        "n_records": 936,
+        "value": 0.9792735042735042
+      }
+    ]
+  },
+  "injection": {
+    "agreement": 1.0,
+    "floor": 0.95,
+    "identical": 4000,
+    "pairs": 4000,
+    "where": "dev notes with each catalog addendum appended"
+  },
+  "reader": {
+    "c": 1.0,
+    "conflict_rule": "confident",
+    "conflict_rule_dev_accuracy": {
+      "confident": 0.9952,
+      "last": 0.9912
+    },
+    "cues": true,
+    "min_df": 3,
+    "n_features": 2350,
+    "n_mentions": 12466,
+    "n_train_records": 3298,
+    "seed": 0
+  }
+}

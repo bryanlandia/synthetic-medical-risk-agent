@@ -1,0 +1,40 @@
+{
+  "dizziness": [
+    "dizz",
+    "lighthead",
+    "woozi",
+    "woozy"
+  ],
+  "fatigue": [
+    "energy",
+    "exhaust",
+    "fatigue",
+    "low energy",
+    "tire easily",
+    "tired",
+    "tires",
+    "wiped"
+  ],
+  "joint_stiffness": [
+    "stiff"
+  ],
+  "photophobia": [
+    "bothered by bright",
+    "bright light",
+    "light bothers",
+    "light sensitiv",
+    "photophob",
+    "sensitive to bright light",
+    "sensitive to light",
+    "squint"
+  ],
+  "tremor": [
+    "hands?\\s+(?:\\w+\\s+){0,2}steady",
+    "shak",
+    "steadiness",
+    "steady\\s+hands?",
+    "trembl",
+    "tremor",
+    "tremul"
+  ]
+}
