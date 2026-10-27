@@ -5,10 +5,10 @@
 
 ## 2. A shared store for the counters
 
-- [ ] 2.1 Put `SpendCounter` and `RateLimiter` behind interfaces, keep the SQLite and in-memory implementations, and add Redis-over-HTTP implementations with the keys and expiries in Decision 2. Eval: the existing guard tests pass unchanged against the local implementations.
-- [ ] 2.2 Add `AGENT_STORE_URL` and `AGENT_STORE_TOKEN` to the settings, select the store when set, and refuse to start in production without it, naming the variable and not its value; also accept `AGENT_ENV=preview` (treated like development: the scripted model is allowed). Eval: tests for the selection and for the production refusal.
-- [ ] 2.3 Test the Redis implementations against a fake store (httpx mock transport): two instances sharing one daily cap and one visitor limit, the day rollover, `Retry-After` from the window end, and that a store error fails closed (the request is refused, not served). Eval: those scenarios pass.
-- [ ] 2.4 Make `agent serve` use `agent/src/agent/asgi.py` (added by the spike) and keep the repository-root `index.py`, `requirements.txt`, `vercel.json` and `.vercelignore`. Eval: the existing service tests import the same app object, and a test fails if the pins in the root `requirements.txt` differ from `agent/pyproject.toml`.
+- [x] 2.1 Put `SpendCounter` and `RateLimiter` behind interfaces, keep the SQLite and in-memory implementations, and add Redis-over-HTTP implementations with the keys and expiries in Decision 2. Eval: the existing guard tests pass unchanged against the local implementations.
+- [x] 2.2 Add `AGENT_STORE_URL` and `AGENT_STORE_TOKEN` to the settings, select the store when set, and refuse to start in production without it, naming the variable and not its value; also accept `AGENT_ENV=preview` (treated like development: the scripted model is allowed). Eval: tests for the selection and for the production refusal.
+- [x] 2.3 Test the Redis implementations against a fake store (httpx mock transport): two instances sharing one daily cap and one visitor limit, the day rollover, `Retry-After` from the window end, and that a store error fails closed (the request is refused, not served). Eval: those scenarios pass.
+- [x] 2.4 Make `agent serve` use `agent/src/agent/asgi.py` (added by the spike) and keep the repository-root `index.py`, `requirements.txt`, `vercel.json` and `.vercelignore`. Eval: the existing service tests import the same app object, and a test fails if the pins in the root `requirements.txt` differ from `agent/pyproject.toml`.
 
 ## 3. Demo patients and the model-card copy
 

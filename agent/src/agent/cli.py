@@ -35,18 +35,17 @@ def main(argv: list[str] | None = None) -> int:
     except ConfigError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    from .runtime import build_orchestrator
-
-    orchestrator = build_orchestrator(settings)
     if args.command == "serve":
         import uvicorn
 
-        from .app import create_app
-
-        # a long keep-alive: a client that reuses a pooled connection after a pause must not meet a closed one
-        uvicorn.run(create_app(settings, orchestrator), host=args.host, port=args.port, log_level="warning", timeout_keep_alive=75)
+        # the same ASGI object a platform imports (agent.asgi:app); a long keep-alive so that a client reusing a pooled
+        # connection after a pause does not meet a closed one
+        uvicorn.run("agent.asgi:app", host=args.host, port=args.port, log_level="warning", timeout_keep_alive=75)
         return 0
     from . import pricing
+    from .runtime import build_orchestrator
+
+    orchestrator = build_orchestrator(settings)
 
     total = 0.0
     for message in LIVE_CHECK_MESSAGES:

@@ -45,7 +45,7 @@ def test_testing_switches_are_refused_in_production(tmp_path, name):
 
 
 def test_production_with_a_secret_and_a_key_starts(tmp_path):
-    s = start(tmp_path, AGENT_ENV="production", AGENT_SCRIPTED_MODEL="0")
+    s = start(tmp_path, AGENT_ENV="production", AGENT_SCRIPTED_MODEL="0", AGENT_STORE_URL="https://store.example.test", AGENT_STORE_TOKEN="t")
     assert s.environment == "production"
 
 

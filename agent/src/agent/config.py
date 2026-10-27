@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Mapping
 
-ENVIRONMENTS = ("development", "test", "production")
+ENVIRONMENTS = ("development", "test", "preview", "production")  # preview: a platform preview, treated like development
 
 
 class ConfigError(RuntimeError):
@@ -48,6 +48,8 @@ class Settings:
     model_timeout_s: float
     effort: str
     spend_db: Path
+    store_url: str | None
+    store_token: str | None
     model_dir: Path | None
 
     @classmethod
@@ -71,6 +73,11 @@ class Settings:
             raise ConfigError("AGENT_SHARED_SECRET is not set (set AGENT_LOCAL_DEV=1 for local development without one)")
         if api_key is None and not scripted:
             raise ConfigError("ANTHROPIC_API_KEY is not set (set AGENT_SCRIPTED_MODEL=1 to run without a key, outside production)")
+        store_url, store_token = env.get("AGENT_STORE_URL") or None, env.get("AGENT_STORE_TOKEN") or None
+        if (store_url is None) != (store_token is None):
+            raise ConfigError("AGENT_STORE_URL and AGENT_STORE_TOKEN must be set together")
+        if production and store_url is None:
+            raise ConfigError("AGENT_STORE_URL and AGENT_STORE_TOKEN are not set (required in production: the limits must be shared)")
         effort = env.get("AGENT_EFFORT", "low").strip().lower()
         if effort not in ("low", "medium", "high"):
             raise ConfigError("AGENT_EFFORT must be low, medium or high")
@@ -87,5 +94,6 @@ class Settings:
             model_timeout_s=_number(env, "AGENT_MODEL_TIMEOUT_S", 30.0),
             effort=effort,
             spend_db=Path(env.get("AGENT_SPEND_DB", "spend.db")),
+            store_url=store_url, store_token=store_token,
             model_dir=Path(env["RISK_MODEL_DIR"]) if env.get("RISK_MODEL_DIR") else None,
         )
