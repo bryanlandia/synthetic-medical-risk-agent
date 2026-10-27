@@ -7,7 +7,7 @@ type Patient = { slug: string; title: string; patient_id: string; message: strin
 const PATIENTS: Patient[] = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "content", "demo_patients.json"), "utf8")).patients;
 const bySlug = (slug: string) => PATIENTS.find((p) => p.slug === slug)!;
 
-const TABS = ["Patient chart", "Try the agent", "Model card"];
+const TABS = ["Patient chart", "Try the agent", "Model card", "About this project"];
 
 test("every tab shows the synthetic-data banner and the mock-EHR label", async ({ page }) => {
   await page.goto("/");
@@ -193,4 +193,41 @@ test("the same note without the instruction gives the same estimate, and no call
   await page.getByRole("button", { name: "Send", exact: true }).click();
   await expect(page.getByTestId("injection-callout")).toHaveCount(0);
   await expect(page.getByTestId("probability")).toHaveText(withInstruction);
+});
+
+const ABOUT = fs.readFileSync(path.join(__dirname, "..", "content", "about.md"), "utf8");
+
+test("the About tab shows every heading in the file, in order, with the banner", async ({ page }) => {
+  const expected = [...ABOUT.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
+  expect(expected.length).toBeGreaterThanOrEqual(1);
+  await page.goto("/");
+  await page.getByRole("tab", { name: "About this project" }).click();
+  await expect(page.getByRole("banner")).toContainText("Not medical advice");
+  const shown = await page.locator("article.doc h2").allInnerTexts();
+  expect(shown.map((t) => t.trim())).toEqual(expected);
+});
+
+test("links in the About text open safely and the tab loads nothing from another site", async ({ page, baseURL }) => {
+  const origins = new Set<string>();
+  page.on("request", (r) => origins.add(new URL(r.url()).origin));
+  await page.goto("/");
+  await page.getByRole("tab", { name: "About this project" }).click();
+  await expect(page.locator("article.doc h2").first()).toBeVisible();
+  const links = page.locator("article.doc a");
+  expect(await links.count()).toBeGreaterThanOrEqual(1);
+  for (const link of await links.all()) {
+    await expect(link).toHaveAttribute("target", "_blank");
+    const rel = (await link.getAttribute("rel")) ?? "";
+    expect(rel).toContain("noopener");
+    expect(rel).toContain("noreferrer");
+  }
+  expect(await page.locator("article.doc img").count()).toBe(0);
+  expect([...origins]).toEqual([new URL(baseURL!).origin]);
+});
+
+test("the model card's links open safely too (the shared renderer)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("tab", { name: "Model card" }).click();
+  const link = page.locator("article.doc a").first();
+  await expect(link).toHaveAttribute("rel", /noopener/);
 });

@@ -9,6 +9,9 @@ is on the chart. The guards and the evals around the agent are the real subject;
 - **Try the agent**: a free-text box for a treatment question, an off-topic prompt, a note with an injected instruction, or
   your own text. Every send is a single request; nothing is remembered.
 - **Model card**: the classifier's model card, with a check that it describes the model that is running.
+- **About this project**: the project description, shown from `content/about.md`.
+
+**Writing the About text.** Edit `content/about.md` like any markdown file (headings, lists, tables and links all render; images do not, and links open in a new tab). It starts as an outline: each section has a draft paragraph that begins `*Suggested content:*`. Replace a paragraph with your own text and delete the marker; `grep -n 'Suggested content' content/about.md` lists the sections still unwritten. Take any figures from `evals/README.md` and the result files, not from memory, so they stay checkable.
 
 ## How a request travels
 
