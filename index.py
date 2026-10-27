@@ -8,7 +8,7 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[0]
 for sub in ("agent/src", "risk_model/src"):
     sys.path.insert(0, str(ROOT / sub))
 os.environ.setdefault("RISK_MODEL_DIR", str(ROOT / "training" / "model"))

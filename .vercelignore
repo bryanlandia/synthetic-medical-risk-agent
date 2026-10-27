@@ -12,3 +12,5 @@ web
 docs
 openspec
 **/node_modules
+.env*
+.vercel

@@ -12,3 +12,5 @@ node_modules/
 **/realism/**/review.webm
 **/realism/**/review-video/
 training/mlruns/
+.vercel
+.env*
