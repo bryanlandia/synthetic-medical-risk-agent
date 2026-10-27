@@ -28,7 +28,7 @@ The page SHALL send one page view per load, carrying the `ref` value when presen
 - **THEN** exactly one page view is sent for that load
 
 ### Requirement: Clicks are counted by element name
-A click on a tab, a demo patient, the Run V-K check button, the "message sent" expander, an example button, the Send button, the opt-out control or a link that leaves the site SHALL send one event naming the element. Names SHALL come from a fixed set, with only the host for outbound links. Typing, pointer movement and clicks elsewhere MUST NOT be sent, and the page MUST NOT use automatic capture.
+A click on a tab, a demo patient, the Run V-K check button, the "message sent" expander, an example button, the Send button or a link that leaves the site SHALL send one event naming the element. Names SHALL come from a fixed set, with only the host for outbound links. Typing, pointer movement and clicks elsewhere MUST NOT be sent, and the page MUST NOT use automatic capture.
 
 #### Scenario: A named click
 - **WHEN** a visitor presses Run V-K check
@@ -53,7 +53,7 @@ Every screen SHALL carry a one-line notice that visits and clicks are counted an
 
 #### Scenario: Opting out
 - **WHEN** a visitor presses the opt-out control
-- **THEN** no further analytics request is made in that visit
+- **THEN** no event created after the press is sent, the press itself is not counted, and a reload of the page starts nothing
 
 #### Scenario: Do Not Track
 - **WHEN** the browser sends Do Not Track or Global Privacy Control

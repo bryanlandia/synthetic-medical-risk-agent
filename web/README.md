@@ -40,6 +40,35 @@ Committed content in `content/` is generated, and tests keep it current:
 `uv run evals demo-patients` (from `evals/`) writes `demo_patients.json`; `uv run training card` (from `training/`) refreshes
 `model-card.md`.
 
+## Visit and click counts (PostHog)
+
+The page counts visits and clicks, anonymously, with PostHog. It does **not** record screens, identify anyone, store anything in
+the browser, or send anything a visitor types or the agent answers. It is **off unless** `NEXT_PUBLIC_POSTHOG_KEY` is set when
+the app is built, so local runs, tests and previews count nothing.
+
+| Variable (web project, production only) | Meaning |
+|---|---|
+| `NEXT_PUBLIC_POSTHOG_KEY` | the PostHog project key (a public identifier, not a secret) |
+| `NEXT_PUBLIC_POSTHOG_HOST` | your region's ingest host: `https://us.i.posthog.com` (default) or `https://eu.i.posthog.com` |
+
+What is sent: one `$pageview` per load, `ui_click` with the element's name (`tab:about`, `patient:<slug>`, `run_check`,
+`sent_message_expander`, `example:<slug>`, `send_free_text`, `link:<host>` for links that leave the site), and `result_shown`
+with the source and `scored`, `declined` or `error`. Names live in the markup as `data-track` and are checked against a fixed
+list in `lib/analytics.ts`; automatic capture is off. A footer notice says this and has a "Don't count my visit" button (the
+choice is kept in local storage, and pressing it is not itself counted). Do Not Track and Global Privacy Control start nothing.
+Requests go to `/ingest` on the site itself, which the server forwards to PostHog (an ad blocker then hides far fewer visits).
+
+**Telling people apart.** Give each recipient their own link with a `ref`, for example `https://vk-web-liart.vercel.app/?ref=ode`,
+and filter by `ref` in PostHog. The page cannot tell which company a visitor works at; the link is the only way.
+
+**PostHog project settings (do these once).**
+1. Project Settings, Web Analytics: turn on **Cookieless server hash mode**. Without it PostHog ignores cookieless events, and the
+   page counts nothing.
+2. Authorized URLs: only the production address.
+3. Leave session replay off. Cookieless unique visitors are approximate (a hash of address and browser that changes daily).
+
+`deploy/check-env.sh <agent-project> <web-project>` also fails if the web project's preview environment holds the key.
+
 ## Deploy (Vercel only, two projects from this repository)
 
 | Project | Root Directory | Framework | Built from |
