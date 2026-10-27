@@ -94,6 +94,34 @@ Trials are identical (676 of 676 matched-pair records, three trials). Reading it
 and records with a missing lab, not a grader fault. The model is small (197 kB), runs in under a millisecond on a CPU, and
 the synthetic rule is logistic, which makes this family a good fit; the model card says so.
 
+**Headline: the agent** (`agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.1`: Haiku 5.5 routes the message to the
+classifier's scoring tool or a decline and writes a short reply; text intake, the report and the disclaimer are code; `test`
+split, 931 patients; Haiku was the only orchestrator tried). Its report is the classifier's, so the happy-path metrics are
+identical to the classifier's (paired difference +0.0000 on AUC, Brier and log loss). What the agent adds is measured by the
+tool-use and scope rows:
+
+| Metric | Value (95% interval) | Target v1 |
+|---|---|---|
+| AUC, Brier, log loss | the classifier's (0.796, 0.155, 0.483) | as the classifier |
+| Fabrication, safety, parse (3,634 requests; 658 adversarial) | 0 failures, 1.000, 0 | clearly met |
+| Data quality, exact match | 1.000 test; 0.800 adversarial | 0.5: clearly met |
+| Scoring tool used once on a record | 0.9945 (0.9897 to 0.9983) test; 0.9975 over three trials | 0.99: reached |
+| Over-refusal on records | 0 of 3,634 | 0.05: clearly met |
+| Reply agrees with the report | 1.000; template used for 1.8% of replies | none |
+| Scope set, declined with the right reason (44 prompts, dev-time) | 44 of 44 | 0.95 / 0.90: clearly met |
+| Legitimate notes with medications refused (12) | 0 | 0.05: clearly met |
+| Injected instructions resisted (10 scope + 60 adversarial) | 70 of 70 | none |
+| Consistency across settings, mean SD / pass^3 | 0.011 / 0.982 | as the classifier |
+
+Misses and caveats, with the transcripts read in `results/agent/reading.md`: AUC and log loss miss the target by the same
+0.004 and 0.0005 as the classifier (not distinguishable); 20 of 3,634 test requests (0.55%) were scored but also tried a
+second tool call (13 `decline`, 7 a second `score_message`), which the service refused, so the answer was still the
+classifier's report, but the grader counts them as not using the tool exactly once; `recall:note_flag_disagreement` on
+the adversarial split is 0.0175, as for the classifier. The scope prompt was changed once after the first scope run
+(email addresses were missing from the list of personal identifiers), so the scope result is a repaired one; `test` and
+`adversarial` were looked at only after that. A request takes about 4 s (p50, p90 5.5 s) and costs about $0.0006 with
+the model, against under a millisecond and nothing for the classifier alone.
+
 API-backed systems run concurrently (`--workers`, default 8 samples at a time) and give identical transcripts, results
 and cache contents at any worker count.
 

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import risk_model
 from evals.devsplit import dev_ids
 from evals.targets import judge, load_targets
 from risk_model.reader import NoteReader
@@ -16,7 +17,7 @@ from . import classifier_fit as cf
 from . import data, reader_report, tracking
 
 MODEL_DIR = reader_report.MODEL_DIR
-MODEL_FILES = ("reader.json", "classifier.json")  # the model: its hash is the hash of these two files
+MODEL_FILES = risk_model.MODEL_FILES  # the model: its hash is the hash of these two files
 TARGET_KEYS = {"auc": "auc", "brier": "brier", "log_loss": "log_loss", "ece": "ece"}
 
 
@@ -25,10 +26,7 @@ def sha256(data_: bytes) -> str:
 
 
 def model_hash(directory: Path) -> str:
-    h = hashlib.sha256()
-    for name in MODEL_FILES:
-        h.update(name.encode() + b"\0" + (directory / name).read_bytes())
-    return h.hexdigest()
+    return risk_model.model_hash(directory)
 
 
 def against_targets(m: dict[str, dict[str, float]]) -> dict[str, Any]:

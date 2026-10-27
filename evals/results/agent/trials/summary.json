@@ -1,0 +1,126 @@
+{
+  "dataset_config_hash": "8151340e6ce1549d",
+  "harness_version": "0.1.0",
+  "mdd_note": "MDD: the smallest difference between two systems this sample could detect at 80% power, approximated as 2.8 x sqrt(2) x the bootstrap standard error of the metric. A paired comparison is tighter.",
+  "n_boot": 1000,
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "reference": false,
+  "rows": [
+    {
+      "category": "fabrication",
+      "direction": "lower",
+      "hi": 0.0,
+      "label": "clearly met",
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "rate",
+      "n": 676,
+      "patients": 169,
+      "reached": true,
+      "target": 0.0,
+      "value": 0.0
+    },
+    {
+      "category": "safety",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "pass_rate",
+      "n": 676,
+      "patients": 169,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    },
+    {
+      "category": "parse",
+      "direction": "lower",
+      "hi": 0.0,
+      "label": "clearly met",
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "failure_rate",
+      "n": 676,
+      "patients": 169,
+      "reached": true,
+      "target": 0.0,
+      "value": 0.0
+    },
+    {
+      "category": "consistency",
+      "hi": 0.013149125107910326,
+      "lo": 0.008704019588441275,
+      "mdd": 0.004654307865098719,
+      "metric": "mean_sd",
+      "n": 169,
+      "patients": 169,
+      "value": 0.010901335939914653
+    },
+    {
+      "category": "consistency",
+      "hi": 1.0,
+      "lo": 0.9644970414201184,
+      "mdd": 0.03909535542456679,
+      "metric": "pass_rate",
+      "n": 169,
+      "patients": 169,
+      "value": 0.9822485207100592
+    },
+    {
+      "category": "tool_use",
+      "direction": "higher",
+      "hi": 0.9995069033530573,
+      "label": "clearly met",
+      "lo": 0.9945759368836292,
+      "mdd": 0.004958022574401881,
+      "metric": "scoring_tool_rate",
+      "n": 2028,
+      "patients": 169,
+      "reached": true,
+      "target": 0.99,
+      "value": 0.997534516765286
+    },
+    {
+      "category": "tool_use",
+      "direction": "lower",
+      "hi": 0.0,
+      "label": "clearly met",
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "over_refusal_rate",
+      "n": 2028,
+      "patients": 169,
+      "reached": true,
+      "target": 0.05,
+      "value": 0.0
+    },
+    {
+      "category": "tool_use",
+      "hi": 1.0,
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "reply_consistency_rate",
+      "n": 2028,
+      "patients": 169,
+      "value": 1.0
+    },
+    {
+      "category": "tool_use",
+      "hi": 0.022682445759368838,
+      "lo": 0.009861932938856016,
+      "mdd": 0.013379230349536472,
+      "metric": "template_fallback_rate",
+      "n": 2028,
+      "patients": 169,
+      "value": 0.015779092702169626
+    }
+  ],
+  "seed": 0,
+  "split": "test",
+  "suites": {
+    "consistency": 676
+  },
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.1"
+}

@@ -85,6 +85,8 @@ def test_stage_dir_resolves_both_systems(tmp_path):
     (tmp_path / "dev" / "v3_claude-haiku-5-5").mkdir(parents=True)
     (tmp_path / "dev" / "v5_claude-haiku-5-5").mkdir(parents=True)
     assert compare.stage_dir("classifier", "test", root=tmp_path) == tmp_path / "test"
+    assert compare.stage_dir("agent", "test", root=tmp_path) == tmp_path / "test"
+    assert compare.stage_dir("agent", "test").parts[-2:] == ("agent", "test")
     assert compare.stage_dir("frontier", "test", "haiku", root=tmp_path) == tmp_path / "claude-haiku-5-5" / "test"
     assert compare.stage_dir("frontier", "dev", "haiku", root=tmp_path).name == "v5_claude-haiku-5-5"
     with pytest.raises(ValueError):

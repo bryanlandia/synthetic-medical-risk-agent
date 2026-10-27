@@ -29,10 +29,12 @@ MODELS = {"haiku": "claude-haiku-5-5", "sonnet": "claude-sonnet-5-5"}
 
 
 def stage_dir(system: str, split: str, model: str = "haiku", root: Path | None = None) -> Path:
-    """Where a system's run on a split was written."""
+    """Where a system's run on a split was written ("trials" and "scope" stages have their own folders)."""
     model_id = MODELS.get(model, model)
     if system == "classifier":
         return (root or CLASSIFIER_RESULTS) / split
+    if system == "agent":  # the live runs; scripted runs are in results/agent_scripted and are never compared
+        return (root or CLASSIFIER_RESULTS.parent / "agent") / split
     if system == "frontier":
         base = root or FRONTIER_RESULTS
         if split == "dev":
@@ -41,7 +43,7 @@ def stage_dir(system: str, split: str, model: str = "haiku", root: Path | None =
                 raise FileNotFoundError(f"no frontier dev run for {model_id} in {base / 'dev'}")
             return found[-1]
         return base / model_id / split
-    raise ValueError(f"unknown system {system!r}: choose classifier or frontier, or pass a directory")
+    raise ValueError(f"unknown system {system!r}: choose classifier, agent or frontier, or pass a directory")
 
 
 def probabilities(rows: list[dict[str, Any]], dataset: Dataset) -> dict[str, tuple[float, float, str]]:

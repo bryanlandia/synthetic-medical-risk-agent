@@ -5,7 +5,7 @@ nothing here is medical advice.
 
 - `src/training/` fits and evaluates (scikit-learn, MLflow). Train data is the train split of `data_gen/data_llm/`
   **without the dev ids**; `test` and `adversarial` are refused by the loader.
-- `src/risk_model/` is the inference package: numpy and the standard library only, so the agent can load the committed
+- The inference package is the separate `../risk_model/` project (numpy and the standard library only), so the agent can load the committed
   model files without scikit-learn or MLflow.
 
 Run from `training/` with `UV_PYTHON_PREFERENCE=only-managed PATH=$HOME/.local/bin:$PATH uv run ...`:
@@ -21,8 +21,8 @@ Run from `training/` with `UV_PYTHON_PREFERENCE=only-managed PATH=$HOME/.local/b
 | `evals run --system classifier --split dev` | score the committed model through the harness |
 | `evals compare` | classifier against the frontier baseline, paired, with intervals |
 
-Layout: `src/risk_model/` is the inference package (numpy and the standard library only: reader, classifier, report
-assembly, data-quality checks). `src/training/` fits and evaluates. `model/` holds the committed model files (`reader.json`,
+Layout: inference (reader, classifier, report assembly, data-quality checks) lives in `../risk_model/`, a separate project that
+`training` depends on. `src/training/` fits and evaluates. `model/` holds the committed model files (`reader.json`,
 `classifier.json`), the manifest with the model hash, the metrics and the model card. `config/grid.json` is the candidate
 grid, declared before any dev scoring. `data/symptom_lexicon.json` is the symptom lexicon. `mlruns/` (MLflow) is not committed.
 
