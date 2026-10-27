@@ -1,4 +1,4 @@
-# Results: agent@414c2d467c87+p5b3e325b5850+claude-haiku-5-5+v0.1.0.1 on dev
+# Results: agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.1 on dev
 
 ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.
 
@@ -21,9 +21,9 @@ A system under test
 | data_quality | exact_match | 0.9957 | [0.9827, 1.0000] | 231 (231) | 0.0177 | >= 0.5000 | reached, clearly met |
 | borderline | uncertain_rate | 0.5132 | [0.4079, 0.6316] | 76 (76) | 0.2213 | >= 0.5000 | reached, not distinguishable |
 | borderline | false_uncertain_rate | 0.0135 | [0.0000, 0.0270] | 223 (223) | 0.0294 | <= 0.1000 | reached, clearly met |
-| tool_use | scoring_tool_rate | 0.9951 | [0.9893, 1.0000] | 1030 (500) | 0.0108 | >= 0.9900 | reached, not distinguishable |
+| tool_use | scoring_tool_rate | 0.9981 | [0.9941, 1.0000] | 1030 (500) | 0.0076 | >= 0.9900 | reached, clearly met |
 | tool_use | over_refusal_rate | 0.0000 | [0.0000, 0.0000] | 1030 (500) | 0.0000 | <= 0.0500 | reached, clearly met |
 | tool_use | reply_consistency_rate | 1.0000 | [1.0000, 1.0000] | 1030 (500) | 0.0000 | | |
-| tool_use | template_fallback_rate | 0.0146 | [0.0046, 0.0261] | 1030 (500) | 0.0221 | | |
+| tool_use | template_fallback_rate | 0.0087 | [0.0019, 0.0176] | 1030 (500) | 0.0164 | | |
 
 MDD: the smallest difference between two systems this sample could detect at 80% power, approximated as 2.8 x sqrt(2) x the bootstrap standard error of the metric. A paired comparison is tighter.

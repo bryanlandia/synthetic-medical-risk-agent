@@ -206,15 +206,15 @@
       "category": "tool_use",
       "direction": "higher",
       "hi": 1.0,
-      "label": "not distinguishable",
-      "lo": 0.9893193474516928,
-      "mdd": 0.010759396992372624,
+      "label": "clearly met",
+      "lo": 0.9940828402366864,
+      "mdd": 0.00761559491028624,
       "metric": "scoring_tool_rate",
       "n": 1030,
       "patients": 500,
       "reached": true,
       "target": 0.99,
-      "value": 0.9951456310679612
+      "value": 0.9980582524271845
     },
     {
       "category": "tool_use",
@@ -242,13 +242,13 @@
     },
     {
       "category": "tool_use",
-      "hi": 0.026066208336616496,
-      "lo": 0.004616886518405639,
-      "mdd": 0.02208021067871262,
+      "hi": 0.017578554572947214,
+      "lo": 0.0019230769230769232,
+      "mdd": 0.016412439420994285,
       "metric": "template_fallback_rate",
       "n": 1030,
       "patients": 500,
-      "value": 0.014563106796116505
+      "value": 0.008737864077669903
     }
   ],
   "seed": 0,
@@ -258,5 +258,5 @@
     "data_quality": 231,
     "happy_path": 500
   },
-  "system_version": "agent@414c2d467c87+p5b3e325b5850+claude-haiku-5-5+v0.1.0.1"
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.1"
 }
