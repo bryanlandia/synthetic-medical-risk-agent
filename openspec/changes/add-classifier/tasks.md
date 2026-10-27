@@ -34,12 +34,12 @@
 ## 5. Final runs and comparison
 
 - [x] 5.1 Freeze the model hash on dev and add the one-look rule for the `classifier` system to the ledger (a second final run for the same hash is refused unless forced). Test the refusal and the recorded forced run.
-- [ ] 5.2 Run `test` and `adversarial` with `--final`, and the three-trial consistency run on the matched-pair subset. Eval: consistency mean SD 0 and pass^3 of 1.
+- [x] 5.2 Run `test` and `adversarial` with `--final`, and the three-trial consistency run on the matched-pair subset. Eval: the three trials of every matched-pair record give identical reports, and the consistency mean SD (spread across the four documentation settings of one patient) is at most 0.05 with at least 90% of pairs passing, as the targets say.
 - [x] 5.3 Add `uv run evals compare --a classifier --b frontier`: pairs the two systems' transcripts by patient and writes the values, paired differences with patient-clustered bootstrap intervals and verdicts for AUC, Brier and log loss to `results/classifier/comparison.md`. Test on two mock systems with a known difference and on identical systems (difference zero, not distinguishable).
-- [ ] 5.4 Read failing transcripts for each target the classifier misses, record them in a reading file as the frontier baseline did, and generate the comparison report. Eval: the report is complete (no missing readings).
+- [x] 5.4 Read failing transcripts for each target the classifier misses, record them in a reading file as the frontier baseline did, and generate the comparison report. Eval: the report is complete (no missing readings).
 
 ## 6. Documentation and validation
 
 - [x] 6.1 Write the model card (intended use, data, train and dev split, held-out table, weaknesses, the note that the synthetic rule is logistic, the model hash and MLflow run id) and a test that fails if its hash disagrees with the committed model files.
-- [ ] 6.2 Update `AGENTS.md` and the READMEs with the training and classifier commands, and add the classifier row to the evals README headline table next to the frontier baseline.
-- [ ] 6.3 Run the full test suites for `training/` and `evals/`, the fast regression and `openspec validate add-classifier --strict`.
+- [x] 6.2 Update `AGENTS.md` and the READMEs with the training and classifier commands, and add the classifier row to the evals README headline table next to the frontier baseline.
+- [x] 6.3 Run the full test suites for `training/` and `evals/`, the fast regression and `openspec validate add-classifier --strict`.

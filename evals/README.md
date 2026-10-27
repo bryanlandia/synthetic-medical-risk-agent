@@ -76,6 +76,24 @@ Haiku is the final model.
 | Invalid or unsafe reports | 0.1% (0.0 to 0.3%) | 0: not distinguishable |
 | Consistency, pass^3 | 0.627 (0.556 to 0.698) | none |
 
+**Headline: the trained classifier** (`classifier@414c2d467c87+r1`: a CPU note reader and a logistic risk classifier, fitted
+on train without dev; `test` split, 931 patients; full report in `results/classifier/report.md`). The paired comparison
+with the frontier baseline above, on the same patients:
+
+| Metric | Classifier | Frontier baseline | Paired difference (95% interval) | Target v1 (classifier) |
+|---|---|---|---|---|
+| AUC | 0.796 (0.762 to 0.827) | 0.735 | +0.061 (+0.037 to +0.084), classifier better | 0.799: not distinguishable |
+| Brier | 0.155 (0.143 to 0.169) | 0.181 | -0.026 (-0.034 to -0.018), classifier better | 0.159: reached |
+| Log loss | 0.483 (0.449 to 0.520) | 0.540 | -0.058 (-0.080 to -0.037), classifier better | 0.482: not distinguishable |
+| Data quality, exact match | 1.000 | 0.965 | | 0.5: clearly met |
+| Borderline uncertain rate | 0.584 (0.484 to 0.681) | 0.472 | | 0.5: reached, not distinguishable |
+| Invalid or unsafe reports | 0 of 3,634 | about 0.1% | | 0: clearly met |
+| Consistency across settings (mean SD) | 0.011 | | | 0.05: reached |
+
+Trials are identical (676 of 676 matched-pair records, three trials). Reading its failing transcripts showed label noise
+and records with a missing lab, not a grader fault. The model is small (197 kB), runs in under a millisecond on a CPU, and
+the synthetic rule is logistic, which makes this family a good fit; the model card says so.
+
 API-backed systems run concurrently (`--workers`, default 8 samples at a time) and give identical transcripts, results
 and cache contents at any worker count.
 

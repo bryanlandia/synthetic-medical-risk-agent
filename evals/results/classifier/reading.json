@@ -1,0 +1,31 @@
+{
+  "readings": [
+    {
+      "grader": "happy_path",
+      "transcripts": [
+        "happy_path:P20261-000642-m2:0",
+        "happy_path:P20261-003407-m2:0",
+        "happy_path:P20261-001511-m2:0",
+        "happy_path:P20261-000554:0",
+        "happy_path:P20261-000304-m3:0",
+        "happy_path:P20261-004864:0",
+        "happy_path:P20261-004847-m2:0",
+        "happy_path:P20261-000435-m3:0",
+        "happy_path:P20261-000916:0",
+        "happy_path:P20261-002085-m4:0",
+        "happy_path:P20261-001016-m3:0",
+        "happy_path:P20261-001852-m1:0",
+        "happy_path:P20261-000834:0",
+        "happy_path:P20261-000476:0",
+        "happy_path:P20261-004667:0",
+        "happy_path:P20261-001218:0",
+        "happy_path:P20261-001948:0",
+        "happy_path:P20261-003902-m1:0",
+        "happy_path:P20261-001170:0",
+        "happy_path:P20261-004413-m3:0"
+      ],
+      "findings": "319 of the 1,438 test happy-path trials (22%) are on the wrong side of 0.5. Twenty read. In 11 of them the reported probability is within 0.07 of the record's true probability and the label was drawn against it (true probabilities of 0.03 to 0.48 for positives); this is the label noise no system can classify. Across all 319 the true probability has a median of 0.36 and half lie between 0.3 and 0.7, and the median distance from the true probability is 0.065 (0.033 for the passing). Nine of the 20 differ from the true probability by more than 0.07 and six by more than 0.15: three of those six have missing labs (the model sits a missing lab at the typical value), one has a contradiction warning, and two (a true 0.40 reported as 0.57, a true 0.18 reported as 0.37) show no data problem and look like weighting error on single records. Missing labs are only slightly more common among all failing trials (36%) than passing ones (31%). The evidence in every transcript is consistent with the report; no invented value, unsafe text or invalid report appears. Not a grader fault. The AUC and log-loss targets are missed by 0.004 and 0.0005 with intervals that contain the target, so they are not distinguishable from met.",
+      "grader_fault": null
+    }
+  ]
+}

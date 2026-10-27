@@ -65,6 +65,56 @@ Injection: with each of the catalog's addenda appended to every dev note, the re
 
 Model files 197 kB. One report at a time on 1 thread: median 0.25 ms, 95th percentile 0.80 ms (500 dev records).
 
+## Final results (one look each)
+
+### test
+
+| Category | Metric | Value [95% interval] | Target v1 |
+|---|---|---|---|
+| happy_path | auc | 0.7955 [0.7620, 0.8274] | >= 0.7994: not reached, not distinguishable |
+| happy_path | brier | 0.1553 [0.1429, 0.1688] | <= 0.1587: reached, not distinguishable |
+| happy_path | log_loss | 0.4827 [0.4486, 0.5202] | <= 0.4822: not reached, not distinguishable |
+| happy_path | ece | 0.0422 [0.0292, 0.0690] | <= 0.0643: reached, not distinguishable |
+| symptom_reading | accuracy | 0.9940 [0.9916, 0.9963] | >= 0.6642: reached, clearly met |
+| fabrication | rate | 0.0000 [0.0000, 0.0000] | <= 0.0000: reached, clearly met |
+| safety | pass_rate | 1.0000 [1.0000, 1.0000] | >= 1.0000: reached, clearly met |
+| parse | failure_rate | 0.0000 [0.0000, 0.0000] | <= 0.0000: reached, clearly met |
+| data_quality | recall:missing_value | 1.0000 [1.0000, 1.0000] | >= 0.5000: reached, clearly met |
+| data_quality | recall:unit_mismatch | 1.0000 [1.0000, 1.0000] | >= 0.5000: reached, clearly met |
+| data_quality | recall:contradiction | 1.0000 [1.0000, 1.0000] | >= 0.5000: reached, clearly met |
+| data_quality | exact_match | 1.0000 [1.0000, 1.0000] | >= 0.5000: reached, clearly met |
+| borderline | uncertain_rate | 0.5838 [0.4835, 0.6813] | >= 0.5000: reached, not distinguishable |
+| borderline | false_uncertain_rate | 0.0047 [0.0000, 0.0123] | <= 0.1000: reached, clearly met |
+| consistency | mean_sd | 0.0109 [0.0087, 0.0131] |  |
+| consistency | pass_rate | 0.9822 [0.9645, 1.0000] |  |
+
+### adversarial
+
+| Category | Metric | Value [95% interval] | Target v1 |
+|---|---|---|---|
+| fabrication | rate | 0.0000 [0.0000, 0.0000] | <= 0.0000: reached, clearly met |
+| safety | pass_rate | 1.0000 [1.0000, 1.0000] | >= 1.0000: reached, clearly met |
+| parse | failure_rate | 0.0000 [0.0000, 0.0000] | <= 0.0000: reached, clearly met |
+| data_quality | recall:missing_value | 1.0000 [1.0000, 1.0000] | >= 0.5000: reached, clearly met |
+| data_quality | recall:unit_mismatch | 0.9818 [0.9455, 1.0000] | >= 0.5000: reached, clearly met |
+| data_quality | recall:impossible_value | 1.0000 [1.0000, 1.0000] |  |
+| data_quality | recall:contradiction | 1.0000 [1.0000, 1.0000] | >= 0.5000: reached, clearly met |
+| data_quality | recall:note_flag_disagreement | 0.0175 [0.0000, 0.0526] |  |
+| data_quality | exact_match | 0.8000 [0.7509, 0.8456] | >= 0.5000: reached, clearly met |
+| borderline | uncertain_rate | 0.6091 [0.5180, 0.7000] | >= 0.5000: reached, clearly met |
+| borderline | false_uncertain_rate | 0.0140 [0.0000, 0.0350] | <= 0.1000: reached, clearly met |
+| adversarial | resistance_rate | 1.0000 [1.0000, 1.0000] |  |
+
+### trials
+
+| Category | Metric | Value [95% interval] | Target v1 |
+|---|---|---|---|
+| fabrication | rate | 0.0000 [0.0000, 0.0000] | <= 0.0000: reached, clearly met |
+| safety | pass_rate | 1.0000 [1.0000, 1.0000] | >= 1.0000: reached, clearly met |
+| parse | failure_rate | 0.0000 [0.0000, 0.0000] | <= 0.0000: reached, clearly met |
+| consistency | mean_sd | 0.0109 [0.0087, 0.0131] |  |
+| consistency | pass_rate | 0.9822 [0.9645, 1.0000] |  |
+
 ## Known weaknesses
 
 - **Missing labs.** A missing lab sits at the typical value with its indicator on; the model cannot know where the real value was. Most borderline failures on dev are records with a missing lab.
