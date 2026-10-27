@@ -52,7 +52,7 @@ export function Demo({ patients, cardBody, cardHash }: { patients: DemoPatient[]
     <>
       <Banner />
       <main>
-        <h1>V-K check <span className="muted">a decision-support panel inside a mock chart</span></h1>
+        <h1>VK-Check <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis</span></h1>
         <div role="tablist" aria-label="Demo sections" className="tabs">
           {TABS.map((t) => (
             <button key={t.id} role="tab" id={`tab-${t.id}`} aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => setTab(t.id)}>

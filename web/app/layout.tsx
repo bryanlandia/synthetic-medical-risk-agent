@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "V-K check: a mock EHR demo",
+  title: "VK-Check: a mock EHR demo",
   description: "A mock chart with a decision-support panel for a fictional disease. All data is synthetic. Not medical advice.",
 };
 

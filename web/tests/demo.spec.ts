@@ -161,3 +161,11 @@ test("the route returns the whitelisted fields from the real service and not its
   expect(Object.keys(analysis).sort()).toEqual(["declined", "decline_reason", "reply", "reply_source", "report", "request_id", "usage"].sort());
   expect(Object.keys(analysis.usage).sort()).toEqual(["cost_usd", "input_tokens", "output_tokens"]);
 });
+
+test("the page is headed VK-Check with its subheader", async ({ page }) => {
+  await page.goto("/");
+  const heading = page.getByRole("heading", { level: 1 });
+  await expect(heading).toContainText("VK-Check");
+  await expect(heading).toContainText("Decision support for Velorin-Kessler Syndrome diagnosis");
+  await expect(page).toHaveTitle(/VK-Check/);
+});
