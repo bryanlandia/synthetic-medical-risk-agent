@@ -15,24 +15,24 @@
 
 ## 3. Service skeleton and guards
 
-- [ ] 3.1 Create the `agent/` project (Python 3.12, uv, pinned FastAPI, uvicorn, httpx, `strands-agents[anthropic]`; `risk_model` by path) with configuration from environment variables, fail-closed startup (no shared secret, no key without the scripted model, scripted model refused in production, relaxed limits refused in production) and `GET /healthz`. Test each startup failure and that no error prints a secret.
-- [ ] 3.2 Implement the request checks in order: shared secret (constant-time, 401), shape and size (422, 413, control characters removed), rate limit (10 a minute and 200 a day, `Retry-After`, 429), daily spend (503). Test each path with a counting stand-in for the model and assert the model is not called on any rejection.
-- [ ] 3.3 Implement the spend counter in SQLite with a pinned price table: cost from reported token usage, a total that survives restart, a day boundary in UTC. Test the cap, the restart and the day roll-over with an injected clock.
-- [ ] 3.4 Implement structured logging of the fields in the spec without message, reply, secret or key. Test by searching the log of a served request for a word from the message, for the secret and for the key.
+- [x] 3.1 Create the `agent/` project (Python 3.12, uv, pinned FastAPI, uvicorn, httpx, `strands-agents[anthropic]`; `risk_model` by path) with configuration from environment variables, fail-closed startup (no shared secret, no key without the scripted model, scripted model refused in production, relaxed limits refused in production) and `GET /healthz`. Test each startup failure and that no error prints a secret.
+- [x] 3.2 Implement the request checks in order: shared secret (constant-time, 401), shape and size (422, 413, control characters removed), rate limit (10 a minute and 200 a day, `Retry-After`, 429), daily spend (503). Test each path with a counting stand-in for the model and assert the model is not called on any rejection.
+- [x] 3.3 Implement the spend counter in SQLite with a pinned price table: cost from reported token usage, a total that survives restart, a day boundary in UTC. Test the cap, the restart and the day roll-over with an injected clock.
+- [x] 3.4 Implement structured logging of the fields in the spec without message, reply, secret or key. Test by searching the log of a served request for a word from the message, for the secret and for the key.
 
 ## 4. The agent
 
-- [ ] 4.1 Write the system prompt file and record its hash in the logs. Implement the Strands agent with `AnthropicModel` (Haiku 5.5, `max_tokens` 600, no sampling parameters), the `score_message` tool that reads the message from `invocation_state`, and the `decline(reason)` tool with the report contract's reasons. Test that the tool has no parameter carrying values or text.
-- [ ] 4.2 Implement the scripted model (rule-based tool choice and reply from the report, with switches to misbehave) and the production refusal. Test the scripted model through the whole service.
-- [ ] 4.3 Enforce one tool call and two model invocations per request; a second call returns an error result and is counted in `usage`. Test with a scripted model that calls the tool twice, calls neither tool, and passes extra arguments naming other labs or text.
-- [ ] 4.4 Implement the decline path: fixed message per reason, `declined` true, no report, and "no tool called" treated as an out-of-scope decline. Test each reason and that no model prose is released on a decline.
+- [x] 4.1 Write the system prompt file and record its hash in the logs. Implement the Strands agent with `AnthropicModel` (Haiku 5.5, `max_tokens` 600, no sampling parameters), the `score_message` tool that reads the message from `invocation_state`, and the `decline(reason)` tool with the report contract's reasons. Test that the tool has no parameter carrying values or text.
+- [x] 4.2 Implement the scripted model (rule-based tool choice and reply from the report, with switches to misbehave) and the production refusal. Test the scripted model through the whole service.
+- [x] 4.3 Enforce one tool call and two model invocations per request; a second call returns an error result and is counted in `usage`. Test with a scripted model that calls the tool twice, calls neither tool, and passes extra arguments naming other labs or text.
+- [x] 4.4 Implement the decline path: fixed message per reason, `declined` true, no report, and "no tool called" treated as an out-of-scope decline. Test each reason and that no model prose is released on a decline.
 - [ ] 4.5 Run the whole service against the real Anthropic API on 5 hand-picked messages (owner-run, a few cents), check the tool choice and the replies, and record the outputs for the design notes.
 
 ## 5. Output guard
 
-- [ ] 5.1 Implement the denylist data file (medications, doses, treatment instructions, real disease names) and a test that it contains everything the evals' content check forbids. Implement the reply checks: quoted probabilities and percentages match the report within rounding, no denylisted content, at most 1,200 characters.
-- [ ] 5.2 Implement the template reply from the report (probability, uncertain flag, symptom readings, warnings, evidence, labs read) and append the disclaimer and synthetic-data notice by code in both cases. Test a wrong number, a medication name, an overlong reply, a missing disclaimer, and a good reply that passes through.
-- [ ] 5.3 Test the injection path end to end with the scripted model: an addendum asking for a result does not change the report or the tool, and a model that repeats the instruction in its reply is replaced by the template when the reply is unsafe.
+- [x] 5.1 Implement the denylist data file (medications, doses, treatment instructions, real disease names) and a test that it contains everything the evals' content check forbids. Implement the reply checks: quoted probabilities and percentages match the report within rounding, no denylisted content, at most 1,200 characters.
+- [x] 5.2 Implement the template reply from the report (probability, uncertain flag, symptom readings, warnings, evidence, labs read) and append the disclaimer and synthetic-data notice by code in both cases. Test a wrong number, a medication name, an overlong reply, a missing disclaimer, and a good reply that passes through.
+- [x] 5.3 Test the injection path end to end with the scripted model: an addendum asking for a result does not change the report or the tool, and a model that repeats the instruction in its reply is replaced by the template when the reply is unsafe.
 
 ## 6. Evals for the agent
 
