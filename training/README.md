@@ -15,7 +15,7 @@ Run from `training/` with `UV_PYTHON_PREFERENCE=only-managed PATH=$HOME/.local/b
 | `training train` | fit the reader and the classifier on train without dev, choose settings on dev, write `model/`, log an MLflow run |
 | `training reader` | fit and score only the note reader (writes `model/reader.json`, `reader_report.json`) |
 | `training lexicon` | regenerate `data/symptom_lexicon.json` |
-| `training card` | rewrite `model/MODEL_CARD.md` from the manifest and result files |
+| `training card` | rewrite `model/MODEL_CARD.md` (Hugging Face model card layout, metadata block included) from the manifest and result files |
 | `training latency` | time one report at a time over 500 dev records; model size |
 | `training freeze` | record the model hash (needs a dev run) so `test` and `adversarial` can be scored once each |
 | `evals run --system classifier --split dev` | score the committed model through the harness |
