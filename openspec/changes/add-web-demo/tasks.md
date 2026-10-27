@@ -17,11 +17,11 @@
 
 ## 4. The web app
 
-- [ ] 4.1 Create the Next.js app in `web/` (TypeScript, pinned dependencies, no analytics or third-party scripts), the banner and the mock-EHR label on every screen, and the layout of the chart page and tabs. Eval: the banner and the label are visible on each tab in a Playwright test.
-- [ ] 4.2 Implement the server route `/api/analyze` and `/api/health` as in Decision 4, with the error mapping of Decision 9. Eval: unit tests of the route against a fake service for each status (200 scored, 200 declined, 401, 413, 422, 429 with `Retry-After`, 502, 503, timeout) and that the response carries only the whitelisted fields.
-- [ ] 4.3 Implement the chart page: patient selector, chart, "Run V-K check", the "message sent" expander and the report card for scored and declined results, and the working state. Eval: Playwright against the scripted service: the request body equals the expander text; the unit-mismatch patient shows both warnings; the card shows the disclaimer.
-- [ ] 4.4 Implement the free-text tab (one message per send, nothing kept) and the model-card tab (rendered body, hash comparison). Eval: Playwright: a treatment question shows a decline and no probability; two sends keep no history; matching and mismatching hashes show the match and the warning.
-- [ ] 4.5 Check the production build: neither the shared secret nor the agent address appears in any browser-visible file. Eval: a test that builds, then searches the client output for both values and fails if either is found.
+- [x] 4.1 Create the Next.js app in `web/` (TypeScript, pinned dependencies, no analytics or third-party scripts), the banner and the mock-EHR label on every screen, and the layout of the chart page and tabs. Eval: the banner and the label are visible on each tab in a Playwright test.
+- [x] 4.2 Implement the server route `/api/analyze` and `/api/health` as in Decision 4, with the error mapping of Decision 9. Eval: unit tests of the route against a fake service for each status (200 scored, 200 declined, 401, 413, 422, 429 with `Retry-After`, 502, 503, timeout) and that the response carries only the whitelisted fields.
+- [x] 4.3 Implement the chart page: patient selector, chart, "Run V-K check", the "message sent" expander and the report card for scored and declined results, and the working state. Eval: Playwright against the scripted service: the request body equals the expander text; the unit-mismatch patient shows both warnings; the card shows the disclaimer.
+- [x] 4.4 Implement the free-text tab (one message per send, nothing kept) and the model-card tab (rendered body, hash comparison). Eval: Playwright: a treatment question shows a decline and no probability; two sends keep no history; matching and mismatching hashes show the match and the warning.
+- [x] 4.5 Check the production build: neither the shared secret nor the agent address appears in any browser-visible file. Eval: a test that builds, then searches the client output for both values and fails if either is found.
 
 ## 5. Deploy
 
