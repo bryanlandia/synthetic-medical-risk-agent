@@ -27,11 +27,11 @@
 
 ## 5. Owner-run paid stages (the owner exports the key in their own shell)
 
-- [ ] 5.1 Run `evals estimate --system frontier` and confirm the numbers with the owner.
-- [ ] 5.2 Dev iteration on Haiku 5.5: up to five prompt versions, each scored on dev only; record each version and the decision; freeze one.
-- [ ] 5.3 Run the frozen prompt on Sonnet 5.5 on dev for the comparison.
-- [ ] 5.4 One run each of `test` and `adversarial` with Sonnet 5.5, then three trials on the matched-pair subset.
-- [ ] 5.5 Read failing transcripts, write the reading file, generate the baseline report and commit the compacted caches, results and report, and add the baseline headline row to the README, labelled as the frontier baseline with its briefing.
+- [x] 5.1 Run `evals estimate --system frontier` and confirm the numbers with the owner.
+- [x] 5.2 Dev iteration on Haiku 5.5: up to five prompt versions, each scored on dev only; record each version and the decision; freeze one.
+- [x] 5.3 Run the frozen prompt on Sonnet 5.5 on dev for the comparison (done: AUC 0.739 against 0.752 on Haiku, within the minimum detectable difference; about 20 times the cost per call).
+- [x] 5.4 One run each of `test` and `adversarial` with Haiku 5.5 (the comparison showed Sonnet no better), then three trials on the matched-pair subset.
+- [x] 5.5 Read failing transcripts, write the reading file, generate the baseline report and commit the compacted caches, results and report, and add the baseline headline row to the README, labelled as the frontier baseline with its briefing.
 
 ## 6. Documentation and validation
 

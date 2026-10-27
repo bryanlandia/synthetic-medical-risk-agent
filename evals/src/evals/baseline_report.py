@@ -116,7 +116,7 @@ def generate(root: Path | None = None, model: str = FINAL_MODEL, *, reading_path
     L = ["# Frontier baseline", "", SYNTHETIC_NOTICE, ""]
     if missing:
         L += ["> **INCOMPLETE.** " + "; ".join(missing), ""]
-    L += [f"- Final model: `{model}`; development model: the same frozen prompt on Haiku.",
+    L += [f"- Final model: `{model}`, running the frozen prompt. The dev section lists every model the prompt was scored on there.",
           f"- Frozen prompt hash: `{frozen['prompt_hash'] if frozen else 'not frozen'}`"
           f" (version file `{next((e['prompt_version'] for e in chain if frozen and e['prompt_hash'] == frozen['prompt_hash']), '?')}`).",
           f"- Total spend recorded by the runs: ${spend:.2f}.",

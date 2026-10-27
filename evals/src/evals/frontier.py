@@ -17,7 +17,7 @@ from .prompt_system import PromptSystem, RunEstimate, estimate_calls, prompt_has
 
 PROMPTS_DIR = Path(__file__).resolve().parents[2] / "prompts" / "frontier"
 DEV_MODEL = "claude-haiku-5-5"
-FINAL_MODEL = "claude-sonnet-5-5"
+FINAL_MODEL = "claude-sonnet-5-5"  # the dev comparison model (and the default model of the report generator); finals are run with --model haiku
 MAX_TOKENS = 4000  # thinking shares this budget with the tool call
 
 
@@ -57,14 +57,14 @@ class Stage:
     trials: int
     injection_pairs: bool
     max_calls: int  # about 1.25 x the expected calls
-    max_usd: float  # about 1.5 x the Sonnet estimate, which leaves room for thinking tokens
+    max_usd: float  # about 1.2 x the real Sonnet cost per call measured on the dev run (the input-token estimate runs low)
 
 
 STAGES: dict[str, Stage] = {s.name: s for s in (
     Stage("dev", "dev", None, 1, False, max_calls=650, max_usd=8.0),
-    Stage("test", "test", None, 1, False, max_calls=1800, max_usd=25.0),
+    Stage("test", "test", None, 1, False, max_calls=1800, max_usd=28.0),
     Stage("adversarial", "adversarial", None, 1, True, max_calls=600, max_usd=10.0),
-    Stage("trials", "test", ("consistency",), 3, False, max_calls=1700, max_usd=20.0),
+    Stage("trials", "test", ("consistency",), 3, False, max_calls=1700, max_usd=26.0),
 )}
 
 

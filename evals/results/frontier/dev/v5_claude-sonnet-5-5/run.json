@@ -1,0 +1,10 @@
+{
+  "cache_hits": 1028,
+  "calls_made": 2,
+  "model": "claude-sonnet-5-5",
+  "prompt_hash": "4d83a764615e",
+  "spend_usd": 0.0384,
+  "stage": "dev",
+  "stopped": null,
+  "system_version": "frontier@b38c658b"
+}

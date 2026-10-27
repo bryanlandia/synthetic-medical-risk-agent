@@ -52,7 +52,7 @@ Frontier baseline (from `evals/`; paid steps need `--yes` and `ANTHROPIC_API_KEY
 
 - `uv run evals estimate [--prompt v1] [--model haiku|sonnet] [--stage all|dev|test|adversarial|trials]` calls, tokens and cost per stage against its cap; no call, no key
 - `uv run evals iterate --prompt vN [--model haiku] [--limit N] [--note "..."] --yes` score a prompt version on dev (at most 5 versions; `--limit` is an unrecorded smoke run); `uv run evals freeze --prompt vN` ends iteration
-- `uv run evals run --system frontier --prompt vN --model sonnet --split {dev,test,adversarial} [--suites consistency --trials 3] --final --yes` the stages; `test` and `adversarial` need a freeze and are one look each (`--force` repeats, warned)
+- `uv run evals run --system frontier --prompt vN --model haiku --split {dev,test,adversarial} [--suites consistency --trials 3] --final --yes` the stages; `test` and `adversarial` need a freeze and are one look each (`--force` repeats, warned)
 - `uv run evals report` writes `results/frontier/report.md`; it is INCOMPLETE (exit 1) until `results/frontier/reading.json` records the failing transcripts read for each failed grader
 
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):

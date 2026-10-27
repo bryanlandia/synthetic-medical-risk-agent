@@ -28,7 +28,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--dataset", default=None)
     run.add_argument("--out", default=None, help="output directory (default runs/<system>/<split>)")
     run.add_argument("--prompt", default="v1", help="frontier: the prompt file in prompts/frontier (without .md)")
-    run.add_argument("--model", default="sonnet", help="frontier: haiku or sonnet (or a model id)")
+    run.add_argument("--model", default="haiku", help="frontier: haiku or sonnet (or a model id)")
     run.add_argument("--yes", action="store_true", help="frontier: confirm the spend")
     run.add_argument("--workers", type=int, default=8, help="frontier: samples in flight at once")
     run.add_argument("--quiet", action="store_true", help="frontier: no progress lines")
@@ -36,7 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     est = sub.add_parser("estimate", help="frontier: the calls, tokens and cost of each stage; no call, no key")
     est.add_argument("--prompt", default="v1")
-    est.add_argument("--model", default="sonnet")
+    est.add_argument("--model", default="haiku")
     est.add_argument("--stage", choices=["all", "dev", "test", "adversarial", "trials"], default="all")
     est.add_argument("--dataset", default=None)
 
@@ -51,7 +51,7 @@ def build_parser() -> argparse.ArgumentParser:
     it.add_argument("--dataset", default=None)
 
     rep = sub.add_parser("report", help="frontier: write results/frontier/report.md; exit 1 if it is incomplete")
-    rep.add_argument("--model", default="sonnet")
+    rep.add_argument("--model", default="haiku")
 
     fr = sub.add_parser("freeze", help="frontier: choose the prompt for the protected splits; ends dev iteration")
     fr.add_argument("--prompt", required=True)

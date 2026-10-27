@@ -10,8 +10,6 @@ from evals.frontier import FINAL_MODEL, load_prompt
 from evals.prompt_system import prompt_hash
 from evals.systems import scored_report
 
-FINAL_DIR = "claude-sonnet-5-5"
-
 
 def parse(*argv):
     return build_parser().parse_args(list(argv))
@@ -30,7 +28,7 @@ def finished(dataset, tmp_path_factory):
     ledger = tmp / "ledger.json"
     assert frontier_cli.cmd_iterate(parse("iterate", "--prompt", "v1", "--yes", "--note", "first"), dataset, **paths) == 0
     assert frontier_cli.cmd_freeze(parse("freeze", "--prompt", "v1"), paths["protocol_path"]) == 0
-    run = lambda *a: frontier_cli.cmd_run(parse("run", "--system", "frontier", "--final", "--yes", *a), dataset,  # noqa: E731
+    run = lambda *a: frontier_cli.cmd_run(parse("run", "--system", "frontier", "--model", "sonnet", "--final", "--yes", *a), dataset,  # noqa: E731
                                           ledger_path=ledger, **paths)
     assert run("--split", "test", "--limit", "40") == 0
     assert run("--split", "adversarial", "--limit", "40") == 0
@@ -106,10 +104,10 @@ def test_fewer_than_ten_failures_need_all_of_them_read(finished):
 def test_the_report_command_writes_the_file_and_signals_incompleteness(finished):
     out = finished["out_root"]
     (out / "reading.json").unlink(missing_ok=True)
-    assert frontier_cli.cmd_report(parse("report"), root=out, protocol_path=finished["protocol_path"]) == 1
+    assert frontier_cli.cmd_report(parse("report", "--model", "sonnet"), root=out, protocol_path=finished["protocol_path"]) == 1
     assert (out / "report.md").exists()
     (out / "reading.json").write_text(json.dumps(reading_for(final_runs(out, FINAL_MODEL))))
-    assert frontier_cli.cmd_report(parse("report"), root=out, protocol_path=finished["protocol_path"]) == 0
+    assert frontier_cli.cmd_report(parse("report", "--model", "sonnet"), root=out, protocol_path=finished["protocol_path"]) == 0
 
 
 def test_with_three_failures_all_three_must_be_read():

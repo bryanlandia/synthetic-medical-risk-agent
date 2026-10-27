@@ -54,13 +54,27 @@ hash-chained file whose earlier entries cannot be edited unnoticed:
 
 - at most 5 prompt versions, each scored on dev only (Haiku 5.5); a sixth is refused;
 - `evals freeze` picks one; `test` and `adversarial` are refused until then, and only for that prompt's hash;
-- the final model (Sonnet 5.5) gets the same prompt; one final run each on `test` and `adversarial`, three trials on
-  the matched-pair subset, and a dev run for comparison; a repeated final run needs `--force`;
+- the final runs use Haiku 5.5 with the frozen prompt (Sonnet 5.5 was scored on dev once for comparison and was not better); one final run each on `test` and `adversarial`, three trials on
+  the matched-pair subset; a repeated final run needs `--force`;
 - every stage prints an estimate first (`evals estimate`), has a call and spend cap, and refuses to start above it;
   responses are cached, so a rerun costs nothing;
 - results are compared with targets v1 and labelled clearly met / not distinguishable / clearly not met from the 95%
   interval; `evals report` is marked INCOMPLETE until the failing transcripts a person read are recorded in
   `results/frontier/reading.json` (per grader: `transcripts` as `suite:sample_id:trial`, `findings`, `grader_fault`).
+
+**Headline: the frontier baseline** (Haiku 5.5, frozen prompt v5 with the qualitative briefing, `test` split, 931
+patients; full report in `results/frontier/report.md`). Sonnet 5.5 on dev scored AUC 0.739 against 0.752 for Haiku, so
+Haiku is the final model.
+
+| Metric | Value (95% interval) | Target v1 |
+|---|---|---|
+| AUC | 0.735 (0.700 to 0.768) | 0.799: clearly not met |
+| Brier | 0.181 (0.169 to 0.194) | 0.159: clearly not met |
+| Log loss | 0.540 (0.511 to 0.571) | 0.482: clearly not met |
+| Data quality, exact match | 0.965 (0.949 to 0.979) | 0.5: clearly met |
+| Borderline uncertain rate | 0.472 (0.393 to 0.560) | 0.5: not distinguishable |
+| Invalid or unsafe reports | 0.1% (0.0 to 0.3%) | 0: not distinguishable |
+| Consistency, pass^3 | 0.627 (0.556 to 0.698) | none |
 
 API-backed systems run concurrently (`--workers`, default 8 samples at a time) and give identical transcripts, results
 and cache contents at any worker count.
