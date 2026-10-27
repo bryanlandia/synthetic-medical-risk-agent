@@ -31,11 +31,15 @@ class StrandsOrchestrator:
 
     def run(self, message: str) -> Outcome:
         tracker = Tracker()
-        agent = Agent(model=self._model, tools=list(self._tools), system_prompt=SYSTEM_PROMPT, callback_handler=None)
+        model = self._model() if callable(self._model) else self._model
+        agent = Agent(model=model, tools=list(self._tools), system_prompt=SYSTEM_PROMPT, callback_handler=None)
         try:
             result = agent(message, invocation_state={"message": message, "tracker": tracker}, limits={"turns": MAX_TURNS})
         except Exception as exc:  # the provider, network or SDK failed: never echo details to the caller
             raise OrchestratorError(type(exc).__name__) from None
+        finally:
+            if callable(self._model):
+                _close(model)
         usage = result.metrics.accumulated_usage
         reply = str(result).strip() if tracker.final_tool == "score" else None
         return Outcome(tool=tracker.final_tool, report=tracker.report, decline_reason=tracker.reason, reply=reply or None,
@@ -54,9 +58,22 @@ def build_orchestrator(settings: Settings) -> StrandsOrchestrator:
 
     # Haiku 5.5 thinks by default and thinking shares max_tokens, so the ceiling is generous and the effort low: this task is
     # routing and a short summary, not reasoning.
-    model = AnthropicModel(client_args=_client_args(settings), model_id=settings.model_id, max_tokens=settings.max_tokens,
-                           params={"output_config": {"effort": settings.effort}})
-    return StrandsOrchestrator(settings, model, risk)
+    # A model per request: Strands runs each call on its own event loop, and an async HTTP client keeps pooled connections that
+    # belong to the loop that opened them, so one client shared across requests fails with connection errors and silent retries.
+    def make_model() -> Any:
+        return AnthropicModel(client_args=_client_args(settings), model_id=settings.model_id, max_tokens=settings.max_tokens,
+                              params={"output_config": {"effort": settings.effort}})
+
+    return StrandsOrchestrator(settings, make_model, risk)
+
+
+def _close(model: Any) -> None:
+    import asyncio
+
+    try:
+        asyncio.run(model.client.close())
+    except Exception:  # closing is housekeeping; never let it fail a request
+        pass
 
 
 def _client_args(settings: Settings) -> dict[str, Any]:

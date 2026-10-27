@@ -76,6 +76,9 @@ def test_the_real_model_is_built_with_the_ceiling_and_the_effort(tmp_path):
     from agent.runtime import build_orchestrator
 
     s = Settings.from_env(env(tmp_path, AGENT_SCRIPTED_MODEL="0"))
-    config = build_orchestrator(s)._model.get_config()
+    orch = build_orchestrator(s)
+    first, second = orch._model(), orch._model()
+    assert first is not second and first.client is not second.client  # a client per request: loops are not shared
+    config = first.get_config()
     assert config["max_tokens"] == 2000 and config["model_id"] == "claude-haiku-5-5"
     assert config["params"] == {"output_config": {"effort": "low"}}
