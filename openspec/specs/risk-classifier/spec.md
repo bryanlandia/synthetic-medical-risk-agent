@@ -112,7 +112,7 @@ The classifier SHALL be scored on `test` and `adversarial` exactly once each wit
 - **THEN** each of AUC, Brier and log loss has the classifier value, the frontier value, the paired difference with its 95% interval and a plain-language verdict
 
 ### Requirement: A model card states what the model is
-The repository SHALL contain a model card for the classifier in the Hugging Face model card layout: a metadata block, then the template's sections in its order (model details, sources, uses with an explicit out-of-scope use, bias, risks and limitations, how to get started, training details, evaluation, and the remaining template sections). It SHALL give the intended use (a fictional-disease demo, not medical advice), the data, the train and dev split, the held-out results, the known weaknesses and the synthetic-data notice, and SHALL say so where a section does not apply instead of omitting it.
+The repository SHALL contain a model card for the classifier in the Hugging Face model card layout: a metadata block, then the template's sections in its order. It SHALL give the intended use (a fictional-disease demo, not medical advice), the data, the train and dev split, the held-out results, the known weaknesses and the synthetic-data notice, and SHALL say so where a section does not apply instead of omitting it.
 
 #### Scenario: Model card present and current
 - **WHEN** the test suite runs
@@ -120,7 +120,7 @@ The repository SHALL contain a model card for the classifier in the Hugging Face
 
 #### Scenario: The layout
 - **WHEN** the committed card is read
-- **THEN** it starts with a metadata block, its section headings are the template's in the template's order, and it contains the synthetic-data notice and an out-of-scope use that excludes any real medical use
+- **THEN** it starts with a metadata block, its section headings are the template's (model details, sources, uses, bias risks and limitations, how to get started, training details, evaluation, and the rest) in the template's order, and it contains the synthetic-data notice and an out-of-scope use that excludes any real medical use
 
 ### Requirement: The card's metadata carries the results as data
 The card's metadata block SHALL parse as YAML and SHALL carry tags marking the model as synthetic and not for clinical use and a `model-index` with the dev and test AUC, Brier score, log loss and ECE. Every number in it SHALL equal the number in the corresponding result file, and the card SHALL be written by code from those files.
