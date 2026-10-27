@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "next": "15.5.28",
+    "posthog-js": "1.440.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-markdown": "10.1.0",

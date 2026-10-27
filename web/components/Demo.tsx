@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { Banner } from "./Banner";
 import { AboutTab } from "./AboutTab";
+import { trackResult } from "./Analytics";
 import { ChartTab } from "./ChartTab";
 import { FreeTextTab } from "./FreeTextTab";
 import { ModelCardTab } from "./ModelCardTab";
@@ -33,6 +34,11 @@ async function send(message: string): Promise<Outcome> {
   }
 }
 
+/** The coarse kind of an answer, the only thing about it that is counted. */
+function kindOf(outcome: Outcome): string {
+  return outcome.kind === "done" ? (outcome.analysis.declined ? "declined" : "scored") : "error";
+}
+
 export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPatient[]; cardBody: string; cardHash: string | null; about: string }) {
   const [tab, setTab] = useState<Tab>("chart");
   const [slug, setSlug] = useState(patients[0].slug);
@@ -43,11 +49,15 @@ export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPa
 
   async function runCheck() {
     setChartOutcome({ kind: "loading" });
-    setChartOutcome(await send(patient.message));
+    const outcome = await send(patient.message);
+    trackResult("chart", kindOf(outcome));
+    setChartOutcome(outcome);
   }
   async function runFree(message: string) {
     setFreeOutcome({ kind: "loading" });
-    setFreeOutcome(await send(message));
+    const outcome = await send(message);
+    trackResult("free_text", kindOf(outcome));
+    setFreeOutcome(outcome);
   }
 
   return (
@@ -57,7 +67,7 @@ export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPa
         <h1>VK-Check <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis</span></h1>
         <div role="tablist" aria-label="Demo sections" className="tabs">
           {TABS.map((t) => (
-            <button key={t.id} role="tab" id={`tab-${t.id}`} aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => setTab(t.id)}>
+            <button key={t.id} role="tab" data-track={`tab:${t.id}`} id={`tab-${t.id}`} aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => setTab(t.id)}>
               {t.label}
             </button>
           ))}

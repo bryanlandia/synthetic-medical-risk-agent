@@ -231,3 +231,16 @@ test("the model card's links open safely too (the shared renderer)", async ({ pa
   const link = page.locator("article.doc a").first();
   await expect(link).toHaveAttribute("rel", /noopener/);
 });
+
+test("with no analytics key the page counts nothing: no notice, no analytics request, no /ingest route", async ({ page, request }) => {
+  const paths: string[] = [];
+  page.on("request", (r) => paths.push(new URL(r.url()).pathname));
+  await page.goto("/");
+  await page.getByRole("button", { name: "Run V-K check" }).click();
+  await expect(page.getByTestId("probability")).toBeVisible();
+  await page.getByRole("tab", { name: "About this project" }).click();
+  await page.waitForTimeout(1500);
+  await expect(page.getByTestId("analytics-notice")).toHaveCount(0);
+  expect(paths.filter((p) => p.startsWith("/ingest"))).toEqual([]);
+  expect((await request.post("/ingest/e/", { data: "{}" })).status()).toBe(404);
+});

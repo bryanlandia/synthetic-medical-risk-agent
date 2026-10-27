@@ -4,3 +4,4 @@ playwright-report/
 *.tsbuildinfo
 .vercel
 .env*
+.next-analytics/

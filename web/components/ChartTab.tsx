@@ -16,7 +16,7 @@ export function ChartTab({ patients, patient, onSelect, onRun, outcome, labNames
       <section className="chart" aria-label="Patient chart">
         <div className="picker" role="group" aria-label="Demo patients">
           {patients.map((p) => (
-            <button key={p.slug} aria-pressed={p.slug === patient.slug} onClick={() => onSelect(p.slug)}>{p.title}</button>
+            <button key={p.slug} data-track={`patient:${p.slug}`} aria-pressed={p.slug === patient.slug} onClick={() => onSelect(p.slug)}>{p.title}</button>
           ))}
         </div>
         <p className="muted small">Demo patient {patient.patient_id} (invented). {patient.look_for}</p>
@@ -36,11 +36,11 @@ export function ChartTab({ patients, patient, onSelect, onRun, outcome, labNames
         <h2>Note</h2>
         <pre className="note" data-testid="note">{patient.chart.note}</pre>
         <details>
-          <summary>Message sent to the agent</summary>
+          <summary data-track="sent_message_expander">Message sent to the agent</summary>
           <p className="muted small">The check sends exactly this text, built from the chart&apos;s labs and note, and nothing else.</p>
           <pre className="note" data-testid="sent-message">{patient.message}</pre>
         </details>
-        <button className="primary" onClick={onRun} disabled={outcome.kind === "loading"}>Run V-K check</button>
+        <button className="primary" data-track="run_check" onClick={onRun} disabled={outcome.kind === "loading"}>Run V-K check</button>
       </section>
       <ReportCard outcome={outcome} labNames={labNames} />
     </div>
