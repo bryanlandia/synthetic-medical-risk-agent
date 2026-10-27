@@ -53,7 +53,7 @@ See proposal.md for why. The facts that shape the approach, all observed in the 
 - [Copy-forward notes carry stale lab values] → the reader keeps stated values separate from the panel; the classifier reads the panel only, and a stale note value becomes a `contradiction` warning, not a feature.
 - [A note that mentions a symptom with an unfamiliar word is read as not mentioned] → measured by symptom-reading accuracy on dev and by the held-out table; the lexicon is data, so a gap is fixed by adding terms and retraining, and every addition is checked against dev only.
 - [The borderline target (uncertain rate of at least 0.5 on true-borderline records) may stay out of reach] → a classifier cannot flag a record as borderline unless its own estimate falls in the band; the result is reported against the target with its interval, not engineered by widening the band.
-- [Packaging an MLflow dependency for a small model is heavy] → it is a training-only dependency; the predictor imports numpy only.
+- [MLflow's file store is in maintenance mode, and `mlflow-skinny` has no SQL backend] → the file store is used with MLflow's documented opt-out, for a local, uncommitted run log; the committed `run.json` and the manifest carry what a reader needs, and the predictor imports numpy only.
 
 ## Migration Plan
 

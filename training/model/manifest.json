@@ -1,0 +1,18 @@
+{
+  "dataset": "data_llm",
+  "dataset_config_hash": "8151340e6ce1549d",
+  "dev_ids_sha256": "7be4d134599b69aa302218031c4fb37c89a8deec8baff88fad57bd277b351366",
+  "files": {
+    "classifier.json": "b4149db218f624c2eb6c272fe6feed45a937d39de76363d3f431e3abcde1196c",
+    "metrics.json": "b2eed25e51c886f927dc08a126ae99100f01e55b1abae5824d69f597e235474b",
+    "reader.json": "28ecffaeeafef973ad024cc827ca6b22fa06b0007e4e448b6e2e5bb1c6cbabd4",
+    "reader_report.json": "13ccef6edbb73c9fa1e37300db98eb150968401bf765ee2c1805b811045a91d5"
+  },
+  "grid_sha256": "d31ac16d8f32dd650d83d897914580ed01d4c98e0852713d278c2a2221f6f165",
+  "model_hash": "414c2d467c87d44bbf3cd8d92454a4041a133f9bc2403b11a521e59ee8191443",
+  "n_train": 3298,
+  "notice": "All data is synthetic and the disease is fictional. Not medical advice.",
+  "seed": 0,
+  "synthetic": true,
+  "train_ids_sha256": "b5c94729c7595e9d05c7d2815c564d39fe94765172e0cc4ae313315ea38c4d23"
+}

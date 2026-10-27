@@ -1,0 +1,8 @@
+{
+  "note": "Declared before any dev scoring. The served model is always a logistic regression; the gradient-boosted settings are for the diagnostic only.",
+  "seed": 0,
+  "folds": 5,
+  "max_candidates": 12,
+  "logistic_c": [0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0, 30.0],
+  "gbm_diagnostic": {"max_depth": 3, "learning_rate": 0.05, "max_iter": 200, "min_samples_leaf": 40}
+}
