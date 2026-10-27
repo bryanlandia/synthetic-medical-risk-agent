@@ -1,0 +1,9 @@
+{
+  "functions": {
+    "index.py": {
+      "includeFiles": "{agent/src/**,risk_model/src/**,training/model/classifier.json,training/model/reader.json}",
+      "excludeFiles": "{**/__pycache__/**,**/tests/**}",
+      "maxDuration": 60
+    }
+  }
+}

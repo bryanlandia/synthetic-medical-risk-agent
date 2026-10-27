@@ -128,3 +128,10 @@ and cache contents at any worker count.
 Graders are plain functions (`evals/graders.py`, `injection.py`, `consistency.py`) wrapped by Inspect scorers. The
 oracle is run through every grader as a self-check (`evals/selfcheck.py`): a grader that does not score it as expected is
 reported as broken, not as a system failure.
+
+## Demo patients for the web page
+
+`uv run evals demo-patients` writes `web/content/demo_patients.json`: four dev-split patients chosen by fixed rules (a routine
+record, mixed units with a missing lab, a borderline probability, a note that disagrees with its panel), each with its chart
+and the message `render_message` builds. The file has no ground-truth field, and `tests/test_demo_patients.py` checks that every
+id is in the dev split, every message equals a fresh rendering and the committed file is what the command writes.

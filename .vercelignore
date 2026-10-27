@@ -1,0 +1,16 @@
+.git
+.venv
+**/.venv
+**/__pycache__
+data_gen
+evals
+training/mlruns
+training/src
+training/tests
+rating_ui
+web
+docs
+openspec
+**/node_modules
+.env*
+.vercel

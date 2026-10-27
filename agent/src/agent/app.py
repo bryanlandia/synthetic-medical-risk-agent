@@ -18,8 +18,8 @@ from . import pricing, replies
 from .config import Settings
 from .logs import log_request
 from .orchestrator import Orchestrator, OrchestratorError
-from .ratelimit import RateLimiter
-from .spend import SpendCounter
+from .store import StoreError
+from .limits import build_limits
 
 VERSION = "0.1.0"
 SECRET_HEADER = "x-shared-secret"
@@ -33,10 +33,9 @@ def clean(message: str) -> str:
     return "".join(c for c in message if c in "\n\t" or unicodedata.category(c) != "Cc")
 
 
-def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[], float] = time.time) -> FastAPI:
+def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[], float] = time.time, limits: Any = None) -> FastAPI:
     app = FastAPI(title="Fictional-disease risk chat", docs_url=None, redoc_url=None, openapi_url=None)
-    limiter = RateLimiter(settings.rate_per_minute, settings.rate_per_day, clock)
-    spend = SpendCounter(settings.spend_db, settings.daily_budget_usd, clock)
+    limiter, spend = limits or build_limits(settings, clock)
     model_hash = risk_model.model_hash(settings.model_dir)
     secret = settings.shared_secret.encode() if settings.shared_secret else None
 
@@ -85,11 +84,15 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
         client = request.client.host if request.client else "unknown"
         if authenticated and request.headers.get(VISITOR_HEADER):
             client = request.headers[VISITOR_HEADER][:100]
-        wait = limiter.check(client)
-        if wait is not None:
-            return reject(429, "rate_limited", request_id, started, len(message), {"retry-after": str(math.ceil(wait))})
-        # 4. the day's spend
-        if spend.exhausted():
+        try:  # the counters may be in a remote store: off the event loop, and if they cannot answer the request is refused
+            wait = await run_in_threadpool(limiter.check, client)
+            if wait is not None:
+                return reject(429, "rate_limited", request_id, started, len(message), {"retry-after": str(math.ceil(wait))})
+            # 4. the day's spend
+            exhausted = await run_in_threadpool(spend.exhausted)
+        except StoreError as exc:
+            return reject(503, "limits_unavailable", request_id, started, len(message), logged=f"limits_unavailable:{exc}")
+        if exhausted:
             return reject(503, "daily_budget_used", request_id, started, len(message))
         try:
             outcome = await run_in_threadpool(orchestrator.run, message)
@@ -97,7 +100,10 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
             # the class of the failure (never its text) goes to the log; the caller gets a generic body
             return reject(502, "model_unavailable", request_id, started, len(message), logged=f"model_unavailable:{exc}")
         cost = pricing.cost_usd(orchestrator.model_id, outcome.input_tokens, outcome.output_tokens)
-        spend.add(cost)
+        try:
+            await run_in_threadpool(spend.add, cost)
+        except StoreError as exc:  # the money is spent and the caller is served; the lost count is logged for the owner
+            log_request(request_id=request_id, status=200, reason=f"spend_not_recorded:{exc}", cost_usd=cost)
         if outcome.tool == "score" and outcome.report is not None:
             reply = replies.finalize_scored(outcome.report, outcome.reply)
             declined, report, reason = False, outcome.report, None
