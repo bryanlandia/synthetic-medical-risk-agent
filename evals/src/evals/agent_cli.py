@@ -64,7 +64,7 @@ def per_call_cost(root: Path | None = None) -> tuple[float, str]:
     measured = (root or results_dir(False)) / "dev" / "calls.jsonl"
     if measured.exists():
         rows = [json.loads(line) for line in measured.read_text().splitlines() if line.strip()]
-        paid = [r["cost_usd"] for r in rows if r["status"] == 200 and r.get("model_calls")]
+        paid = [r["cost_usd"] for r in rows if r["status"] == 200 and r.get("model_calls") and not r.get("cached")]
         if paid:
             return sum(paid) / len(paid), f"measured on {len(paid)} calls of the live dev run"
     return (ASSUMED_IN * PRICE_IN + ASSUMED_OUT * PRICE_OUT) / 1e6, f"assumed {ASSUMED_IN} input and {ASSUMED_OUT} output tokens a call"
@@ -154,7 +154,7 @@ def cmd_run(args: Any, dataset: Any, out_root: Path | None = None, ledger_path: 
         write_summary(summary, out)
         out.mkdir(parents=True, exist_ok=True)
         (out / "calls.jsonl").write_text("".join(json.dumps(c, sort_keys=True) + "\n" for c in system.calls))
-        spend = sum(c["cost_usd"] for c in system.calls)
+        spend = sum(c["cost_usd"] for c in system.calls if not c.get("cached"))
         (out / "run.json").write_text(json.dumps({"system_version": system.version, "stage": stage.name, "limit": args.limit,
                                                   "calls": len(system.calls), "spend_usd": round(spend, 4), "stopped": run.stopped},
                                                  indent=2, sort_keys=True) + "\n")

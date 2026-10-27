@@ -93,3 +93,48 @@ def test_the_same_message_and_trial_is_sent_once_and_a_new_trial_is_a_real_secon
     assert len(sent) == 1 and len(s.calls) == 2  # both are recorded, one was paid for
     s.run_call(v, 1)
     assert len(sent) == 2
+
+
+def test_a_dropped_pooled_connection_is_retried_once_and_a_second_failure_is_recorded_with_its_class(dataset):
+    attempts = []
+
+    def flaky(request):
+        attempts.append(1)
+        if len(attempts) == 1:
+            raise httpx.RemoteProtocolError("Server disconnected without sending a response")
+        return ok(request)
+
+    s = system(flaky)
+    assert parse_report(s.run_call(view(dataset), 0).text).ok and len(attempts) == 2 and s.calls[0]["status"] == 200
+
+    always = system(lambda r: (_ for _ in ()).throw(httpx.RemoteProtocolError("gone")))
+    out = always.run_call(view(dataset), 0)
+    assert out.text == f"{FAILURE_PREFIX} http 0]" and always.calls[0]["error"] == "RemoteProtocolError"
+
+
+def test_a_timeout_is_not_retried(dataset):
+    attempts = []
+
+    def slow(request):
+        attempts.append(1)
+        raise httpx.ReadTimeout("slow")
+
+    s = system(slow)
+    s.run_call(view(dataset), 0)
+    assert len(attempts) == 1 and s.calls[0]["error"] == "ReadTimeout"
+
+
+def test_a_call_served_from_the_run_cache_is_recorded_again_but_costs_nothing(dataset):
+    s = system(ok)
+    v = view(dataset)
+    s.run_call(v, 0)
+    s.run_call(v, 0)
+    first, second = s.calls
+    assert (first["cached"], first["cost_usd"]) == (False, 0.0002) and (second["cached"], second["cost_usd"]) == (True, 0.0)
+    assert sum(c["cost_usd"] for c in s.calls) == pytest.approx(0.0002)
+
+
+def test_the_tool_names_and_the_failure_text_of_a_non_200_are_kept(dataset):
+    s = system(lambda r: httpx.Response(502, json={"error": "model_unavailable"}))
+    s.run_call(view(dataset), 0)
+    assert s.calls[0]["error"] == "model_unavailable" and s.calls[0]["tools"] == []

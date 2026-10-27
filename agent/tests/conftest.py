@@ -53,3 +53,15 @@ def make(tmp_path):
 def caplog_requests(caplog):
     caplog.set_level(logging.INFO, logger="agent.request")
     return caplog
+
+
+@pytest.fixture
+def serve_scripted(make, tmp_path):
+    from agent.runtime import StrandsOrchestrator
+    from agent.scripted import ScriptedModel
+
+    def build(mode="normal"):
+        settings = Settings.from_env(env(tmp_path))
+        client, _, _ = make(StrandsOrchestrator(settings, ScriptedModel(mode), MODEL, model_id="scripted"))
+        return client
+    return build

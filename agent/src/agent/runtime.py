@@ -38,7 +38,8 @@ class StrandsOrchestrator:
         reply = str(result).strip() if tracker.final_tool == "score" else None
         return Outcome(tool=tracker.final_tool, report=tracker.report, decline_reason=tracker.reason, reply=reply or None,
                        input_tokens=int(usage.get("inputTokens", 0)), output_tokens=int(usage.get("outputTokens", 0)),
-                       tool_calls=tracker.tool_calls, model_calls=int(result.metrics.cycle_count), prompt_hash=PROMPT_HASH)
+                       tool_calls=tracker.tool_calls, model_calls=int(result.metrics.cycle_count), prompt_hash=PROMPT_HASH,
+                       tool_names=list(tracker.log))
 
 
 def build_orchestrator(settings: Settings) -> StrandsOrchestrator:
@@ -49,5 +50,8 @@ def build_orchestrator(settings: Settings) -> StrandsOrchestrator:
         return StrandsOrchestrator(settings, ScriptedModel(), risk, model_id="scripted")
     from strands.models.anthropic import AnthropicModel
 
-    model = AnthropicModel(client_args={"api_key": settings.api_key}, model_id=settings.model_id, max_tokens=settings.max_tokens)
+    # Haiku 5.5 thinks by default and thinking shares max_tokens, so the ceiling is generous and the effort low: this task is
+    # routing and a short summary, not reasoning.
+    model = AnthropicModel(client_args={"api_key": settings.api_key}, model_id=settings.model_id, max_tokens=settings.max_tokens,
+                           params={"output_config": {"effort": settings.effort}})
     return StrandsOrchestrator(settings, model, risk)

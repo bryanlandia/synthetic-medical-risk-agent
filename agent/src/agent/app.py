@@ -41,9 +41,9 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
     secret = settings.shared_secret.encode() if settings.shared_secret else None
 
     def reject(status: int, error: str, request_id: str, started: float, size: int = 0, headers: dict[str, str] | None = None,
-               **extra: Any) -> JSONResponse:
+               logged: str | None = None, **extra: Any) -> JSONResponse:
         log_request(request_id=request_id, status=status, latency_ms=round((time.monotonic() - started) * 1000), message_chars=size,
-                    reason=error)
+                    reason=logged or error)
         return JSONResponse({"error": error, "request_id": request_id, **extra}, status_code=status,
                             headers={"x-request-id": request_id, **(headers or {})})
 
@@ -93,8 +93,9 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
             return reject(503, "daily_budget_used", request_id, started, len(message))
         try:
             outcome = await run_in_threadpool(orchestrator.run, message)
-        except OrchestratorError:
-            return reject(502, "model_unavailable", request_id, started, len(message))
+        except OrchestratorError as exc:
+            # the class of the failure (never its text) goes to the log; the caller gets a generic body
+            return reject(502, "model_unavailable", request_id, started, len(message), logged=f"model_unavailable:{exc}")
         cost = pricing.cost_usd(orchestrator.model_id, outcome.input_tokens, outcome.output_tokens)
         spend.add(cost)
         if outcome.tool == "score" and outcome.report is not None:
@@ -104,11 +105,12 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
             reason = outcome.decline_reason if outcome.tool == "decline" else "out_of_scope"
             reply, declined, report = replies.finalize_declined(reason), True, None
         usage = {"input_tokens": outcome.input_tokens, "output_tokens": outcome.output_tokens, "cost_usd": cost,
-                 "tool_calls": outcome.tool_calls, "model_calls": outcome.model_calls}
+                 "tool_calls": outcome.tool_calls, "model_calls": outcome.model_calls, "tools": list(outcome.tool_names)}
         log_request(request_id=request_id, status=200, tool=outcome.tool or "none", reply_source=reply.source,
                     input_tokens=outcome.input_tokens, output_tokens=outcome.output_tokens, cost_usd=cost,
                     latency_ms=round((time.monotonic() - started) * 1000), message_chars=len(message),
-                    tool_calls=outcome.tool_calls, model_calls=outcome.model_calls, prompt_hash=outcome.prompt_hash)
+                    tool_calls=outcome.tool_calls, model_calls=outcome.model_calls, prompt_hash=outcome.prompt_hash,
+                    tools=",".join(outcome.tool_names))
         return JSONResponse({"request_id": request_id, "declined": declined, "decline_reason": reason, "reply": reply.text,
                              "reply_source": reply.source, "report": report, "usage": usage},
                             headers={"x-request-id": request_id})

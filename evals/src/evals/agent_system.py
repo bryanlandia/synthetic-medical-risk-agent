@@ -20,6 +20,7 @@ from .prompt_system import CallOutput
 
 SECRET_HEADER = "x-shared-secret"
 FAILURE_PREFIX = "[agent"
+RETRYABLE = (httpx.RemoteProtocolError, httpx.ReadError, httpx.WriteError, httpx.ConnectError)  # tried once more, never more
 
 
 class AgentSystem:
@@ -38,10 +39,17 @@ class AgentSystem:
 
     def post(self, message: str) -> tuple[int, dict[str, Any]]:
         """One request to the service: (status, body). A transport error is status 0."""
-        try:
-            r = self.http.post("/analyze", json={"message": message})
-        except httpx.HTTPError as exc:
-            return 0, {"error": type(exc).__name__}
+        r = None
+        for attempt in (1, 2):
+            try:
+                r = self.http.post("/analyze", json={"message": message})
+                break
+            except RETRYABLE as exc:  # a pooled connection the server had closed: the request was not processed
+                if attempt == 2:
+                    return 0, {"error": type(exc).__name__}
+            except httpx.HTTPError as exc:
+                return 0, {"error": type(exc).__name__}
+        assert r is not None
         try:
             body = r.json()
         except ValueError:
@@ -56,11 +64,14 @@ class AgentSystem:
         message = render_message(view)
         key = (message, trial_index)
         with self._lock_for(key):
-            if key not in self._cache:
+            fresh = key not in self._cache
+            if fresh:
                 self._cache[key] = self._fresh(view, message, trial_index)
             out, entry = self._cache[key]
+        # a call served from this run's cache is recorded again for the graders but cost nothing the second time
         with self._lock:
-            self.calls.append({**entry, "record_id": view["patient_id"], "trial_index": trial_index})
+            self.calls.append({**entry, "record_id": view["patient_id"], "trial_index": trial_index, "cached": not fresh,
+                               "cost_usd": entry["cost_usd"] if fresh else 0.0})
         return out
 
     def _fresh(self, view: dict[str, Any], message: str, trial_index: int) -> tuple[CallOutput, dict[str, Any]]:
@@ -68,7 +79,8 @@ class AgentSystem:
         status, body = self.post(message)
         usage = body.get("usage") or {}
         entry = {"status": status, "declined": bool(body.get("declined")), "decline_reason": body.get("decline_reason"),
-                 "tool_calls": usage.get("tool_calls", 0), "model_calls": usage.get("model_calls", 0),
+                 "tool_calls": usage.get("tool_calls", 0), "model_calls": usage.get("model_calls", 0), "tools": usage.get("tools", []),
+                 "error": body.get("error") if status != 200 else None,
                  "reply_source": body.get("reply_source"), "reply": body.get("reply"), "cost_usd": usage.get("cost_usd", 0.0),
                  "probability": (body.get("report") or {}).get("probability"), "latency_s": round(time.perf_counter() - started, 3)}
         tokens = {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}

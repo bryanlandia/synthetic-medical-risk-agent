@@ -62,3 +62,20 @@ def test_relaxed_limits_raise_the_rate_and_budget_for_eval_runs(tmp_path):
     s = start(tmp_path, AGENT_RELAX_LIMITS="1")
     assert s.rate_per_minute >= 100_000 and s.daily_budget_usd >= 1_000
     assert start(tmp_path, AGENT_RELAX_LIMITS="1", AGENT_DAILY_BUDGET_USD="25").daily_budget_usd == 25.0
+
+
+def test_the_token_ceiling_leaves_room_for_thinking_and_the_effort_is_low_by_default(tmp_path):
+    s = start(tmp_path)
+    assert s.max_tokens == 2000 and s.effort == "low"
+    assert start(tmp_path, AGENT_EFFORT="medium").effort == "medium"
+    with pytest.raises(ConfigError, match="AGENT_EFFORT"):
+        start(tmp_path, AGENT_EFFORT="extreme")
+
+
+def test_the_real_model_is_built_with_the_ceiling_and_the_effort(tmp_path):
+    from agent.runtime import build_orchestrator
+
+    s = Settings.from_env(env(tmp_path, AGENT_SCRIPTED_MODEL="0"))
+    config = build_orchestrator(s)._model.get_config()
+    assert config["max_tokens"] == 2000 and config["model_id"] == "claude-haiku-5-5"
+    assert config["params"] == {"output_config": {"effort": "low"}}

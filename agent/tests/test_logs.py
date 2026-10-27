@@ -42,3 +42,27 @@ def test_rejections_are_logged_with_their_status_and_reason_but_no_content(make,
 def test_a_field_that_is_not_on_the_list_cannot_be_logged():
     with pytest.raises(ValueError, match="not a loggable field"):
         logs.log_request(request_id="x", message="secret text")
+
+
+def test_a_model_failure_is_502_with_a_generic_body_and_the_failure_class_in_the_log(make, caplog_requests):
+    from agent.orchestrator import OrchestratorError
+
+    class Down:
+        model_id = "scripted"
+
+        def run(self, message):
+            raise OrchestratorError("MaxTokensReachedException")
+
+    client, _, _ = make(Down())
+    r = client.post("/analyze", json={"message": MESSAGE}, headers=HEADERS)
+    assert r.status_code == 502 and r.json()["error"] == "model_unavailable" and "MaxTokens" not in r.text and "Zorbulan" not in r.text
+    [line] = lines(caplog_requests)
+    assert line["status"] == 502 and line["reason"] == "model_unavailable:MaxTokensReachedException"
+
+
+def test_the_tools_the_model_called_are_in_the_usage_and_the_log(serve_scripted, caplog_requests):
+    client = serve_scripted("two_tools")
+    body = client.post("/analyze", json={"message": "Velorin index 128 mg/dL. Reports tremor."}, headers=HEADERS).json()
+    assert body["usage"]["tools"] == ["score_message", "score_message"] and body["usage"]["tool_calls"] == 2
+    [line] = lines(caplog_requests)
+    assert line["tools"] == "score_message,score_message"

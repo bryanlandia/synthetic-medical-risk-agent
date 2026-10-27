@@ -45,6 +45,7 @@ def make_tools(model: risk_model.RiskModel):
         state = tool_context.invocation_state
         tracker: Tracker = state["tracker"]
         tracker.tool_calls += 1
+        tracker.log.append("score_message")
         if tracker.final_tool is not None:
             tracker.refused_extra += 1
             return _result("Only one tool call is allowed per request; this call was not run.", error=True)
@@ -57,6 +58,7 @@ def make_tools(model: risk_model.RiskModel):
         """Decline the request. reason is one of out_of_scope, treatment_request, real_disease, phi, other. Nothing else is needed."""
         tracker: Tracker = tool_context.invocation_state["tracker"]
         tracker.tool_calls += 1
+        tracker.log.append("decline")
         if tracker.final_tool is not None:
             tracker.refused_extra += 1
             return _result("Only one tool call is allowed per request; this call was not run.", error=True)

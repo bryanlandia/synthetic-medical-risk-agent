@@ -37,7 +37,8 @@ the prompt hash.
 | `AGENT_ENV` | `development`, `test` or `production` | `development` |
 | `AGENT_DAILY_BUDGET_USD` | daily dollar cap | `2.0` |
 | `AGENT_RATE_PER_MINUTE`, `AGENT_RATE_PER_DAY` | per-client limits | `10`, `200` |
-| `AGENT_MAX_MESSAGE_CHARS`, `AGENT_MAX_TOKENS` | input cap, tokens per model call | `6000`, `600` |
+| `AGENT_MAX_MESSAGE_CHARS`, `AGENT_MAX_TOKENS` | input cap, tokens per model call (thinking shares them) | `6000`, `2000` |
+| `AGENT_EFFORT` | thinking effort of the model: `low`, `medium` or `high` | `low` |
 | `AGENT_SPEND_DB` | the SQLite file that holds the day's spend | `spend.db` |
 | `AGENT_MODEL_ID` | the orchestrator model (must have a pinned price) | `claude-haiku-5-5` |
 | `RISK_MODEL_DIR` | the classifier's model files | `training/model` |
@@ -53,7 +54,7 @@ From `agent/` (`UV_PYTHON_PREFERENCE=only-managed PATH=$HOME/.local/bin:$PATH uv
 
 ```
 uv sync
-uv run pytest -q                                    # 85 tests, no key, no network
+uv run pytest -q                                    # no key, no network
 
 # locally with the scripted model (free, deterministic):
 AGENT_SCRIPTED_MODEL=1 AGENT_LOCAL_DEV=1 uv run agent serve

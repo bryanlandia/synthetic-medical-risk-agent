@@ -132,3 +132,12 @@ def test_a_failing_guard_test_fails_the_regression_subset(monkeypatch):
     monkeypatch.setattr(regression.subprocess, "run", lambda *a, **k: subprocess.CompletedProcess(a, 1, "FAILED tests/test_guards.py::x", ""))
     [msg] = regression.agent_guard_failures()
     assert "agent guard tests failed" in msg and "test_guards" in msg
+
+
+def test_the_measured_cost_per_call_ignores_calls_served_from_the_cache(tmp_path):
+    (tmp_path / "dev").mkdir()
+    rows = [{"status": 200, "model_calls": 2, "cost_usd": 0.001, "cached": False}, {"status": 200, "model_calls": 2, "cost_usd": 0.0, "cached": True},
+            {"status": 502, "model_calls": 0, "cost_usd": 0.0, "cached": False}]
+    (tmp_path / "dev" / "calls.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+    unit, basis = agent_cli.per_call_cost(tmp_path)
+    assert unit == pytest.approx(0.001) and "measured on 1 calls" in basis

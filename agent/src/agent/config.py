@@ -45,6 +45,7 @@ class Settings:
     rate_per_day: int
     max_message_chars: int
     max_tokens: int
+    effort: str
     spend_db: Path
     model_dir: Path | None
 
@@ -69,6 +70,9 @@ class Settings:
             raise ConfigError("AGENT_SHARED_SECRET is not set (set AGENT_LOCAL_DEV=1 for local development without one)")
         if api_key is None and not scripted:
             raise ConfigError("ANTHROPIC_API_KEY is not set (set AGENT_SCRIPTED_MODEL=1 to run without a key, outside production)")
+        effort = env.get("AGENT_EFFORT", "low").strip().lower()
+        if effort not in ("low", "medium", "high"):
+            raise ConfigError("AGENT_EFFORT must be low, medium or high")
         high = 1_000_000 if relaxed else None
         return cls(
             environment=environment, shared_secret=secret, api_key=api_key,
@@ -78,7 +82,8 @@ class Settings:
             rate_per_minute=int(high or _number(env, "AGENT_RATE_PER_MINUTE", 10)),
             rate_per_day=int(high or _number(env, "AGENT_RATE_PER_DAY", 200)),
             max_message_chars=int(_number(env, "AGENT_MAX_MESSAGE_CHARS", 6000)),
-            max_tokens=int(_number(env, "AGENT_MAX_TOKENS", 600)),
+            max_tokens=int(_number(env, "AGENT_MAX_TOKENS", 2000)),
+            effort=effort,
             spend_db=Path(env.get("AGENT_SPEND_DB", "spend.db")),
             model_dir=Path(env["RISK_MODEL_DIR"]) if env.get("RISK_MODEL_DIR") else None,
         )

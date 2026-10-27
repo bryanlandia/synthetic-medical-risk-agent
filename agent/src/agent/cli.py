@@ -43,7 +43,8 @@ def main(argv: list[str] | None = None) -> int:
 
         from .app import create_app
 
-        uvicorn.run(create_app(settings, orchestrator), host=args.host, port=args.port, log_level="warning")
+        # a long keep-alive: a client that reuses a pooled connection after a pause must not meet a closed one
+        uvicorn.run(create_app(settings, orchestrator), host=args.host, port=args.port, log_level="warning", timeout_keep_alive=75)
         return 0
     from . import pricing
 

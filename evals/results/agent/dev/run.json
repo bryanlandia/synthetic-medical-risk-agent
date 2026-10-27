@@ -1,0 +1,8 @@
+{
+  "calls": 1030,
+  "limit": null,
+  "spend_usd": 0.6231,
+  "stage": "dev",
+  "stopped": null,
+  "system_version": "agent@414c2d467c87+p5b3e325b5850+claude-haiku-5-5+v0.1.0.1"
+}

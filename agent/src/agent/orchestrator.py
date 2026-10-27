@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Protocol
 
 
@@ -21,6 +21,7 @@ class Outcome:
     tool_calls: int = 0
     model_calls: int = 0
     prompt_hash: str = ""
+    tool_names: list[str] = field(default_factory=list)  # the tools the model called, in order (names only)
 
 
 class Orchestrator(Protocol):
