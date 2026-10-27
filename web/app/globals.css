@@ -74,3 +74,4 @@ label { display: block; font-weight: 600; margin: 8px 0 4px; }
 .card-doc table { display: block; overflow-x: auto; }
 .card-doc pre { background: var(--bg); padding: 10px; border-radius: 6px; overflow-x: auto; }
 .card-doc code { font-size: 0.88rem; word-break: break-all; }
+.callout { background: var(--warn-bg); color: var(--warn-text); border-radius: 6px; padding: 8px 12px; margin: 8px 0; }

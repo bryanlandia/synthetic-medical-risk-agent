@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Analysis, ShownError } from "@/lib/types";
 
 export type Outcome = { kind: "idle" } | { kind: "loading" } | { kind: "error"; error: ShownError } | { kind: "done"; analysis: Analysis };
@@ -24,7 +25,7 @@ const SYMPTOMS: Record<string, string> = {
   dizziness: "Dizziness",
 };
 
-export function ReportCard({ outcome, labNames }: { outcome: Outcome; labNames: Record<string, string> }) {
+export function ReportCard({ outcome, labNames, callout }: { outcome: Outcome; labNames: Record<string, string>; callout?: ReactNode }) {
   if (outcome.kind === "idle") return <section className="card" aria-live="polite"><p className="muted">The result appears here.</p></section>;
   if (outcome.kind === "loading") return <section className="card" aria-live="polite"><p>Working on it… the first request can take a few seconds.</p></section>;
   if (outcome.kind === "error") {
@@ -49,6 +50,7 @@ export function ReportCard({ outcome, labNames }: { outcome: Outcome; labNames: 
   return (
     <section className="card" aria-live="polite">
       <h2>Risk estimate</h2>
+      {callout}
       <p className="big" data-testid="probability">{Math.round(report.probability * 100)}%</p>
       <p>
         {report.uncertain ? <span className="badge warn" data-testid="uncertain">Uncertain: close to the line</span> : <span className="badge" data-testid="certain">Not in the uncertain band</span>}
