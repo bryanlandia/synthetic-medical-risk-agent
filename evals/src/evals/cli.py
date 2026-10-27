@@ -70,7 +70,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("regression", help="the fast key-free regression subset (used by CI); exit 1 on any failure")
 
     cmp_ = sub.add_parser("compare", help="two systems on the same patients: paired differences with intervals")
-    cmp_.add_argument("--a", default="classifier", help="classifier or frontier (or a name, with --a-dir)")
+    cmp_.add_argument("--a", default="classifier", help="classifier, agent or frontier (or a name, with --a-dir)")
     cmp_.add_argument("--b", default="frontier")
     cmp_.add_argument("--split", choices=["dev", "test"], default="test")
     cmp_.add_argument("--model", default="haiku", help="the frontier model: haiku or sonnet")
