@@ -72,3 +72,12 @@ Group 1 moves `risk_model` and updates `training`; rollback is reverting that co
 ## Live check (task 4.5)
 
 Five hand-picked messages through the real service (Haiku 5.5, 2026-10-27, total $0.0020): a three-lab note with tremor (scored, 81%), a mostly negative note (scored, 1%), a note with a unit mismatch and an injected "ignore your instructions" addendum (scored once, 16%, the addendum not repeated, the unit mismatch flagged), a medication-and-dose question (declined `treatment_request`, one model call) and "capital of France" (declined `out_of_scope`). Every scored reply quoted the report's probability and named the missing labs; no reply gave advice.
+
+## What the orchestrator adds and costs, against the classifier alone
+
+Measured on `test` (931 patients, 3,634 requests) with Haiku 5.5 at low effort:
+
+- **Accuracy: nothing.** The report is the classifier's, unchanged; the paired difference is +0.0000 on AUC, Brier and log loss. The agent was not expected to predict better, and it does not.
+- **Adds:** free-text input (text intake builds the record view, 0.994 symptom reading, data-quality recalls 0.98 to 1.0), a decline for treatment, real-disease, personal-data and off-topic messages (44 of 44 on the scope set, 0 of 3,634 records and 0 of 12 legitimate notes refused), plain-language replies checked against the report (reply consistency 1.000, template fallback 1.8%), and the guards that bound who can call it and what it spends.
+- **Costs:** about 4 s per request (p50, p90 5.5 s) against under a millisecond; about $0.0006 per request with the model (about 4,000 input and 450 output tokens over two model calls); and a failure mode that does not exist without a model. The live runs met it: one shared async API client across Strands' per-call event loops gave connection errors and silent retries (fixed by a client per request), and a thinking budget sharing `max_tokens` gave 502s (fixed by a larger ceiling and low effort). 20 of 3,634 requests (0.55%) made a second, refused tool call (see `evals/results/agent/reading.md`).
+- **Where the limit is:** safety does not rest on the model. The tool scores the exact message, the decline set is closed, the reply is replaced by a template when it fails the check, and the disclaimer is appended by code; the model chooses between two tools and writes a summary.

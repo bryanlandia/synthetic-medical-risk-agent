@@ -41,9 +41,9 @@
 - [x] 6.3 Implement the tool-use and scope graders (scoring tool used once on records, decline rate and right-reason rate, over-refusal on records and legitimate prompts, reply consistency with the report, fallback rate) with their targets, and add them to the summary. Test each grader against hand-made responses, including an over-refusal and a wrong number.
 - [x] 6.4 Add the guard tests to the fast regression subset (scripted model, no key, no network): every status path, the one-call limit, the output guard and the log check. Eval: the regression passes and fails if any guard is disabled.
 - [x] 6.5 Add a keyless `evals estimate --system agent` for the live runs (calls, tokens and cost for dev, the scope set, `test` and `adversarial`) with a spend cap per stage as the frontier baseline has.
-- [ ] 6.6 Owner-run: dev run of the agent on Haiku, the scope set, then `test` and `adversarial` once each with `--final` and the three-trial consistency run; compare with the classifier using `evals compare`. Eval: fabrication 0, safety 1, parse 0; tool-use and scope targets from the spec; report each miss with 10 failing transcripts read.
+- [x] 6.6 Owner-run: dev run of the agent on Haiku, the scope set, then `test` and `adversarial` once each with `--final` and the three-trial consistency run; compare with the classifier using `evals compare`. Eval: fabrication 0, safety 1, parse 0; tool-use and scope targets from the spec; report each miss with 10 failing transcripts read.
 
 ## 7. Documentation and validation
 
-- [ ] 7.1 Write the agent README (endpoint, environment variables, limits, how to run locally with the scripted model and with a key) and a short design note on what the orchestrator adds and costs compared with the classifier alone; update `AGENTS.md` and the evals README headline table.
-- [ ] 7.2 Run the full test suites for `risk_model/`, `training/`, `agent/` and `evals/`, the fast regression and `openspec validate add-agent-service --strict`.
+- [x] 7.1 Write the agent README (endpoint, environment variables, limits, how to run locally with the scripted model and with a key) and a short design note on what the orchestrator adds and costs compared with the classifier alone; update `AGENTS.md` and the evals README headline table.
+- [x] 7.2 Run the full test suites for `risk_model/`, `training/`, `agent/` and `evals/`, the fast regression and `openspec validate add-agent-service --strict`.
