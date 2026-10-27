@@ -38,6 +38,7 @@ the prompt hash.
 | `AGENT_DAILY_BUDGET_USD` | daily dollar cap | `2.0` |
 | `AGENT_RATE_PER_MINUTE`, `AGENT_RATE_PER_DAY` | per-client limits | `10`, `200` |
 | `AGENT_MAX_MESSAGE_CHARS`, `AGENT_MAX_TOKENS` | input cap, tokens per model call (thinking shares them) | `6000`, `2000` |
+| `AGENT_MODEL_TIMEOUT_S` | seconds before one call to the model API gives up (two retries after that) | `30` |
 | `AGENT_EFFORT` | thinking effort of the model: `low`, `medium` or `high` | `low` |
 | `AGENT_SPEND_DB` | the SQLite file that holds the day's spend | `spend.db` |
 | `AGENT_MODEL_ID` | the orchestrator model (must have a pinned price) | `claude-haiku-5-5` |

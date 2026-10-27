@@ -45,6 +45,7 @@ class Settings:
     rate_per_day: int
     max_message_chars: int
     max_tokens: int
+    model_timeout_s: float
     effort: str
     spend_db: Path
     model_dir: Path | None
@@ -83,6 +84,7 @@ class Settings:
             rate_per_day=int(high or _number(env, "AGENT_RATE_PER_DAY", 200)),
             max_message_chars=int(_number(env, "AGENT_MAX_MESSAGE_CHARS", 6000)),
             max_tokens=int(_number(env, "AGENT_MAX_TOKENS", 2000)),
+            model_timeout_s=_number(env, "AGENT_MODEL_TIMEOUT_S", 30.0),
             effort=effort,
             spend_db=Path(env.get("AGENT_SPEND_DB", "spend.db")),
             model_dir=Path(env["RISK_MODEL_DIR"]) if env.get("RISK_MODEL_DIR") else None,

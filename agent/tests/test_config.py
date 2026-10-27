@@ -66,7 +66,7 @@ def test_relaxed_limits_raise_the_rate_and_budget_for_eval_runs(tmp_path):
 
 def test_the_token_ceiling_leaves_room_for_thinking_and_the_effort_is_low_by_default(tmp_path):
     s = start(tmp_path)
-    assert s.max_tokens == 2000 and s.effort == "low"
+    assert s.max_tokens == 2000 and s.effort == "low" and s.model_timeout_s == 30.0
     assert start(tmp_path, AGENT_EFFORT="medium").effort == "medium"
     with pytest.raises(ConfigError, match="AGENT_EFFORT"):
         start(tmp_path, AGENT_EFFORT="extreme")
