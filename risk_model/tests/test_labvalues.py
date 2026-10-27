@@ -60,3 +60,49 @@ def test_agreement_allows_rounding_and_converts_units():
     assert lv.agrees(v, lv.Stated("velorin_index", 129.0, "mg/dL", 0), 128.9)  # rounded to a whole number
     assert not lv.agrees(v, lv.Stated("velorin_index", 220.0, "mg/dL", 0), 104.0)
 
+
+
+# --- commas: a decimal comma, a thousands separator, or an ambiguous one ---------------------------------------------------------
+
+from risk_model.labs import LAB_BY_KEY  # noqa: E402
+
+
+@pytest.mark.parametrize("token,lab,unit,expected", [
+    ("0,98", "dorrin_ratio", None, (0.98, 2)),
+    ("108,5", "velorin_index", "mg/dL", (108.5, 1)),
+    ("3,5", "halvin_titer", "g/dL", (3.5, 1)),
+    ("4,082", "serum_k17", "mmol/L", (4.082, 3)),            # thousands form, but 4082 is impossible and 4.082 is not
+    ("1,040", "tarnic_acid", "umol/L", (1040.0, 0)),         # neither reading is possible: passed on as written
+    ("1.250,5", "plexa_count", "x10^9/L", (1250.5, 1)),      # both separators: the last is the decimal point
+    ("1,234,567", "velorin_index", "mg/dL", (1234567.0, 0)),
+    ("128.9", "velorin_index", "mg/dL", (128.9, 1)),
+    ("-5", "velorin_index", "mg/dL", (-5.0, 0)),
+])
+def test_resolve_reads_commas_by_what_a_patient_could_have(token, lab, unit, expected):
+    assert lv.resolve(token, LAB_BY_KEY[lab], unit) == pytest.approx(expected)
+
+
+@pytest.mark.parametrize("token", ["1.2.3", "1,2,3", "12,34,567", "--5"])
+def test_resolve_leaves_out_a_number_it_cannot_read(token):
+    assert lv.resolve(token, LAB_BY_KEY["velorin_index"], "mg/dL") is None
+
+
+def test_an_ambiguous_comma_where_both_readings_are_possible_is_left_out():
+    class Wide:  # a lab whose plausible range covers both 1.5 and 1500
+        plaus_lo, plaus_hi, alt_unit, factor = 0.0, 10_000.0, None, None
+
+        def to_usual(self, value, unit):
+            return value
+
+    assert lv.resolve("1,500", Wide(), None) is None
+
+
+def test_a_range_is_still_not_a_reading_and_a_trailing_full_stop_is_fine():
+    assert lv.read("Velorin index 70-130 mg/dL") == []
+    [s] = lv.read("Velorin index 108.")
+    assert s.value == 108.0
+
+
+def test_the_unit_after_a_comma_number_is_still_read():
+    [s] = lv.read("Serum K-17 15,4 mg/dL")
+    assert (s.value, s.unit, s.decimals) == (15.4, "mg/dL", 1)

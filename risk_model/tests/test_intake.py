@@ -93,3 +93,15 @@ def test_an_impossible_value_is_flagged_and_scores_like_a_missing_lab(model):
 def test_a_message_with_no_labs_still_scores_and_warns_for_every_lab(model):
     rep = report_for(model, "Reports fatigue and dizziness.")
     assert rep["status"] == "scored" and {w["lab"] for w in rep["data_quality"] if w["type"] == "missing_value"} == set(LAB_KEYS)
+
+
+def test_a_thousands_comma_is_an_impossible_value_the_classifier_flags(model):
+    rep = report_for(model, "Tarnic acid 1,040 umol/L. Velorin index 108 mg/dL.")
+    assert ("impossible_value", "tarnic_acid") in warnings(rep)
+    assert "tarnic_acid" not in {u["lab"] for u in rep["labs_used"]}
+
+
+def test_a_decimal_comma_is_read_as_the_value_it_says(model):
+    rep = report_for(model, "Dorrin ratio 0,98. Velorin index 108,3 mg/dL.")
+    used = {u["lab"]: u["value"] for u in rep["labs_used"]}
+    assert used == {"dorrin_ratio": 0.98, "velorin_index": 108.3}

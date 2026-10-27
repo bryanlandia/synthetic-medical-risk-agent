@@ -32,8 +32,26 @@ def test_no_wording_is_read_as_a_value_it_does_not_state():
     import re
 
     for e in DATA:
-        numbers = [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", e["text"])]
+        numbers = [v for tok in re.findall(r"-?\d+(?:[.,]\d+)*", e["text"]) for v in readings_of(tok)]
         for lab, v in panel(e["text"]).items():
             if v is not None:
                 assert any(abs(v - n) < 1e-9 or abs(v - n / f) / max(abs(v), 1) < 1e-6
                            for n in numbers for f in (1.0, 3.91, 0.0555, 0.0168, 0.01667)), (e["text"], lab, v)
+
+
+def readings_of(token: str) -> list[float]:
+    """Every value a written number could mean: as it is, with commas removed (thousands), with a comma as the point."""
+    options = {token.replace(",", "")}
+    if token.count(",") == 1:
+        options.add(token.replace(",", "."))
+    if "," in token and "." in token:
+        point = "," if token.rfind(",") > token.rfind(".") else "."
+        whole, _, frac = token.rpartition(point)
+        options.add(whole.replace(",", "").replace(".", "") + "." + frac)
+    out = []
+    for o in options:
+        try:
+            out.append(float(o))
+        except ValueError:
+            pass
+    return out
