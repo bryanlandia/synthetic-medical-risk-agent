@@ -23,6 +23,8 @@ def build_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("serve", help="run the service (configuration from environment variables)")
     s.add_argument("--host", default="127.0.0.1")
     s.add_argument("--port", type=int, default=8000)
+    sm = sub.add_parser("smoke", help="check a deployment: its model hash, one scored request, one declined request (secret from AGENT_SHARED_SECRET)")
+    sm.add_argument("--url", required=True, help="the service's address, e.g. https://example.vercel.app")
     sub.add_parser("live-check", help="send 5 hand-picked messages through the real model and print what came back (costs a few cents)")
     return p
 
@@ -30,6 +32,8 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
+    if args.command == "smoke":
+        return _smoke(args.url)
     try:
         settings = Settings.from_env()
     except ConfigError as exc:
@@ -62,3 +66,19 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+
+
+def _smoke(url: str) -> int:
+    import os
+
+    from .smoke import run_smoke
+
+    secret = os.environ.get("AGENT_SHARED_SECRET")
+    if not secret:
+        print("error: AGENT_SHARED_SECRET is not set", file=sys.stderr)
+        return 2
+    problems = run_smoke(url, secret)
+    for p in problems:
+        print(f"FAIL: {p}")
+    print("smoke test passed" if not problems else f"smoke test failed ({len(problems)} problems)")
+    return 1 if problems else 0

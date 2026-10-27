@@ -34,20 +34,21 @@ the prompt hash.
 |---|---|---|
 | `ANTHROPIC_API_KEY` | the key; never in a file | required unless the scripted model is on |
 | `AGENT_SHARED_SECRET` | the secret the web proxy sends in `X-Shared-Secret` | required (or `AGENT_LOCAL_DEV=1`) |
-| `AGENT_ENV` | `development`, `test` or `production` | `development` |
+| `AGENT_ENV` | `development`, `test`, `preview` (a platform preview, like development) or `production` | `development` |
 | `AGENT_DAILY_BUDGET_USD` | daily dollar cap | `2.0` |
 | `AGENT_RATE_PER_MINUTE`, `AGENT_RATE_PER_DAY` | per-client limits | `10`, `200` |
 | `AGENT_MAX_MESSAGE_CHARS`, `AGENT_MAX_TOKENS` | input cap, tokens per model call (thinking shares them) | `6000`, `2000` |
 | `AGENT_MODEL_TIMEOUT_S` | seconds before one call to the model API gives up (two retries after that) | `30` |
 | `AGENT_EFFORT` | thinking effort of the model: `low`, `medium` or `high` | `low` |
-| `AGENT_SPEND_DB` | the SQLite file that holds the day's spend | `spend.db` |
+| `AGENT_SPEND_DB` | the SQLite file that holds the day's spend (used when no store is set) | `spend.db` |
+| `AGENT_STORE_URL`, `AGENT_STORE_TOKEN` | a Redis-compatible REST store (Upstash) that holds the spend total and the rate counts for every instance; both or neither; **required in production** | unset |
 | `AGENT_MODEL_ID` | the orchestrator model (must have a pinned price) | `claude-haiku-5-5` |
 | `RISK_MODEL_DIR` | the classifier's model files | `training/model` |
 | `AGENT_SCRIPTED_MODEL`, `AGENT_RELAX_LIMITS`, `AGENT_LOCAL_DEV` | test switches; refused when `AGENT_ENV=production` | off |
 
 The service refuses to start on a bad configuration and names the variable, never its value. A request from a caller that
 presented the secret may name the visitor it acts for in `X-Visitor-Address`, and the rate limit uses that; an unauthenticated
-request never reaches the limiter. The rate limiter is in memory, so it assumes **one instance**.
+request never reaches the limiter. Without a store the counters are local (SQLite and memory) and assume **one instance**. With a store they are shared by every instance: spend is one key per UTC day, and the rate limit counts fixed one-minute and one-day windows per visitor (a visitor can briefly send up to twice the per-minute limit across a window boundary; the dollar cap is the real bound). If the store cannot answer, the request is refused with `503 limits_unavailable`.
 
 ## Run it
 
@@ -73,6 +74,15 @@ uv run agent live-check                             # 5 hand-picked messages thr
 scripted model; add `--live --yes` for the real one, or `--base-url` for a running service), `uv run evals agent-scope` for the
 66-prompt scope set, then `test` and `adversarial` with `--final` once each. A live run sets the service's own daily cap to the
 stage cap. The guard tests also run inside `uv run evals regression`.
+
+## Deploying and checking it
+
+The service is a FastAPI app whose ASGI object is `agent.asgi:app`. `uv run agent serve` runs it with uvicorn; on Vercel the
+repository-root `index.py` imports the same object (see `web/README.md` for the projects and variables). After a deploy:
+
+```
+AGENT_SHARED_SECRET=... uv run agent smoke --url https://<agent-url>   # model hash, one scored request, one decline
+```
 
 ## Layout
 

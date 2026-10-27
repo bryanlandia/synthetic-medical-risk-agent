@@ -9,7 +9,8 @@ Portfolio demo. **All medical data is synthetic and the disease is fictional.** 
 - `training/` classifier + LoRA training, MLflow tracking (writes the model files `risk_model` loads)
 - `agent/` FastAPI + Strands chat service: guards, a no-argument scoring tool, a reply check (depends on `risk_model` only)
 - `evals/` Inspect AI tasks, promptfoo configs, datasets, reports
-- `web/` Next.js app (Vercel root dir)
+- `web/` Next.js demo: a mock EHR chart page, a free-text tab and the model card, in front of the agent (Vercel project, root dir `web/`)
+- `deploy/` Vercel helper scripts (`check-env.sh`); the agent's Vercel project is built from the repository root files `index.py`, `requirements.txt`, `vercel.json` and `.vercelignore`
 - `rating_ui/` local-only Next.js tool for rating pilot notes (never deployed; loopback only; cannot read the answer key)
 - `openspec/` specs and changes
 
@@ -72,6 +73,13 @@ Agent (from `agent/`, same uv setup; see `agent/README.md`):
 - `AGENT_SCRIPTED_MODEL=1 AGENT_LOCAL_DEV=1 uv run agent serve` run locally for free; with `ANTHROPIC_API_KEY` and `AGENT_SHARED_SECRET` exported in your own shell it uses Haiku 5.5. `uv run agent live-check` sends 5 hand-picked messages through the real model (a few cents)
 - Evals (from `evals/`): `uv run evals estimate --system agent` (no key); `uv run evals run --system agent --split dev` starts the service itself with the scripted model, `--live --yes` uses the real one (the service's own daily cap is set to the stage cap), `--base-url URL --secret S` scores a running service; `uv run evals agent-scope` runs the 66-prompt scope set; `test` and `adversarial` need a dev run of the same system and `--final`, once each (`--force` repeats, warned). The agent's guard tests also run in `uv run evals regression`
 - Inference is `risk_model`; `agent/` must not depend on `training`, `evals` or `data_gen` (their `anthropic` requirements conflict with Strands')
+- `uv run agent smoke --url URL` checks a deployment (model hash, one scored request, one decline; secret from `AGENT_SHARED_SECRET`). `AGENT_STORE_URL` and `AGENT_STORE_TOKEN` move the spend and rate counters to a shared Redis REST store; production requires them
+
+Web demo (from `web/`, Node via nvm, `npm install --ignore-scripts`; see `web/README.md`):
+
+- `npm test` builds the app, starts the scripted agent (`uv` must be on the PATH) and the app, and runs the Playwright tests; `npm run typecheck`
+- `uv run evals demo-patients` (from `evals/`) writes `web/content/demo_patients.json` from the dev split; `uv run training card` (from `training/`) also refreshes `web/content/model-card.md`; tests fail if either file is stale
+- Deploy: two Vercel projects (agent at the repository root, web in `web/`); variables are in `web/README.md`; `deploy/check-env.sh <agent-project>` checks them by name
 
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):
 

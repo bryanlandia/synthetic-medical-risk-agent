@@ -26,10 +26,10 @@
 ## 5. Deploy
 
 - [ ] 5.1 Configure the Vercel project(s) as chosen in 1.2: production holds the API key, secret, store credentials, `AGENT_ENV=production`, the $1 daily cap and the limits; previews use the scripted model and no key. Write the environment-variable table and the `Retry-After` guidance in the READMEs. Eval: the table lists every variable with its purpose; a script checks a preview's configuration has no key (owner-run).
-- [ ] 5.2 Add the deployed smoke test (health hash equals the committed manifest hash, one scored request returns a report, one treatment request is declined) as a documented command. Eval: it passes against a local scripted service, and the owner runs it against the deployment.
+- [x] 5.2 Add the deployed smoke test (health hash equals the committed manifest hash, one scored request returns a report, one treatment request is declined) as a documented command. Eval: it passes against a local scripted service, and the owner runs it against the deployment.
 - [ ] 5.3 Owner-run: deploy, run the smoke test, open the page, run each demo patient and one free-text decline. Record the outcome and the deployed URL in the README (the URL goes in the README, never in client code).
 
 ## 6. Documentation and validation
 
-- [ ] 6.1 Update `AGENTS.md` (layout and commands for `web/`, the store variables, the demo-patients and card-copy commands), `web/README.md`, `agent/README.md` (the store, the entry point, the limits) and `evals/README.md` (the demo patients). Include a short "what changes with real data" paragraph in `web/README.md`.
-- [ ] 6.2 Run the full suites for `risk_model/`, `agent/`, `training/` and `evals/`, the fast regression, the web unit tests and Playwright tests, and `openspec validate add-web-demo --strict`.
+- [x] 6.1 Update `AGENTS.md` (layout and commands for `web/`, the store variables, the demo-patients and card-copy commands), `web/README.md`, `agent/README.md` (the store, the entry point, the limits) and `evals/README.md` (the demo patients). Include a short "what changes with real data" paragraph in `web/README.md`.
+- [x] 6.2 Run the full suites for `risk_model/`, `agent/`, `training/` and `evals/`, the fast regression, the web unit tests and Playwright tests, and `openspec validate add-web-demo --strict`.
