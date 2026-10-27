@@ -19,7 +19,7 @@ def build_parser() -> argparse.ArgumentParser:
     schema.add_argument("--write", action="store_true", help="write contract/risk_report.schema.json")
 
     run = sub.add_parser("run", help="run a reference system on a split and write transcripts and a summary")
-    run.add_argument("--system", choices=["oracle", "floor", "lab_only", "frontier"], required=True)
+    run.add_argument("--system", choices=["oracle", "floor", "lab_only", "frontier", "classifier"], required=True)
     run.add_argument("--split", choices=["dev", "test", "adversarial"], default="dev")
     run.add_argument("--suites", nargs="*", help="default: every suite that applies to the split")
     run.add_argument("--limit", type=int, help="at most this many samples per suite")
@@ -32,7 +32,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--yes", action="store_true", help="frontier: confirm the spend")
     run.add_argument("--workers", type=int, default=8, help="frontier: samples in flight at once")
     run.add_argument("--quiet", action="store_true", help="frontier: no progress lines")
-    run.add_argument("--force", action="store_true", help="frontier: repeat a final run (recorded and warned about)")
+    run.add_argument("--force", action="store_true", help="frontier, classifier: repeat a final run (recorded and warned about)")
 
     est = sub.add_parser("estimate", help="frontier: the calls, tokens and cost of each stage; no call, no key")
     est.add_argument("--prompt", default="v1")
@@ -113,6 +113,14 @@ def _dispatch(args: argparse.Namespace) -> int:
             print(format_failure(row, args.grader))
         return 0
     dataset = load_dataset(getattr(args, "dataset", None) or DEFAULT_DATASET)
+    if args.command == "run" and args.system == "classifier":
+        try:
+            from training import eval_cli  # lives in training/, which depends on evals and not the other way round
+        except ImportError:
+            print("error: the classifier system is in training/: run `uv run evals run --system classifier ...` from "
+                  "training/ (it needs that project's environment)", file=sys.stderr)
+            return 2
+        return eval_cli.cmd_run(args, dataset)
     if args.command in ("estimate", "iterate") or (args.command == "run" and args.system == "frontier"):
         from . import frontier_cli
 

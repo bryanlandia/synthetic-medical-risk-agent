@@ -17,6 +17,9 @@ import numpy as np
 from .labs import SYMPTOM_KEYS
 
 MENTION_CLASSES = ("present", "possible", "absent", "none")
+# A note counts as contradicting itself about a symptom only when one mention says present and another says absent and
+# both are read with at least this confidence: a mention the classifier is unsure of is not evidence of a conflict.
+CONFLICT_CONFIDENCE = 0.95
 # A clause ends at a sentence mark, a line break, a semicolon, a colon, a comma, or a joining word.
 _CLAUSE_SPLIT = re.compile(r"[\n.;:,]|\s+(?:and|but|while|though|although|however)\s+")
 _TOKEN = re.compile(r"[a-z]+|\?")
@@ -138,7 +141,8 @@ class NoteReader:
             if not found[symptom]:
                 readings[symptom] = "not_mentioned"
                 continue
-            if {"present", "absent"} <= labels:
+            sure = {m.label for m in found[symptom] if m.confidence >= CONFLICT_CONFIDENCE}
+            if {"present", "absent"} <= sure:
                 conflicts.append(symptom)
             readings[symptom] = self._settle(found[symptom])
         return Reading(readings, mentions, conflicts)

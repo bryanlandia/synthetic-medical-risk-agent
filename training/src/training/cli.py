@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import sys
 
-from . import lexicon, pipeline, reader_report
+from . import eval_cli, latency, lexicon, pipeline, reader_report
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -17,6 +17,8 @@ def build_parser() -> argparse.ArgumentParser:
     t = sub.add_parser("train", help="fit the reader and the classifier, score dev, write model/ and log an MLflow run")
     t.add_argument("--n-boot", type=int, default=1000)
     t.add_argument("--tracking-dir", default=None, help="MLflow file store (default training/mlruns)")
+    sub.add_parser("latency", help="time one report at a time over 500 dev records and measure the model size")
+    sub.add_parser("freeze", help="record the model hash as the one test and adversarial may be scored with (needs a dev run)")
     return p
 
 
@@ -47,6 +49,20 @@ def main(argv: list[str] | None = None) -> int:
             t = s["against_targets"].get(name, {})
             print(f"  dev {name:<9} {row['value']:.4f} [{row['lo']:.4f}, {row['hi']:.4f}]  target {t.get('target', float('nan')):.4f}: {t.get('label', '')}")
         print(f"  chosen C={s['chosen']['c']}, probabilities p5/p95 {s['probability_percentiles']['5']:.3f}/{s['probability_percentiles']['95']:.3f}")
+        return 0
+    if args.command == "latency":
+        res = latency.measure()
+        latency.write(eval_cli.RESULTS_DIR / "latency.json", res)
+        print(f"latency over {res['records']} dev records, one thread: median {res['median_ms']:.2f} ms, p95 "
+              f"{res['p95_ms']:.2f} ms; model {res['model_bytes'] / 1000:.0f} kB; limits met: {res['meets_limits']}")
+        return 0 if res["meets_limits"] else 1
+    if args.command == "freeze":
+        try:
+            entry = eval_cli.freeze()
+        except eval_cli.NotFrozen as exc:
+            print(f"error: {exc}", file=sys.stderr)
+            return 2
+        print(f"frozen: {entry['system_version']}; test and adversarial may now be scored with it (once each, --final)")
         return 0
     return 2
 

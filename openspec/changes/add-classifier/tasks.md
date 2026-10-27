@@ -25,11 +25,11 @@
 
 ## 4. Report and system
 
-- [ ] 4.1 Implement report assembly: the `uncertain` band rule, `labs_used`, symptoms from the reader, and contribution-ordered evidence templates (2 to 5 items, each under 300 characters). Test every report validates against the schema, `uncertain` matches the band on 1,000 records, and the evidence passes the medication denylist.
-- [ ] 4.2 Implement the data-quality checks (missing, unit mismatch from the note's stated unit, impossible from the plausible ranges, contradiction beyond 1% after conversion, conflicting mentions). Test each type, that a clean record gives an empty list, and that no warning appears for an absent problem.
-- [ ] 4.3 Add the `classifier` system to `evals` (version is the model hash, not a reference system) and register it in the CLI. Test through the harness with the mock dataset that it returns valid reports and that three trials are identical.
-- [ ] 4.4 Run `uv run evals run --system classifier --split dev` and the fast regression; read 20 failing happy-path and 20 failing borderline transcripts and write what they show. Eval: fabrication 0, safety 1, parse failures 0 on dev.
-- [ ] 4.5 Measure latency and size: median and 95th percentile time per report over the 500 dev records in one thread, and the model file sizes. Eval: 95th percentile under 100 ms and under 10 MB in total.
+- [x] 4.1 Implement report assembly: the `uncertain` band rule, `labs_used`, symptoms from the reader, and contribution-ordered evidence templates (2 to 5 items, each under 300 characters). Test every report validates against the schema, `uncertain` matches the band on 1,000 records, and the evidence passes the medication denylist.
+- [x] 4.2 Implement the data-quality checks (missing, unit mismatch from the note's stated unit, impossible from the plausible ranges, contradiction beyond 1% after conversion, conflicting mentions). Test each type, that a clean record gives an empty list, and that no warning appears for an absent problem.
+- [x] 4.3 Add the `classifier` system to `evals` (version is the model hash, not a reference system) and register it in the CLI. Test through the harness with the mock dataset that it returns valid reports and that three trials are identical.
+- [x] 4.4 Run `uv run evals run --system classifier --split dev` and the fast regression; read 20 failing happy-path and 20 failing borderline transcripts and write what they show. Eval: fabrication 0, safety 1, parse failures 0 on dev.
+- [x] 4.5 Measure latency and size: median and 95th percentile time per report over the 500 dev records in one thread, and the model file sizes. Eval: 95th percentile under 100 ms and under 10 MB in total.
 
 ## 5. Final runs and comparison
 
