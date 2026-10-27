@@ -5,7 +5,8 @@ Portfolio demo. **All medical data is synthetic and the disease is fictional.** 
 ## Layout
 
 - `data_gen/` seeded synthetic data generator
-- `training/` classifier + LoRA training, MLflow tracking
+- `risk_model/` numpy-only inference (note reader, classifier, report assembly); no scikit-learn or MLflow, so a service image can carry it
+- `training/` classifier + LoRA training, MLflow tracking (writes the model files `risk_model` loads)
 - `agent/` FastAPI + Strands agent and tools
 - `evals/` Inspect AI tasks, promptfoo configs, datasets, reports
 - `web/` Next.js app (Vercel root dir)
@@ -63,7 +64,7 @@ Classifier (from `training/`, same uv setup; no API key and no spend; see `train
 - `uv run training freeze` records the model hash after a dev run; then `uv run evals run --system classifier --split {test,adversarial} --final` once each, and `--split test --suites consistency --trials 3 --final` once; a repeat needs `--force` (recorded and warned about)
 - `uv run training report` writes `evals/results/classifier/report.md`; INCOMPLETE (exit 1) until `evals/results/classifier/reading.json` records the failing transcripts read for each missed target
 - `uv run evals compare [--split {dev,test}] [--model haiku]` (from `evals/` or `training/`): classifier against the frontier baseline on the same patients, paired differences with patient-clustered intervals, written to `evals/results/classifier/comparison_<split>.md`
-- Inference uses `risk_model` (numpy only: `risk_model.load("training/model").report(view)`); training code never imports from the agent, and `evals` does not import `training` except to run the `classifier` system
+- Inference uses `risk_model` (its own project, numpy only: `risk_model.load().report(view)`, directory from `RISK_MODEL_DIR` or `training/model`; tests: `uv run pytest -q` from `risk_model/`); training code never imports from the agent, and `evals` does not import `training` except to run the `classifier` system
 
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):
 

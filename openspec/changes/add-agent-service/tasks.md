@@ -1,17 +1,17 @@
 ## 1. Split the inference package out of `training/`
 
-- [ ] 1.1 Move `training/src/risk_model/` and its tests into a new `risk_model/` project (numpy only, pinned, hatch build, README with the synthetic-data notice); make `training` depend on it by path; keep the committed model files in `training/model/` and give `risk_model.load` an explicit directory argument and a `RISK_MODEL_DIR` default. Test that `import risk_model` loads no scikit-learn, MLflow, anthropic, pandas, evals or data_gen.
-- [ ] 1.2 Verify the move changes nothing: the model hash in `training/model/manifest.json` is the same, `uv run training train` reproduces byte-identical files, and the full `training/` and `evals/` suites and the fast regression give the same results as before. Eval: model hash unchanged and zero new test failures.
-- [ ] 1.3 Update `AGENTS.md` and the READMEs for the new layout.
+- [x] 1.1 Move `training/src/risk_model/` and its tests into a new `risk_model/` project (numpy only, pinned, hatch build, README with the synthetic-data notice); make `training` depend on it by path; keep the committed model files in `training/model/` and give `risk_model.load` an explicit directory argument and a `RISK_MODEL_DIR` default. Test that `import risk_model` loads no scikit-learn, MLflow, anthropic, pandas, evals or data_gen.
+- [x] 1.2 Verify the move changes nothing: the model hash in `training/model/manifest.json` is the same, `uv run training train` reproduces byte-identical files, and the full `training/` and `evals/` suites and the fast regression give the same results as before. Eval: model hash unchanged and zero new test failures.
+- [x] 1.3 Update `AGENTS.md` and the READMEs for the new layout.
 
 ## 2. Text intake
 
-- [ ] 2.1 Implement `risk_model.intake.view_from_text`: eight panel entries, first stated value per lab converted to the usual unit, null otherwise, the note equal to the whole message, nothing else. Test: no labs, some labs, labs in alternate units, a repeated lab, an impossible value, a lab named without a number, and determinism.
-- [ ] 2.2 Test that intake passes warnings through honestly: alternate unit gives `unit_mismatch`, a disagreeing repeat gives `contradiction`, a missing lab gives `missing_value`, an impossible value gives `impossible_value` and the probability of the lab-missing record.
-- [ ] 2.3 Add the evals' message renderer (`evals/src/evals/messages.py`): a "Labs:" list and a "Note:" section from a view. Test that it contains no ground-truth field and that every non-null panel value is written in it.
-- [ ] 2.4 Property-style test over 500 dev records: every non-null panel value from intake is a number written in the message. Eval: none is absent.
-- [ ] 2.5 Agreement check on dev: score the 500 dev records through the structured path and through render, intake and the classifier. Eval: at least 95% within 0.001; list the exceptions with the lab or reading that differs and write them to `evals/results/agent/intake_agreement.md`.
-- [ ] 2.6 Handwritten wording variants (at least 20 messages in different styles: abbreviations, prose, a list, mixed units): test what is read and what is left null, and record in a file the wordings that are not read.
+- [x] 2.1 Implement `risk_model.intake.view_from_text`: eight panel entries, first stated value per lab converted to the usual unit, null otherwise, the note equal to the whole message, nothing else. Test: no labs, some labs, labs in alternate units, a repeated lab, an impossible value, a lab named without a number, and determinism.
+- [x] 2.2 Test that intake passes warnings through honestly: alternate unit gives `unit_mismatch`, a disagreeing repeat gives `contradiction`, a missing lab gives `missing_value`, an impossible value gives `impossible_value` and the probability of the lab-missing record.
+- [x] 2.3 Add the evals' message renderer (`evals/src/evals/messages.py`): a "Labs:" list and a "Note:" section from a view. Test that it contains no ground-truth field and that every non-null panel value is written in it.
+- [x] 2.4 Property-style test over 500 dev records: every non-null panel value from intake is a number written in the message. Eval: none is absent.
+- [x] 2.5 Agreement check on dev: score the 500 dev records through the structured path and through render, intake and the classifier. Eval: at least 95% within 0.001; list the exceptions with the lab or reading that differs and write them to `evals/results/agent/intake_agreement.md`.
+- [x] 2.6 Handwritten wording variants (at least 20 messages in different styles: abbreviations, prose, a list, mixed units): test what is read and what is left null, and record in a file the wordings that are not read.
 
 ## 3. Service skeleton and guards
 

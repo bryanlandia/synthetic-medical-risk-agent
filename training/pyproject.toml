@@ -9,6 +9,7 @@ dependencies = [
     "evals",
     "mlflow-skinny==3.17.2",
     "numpy>=2.1,<3",
+    "risk-model",
     "scikit-learn==1.9.1",
 ]
 
@@ -25,12 +26,13 @@ requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-# risk_model is the numpy-only inference package; training is everything that fits and evaluates.
-packages = ["src/training", "src/risk_model"]
+# The numpy-only inference package is the separate risk_model project; training fits and evaluates.
+packages = ["src/training"]
 
 [tool.uv.sources]
 data-gen = { path = "../data_gen", editable = true }
 evals = { path = "../evals", editable = true }
+risk-model = { path = "../risk_model", editable = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

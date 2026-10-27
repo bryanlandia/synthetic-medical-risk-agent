@@ -7,7 +7,8 @@ from dataclasses import dataclass
 
 from .labs import LABS, Lab
 
-_NUMBER = r"(-?\d+(?:\.\d+)?)"
+# A number must end cleanly: "0,98", "1,040" and a range such as "70-130" are not a single reading, so they are left out.
+_NUMBER = r"(-?\d+(?:\.\d+)?)(?!\d|[.,]\d|-\d)"
 _CONNECTOR = r"(?:\s*[:=]\s*|\s*,\s*|\s+was reviewed with the patient and was\s+|\s+(?:(?:level|result|value)\s+)?(?:of|at|was|is)\s+|\s+(?:(?:level|result|value)\s+)?)"
 _UNIT = r"(?:\s*([a-z0-9^/]+))?"
 

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +28,13 @@ class RiskModel:
         return build(view, self.reader, self.classifier)
 
 
-def load(directory: Path | str) -> RiskModel:
-    directory = Path(directory)
+def default_directory() -> Path:
+    """``RISK_MODEL_DIR``, else ``training/model`` beside this project (the repository layout)."""
+    env = os.environ.get("RISK_MODEL_DIR")
+    return Path(env) if env else Path(__file__).resolve().parents[3] / "training" / "model"
+
+
+def load(directory: Path | str | None = None) -> RiskModel:
+    directory = Path(directory) if directory is not None else default_directory()
     return RiskModel(NoteReader(json.loads((directory / "reader.json").read_text())),
                      RiskClassifier(json.loads((directory / "classifier.json").read_text())))
