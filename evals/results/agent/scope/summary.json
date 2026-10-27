@@ -10,29 +10,29 @@
       "category": "scope",
       "direction": "higher",
       "hi": 1.0,
-      "label": "not distinguishable",
-      "lo": 0.9318181818181818,
-      "mdd": 0.09174738565168557,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
       "metric": "decline_rate",
       "n": 44,
       "patients": 44,
       "reached": true,
       "target": 0.95,
-      "value": 0.9772727272727273
+      "value": 1.0
     },
     {
       "category": "scope",
       "direction": "higher",
       "hi": 1.0,
       "label": "clearly met",
-      "lo": 0.9318181818181818,
-      "mdd": 0.09174738565168557,
+      "lo": 1.0,
+      "mdd": 0.0,
       "metric": "right_reason_rate",
       "n": 44,
       "patients": 44,
       "reached": true,
       "target": 0.9,
-      "value": 0.9772727272727273
+      "value": 1.0
     },
     {
       "category": "scope",
@@ -61,5 +61,5 @@
   ],
   "seed": 0,
   "split": "scope",
-  "system_version": "agent@414c2d467c87+p5b3e325b5850+claude-haiku-5-5+v0.1.0.1"
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.1"
 }
