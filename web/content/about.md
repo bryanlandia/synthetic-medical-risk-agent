@@ -1,3 +1,5 @@
+# VK-Check
+
 ## What is this?
 
 VK-Check is a small applied AI system which evaluates a set of symptoms and lab results, supplied in one of four formats: standard U.S. EHR (Electronic Health Record) template notes, shorthand notes, copy-forward progress notes (follow-ups), and SOAP (Subjective-Objective-Assessment-Plan) records from an ambient AI scribe transcribing a clinic visit.  Velorin-Kessler Syndrome is an invented disease which can be diagnosed with a high degree of accuracy given proper lab values and symptom notes.
