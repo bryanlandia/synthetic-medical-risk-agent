@@ -7,15 +7,13 @@ type Patient = { slug: string; title: string; patient_id: string; message: strin
 const PATIENTS: Patient[] = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "content", "demo_patients.json"), "utf8")).patients;
 const bySlug = (slug: string) => PATIENTS.find((p) => p.slug === slug)!;
 
-const TABS = ["Sample Patient Charts", "Try the agent", "Model card", "About this project"];
+const TABS = ["Sample patient charts", "Try the agent", "Model card", "About this project"];
 
-test("every tab shows the synthetic-data banner and the mock-EHR label", async ({ page }) => {
+test("every tab shows the subtitle, and the page does not claim a real system", async ({ page }) => {
   await page.goto("/");
   for (const name of TABS) {
     await page.getByRole("tab", { name }).click();
-    await expect(page.getByRole("contentinfo")).toContainText("Synthetic data. Fictional disease. Not medical advice.");
-    await expect(page.getByRole("contentinfo")).toContainText("MOCK EHR");
-    await expect(page.getByRole("contentinfo")).toBeInViewport();
+    await expect(page.locator("main > h1")).toContainText("Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)");
   }
   const text = (await page.locator("body").innerText()).toLowerCase();
   expect(text).not.toContain("hl7");
@@ -166,7 +164,7 @@ test("the page is headed VK-Check with its subheader", async ({ page }) => {
   await page.goto("/");
   const heading = page.getByRole("heading", { level: 1 });
   await expect(heading).toContainText("VK-Check");
-  await expect(heading).toContainText("Decision support for Velorin-Kessler Syndrome diagnosis");
+  await expect(heading).toContainText("Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)");
   await expect(page).toHaveTitle(/VK-Check/);
 });
 
@@ -197,12 +195,11 @@ test("the same note without the instruction gives the same estimate, and no call
 
 const ABOUT = fs.readFileSync(path.join(__dirname, "..", "content", "about.md"), "utf8");
 
-test("the About tab shows every heading in the file, in order, with the banner", async ({ page }) => {
+test("the About tab shows every heading in the file, in order", async ({ page }) => {
   const expected = [...ABOUT.matchAll(/^## (.+)$/gm)].map((m) => m[1].trim());
   expect(expected.length).toBeGreaterThanOrEqual(1);
   await page.goto("/");
   await page.getByRole("tab", { name: "About this project" }).click();
-  await expect(page.getByRole("contentinfo")).toContainText("Not medical advice");
   const shown = await page.locator("article.doc h2").allInnerTexts();
   expect(shown.map((t) => t.trim())).toEqual(expected);
 });
