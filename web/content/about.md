@@ -22,6 +22,8 @@ The patients, labs and hidden scoring rule come from a seeded generator, so the 
 
 It took six rounds to get a good result. Each round the reviewer pointed at something a clinician would find implausible: wrong or missing units, the same opening phrase in many notes, AI scribe drafts with content a scribe would not include. I fixed each in the writer's prompts or rules, wrote a new sample and had it rated again, watching the screen recordings of the review sessions to find issues. One fix was telling the writer that AI scribe notes are normally wooden and mechanical.
 
+<!-- video: /review-round4.webm | Round 4 of the review: Sonnet 5.5 operating the rating app with Playwright (11 MB, loads when played) -->
+
 ## Eval-driven development
 
 I started with the evals, before any model work. Targets were derived on the development split from simple reference systems (an oracle that knows the answer, a floor, and a labs-only model) and then fixed. Most scorers are code, not an LLM judge. Every result has a 95% interval and a plain verdict: clearly met, clearly missed, or not distinguishable from the target at this sample size. After each final run I read a sample of the failing transcripts to check whether the system or the grader was at fault.

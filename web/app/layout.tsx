@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@/components/Analytics";
+import { Banner } from "@/components/Banner";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,7 +13,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {children}
-        <Analytics />
+        <div className="bottom-stack">
+          <Analytics />
+          <Banner />
+        </div>
       </body>
     </html>
   );

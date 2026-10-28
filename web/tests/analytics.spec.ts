@@ -100,7 +100,7 @@ test("no typed text, reply or probability is ever sent, and no screen recording 
   await expect(page.getByTestId("probability")).toBeVisible();
   const reply = (await page.getByTestId("reply").innerText()).slice(0, 40);
   const prob = await page.getByTestId("probability").innerText();
-  await page.getByRole("tab", { name: "Patient chart" }).click();
+  await page.getByRole("tab", { name: "Sample Patient Charts" }).click();
   const all = await until(() => seen(page), (s) => events(s).some((e) => e.event === "result_shown"));
   const bodies = all.map((r) => r.body + r.path + r.query).join("\n");
   expect(bodies).not.toContain("ZXQ-typed-text");

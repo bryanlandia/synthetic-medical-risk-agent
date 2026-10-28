@@ -66,7 +66,7 @@ export function Analytics() {
 
   if (!analyticsEnabled || !active) return null;
   return (
-    <footer className="notice-bar" role="contentinfo" data-testid="analytics-notice">
+    <div className="notice-bar" role="region" aria-label="Analytics notice" data-testid="analytics-notice">
       {optedOut ? (
         <span>Counting is off for this visit.</span>
       ) : (
@@ -88,6 +88,6 @@ export function Analytics() {
           </button>
         </>
       )}
-    </footer>
+    </div>
   );
 }

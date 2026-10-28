@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Banner } from "./Banner";
 import { AboutTab } from "./AboutTab";
 import { trackResult } from "./Analytics";
 import { ChartTab } from "./ChartTab";
@@ -12,7 +11,7 @@ import type { Analysis, DemoPatient, ShownError } from "@/lib/types";
 
 type Tab = "chart" | "free" | "card" | "about";
 const TABS: { id: Tab; label: string }[] = [
-  { id: "chart", label: "Patient chart" },
+  { id: "chart", label: "Sample Patient Charts" },
   { id: "free", label: "Try the agent" },
   { id: "card", label: "Model card" },
   { id: "about", label: "About this project" },
@@ -62,7 +61,6 @@ export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPa
 
   return (
     <>
-      <Banner />
       <main>
         <h1>VK-Check <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis</span></h1>
         <div role="tablist" aria-label="Demo sections" className="tabs">
