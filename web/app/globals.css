@@ -12,6 +12,8 @@
   --err-text: #8a1c1c;
   --banner-bg: #17202a;
   --banner-text: #f4f6f8;
+  --link: #1f5fbf;
+  --link-visited: #6b3fa0;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -28,11 +30,16 @@
     --err-text: #ffc9c9;
     --banner-bg: #0b0f14;
     --banner-text: #e8edf2;
+    --link: #8fb8ff;
+    --link-visited: #c4a8f0;
   }
 }
 * { box-sizing: border-box; }
 body { display: flex; flex-direction: column; min-height: 100vh; margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
 main { flex: 1; width: 100%; max-width: 1100px; margin: 0 auto; padding: 16px; }
+a { color: var(--link); }
+a:visited { color: var(--link-visited); }
+a:hover { text-decoration-thickness: 2px; }
 h1 { font-size: 1.5rem; margin: 8px 0 16px; }
 h1 .muted { display: block; font-size: 1rem; font-weight: 400; }
 h2 { font-size: 1.15rem; margin: 16px 0 8px; }
