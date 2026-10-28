@@ -7,15 +7,15 @@ type Patient = { slug: string; title: string; patient_id: string; message: strin
 const PATIENTS: Patient[] = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "content", "demo_patients.json"), "utf8")).patients;
 const bySlug = (slug: string) => PATIENTS.find((p) => p.slug === slug)!;
 
-const TABS = ["Patient chart", "Try the agent", "Model card", "About this project"];
+const TABS = ["Sample Patient Charts", "Try the agent", "Model card", "About this project"];
 
 test("every tab shows the synthetic-data banner and the mock-EHR label", async ({ page }) => {
   await page.goto("/");
   for (const name of TABS) {
     await page.getByRole("tab", { name }).click();
-    await expect(page.getByRole("banner")).toContainText("Synthetic data. Fictional disease. Not medical advice.");
-    await expect(page.getByRole("banner")).toContainText("MOCK EHR");
-    await expect(page.getByRole("banner")).toBeInViewport();
+    await expect(page.getByRole("contentinfo")).toContainText("Synthetic data. Fictional disease. Not medical advice.");
+    await expect(page.getByRole("contentinfo")).toContainText("MOCK EHR");
+    await expect(page.getByRole("contentinfo")).toBeInViewport();
   }
   const text = (await page.locator("body").innerText()).toLowerCase();
   expect(text).not.toContain("hl7");
@@ -202,7 +202,7 @@ test("the About tab shows every heading in the file, in order, with the banner",
   expect(expected.length).toBeGreaterThanOrEqual(1);
   await page.goto("/");
   await page.getByRole("tab", { name: "About this project" }).click();
-  await expect(page.getByRole("banner")).toContainText("Not medical advice");
+  await expect(page.getByRole("contentinfo")).toContainText("Not medical advice");
   const shown = await page.locator("article.doc h2").allInnerTexts();
   expect(shown.map((t) => t.trim())).toEqual(expected);
 });
@@ -243,4 +243,21 @@ test("with no analytics key the page counts nothing: no notice, no analytics req
   await expect(page.getByTestId("analytics-notice")).toHaveCount(0);
   expect(paths.filter((p) => p.startsWith("/ingest"))).toEqual([]);
   expect((await request.post("/ingest/e/", { data: "{}" })).status()).toBe(404);
+});
+
+test("the About text shows the review recording from this site and does not download it until played", async ({ page, request }) => {
+  const requested: string[] = [];
+  page.on("request", (r) => requested.push(new URL(r.url()).pathname));
+  await page.goto("/");
+  await page.getByRole("tab", { name: "About this project" }).click();
+  const video = page.locator("article.doc video");
+  await expect(video).toHaveCount(1);
+  await expect(video).toHaveAttribute("preload", "none");
+  const src = (await video.getAttribute("src"))!;
+  expect(src).toMatch(/^\/[\w.-]+\.webm$/);
+  expect(requested).not.toContain(src);
+  const res = await request.head(src);
+  expect(res.ok()).toBe(true);
+  expect(res.headers()["content-type"]).toContain("video/webm");
+  await expect(page.locator("article.doc")).not.toContainText("<!--");
 });

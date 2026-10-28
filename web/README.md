@@ -4,7 +4,7 @@
 (not connected to any real system; no FHIR, no vendor software) with a decision-support panel that runs the risk check on what
 is on the chart. The guards and the evals around the agent are the real subject; the page is how a visitor sees them work.
 
-- **Patient chart**: pick one of four invented patients (from the dev split, with their messages pre-rendered by the eval
+- **Sample Patient Charts**: pick one of four invented patients (from the dev split, with their messages pre-rendered by the eval
   harness), read the labs and note, open "Message sent to the agent" to see the exact text, and press "Run V-K check".
 - **Try the agent**: a free-text box for a treatment question, an off-topic prompt, a note with an injected instruction, or
   your own text. Every send is a single request; nothing is remembered.
