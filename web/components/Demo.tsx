@@ -11,7 +11,7 @@ import type { Analysis, DemoPatient, ShownError } from "@/lib/types";
 
 type Tab = "chart" | "free" | "card" | "about";
 const TABS: { id: Tab; label: string }[] = [
-  { id: "chart", label: "Sample Patient Charts" },
+  { id: "chart", label: "Sample patient charts" },
   { id: "free", label: "Try the agent" },
   { id: "card", label: "Model card" },
   { id: "about", label: "About this project" },
@@ -62,7 +62,7 @@ export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPa
   return (
     <>
       <main>
-        <h1>VK-Check <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis</span></h1>
+        <h1>VK-Check <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)</span></h1>
         <div role="tablist" aria-label="Demo sections" className="tabs">
           {TABS.map((t) => (
             <button key={t.id} role="tab" data-track={`tab:${t.id}`} id={`tab-${t.id}`} aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => setTab(t.id)}>
