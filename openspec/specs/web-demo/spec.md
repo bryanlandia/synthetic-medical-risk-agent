@@ -38,13 +38,6 @@ A second tab SHALL take free text and send it, as it is, to the same route, and 
 - **WHEN** two messages are sent one after the other
 - **THEN** the second request contains only the second message and the first result is replaced
 
-### Requirement: Every screen says what this is
-Every screen SHALL show a banner stating that the data is synthetic, the disease is fictional and the output is not medical advice, and SHALL label the chart as a mock EHR. The page MUST NOT claim FHIR, vendor or real-system integration.
-
-#### Scenario: Banner on every tab
-- **WHEN** each tab is opened
-- **THEN** the banner and the mock label are visible without scrolling
-
 ### Requirement: Demo patients come from the dev split and carry no answer
 The demo patients SHALL be a small committed set taken from the dev split, each with its chart and its pre-rendered message. The file MUST NOT contain a ground-truth field, and it SHALL be equal to what the evaluation harness renders for those patients.
 
@@ -78,11 +71,11 @@ A tab SHALL show the committed model card rendered without its metadata block, a
 - **THEN** the tab shows a match, and then a warning that the card does not describe the running model
 
 ### Requirement: An About tab describes the project
-The page SHALL have a tab named "About this project", reachable from every other tab, that shows a project description written in markdown from a committed content file. It SHALL render every heading, paragraph, list, table and link in the file, and SHALL carry the same banner as every other tab. The page MUST NOT fetch the description from the agent service.
+The page SHALL have a tab named "About this project", reachable from every other tab, that shows a project description written in markdown from a committed content file. It SHALL render every heading, paragraph, list, table and link in the file. The page MUST NOT fetch the description from the agent service.
 
 #### Scenario: Every heading in the file is on the page
 - **WHEN** the About tab is opened
-- **THEN** each second-level heading in the content file is shown as a heading, in the file's order, and the banner is visible
+- **THEN** each second-level heading in the content file is shown as a heading, in the file's order
 
 ### Requirement: Links in the description are safe
 Links in the About text SHALL open in a new tab without giving the new page access to this one, and the About tab MUST NOT load scripts, images or fonts from another site.
@@ -90,3 +83,14 @@ Links in the About text SHALL open in a new tab without giving the new page acce
 #### Scenario: A link opens safely
 - **WHEN** the About tab contains a link to another address
 - **THEN** the link opens in a new tab with `noopener` and `noreferrer`, and the tab makes no request to another site
+
+### Requirement: Every screen says the disease is fictional
+Every screen SHALL show a title that states the disease is fictional. The page MUST NOT claim FHIR, vendor or real-system integration.
+
+#### Scenario: The title is on every tab
+- **WHEN** each tab is opened
+- **THEN** the title stating that the disease is fictional is visible without scrolling
+
+#### Scenario: No integration is claimed
+- **WHEN** the text of any tab is read
+- **THEN** it does not claim HL7, FHIR or a vendor's software

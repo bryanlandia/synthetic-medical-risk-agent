@@ -6,6 +6,6 @@
 
 ## 2. Spec
 
-- [ ] 2.1 Archive `add-about-tab` first (its requirement is edited by this change's delta).
-- [ ] 2.2 `openspec validate remove-synthetic-banner --strict` passes.
-- [ ] 2.3 Merge `remove-banner`, then archive this change; confirm the main `web-demo` spec has the renamed requirement and no banner scenario.
+- [x] 2.1 Archive `add-about-tab` first (its requirement is edited by this change's delta).
+- [x] 2.2 `openspec validate remove-synthetic-banner --strict` passes.
+- [x] 2.3 Merge `remove-banner`, then archive this change; confirm the main `web-demo` spec has the renamed requirement and no banner scenario.
