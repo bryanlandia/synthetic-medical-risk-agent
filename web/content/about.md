@@ -35,7 +35,13 @@ chart or note --> web app --> agent (secret, size, rate and spend checks)
                   reply check <--+  the model's short summary of the report
 ```
 
-The classifier is a simple logistic model: training set a weight for each lab and symptom, and the note reader turns free text into those same features.  It is about 200 kB and answers in under a millisecond.  The agent's scoring tool takes no arguments, so the model cannot change what is scored.  Declines use a closed set of reasons, and a check replaces any reply that quotes a wrong number or names a drug.  Limits per visitor and a daily dollar cap bound the spend.  On the Try the agent tab, the example with an instruction hidden in the note shows the injection being ignored.
+The agent's scoring tool takes no arguments, so the model cannot change what is scored.  Declines use a closed set of reasons, and a check replaces any reply that quotes a wrong number or names a drug.  Limits per visitor and a daily dollar cap bound the spend.  On the Try the agent tab, the example with an instruction hidden in the note shows the injection being ignored.
+
+## The classifier
+
+The alternative to prompting a frontier model is a small trained one, in two parts, both logistic regressions.  A note reader finds mentions of five symptoms in the free text, decides whether each is present, possible, absent or not about the patient, and picks up any lab values the note states.  A risk classifier then takes eight lab values, eight flags for missing labs and the symptom readings, and gives a calibrated probability.  The two files together are about 200 kB, and scoring takes under a millisecond on a CPU, with no GPU and no API call.
+
+It was trained on the training set only, with settings chosen on the development set.  A gradient-boosted model on the same inputs did worse on development, so I kept the simpler one.  On the test set it beats the prompted Haiku baseline (0.796 against 0.735 AUC), and the agent's number is exactly the classifier's, since code, not the model, supplies it.  One caution: the hidden scoring rule is itself logistic, so a logistic model is a good fit by construction.  That says the pipeline works on this synthetic task, not what a real disease would allow.  The Model card tab has the metrics, data and limits.
 
 ## What went wrong and what I learned
 
