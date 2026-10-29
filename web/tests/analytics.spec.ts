@@ -60,7 +60,7 @@ test("the notice is shown and every analytics request goes to the site's own add
 test("one page view per load carries the ref, and switching tabs does not send another", async ({ page }) => {
   await page.goto("/?ref=Ode!!");
   await page.getByRole("tab", { name: "About this project" }).click();
-  await page.getByRole("tab", { name: "Try the agent" }).click();
+  await page.getByRole("tab", { name: "Try the assistant" }).click();
   const all = events(await until(() => seen(page), (s) => events(s).some((e) => e.event === "ui_click")));
   const views = all.filter((e) => e.event === "$pageview");
   expect(views).toHaveLength(1);
@@ -75,7 +75,7 @@ test("each countable element sends one named click, and empty space and typing s
   await page.getByText("Message sent to the agent").click();
   await page.getByRole("button", { name: "Run V-K check" }).click();
   await expect(page.getByTestId("probability")).toBeVisible();
-  await page.getByRole("tab", { name: "Try the agent" }).click();
+  await page.getByRole("tab", { name: "Try the assistant" }).click();
   await page.getByRole("button", { name: "A treatment question" }).click();
   await page.getByLabel("Message").pressSequentially("typing is not counted");
   await page.getByRole("button", { name: "Send", exact: true }).click();
@@ -93,7 +93,7 @@ test("each countable element sends one named click, and empty space and typing s
 
 test("no typed text, reply or probability is ever sent, and no screen recording is requested", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("tab", { name: "Try the agent" }).click();
+  await page.getByRole("tab", { name: "Try the assistant" }).click();
   const typed = "ZXQ-typed-text-7731 Velorin index 128 mg/dL. Tremor present.";
   await page.getByLabel("Message").fill(typed);
   await page.getByRole("button", { name: "Send", exact: true }).click();
@@ -162,7 +162,7 @@ test("every element that must be counted carries a name", async ({ page }) => {
   for (const tab of ["chart", "free", "card", "about"]) await expect(page.locator(`[data-track="tab:${tab}"]`)).toHaveCount(1);
   await expect(page.locator('[data-track^="patient:"]')).toHaveCount(4);
   for (const name of ["run_check", "sent_message_expander"]) await expect(page.locator(`[data-track="${name}"]`)).toHaveCount(1);
-  await page.getByRole("tab", { name: "Try the agent" }).click();
+  await page.getByRole("tab", { name: "Try the assistant" }).click();
   await expect(page.locator('[data-track^="example:"]')).toHaveCount(4);
   await expect(page.locator('[data-track="send_free_text"]')).toHaveCount(1);
   await page.getByRole("tab", { name: "About this project" }).click();

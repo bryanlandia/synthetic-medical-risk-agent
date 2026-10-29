@@ -6,7 +6,7 @@ is on the chart. The guards and the evals around the agent are the real subject;
 
 - **Sample patient charts**: pick one of four invented patients (from the dev split, with their messages pre-rendered by the eval
   harness), read the labs and note, open "Message sent to the agent" to see the exact text, and press "Run V-K check".
-- **Try the agent**: a free-text box for a treatment question, an off-topic prompt, a note with an injected instruction, or
+- **Try the assistant**: a free-text box for a treatment question, an off-topic prompt, a note with an injected instruction, or
   your own text. Every send is a single request; nothing is remembered.
 - **Model card**: the classifier's model card, with a check that it describes the model that is running.
 - **About this project**: the project description, shown from `content/about.md`.

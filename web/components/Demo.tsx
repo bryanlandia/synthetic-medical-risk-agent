@@ -12,7 +12,7 @@ import type { Analysis, DemoPatient, ShownError } from "@/lib/types";
 type Tab = "chart" | "free" | "card" | "about";
 const TABS: { id: Tab; label: string }[] = [
   { id: "chart", label: "Sample patient charts" },
-  { id: "free", label: "Try the agent" },
+  { id: "free", label: "Try the assistant" },
   { id: "card", label: "Model card" },
   { id: "about", label: "About this project" },
 ];
