@@ -45,7 +45,7 @@ The alternative was two simple models in sequence, both simple logistic classifi
 
 Inference, once scoring is allowed and requested, just needs numpy.  Scoring just finds labs and symptoms in the note, multiplies them by the stored weights, adds them up, and turns the totals into the disease probability.
 
-I logged training runs (params, seed, config hash, chosen train ids hash, model files) locally using MLflow, and then saved the final chosen model details as a model card following the HuggingFace format.  Tests will fail if the hash captured on the model card and actual model don't match.
+I logged training runs (params, seed, config hash, chosen train ids hash, model files) locally using MLflow, and then saved the final chosen model details as a model card following the Hugging Face format.  Tests will fail if the hash captured on the model card and actual model don't match.
 
 
 ## Results, lessons learned
