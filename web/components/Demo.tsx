@@ -62,7 +62,10 @@ export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPa
   return (
     <>
       <main>
-        <h1>VK-Check <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)</span></h1>
+        <h1>
+          <img src="/vk-check-logo.svg" alt="" className="logo" />
+          <span className="sr-only">VK-Check</span>{" "}
+          <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)</span></h1>
         <div role="tablist" aria-label="Demo sections" className="tabs">
           {TABS.map((t) => (
             <button key={t.id} role="tab" data-track={`tab:${t.id}`} id={`tab-${t.id}`} aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => setTab(t.id)}>

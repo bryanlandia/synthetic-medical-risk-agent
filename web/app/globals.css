@@ -42,6 +42,8 @@ a:visited { color: var(--link-visited); }
 a:hover { text-decoration-thickness: 2px; }
 h1 { font-size: 1.5rem; margin: 8px 0 16px; }
 h1 .muted { display: block; font-size: 1rem; font-weight: 400; }
+h1 .logo { display: block; height: 44px; width: auto; margin-bottom: 6px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 h2 { font-size: 1.15rem; margin: 16px 0 8px; }
 h3 { font-size: 1rem; margin: 12px 0 4px; }
 .tag { background: var(--warn-bg); color: var(--warn-text); padding: 1px 8px; border-radius: 4px; font-weight: 700; margin-right: 6px; }
