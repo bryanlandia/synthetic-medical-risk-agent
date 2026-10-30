@@ -50,14 +50,15 @@ I logged training runs (params, seed, config hash, chosen train ids hash, model 
 
 ## Results, lessons learned
 
-* **This is of course not a full agent demo**, just a simple one.  It can't ask for clarifying questions yet, or respond to follow-ups about the report it generates, doesn't advise on collecting more labs, help with differential diagnosis from other 'look-alike' conditions.
-* **My first prompts were weak.** The first version scored an AUC of 0.65 (0.5 is a coin flip, 1.0 is perfect), and it took five rewrites to reach 0.75.
-* **No system can score perfectly here, by design.** Each label was drawn at random from the patient's true probability, so a patient at 30% still gets a "has the disease" label three times in ten.  About one patient in five ended up on the wrong side of 50%.  Many of the test failures I read were for that reason.
-* **The assistant sometimes tried to call a tool twice.** In about 1 request in 180 it asked to score a note twice, or to score and decline in the same turn, usually on short follow-up notes with most labs missing.  The service runs the first call and ignores the second, so the visitor still gets the right answer, but my checks count it as a miss.  I left the prompt alone afterwards, because the test set had been looked at and changing it then would be tuning on the test.
+* **This is of course not a full agent demo**, just a simple two-step, single user prompt assistant.  It can't ask for clarifying questions yet, or respond to follow-ups about the report it generates, doesn't advise on collecting more labs, or help with differential diagnosis from other 'look-alike' conditions.
+* **My first prompts were pretty weak.** The first version scored an AUC of 0.65, and it took five rewrites to reach 0.75.
+* **No system can score perfectly here, by design.** Each label was drawn at random from the patient's true probability, so a patient at 30% still got a "has the disease" label three times in ten.  About one patient in five ended up on the 'wrong' side of the probability, which caused many of the test failures.
+
+* **The assistant sometimes tried to call a tool twice.** In about 1 request in 180 it asked to score a note twice, or to score and decline in the same turn, usually on short follow-up notes with most labs missing.  The service runs the first call and ignores the second, so the visitor still gets the right answer, but my checks counted those as misses.  I left the prompt alone afterwards, because the test set had been looked at and changing it then would be tuning on the test.
 
 ## What would change with real data
 
-Generated data would still be useful, since assistant setup, early model work and evaluation could start before any sensitive data was available.  But once available, I would train on real clinician notes, labs and confirmed diagnoses, validate realism with expert human reviewers, and make the evals tell Velorin-Kessler apart from conditions with overlapping labs and symptoms.
+Generated data would still be useful, since assistant setup, early model work and evaluation could start before any sensitive data was available.  But once available (if this were a real disease!), I would train on real clinician notes, labs and confirmed diagnoses, validate realism with expert human reviewers, and make the evals tell Velorin-Kessler apart from conditions with overlapping labs and symptoms.
 
 A real agent would probably sit inside an EHR system and need much more care with PHI/PII.  Here there is no real data, the text a visitor types is not written to the logs (only sizes, timings and outcomes), and keys stay on the server.  A real deployment would need all of that reviewed, an agreement with the model provider, access controls and an audit trail.  This was of course never validated on real patients, so it would also need clinical validation and regulatory review.
 
