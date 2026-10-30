@@ -67,5 +67,6 @@ A real agent would probably sit inside an EHR system and need much more care wit
 * Model and inference API: Strands Agent, FastAPI on Vercel, Claude Haiku 5.5 as the assistant's model
 * Evals: Inspect AI
 * Training runs tracked with MLFlow
+* Development using OpenSpec / assisted with Claude Sonnet 5.5
 
 [Public code repository](https://github.com/bryanlandia/synthetic-medical-risk-agent). Contact: bryanlandia@gmail.com
