@@ -6,6 +6,14 @@ VK-Check is a small applied AI system that reads a patient's symptoms and lab re
 
 To date, it's a limited single-prompt chat UI in front of a small tool-calling agent, with no conversation memory.  The agent evaluates whether to score or decline to score, and calls the appropriate tool.  Its first turn picks and calls the tool, and its second writes a reply.
 
+TODO:
+
+* Improve handling of missing labs
+* Improve confidence reporting
+* What If? UI with lab value sliders and symptom toggles to see how changed values impact probability
+* Full agent loop and conversation state
+* Differential diagnosis against another fake look-alike disease
+
 ## Why this project?
 
 I wanted to explore building a small assistant for medical diagnosis: how to generate and validate synthetic data when there is no real condition and no clinicians who know about it, how a small trained model compares with frontier models, and how to build a thorough set of evals for all of it.
