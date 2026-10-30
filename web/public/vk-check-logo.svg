@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -5 214 53" role="img" aria-label="VK-Check">
+  <style>
+    .ink { stroke: #16202b; }
+    .mark { stroke: #0f8a7e; }
+    @media (prefers-color-scheme: dark) {
+      .ink { stroke: #e8edf2; }
+      .mark { stroke: #3fc7b6; }
+    }
+  </style>
+  <g fill="none" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- the V is a check mark: a short arm down, a long arm up past the top of the K -->
+    <path class="mark" d="M10 22 L21 38 L41 -1"/>
+    <!-- K, hyphen, then "Check" drawn as strokes, so no font is needed -->
+    <path class="ink" d="M47 8 V38 M47 24 L61 8 M52 22 L62 38"/>
+    <path class="ink" transform="translate(-1 0)" d="M68 28 H73"/>
+    <path class="ink" transform="translate(-2 0)" d="M107.5 13.4 A15 15 0 1 0 107.5 32.6"/>
+    <path class="ink" transform="translate(-3 0)" d="M116 8 V38 M116 27 C116 21 120 18 125 18 C131 18 134 22 134 28 V38"/>
+    <path class="ink" transform="translate(-4 0)" d="M142 28 H162 A10 10 0 1 0 159.7 34.4"/>
+    <path class="ink" transform="translate(-5 0)" d="M187.7 21.6 A10 10 0 1 0 187.7 34.4"/>
+    <path class="ink" transform="translate(-6 0)" d="M196 8 V38 M196 31 L209 18 M201 26 L210 38"/>
+  </g>
+</svg>
