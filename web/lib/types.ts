@@ -9,8 +9,13 @@ export type Report = {
   labs_used: { lab: string; value: number; unit: string }[];
   data_quality: DataQuality[];
   evidence: string[];
+  interval?: [number, number];
+  gaps?: Gap[];
   disclaimer: string;
 };
+
+/** A finding the record lacks: the probability range if only that item were obtained. */
+export type Gap = { kind: "lab" | "symptom"; key: string; low: number; high: number; changes_routing: boolean };
 
 export type Analysis = {
   request_id: string;
@@ -25,7 +30,10 @@ export type Analysis = {
 export type ShownError = { code: string; message: string; retry_after?: number };
 
 export type Chart = {
-  labs: { lab: string; name: string; abbr: string; value: number | null; unit: string }[];
+  labs: {
+    lab: string; name: string; abbr: string; value: number | null; unit: string;
+    ref_lo: number; ref_hi: number; ref_unit: string; flag: "H" | "L" | null;
+  }[];
   note: string;
 };
 

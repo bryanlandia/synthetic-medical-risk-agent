@@ -33,6 +33,49 @@
       "title": "DataQualityWarning",
       "type": "object"
     },
+    "Gap": {
+      "additionalProperties": false,
+      "description": "One finding the record lacks: the lowest and highest probability if only that item were obtained.",
+      "properties": {
+        "changes_routing": {
+          "title": "Changes Routing",
+          "type": "boolean"
+        },
+        "high": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "High",
+          "type": "number"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "lab",
+            "symptom"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "low": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Low",
+          "type": "number"
+        }
+      },
+      "required": [
+        "kind",
+        "key",
+        "low",
+        "high",
+        "changes_routing"
+      ],
+      "title": "Gap",
+      "type": "object"
+    },
     "LabUsed": {
       "additionalProperties": false,
       "properties": {
@@ -86,6 +129,21 @@
       },
       "title": "Evidence",
       "type": "array"
+    },
+    "gaps": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Gaps"
     },
     "interval": {
       "anyOf": [

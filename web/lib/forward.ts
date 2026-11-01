@@ -4,7 +4,7 @@
  * Nothing here imports Next, so the tests run it directly with a fake `fetch`. The shared secret and the service address are
  * arguments, read from the server's environment by the route; they are never part of a response.
  */
-import type { Analysis, DataQuality, Report, ShownError } from "./types";
+import type { Analysis, DataQuality, Gap, Report, ShownError } from "./types";
 
 export type ForwardConfig = { url: string; secret: string; timeoutMs: number };
 export type Forwarded = { status: number; body: { analysis: Analysis } | { error: ShownError }; retryAfter?: number };
@@ -31,6 +31,20 @@ export function describe(status: number, code: string | null, retryAfter: number
 const str = (v: unknown): v is string => typeof v === "string";
 const num = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
 
+const prob = (v: unknown): v is number => num(v) && v >= 0 && v <= 1;
+
+/** The range and gaps, only when they are well formed; anything else is dropped, never passed on. */
+function pickRange(o: Record<string, unknown>): Pick<Report, "interval" | "gaps"> {
+  const out: Pick<Report, "interval" | "gaps"> = {};
+  if (Array.isArray(o.interval) && o.interval.length === 2 && prob(o.interval[0]) && prob(o.interval[1])) out.interval = [o.interval[0], o.interval[1]];
+  if (Array.isArray(o.gaps)) {
+    out.gaps = o.gaps
+      .filter((g): g is Gap => !!g && (g.kind === "lab" || g.kind === "symptom") && str(g.key) && prob(g.low) && prob(g.high) && typeof g.changes_routing === "boolean")
+      .map((g) => ({ kind: g.kind, key: g.key, low: g.low, high: g.high, changes_routing: g.changes_routing }));
+  }
+  return out;
+}
+
 function pickReport(r: unknown): Report | null {
   if (!r || typeof r !== "object") return null;
   const o = r as Record<string, unknown>;
@@ -48,6 +62,7 @@ function pickReport(r: unknown): Report | null {
       .filter((d): d is DataQuality => !!d && str((d as DataQuality).type))
       .map((d) => ({ type: d.type, lab: str(d.lab) ? d.lab : null })),
     evidence: o.evidence.filter(str),
+    ...pickRange(o),
     disclaimer: str(o.disclaimer) ? o.disclaimer : "",
   };
 }

@@ -22,13 +22,17 @@ export function ChartTab({ patients, patient, onSelect, onRun, outcome, labNames
         <p className="muted small">Demo patient {patient.patient_id} (invented). {patient.look_for}</p>
         <table>
           <caption>Labs on the chart</caption>
-          <thead><tr><th>Lab</th><th>Value</th><th>Unit</th></tr></thead>
+          <thead><tr><th>Lab</th><th>Value</th><th>Unit</th><th>Reference range</th></tr></thead>
           <tbody>
             {patient.chart.labs.map((l) => (
               <tr key={l.lab}>
                 <td>{l.name} ({l.abbr})</td>
                 <td>{l.value === null ? <span className="muted">not reported</span> : l.value}</td>
                 <td>{l.value === null ? "" : l.unit}</td>
+                <td data-testid={`range-${l.lab}`}>
+                  {l.ref_lo}–{l.ref_hi} {l.ref_unit}
+                  {l.flag && <span className={`flag flag-${l.flag}`} data-testid={`flag-${l.lab}`} aria-label={l.flag === "H" ? "high" : "low"} title={l.flag === "H" ? "Above the reference range" : "Below the reference range"}>{l.flag}</span>}
+                </td>
               </tr>
             ))}
           </tbody>

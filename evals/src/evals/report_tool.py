@@ -24,8 +24,12 @@ TRUNCATED_PREFIX = "[truncated]"
 
 
 def report_tool() -> dict[str, Any]:
-    return {"name": TOOL_NAME, "description": TOOL_DESCRIPTION,
-            "input_schema": json.loads(SCHEMA_PATH.read_text())}
+    schema = json.loads(SCHEMA_PATH.read_text())
+    # gaps are computed by the classifier system's code and are not asked of a prompted model; leaving them out keeps the tool
+    # the model sees identical to the one behind the cached baseline results
+    schema["properties"].pop("gaps", None)
+    schema.get("$defs", {}).pop("Gap", None)
+    return {"name": TOOL_NAME, "description": TOOL_DESCRIPTION, "input_schema": schema}
 
 
 class ReportToolClient(AnthropicClient):

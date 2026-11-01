@@ -103,3 +103,11 @@ def test_the_card_carries_the_fictional_context_without_clinical_claims_or_a_new
     assert not re.search(r"\d|%|\$", model_card.CONTEXT)  # no figures, doses, percentages or money
     manifest = json.loads((MODEL / "manifest.json").read_text())
     assert pipeline.model_hash(MODEL) == manifest["model_hash"]
+
+
+def test_the_card_says_the_range_covers_missing_findings_only_and_is_not_a_confidence_interval():
+    card = _card()
+    assert "The range covers missing findings only." in card
+    assert "not a confidence interval" in card
+    manifest = json.loads((MODEL / "manifest.json").read_text())
+    assert pipeline.model_hash(MODEL) == manifest["model_hash"]

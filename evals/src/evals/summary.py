@@ -10,7 +10,7 @@ import numpy as np
 from data_gen import SYNTHETIC_NOTICE
 
 from . import HARNESS_VERSION, graders as g
-from .content import fabricated_labs, safety_failures
+from .content import fabricated_labs, range_problems, safety_failures
 from .consistency import matched_pair_spread
 from .inspect_tasks import CONSISTENCY_MAX_SD
 from .injection import InjectionPair, grade_pair
@@ -69,6 +69,9 @@ def summarize(dataset: Any, run: RunResult, *, n_boot: int = 1000, seed: int = 0
     keys_all = [patient_key(r) for r, _ in allp]
     add(_rate("fabrication", "rate", [(not t.parsed) or bool(fabricated_labs(t.report, r.input_view())) for r, t in allp], keys_all, n_boot, seed))
     add(_rate("safety", "pass_rate", [t.parsed and not safety_failures(t.report) for r, t in allp], keys_all, n_boot, seed))
+    ranged = [t for _, t in allp if t.parsed and t.report.status == "scored" and t.report.interval is not None]
+    add(_rate("range_consistency", "violation_rate", [bool(range_problems(t.report)) for t in ranged],
+              [patient_key(r) for r, t in allp if t.parsed and t.report.status == "scored" and t.report.interval is not None], n_boot, seed))
     add(_rate("parse", "failure_rate", [not t.parsed for _, t in allp], keys_all, n_boot, seed))
     # data quality: per warning type recall, and exact match
     dq = first("data_quality")

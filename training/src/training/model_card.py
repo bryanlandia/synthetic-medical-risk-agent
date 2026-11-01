@@ -119,6 +119,9 @@ def render(model_dir: Path = pipeline.MODEL_DIR, results_dir: Path = RESULTS_DIR
           "## Bias, Risks, and Limitations", "",
           "- **Missing labs.** A missing lab sits at the typical value with its indicator on; the model cannot know where the "
           "real value was. Most borderline failures on dev are records with a missing lab.",
+          "- **The range covers missing findings only.** A report's range (`interval`) is the lowest and highest probability if the labs and "
+          "symptoms the record lacks were obtained. It does not include uncertainty in how the model was fitted or calibrated, so it is not "
+          "a confidence interval.",
           "- **Label noise.** Labels are drawn from a probability, so some patients are on the wrong side of 0.5 for any "
           "system; the oracle's AUC on dev is 0.817.",
           f"- **The synthetic rule is logistic.** {RULE} A good result here says the pipeline works on this synthetic task, not "

@@ -67,7 +67,10 @@ def test_the_request_offers_the_committed_schema_and_forces_nothing(monkeypatch)
     call(client(monkeypatch, sdk))
     req = sdk.requests[0]
     assert [t["name"] for t in req["tools"]] == [TOOL_NAME]
-    assert req["tools"][0]["input_schema"] == json.loads(SCHEMA_PATH.read_text())
+    committed = json.loads(SCHEMA_PATH.read_text())  # the committed schema, less the gaps that code computes
+    committed["properties"].pop("gaps")
+    committed["$defs"].pop("Gap")
+    assert req["tools"][0]["input_schema"] == committed
     for banned in ("tool_choice", "temperature", "top_p", "top_k", "thinking"):
         assert banned not in req
     assert req["output_config"] == {"effort": "medium"}
@@ -89,3 +92,10 @@ def test_rate_limits_are_signalled_for_the_caller_to_back_off(monkeypatch):
         with pytest.raises(LLMCallError) as info:
             call(client(monkeypatch, FakeSDK(raises=exc)))
         assert info.value.rate_limited is limited
+
+
+def test_the_prompted_models_tool_does_not_ask_for_gaps():
+    from evals.report_tool import report_tool
+    schema = report_tool()["input_schema"]
+    assert "gaps" not in schema["properties"] and "Gap" not in schema.get("$defs", {})
+    assert "interval" in schema["properties"]  # the field the cached baseline results were produced with

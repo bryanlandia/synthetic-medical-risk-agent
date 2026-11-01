@@ -14,7 +14,7 @@ from .report import build
 
 # Bumped when the report logic (conflict rule, data-quality checks, evidence wording) changes without a new model file,
 # so that a system version names the behavior and not only the weights.
-LOGIC_VERSION = "1"
+LOGIC_VERSION = "2"
 
 MODEL_FILES = ("reader.json", "classifier.json")  # the model: its hash is the hash of these two files
 

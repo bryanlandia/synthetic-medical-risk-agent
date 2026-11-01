@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { SECRET, AGENT_PORT } from "../playwright.config";
 
-type Patient = { slug: string; title: string; patient_id: string; message: string; chart: { note: string } };
+type Patient = { slug: string; title: string; patient_id: string; message: string; chart: { note: string; labs: { lab: string; value: number | null; flag: "H" | "L" | null }[] } };
 const PATIENTS: Patient[] = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "content", "demo_patients.json"), "utf8")).patients;
 const bySlug = (slug: string) => PATIENTS.find((p) => p.slug === slug)!;
 
@@ -313,4 +313,41 @@ test("the funder footer is on every tab, and the foundation is not in the reques
   expect(bodies.length).toBe(1);
   expect(bodies[0]).not.toMatch(/Kessler Family|Foundation/i);
   expect(await page.getByTestId("reply").innerText()).not.toMatch(/Kessler Family|Foundation/i);
+});
+
+test("the chart shows each lab's reference range and flags the values outside it", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByTestId("range-velorin_index")).toContainText("70–130 mg/dL");
+  const routine = bySlug("routine").chart.labs;
+  for (const lab of routine) {
+    const flag = page.getByTestId(`flag-${lab.lab}`);
+    if (lab.flag) {
+      await expect(flag).toHaveText(lab.flag);
+      await expect(flag).toHaveAttribute("aria-label", lab.flag === "H" ? "high" : "low");
+    } else {
+      await expect(flag).toHaveCount(0);
+    }
+  }
+  expect(routine.some((l) => l.flag)).toBe(true);
+});
+
+test("a lab that is not reported shows no flag", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: bySlug("unit-and-missing").title }).click();
+  const missing = bySlug("unit-and-missing").chart.labs.find((l) => l.value === null)!;
+  await expect(page.getByTestId(`range-${missing.lab}`)).toBeVisible();
+  await expect(page.getByTestId(`flag-${missing.lab}`)).toHaveCount(0);
+});
+
+test("a missing lab gives a range wider than a point and a gap entry, and nothing can edit a recorded value", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: bySlug("unit-and-missing").title }).click();
+  await page.getByRole("button", { name: "Run V-K check" }).click();
+  await expect(page.getByTestId("probability")).toBeVisible();
+  const range = await page.getByTestId("range").innerText();
+  const [, lo, hi] = range.match(/(\d+)% to (\d+)%/)!;
+  expect(Number(hi)).toBeGreaterThan(Number(lo));
+  await expect(page.getByTestId("gaps")).toContainText("Velorin index");
+  expect(await page.locator("body").innerText()).not.toMatch(/confidence interval/i);
+  expect(await page.locator("input[type=range], input[type=number]").count()).toBe(0);
 });

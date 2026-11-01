@@ -74,3 +74,36 @@ def test_a_declined_message_is_checked_too():
     declined = parse_report({"status": "declined", "reason": "treatment_request",
                              "message": "I cannot advise taking metformin."}).report
     assert "medication:metformin" in safety_failures(declined)
+
+
+# --- range consistency ----------------------------------------------------------------------------------------
+
+def _ranged(**over):
+    from evals.report import parse_report
+    base = {"status": "scored", "probability": 0.5, "uncertain": True, "interval": [0.3, 0.7],
+            "symptoms": {"tremor": "present", "fatigue": "not_mentioned", "photophobia": "absent", "joint_stiffness": "absent",
+                         "dizziness": "absent"},
+            "labs_used": [{"lab": "velorin_index", "value": 104.0, "unit": "mg/dL"}],
+            "gaps": [{"kind": "lab", "key": "serum_k17", "low": 0.4, "high": 0.6, "changes_routing": False},
+                     {"kind": "symptom", "key": "fatigue", "low": 0.5, "high": 0.55, "changes_routing": False}],
+            "disclaimer": "This is not medical advice."}
+    base.update(over)
+    result = parse_report(base)
+    assert result.ok, result.errors
+    return result.report
+
+
+def test_a_consistent_range_has_no_problems_and_a_report_without_one_is_not_judged():
+    from evals.content import range_problems
+    assert range_problems(_ranged()) == []
+    assert range_problems(_ranged(interval=None, gaps=None)) == []
+
+
+def test_a_gap_may_not_name_a_measured_lab_or_a_stated_symptom_or_leave_the_range():
+    from evals.content import range_problems
+    measured = [{"kind": "lab", "key": "velorin_index", "low": 0.4, "high": 0.6, "changes_routing": False}]
+    stated = [{"kind": "symptom", "key": "tremor", "low": 0.4, "high": 0.6, "changes_routing": False}]
+    outside = [{"kind": "lab", "key": "serum_k17", "low": 0.2, "high": 0.6, "changes_routing": False}]
+    assert range_problems(_ranged(gaps=measured)) == ["gap_measured:velorin_index"]
+    assert range_problems(_ranged(gaps=stated)) == ["gap_stated:tremor"]
+    assert range_problems(_ranged(gaps=outside)) == ["gap_outside:serum_k17"]

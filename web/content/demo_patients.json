@@ -15,56 +15,88 @@
             "name": "Velorin index",
             "abbr": "VLI",
             "value": 108.3,
-            "unit": "mg/dL"
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
           },
           {
             "lab": "serum_k17",
             "name": "Serum K-17",
             "abbr": "K17",
             "value": 5.004,
-            "unit": "mmol/L"
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": "H"
           },
           {
             "lab": "tarnic_acid",
             "name": "Tarnic acid",
             "abbr": "TAC",
             "value": 328.2,
-            "unit": "umol/L"
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
           },
           {
             "lab": "brell_enzyme",
             "name": "Brell enzyme",
             "abbr": "BRE",
             "value": 44.0,
-            "unit": "U/L"
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
           },
           {
             "lab": "halvin_titer",
             "name": "Halvin titer",
             "abbr": "HAT",
             "value": 2.944,
-            "unit": "g/dL"
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": "L"
           },
           {
             "lab": "osmet_level",
             "name": "Osmet level",
             "abbr": "OSM",
             "value": 302.0,
-            "unit": "mOsm/kg"
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
           },
           {
             "lab": "plexa_count",
             "name": "Plexa count",
             "abbr": "PLX",
             "value": 224.8,
-            "unit": "x10^9/L"
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
           },
           {
             "lab": "dorrin_ratio",
             "name": "Dorrin ratio",
             "abbr": "DOR",
             "value": 1.429,
-            "unit": "ratio"
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "H"
           }
         ],
         "note": "BRE 44, DOR 1.43. c/o trembling hands, exhausted, light bothers the eyes. Denies joint stiffness, dizziness. f/u if worse"
@@ -84,56 +116,88 @@
             "name": "Velorin index",
             "abbr": "VLI",
             "value": null,
-            "unit": "mg/dL"
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
           },
           {
             "lab": "serum_k17",
             "name": "Serum K-17",
             "abbr": "K17",
             "value": 4.813,
-            "unit": "mmol/L"
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
           },
           {
             "lab": "tarnic_acid",
             "name": "Tarnic acid",
             "abbr": "TAC",
             "value": 261.0,
-            "unit": "umol/L"
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
           },
           {
             "lab": "brell_enzyme",
             "name": "Brell enzyme",
             "abbr": "BRE",
             "value": 29.75,
-            "unit": "U/L"
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
           },
           {
             "lab": "halvin_titer",
             "name": "Halvin titer",
             "abbr": "HAT",
             "value": 3.745,
-            "unit": "g/dL"
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
           },
           {
             "lab": "osmet_level",
             "name": "Osmet level",
             "abbr": "OSM",
             "value": 276.5,
-            "unit": "mOsm/kg"
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
           },
           {
             "lab": "plexa_count",
             "name": "Plexa count",
             "abbr": "PLX",
             "value": 245.2,
-            "unit": "x10^9/L"
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
           },
           {
             "lab": "dorrin_ratio",
             "name": "Dorrin ratio",
             "abbr": "DOR",
             "value": 1.145,
-            "unit": "ratio"
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
           }
         ],
         "note": "Medications and allergies reviewed.\n\nHistory: Specialist follow-up. Patient returns for scheduled review; no new concerns recorded at intake.\n\nReview of Systems: Positive for dizzy spells. Negative for fatigue, joint stiffness.\n\nResults: Brell enzyme (BRE) 0.496 ukat/L (ref 0.25-0.917); Osmet level (OSM) 276 mOsm/kg (ref 270-310); Dorrin ratio (DOR) 1.15 (ref 0.6-1.4)\n\nPlan:\n1. Continue current monitoring.\n2. Return for follow-up as scheduled or sooner if symptoms change."
@@ -153,56 +217,88 @@
             "name": "Velorin index",
             "abbr": "VLI",
             "value": 104.0,
-            "unit": "mg/dL"
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
           },
           {
             "lab": "serum_k17",
             "name": "Serum K-17",
             "abbr": "K17",
             "value": 4.377,
-            "unit": "mmol/L"
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
           },
           {
             "lab": "tarnic_acid",
             "name": "Tarnic acid",
             "abbr": "TAC",
             "value": 315.9,
-            "unit": "umol/L"
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
           },
           {
             "lab": "brell_enzyme",
             "name": "Brell enzyme",
             "abbr": "BRE",
             "value": 32.6,
-            "unit": "U/L"
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
           },
           {
             "lab": "halvin_titer",
             "name": "Halvin titer",
             "abbr": "HAT",
             "value": 3.08,
-            "unit": "g/dL"
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
           },
           {
             "lab": "osmet_level",
             "name": "Osmet level",
             "abbr": "OSM",
             "value": 288.0,
-            "unit": "mOsm/kg"
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
           },
           {
             "lab": "plexa_count",
             "name": "Plexa count",
             "abbr": "PLX",
             "value": 248.6,
-            "unit": "x10^9/L"
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
           },
           {
             "lab": "dorrin_ratio",
             "name": "Dorrin ratio",
             "abbr": "DOR",
             "value": 0.9497,
-            "unit": "ratio"
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
           }
         ],
         "note": "Review of Systems:\nPositive for tremulous hands and dizzy spells (Neuro). Negative for tiredness (General) and joint stiffness (MSK).\n\nResults:\n- Velorin index (VLI): 104 mg/dL (ref 70-130)\n- Serum K-17 (K17): 4.38 mmol/L (ref 3.4-5)\n- Brell enzyme (BRE): 32.6 U/L (ref 15-55)\n- Halvin titer (HAT): 3.08 g/dL (ref 3-5)\n- Osmet level (OSM): 288 mOsm/kg (ref 270-310)\n- Plexa count (PLX): 249 x10^9/L (ref 150-400)\n\nPlan:\n1. Monitoring continues; follow up as scheduled.\n2. Repeat labs at next visit."
@@ -222,56 +318,88 @@
             "name": "Velorin index",
             "abbr": "VLI",
             "value": 77.54,
-            "unit": "mg/dL"
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
           },
           {
             "lab": "serum_k17",
             "name": "Serum K-17",
             "abbr": "K17",
             "value": 3.65,
-            "unit": "mmol/L"
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
           },
           {
             "lab": "tarnic_acid",
             "name": "Tarnic acid",
             "abbr": "TAC",
             "value": 253.7,
-            "unit": "umol/L"
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
           },
           {
             "lab": "brell_enzyme",
             "name": "Brell enzyme",
             "abbr": "BRE",
             "value": 60.72,
-            "unit": "U/L"
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": "H"
           },
           {
             "lab": "halvin_titer",
             "name": "Halvin titer",
             "abbr": "HAT",
             "value": 3.606,
-            "unit": "g/dL"
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
           },
           {
             "lab": "osmet_level",
             "name": "Osmet level",
             "abbr": "OSM",
             "value": null,
-            "unit": "mOsm/kg"
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
           },
           {
             "lab": "plexa_count",
             "name": "Plexa count",
             "abbr": "PLX",
             "value": 279.4,
-            "unit": "x10^9/L"
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
           },
           {
             "lab": "dorrin_ratio",
             "name": "Dorrin ratio",
             "abbr": "DOR",
             "value": 0.4099,
-            "unit": "ratio"
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "L"
           }
         ],
         "note": "Follow-up note.\nMedications reviewed with patient.\nInterval: tremor, low energy, dizzy. Denies photophobia.\nLabs:\n- VLI 114 mg/dL\n- HAT 3.61 g/dL\n- PLX 190 x10^9/L\n- DOR 0.41\nContinue current monitoring plan."

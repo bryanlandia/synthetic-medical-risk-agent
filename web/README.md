@@ -24,6 +24,11 @@ browser --> /api/analyze (this app's server route) --> agent service (Vercel, Py
 The browser never holds the shared secret or the agent's address (`AGENT_URL` has no `NEXT_PUBLIC_` prefix). A Playwright test
 builds the app and searches everything sent to the browser for both.
 
+The route passes on the report's `interval` and `gaps` only when they are well formed (probabilities in [0, 1], a known kind); anything else is dropped. The
+chart shows each lab's reference range and an H or L flag, both written into `demo_patients.json` by `evals demo-patients` (judged after
+conversion to the lab's usual unit), so the browser does no unit logic. The report card labels the interval "Range if the missing results are
+obtained": it covers findings not on the record and does not include uncertainty in the model itself, so it is never called a confidence interval. Nothing on the page edits a recorded value.
+
 ## Run it locally (free: the scripted model, no key)
 
 ```

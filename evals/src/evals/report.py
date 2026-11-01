@@ -49,6 +49,24 @@ class DataQualityWarning(Strict):
     lab: str | None = None
 
 
+class Gap(Strict):
+    """One finding the record lacks: the lowest and highest probability if only that item were obtained."""
+
+    kind: Literal["lab", "symptom"]
+    key: str
+    low: float = Field(ge=0, le=1)
+    high: float = Field(ge=0, le=1)
+    changes_routing: bool
+
+    @model_validator(mode="after")
+    def _valid(self) -> "Gap":
+        if self.key not in (LAB_KEYS if self.kind == "lab" else SYMPTOM_KEYS):
+            raise ValueError(f"unknown {self.kind} {self.key!r}")
+        if self.low > self.high:
+            raise ValueError("gap: low must be at most high")
+        return self
+
+
 class RiskReport(Strict):
     """One report per record. ``status`` decides which of the other fields apply."""
 
@@ -58,6 +76,7 @@ class RiskReport(Strict):
     probability: float | None = Field(default=None, ge=0, le=1)
     uncertain: bool | None = None
     interval: tuple[float, float] | None = None
+    gaps: list[Gap] | None = None
     symptoms: dict[str, SymptomReading] | None = None
     labs_used: list[LabUsed] = Field(default_factory=list)
     data_quality: list[DataQualityWarning] = Field(default_factory=list)
@@ -90,10 +109,13 @@ class RiskReport(Strict):
                 lo, hi = self.interval
                 if not (0 <= lo <= self.probability <= hi <= 1):
                     raise ValueError("interval: must satisfy 0 <= lower <= probability <= upper <= 1")
+            for g in self.gaps or []:
+                if not (g.low <= self.probability <= g.high):
+                    raise ValueError(f"gaps: {g.key} must bracket the probability")
         else:
             if self.reason is None or not self.message:
                 raise ValueError("reason: a declined report needs a reason and a message")
-            for name in ("probability", "uncertain", "interval", "symptoms"):
+            for name in ("probability", "uncertain", "interval", "gaps", "symptoms"):
                 if getattr(self, name) is not None:
                     raise ValueError(f"{name}: a declined report carries no {name}")
         return self

@@ -75,3 +75,38 @@ def test_declines_use_a_fixed_message_for_every_reason_and_fall_back_for_an_unkn
         assert guard.forbidden(text) == [] and "not medical advice" in text.lower()
         assert replies.finalize_declined(reason).text == text
     assert replies.finalize_declined("surprise").text == replies.DECLINES["out_of_scope"]
+
+
+def _ranged_report():
+    return {"probability": 0.31, "interval": [0.18, 0.77],
+            "gaps": [{"kind": "lab", "key": "serum_k17", "low": 0.25, "high": 0.52, "changes_routing": True}]}
+
+
+def test_a_reply_may_quote_the_probability_the_band_edges_the_range_and_a_gap_bound():
+    r = _ranged_report()
+    assert guard.check_reply("About 31%; if the lab were obtained it could be 25% to 52%, and overall 18% to 77%.", r) == []
+    assert guard.check_reply("About 31%, in a band from 40% to 60%.", r) == []
+
+
+def test_any_other_number_in_a_reply_is_still_rejected():
+    r = _ranged_report()
+    assert guard.check_reply("About 31%, overall 18% to 90%.", r) == ["number:0.9"]
+    assert guard.check_reply("About 31% (18% to 77% overall).", {"probability": 0.31}) == ["number:0.18", "number:0.77"]  # no range in this report
+
+
+def test_the_template_reply_states_the_range_when_findings_are_missing():
+    view = {"patient_id": "P", "note": "Reports tremor.", "panel": [{"lab": "velorin_index", "value": 104.0, "unit": "mg/dL"}]}
+    rep = MODEL.report(view)
+    text = replies.template_reply(rep)
+    lo, hi = rep["interval"]
+    assert f"{lo:.0%} to {hi:.0%}" in text and guard.check_reply(text, rep) == []
+
+
+def test_a_reply_quoting_a_bound_is_released_and_one_with_an_invented_percentage_is_replaced():
+    view = {"patient_id": "P", "note": "Reports tremor.", "panel": [{"lab": "velorin_index", "value": 104.0, "unit": "mg/dL"}]}
+    rep = MODEL.report(view)
+    lo, hi = rep["interval"]
+    ok = f"Roughly {rep['probability']:.0%}, and between {lo:.0%} and {hi:.0%} if the missing findings were obtained."
+    bad = f"Roughly {rep['probability']:.0%}, and between {lo:.0%} and {min(hi + 0.11, 0.99):.0%} overall."
+    assert replies.finalize_scored(rep, ok).source == "model"
+    assert replies.finalize_scored(rep, bad).source == "template"

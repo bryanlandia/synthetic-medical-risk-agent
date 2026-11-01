@@ -97,3 +97,15 @@ test("the visitor is the first forwarded address", () => {
 test("describe names the wait for a rate limit", () => {
   expect(describe(429, null, 45).message).toContain("45 seconds");
 });
+
+test("the range and gaps are passed on when well formed and dropped when not", async () => {
+  const gap = { kind: "lab", key: "brell_enzyme", low: 0.4, high: 0.8, changes_routing: true, internal: "x" };
+  const good = await forward("m", "v", CFG, reply(200, { ...OK, report: { ...REPORT, interval: [0.2, 0.9], gaps: [gap] } }));
+  const report = (good.body as { analysis: { report: { interval?: number[]; gaps?: object[] } } }).analysis.report;
+  expect(report.interval).toEqual([0.2, 0.9]);
+  expect(report.gaps).toEqual([{ kind: "lab", key: "brell_enzyme", low: 0.4, high: 0.8, changes_routing: true }]);
+  const bad = await forward("m", "v", CFG, reply(200, { ...OK, report: { ...REPORT, interval: [0.2, 1.4], gaps: [{ ...gap, kind: "other" }, { ...gap, low: "x" }] } }));
+  const dropped = (bad.body as { analysis: { report: { interval?: number[]; gaps?: object[] } } }).analysis.report;
+  expect(dropped.interval).toBeUndefined();
+  expect(dropped.gaps).toEqual([]);
+});

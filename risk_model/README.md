@@ -12,6 +12,11 @@ model = risk_model.load()                   # RISK_MODEL_DIR, else training/mode
 report = model.report({"patient_id": "P1", "panel": [...], "note": "..."})
 ```
 
+A scored report also carries `interval` and `gaps`: the lowest and highest probability if the labs and symptoms the record lacks were
+obtained (a lab within two standard deviations of its mean, a symptom absent, possible or present), computed exactly from the logistic
+model (`sensitivity.py`), and each missing item's own range. It is a range over missing findings, not a confidence interval: it does not
+include uncertainty in how the model was fitted or calibrated. `LOGIC_VERSION` is 2 because of these fields; the model files are unchanged.
+
 The model files (`reader.json`, `classifier.json`) are written by `training/` (`uv run training train`); this project only
 reads them. `risk_model.load(directory)` takes an explicit directory; without one it uses the `RISK_MODEL_DIR` environment
 variable, then `training/model` next to this project.

@@ -68,6 +68,26 @@ def fabricated_labs(report: RiskReport, view: dict[str, Any]) -> list[str]:
     return bad
 
 
+def range_problems(report: RiskReport) -> list[str]:
+    """What is wrong with a report's range and gaps; empty when they are consistent (or the report has no range).
+
+    The range must hold the probability, a gap may name only a lab the report did not use and a symptom it read as not
+    mentioned, and every gap must lie inside the range."""
+    if report.status != "scored" or report.interval is None:
+        return []
+    lo, hi = report.interval
+    problems = [] if lo <= report.probability <= hi else ["interval"]
+    used = {u.lab for u in report.labs_used}
+    for gap in report.gaps or []:
+        if gap.kind == "lab" and gap.key in used:
+            problems.append(f"gap_measured:{gap.key}")
+        if gap.kind == "symptom" and (report.symptoms or {}).get(gap.key) != "not_mentioned":
+            problems.append(f"gap_stated:{gap.key}")
+        if not (lo <= gap.low and gap.high <= hi):
+            problems.append(f"gap_outside:{gap.key}")
+    return problems
+
+
 def disclaimer_ok(report: RiskReport) -> bool:
     return report.status == "declined" or DISCLAIMER_PHRASE in (report.disclaimer or "").lower()
 
