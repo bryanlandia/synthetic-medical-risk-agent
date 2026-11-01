@@ -95,28 +95,28 @@
       "direction": "higher",
       "hi": 1.0,
       "label": "not distinguishable",
-      "lo": 0.9959770114942529,
-      "mdd": 0.003919006756792103,
+      "lo": 0.9960358457426842,
+      "mdd": 0.003941357030814807,
       "metric": "recall",
-      "n": 1729,
-      "patients": 841,
+      "n": 1746,
+      "patients": 845,
       "reached": false,
       "target": 1.0,
-      "value": 0.9982648930017352
+      "value": 0.9982817869415808
     },
     {
       "category": "packet_gaps",
       "direction": "higher",
       "hi": 1.0,
       "label": "clearly met",
-      "lo": 0.9970996837702881,
-      "mdd": 0.003055449937336185,
+      "lo": 0.9971080712783696,
+      "mdd": 0.0032188693545314347,
       "metric": "precision",
-      "n": 1728,
-      "patients": 840,
+      "n": 1745,
+      "patients": 844,
       "reached": true,
       "target": 0.98,
-      "value": 0.9988425925925926
+      "value": 0.9988538681948425
     },
     {
       "category": "packet_summary",
@@ -148,23 +148,23 @@
     },
     {
       "category": "packet_summary",
-      "hi": 0.00322234156820623,
-      "lo": 0.0,
-      "mdd": 0.0041889936069281096,
+      "hi": 0.010741138560687433,
+      "lo": 0.0010741138560687433,
+      "mdd": 0.009424312315139766,
       "metric": "raw_fabrication_rate",
       "n": 931,
       "patients": 931,
-      "value": 0.0010741138560687433
+      "value": 0.0053705692803437165
     },
     {
       "category": "packet_summary",
-      "hi": 0.008592910848549946,
-      "lo": 0.0010741138560687433,
-      "mdd": 0.008332429452487095,
+      "hi": 0.02900107411385607,
+      "lo": 0.010741138560687433,
+      "mdd": 0.01792202412806369,
       "metric": "fallback_rate",
       "n": 931,
       "patients": 931,
-      "value": 0.004296455424274973
+      "value": 0.01933404940923738
     },
     {
       "category": "packet_safety",
@@ -185,9 +185,9 @@
   "split": "test",
   "status_counts": {
     "C1": {
-      "met": 6,
-      "unknown": 19,
-      "unmet": 906
+      "met": 54,
+      "unknown": 36,
+      "unmet": 841
     },
     "C2": {
       "met": 76,
@@ -215,5 +215,6 @@
       "unmet": 322
     }
   },
-  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1"
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v2",
+  "warnings": []
 }

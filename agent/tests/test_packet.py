@@ -137,7 +137,7 @@ def test_nothing_from_the_message_or_the_summary_is_logged(packet_client, caplog
 
 def test_the_healthz_names_the_packet_prompt(packet_client):
     data = packet_client()[0].get("/healthz").json()
-    assert len(data["packet_prompt_hash"]) == 12 and data["policy_id"]
+    assert len(data["packet_prompt_hash"]) == 12 and data["policy_id"] == "fictional-k17-pet-ct-v2"
 
 
 def test_words_in_the_note_are_data_but_a_request_outside_it_is_declined(packet_client):

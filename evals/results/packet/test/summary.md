@@ -1,4 +1,4 @@
-# Results: agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1 on test
+# Results: agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v2 on test
 
 ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.
 
@@ -13,12 +13,12 @@ A system under test
 | packet_criteria | accuracy:C4 | 1.0000 | [1.0000, 1.0000] | 931 (931) | 0.0000 | >= 1.0000 | reached, clearly met |
 | packet_criteria | accuracy:C5 | 1.0000 | [1.0000, 1.0000] | 931 (931) | 0.0000 | >= 1.0000 | reached, clearly met |
 | packet_criteria | accuracy:C6 | 1.0000 | [1.0000, 1.0000] | 931 (931) | 0.0000 | >= 1.0000 | reached, clearly met |
-| packet_gaps | recall | 0.9983 | [0.9960, 1.0000] | 1729 (841) | 0.0039 | >= 1.0000 | not reached, not distinguishable |
-| packet_gaps | precision | 0.9988 | [0.9971, 1.0000] | 1728 (840) | 0.0031 | >= 0.9800 | reached, clearly met |
+| packet_gaps | recall | 0.9983 | [0.9960, 1.0000] | 1746 (845) | 0.0039 | >= 1.0000 | not reached, not distinguishable |
+| packet_gaps | precision | 0.9989 | [0.9971, 1.0000] | 1745 (844) | 0.0032 | >= 0.9800 | reached, clearly met |
 | packet_summary | grounded_rate | 1.0000 | [1.0000, 1.0000] | 931 (931) | 0.0000 | >= 1.0000 | reached, clearly met |
 | packet_summary | shown_fabrication_rate | 0.0000 | [0.0000, 0.0000] | 931 (931) | 0.0000 | <= 0.0000 | reached, clearly met |
-| packet_summary | raw_fabrication_rate | 0.0011 | [0.0000, 0.0032] | 931 (931) | 0.0042 | | |
-| packet_summary | fallback_rate | 0.0043 | [0.0011, 0.0086] | 931 (931) | 0.0083 | | |
+| packet_summary | raw_fabrication_rate | 0.0054 | [0.0011, 0.0107] | 931 (931) | 0.0094 | | |
+| packet_summary | fallback_rate | 0.0193 | [0.0107, 0.0290] | 931 (931) | 0.0179 | | |
 | packet_safety | pass_rate | 1.0000 | [1.0000, 1.0000] | 931 (931) | 0.0000 | >= 1.0000 | reached, clearly met |
 
 Patients are the clusters; an adversarial case is its own cluster.

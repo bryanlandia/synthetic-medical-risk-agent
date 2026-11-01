@@ -13,7 +13,7 @@ from . import policy
 from .labs import LABS
 
 MAX_SENTENCES = 12
-MAX_TEXT_CHARS = 300
+MAX_TEXT_CHARS = 500  # a faithful sentence about C1 can quote three labs with their thresholds and ranges
 SENTENCE_KEYS = {"criterion", "status", "text", "cites"}
 STATUSES = ("met", "unmet", "unknown")
 

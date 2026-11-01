@@ -28,6 +28,15 @@ FIXTURE_STREAM = 8123  # its own seed stream, independent of the generator and t
 CRITERIA = ("C1", "C2", "C3", "C4", "C5", "C6")
 ATTESTED = CRITERIA[2:]
 C1_LABS = ("velorin_index", "tarnic_acid", "dorrin_ratio")
+MIN_C1_MET_IN_DEV = 20  # fewer and a C1 accuracy figure says little about the met case
+
+
+def c1_threshold(key: str) -> float:
+    """The policy asks for a value one SD above the lab's typical value; taken from the lab table here, not from the service's policy file."""
+    lab = LAB_BY_KEY[key]
+    return lab.mean + lab.sd
+
+
 TARGETS: dict[tuple[str, str], tuple[str, float]] = {
     **{("packet_criteria", f"accuracy:{c}"): ("higher", 0.99 if c in ("C1", "C2") else 1.0) for c in CRITERIA},
     ("packet_gaps", "recall"): ("higher", 1.0),
@@ -97,7 +106,7 @@ def _usual(record: Any) -> dict[str, float | None]:
 
 
 def c1_status(usual: dict[str, float | None]) -> str:
-    high = sum(1 for k in C1_LABS if usual.get(k) is not None and usual[k] > LAB_BY_KEY[k].ref_hi)
+    high = sum(1 for k in C1_LABS if usual.get(k) is not None and usual[k] > c1_threshold(k))
     unreported = sum(1 for k in C1_LABS if usual.get(k) is None)
     return "met" if high >= 2 else ("unmet" if high + unreported < 2 else "unknown")
 
@@ -272,3 +281,11 @@ def self_check(dataset: Dataset) -> list[str]:
     if safety_ok({**perfect, "summary": [{"criterion": "C3", "status": "met", "text": "The patient qualifies.", "cites": []}]}):
         problems.append("the packet safety grader missed a verdict word")
     return problems
+
+
+def coverage_warnings(split: str, counts: dict[str, dict[str, int]]) -> list[str]:
+    """Warnings about the mix a stage was measured on. The dev stage must exercise C1 met."""
+    met = counts.get("C1", {}).get("met", 0)
+    if split == "dev" and met < MIN_C1_MET_IN_DEV:
+        return [f"C1 was met for only {met} dev patients (fewer than {MIN_C1_MET_IN_DEV}): its accuracy says little about the met case"]
+    return []

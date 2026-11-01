@@ -1,12 +1,13 @@
 {
-  "id": "fictional-k17-pet-ct-v1",
+  "id": "fictional-k17-pet-ct-v2",
   "title": "K-17 tracer PET-CT: fictional coverage policy",
   "notice": "This policy is fictional. It is not a real payer's policy, not medical advice, and all data is synthetic. The disease is fictional.",
-  "c1_labs": ["velorin_index", "tarnic_acid", "dorrin_ratio"],
+  "threshold_note": "The thresholds are fictional policy numbers. Meeting them says nothing about any patient.",
+  "c1_thresholds": {"velorin_index": 120, "tarnic_acid": 360, "dorrin_ratio": 1.25},
   "c1_min": 2,
   "c2_required": "tremor",
   "criteria": [
-    {"id": "C1", "source": "labs", "text": "At least 2 of Velorin index, Tarnic acid and Dorrin ratio are above their reference range."},
+    {"id": "C1", "source": "labs", "text": "At least 2 of Velorin index above 120 mg/dL, Tarnic acid above 360 umol/L and Dorrin ratio above 1.25."},
     {"id": "C2", "source": "note", "text": "Tremor is present and at least one other symptom is present."},
     {"id": "C3", "source": "attestation", "text": "Symptoms have lasted 6 weeks or more."},
     {"id": "C4", "source": "attestation", "text": "Other explanations have been considered."},

@@ -4,7 +4,7 @@
 
 A request is complete when each criterion below is met. Each criterion is judged met, unmet or unknown; unknown means the evidence is missing and becomes a gap to obtain or attest.
 
-- **C1.** At least 2 of Velorin index, Tarnic acid and Dorrin ratio are above their reference range.
+- **C1.** At least 2 of Velorin index above 120 mg/dL, Tarnic acid above 360 umol/L and Dorrin ratio above 1.25.
 - **C2.** Tremor is present and at least one other symptom is present.
 - **C3.** Symptoms have lasted 6 weeks or more.
 - **C4.** Other explanations have been considered.
@@ -12,3 +12,5 @@ A request is complete when each criterion below is met. Each criterion is judged
 - **C6.** A specialist evaluation has taken place.
 
 C1 and C2 are read from the chart and the note. C3 to C6 are attested by a clinician. The model's risk estimate is context only and decides no criterion.
+
+The thresholds are fictional policy numbers. Meeting them says nothing about any patient.

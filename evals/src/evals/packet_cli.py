@@ -186,11 +186,14 @@ def cmd_run(args: Any, dataset: Any, out_root: Path | None = None, ledger_path: 
                "dataset_config_hash": dataset.config_hash, "seed": 0, "n_boot": 1000, "reference": False, "rows": rows,
                "mdd_note": "Patients are the clusters; an adversarial case is its own cluster.",
                "status_counts": _status_counts(calls)}
+    summary["warnings"] = pe.coverage_warnings(split, summary["status_counts"])
     write_summary(summary, out)
     (out / "calls.jsonl").write_text("".join(json.dumps(c, sort_keys=True) + "\n" for c in calls))
     (out / "run.json").write_text(json.dumps({"system_version": version, "split": split, "limit": args.limit, "calls": len(calls),
                                               "seconds": round(time.monotonic() - started, 1)}, indent=2, sort_keys=True) + "\n")
     print(render_markdown(summary))
+    for warning in summary["warnings"]:
+        print(f"warning: {warning}", file=sys.stderr)
     print(f"wrote {out}/ ({len(calls)} calls)")
     return 0
 

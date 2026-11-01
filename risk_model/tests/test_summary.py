@@ -63,3 +63,23 @@ def test_the_template_names_every_criterion_with_the_table_status():
     t = summary.template_summary(PACKET)
     assert [(s["criterion"], s["status"]) for s in t] == [(r["id"], r["status"]) for r in PACKET["criteria"]]
     assert copy.deepcopy(PACKET) == PACKET
+
+
+def test_a_faithful_sentence_may_cite_the_policy_threshold_and_an_invented_threshold_fails():
+    packet = scan.evaluate({"patient_id": "P", "note": "n", "panel": [{"lab": "velorin_index", "value": 125.0, "unit": "mg/dL"},
+                                                                  {"lab": "tarnic_acid", "value": 365.0, "unit": "umol/L"}]}, REPORT)
+    good = [{"criterion": "C1", "status": "met", "cites": ["lab:velorin_index", "lab:tarnic_acid"],
+             "text": "Velorin index 125 mg/dL is above the policy threshold of 120 mg/dL and Tarnic acid 365 umol/L is above 360 umol/L."}]
+    assert summary.verify(good, packet) == []
+    bad = [{**good[0], "text": "Velorin index 125 mg/dL is above the policy threshold of 110 mg/dL."}]
+    assert "number:110" in summary.verify(bad, packet)
+    assert summary.verify(summary.template_summary(packet), packet) == []
+
+
+def test_the_template_sentence_for_three_labs_fits_the_length_cap_and_passes_its_own_verifier():
+    packet = scan.evaluate({"patient_id": "P", "note": "n", "panel": [{"lab": "velorin_index", "value": 142.0, "unit": "mg/dL"},
+                                                                  {"lab": "tarnic_acid", "value": 450.0, "unit": "umol/L"},
+                                                                  {"lab": "dorrin_ratio", "value": 1.8, "unit": "ratio"}]}, REPORT)
+    sentence = summary.template_summary(packet)[0]
+    assert len(sentence["text"]) > 300 and len(sentence["text"]) <= summary.MAX_TEXT_CHARS
+    assert summary.verify([sentence], packet) == []

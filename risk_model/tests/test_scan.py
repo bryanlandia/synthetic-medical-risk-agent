@@ -112,3 +112,29 @@ def test_gaps_match_unknown_criteria_one_to_one_and_values_are_untouched():
     unknown = [r["id"] for r in p["criteria"] if r["status"] == "unknown"]
     assert [g["criterion"] for g in p["gaps"]] == unknown
     assert v["panel"] == before
+
+
+def test_a_value_above_the_policy_threshold_but_inside_the_labs_range_counts_and_says_so():
+    p = scan.evaluate(view(velorin_index=125.0, tarnic_acid=365.0), report())
+    assert row(p, "C1")["status"] == "met"
+    text = next(e for e in p["evidence"] if e["id"] == "lab:velorin_index")["text"]
+    assert text == "Velorin index 125 mg/dL (above the policy threshold of 120 mg/dL; lab reference range 70 to 130 mg/dL)"
+
+
+def test_a_value_exactly_at_the_threshold_does_not_count():
+    p = scan.evaluate(view(velorin_index=120.0, tarnic_acid=360.0, dorrin_ratio=1.25), report())
+    assert row(p, "C1")["status"] == "unmet"  # none of the three is strictly above, and all are reported
+
+
+def test_a_lab_above_its_reference_range_is_judged_only_by_the_policy_threshold():
+    # 135 is above the lab's reference high (130) and above 120; 119 is inside the range and below the threshold
+    assert row(scan.evaluate(view(velorin_index=135.0, tarnic_acid=380.0), report()), "C1")["status"] == "met"
+    assert row(scan.evaluate(view(velorin_index=119.0, tarnic_acid=380.0, dorrin_ratio=1.0), report()), "C1")["status"] == "unmet"
+
+
+def test_the_evidence_never_calls_a_lab_high_or_low_and_ratio_has_no_unit():
+    p = scan.evaluate(view(velorin_index=90.0, tarnic_acid=500.0, dorrin_ratio=1.3), report())
+    texts = [e["text"] for e in p["evidence"] if e["id"].startswith("lab:")]
+    assert texts and not any(w in t for t in texts for w in (" high", " low"))
+    ratio = next(t for t in texts if t.startswith("Dorrin"))
+    assert ratio == "Dorrin ratio 1.3 (above the policy threshold of 1.25; lab reference range 0.6 to 1.4)"
