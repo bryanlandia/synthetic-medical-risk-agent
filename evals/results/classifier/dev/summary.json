@@ -105,6 +105,16 @@
       "value": 1.0
     },
     {
+      "category": "range_consistency",
+      "hi": 0.0,
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "violation_rate",
+      "n": 1030,
+      "patients": 500,
+      "value": 0.0
+    },
+    {
       "category": "parse",
       "direction": "lower",
       "hi": 0.0,
@@ -210,5 +220,5 @@
     "data_quality": 231,
     "happy_path": 500
   },
-  "system_version": "classifier@414c2d467c87+r1"
+  "system_version": "classifier@414c2d467c87+r2"
 }

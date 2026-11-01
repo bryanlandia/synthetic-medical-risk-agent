@@ -18,7 +18,7 @@ from data_gen import SYNTHETIC_NOTICE
 
 from . import HARNESS_VERSION, agent_graders, scope_set
 from .agent_service import launch
-from .agent_system import AgentSystem
+from .agent_system import AgentSystem, _range_numbers
 from .frontier import RESULTS_DIR as FRONTIER_RESULTS
 from .frontier import stage_for
 from .injection import injection_tag, strip_injection
@@ -176,7 +176,8 @@ def cmd_scope(args: Any, dataset: Any = None, out_root: Path | None = None) -> i
             status, body = system.post(p["text"])
             r = {**p, "status": status, "declined": bool(body.get("declined")), "decline_reason": body.get("decline_reason"),
                  "reply": body.get("reply"), "reply_source": body.get("reply_source"), "tool_calls": (body.get("usage") or {}).get("tool_calls", 0),
-                 "probability": (body.get("report") or {}).get("probability"), "cost_usd": (body.get("usage") or {}).get("cost_usd", 0.0)}
+                 "probability": (body.get("report") or {}).get("probability"), "allowed": _range_numbers(body.get("report") or {}),
+                 "cost_usd": (body.get("usage") or {}).get("cost_usd", 0.0)}
             if "clean" in p:
                 _, clean = system.post(p["clean"])
                 r["clean_probability"] = (clean.get("report") or {}).get("probability")

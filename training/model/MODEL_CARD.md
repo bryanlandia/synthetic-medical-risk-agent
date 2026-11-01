@@ -94,6 +94,7 @@ Any real patient, any real disease and any real decision. It is **not medical ad
 ## Bias, Risks, and Limitations
 
 - **Missing labs.** A missing lab sits at the typical value with its indicator on; the model cannot know where the real value was. Most borderline failures on dev are records with a missing lab.
+- **The range covers missing findings only.** A report's range (`interval`) is the lowest and highest probability if the labs and symptoms the record lacks were obtained. It does not include uncertainty in how the model was fitted or calibrated, so it is not a confidence interval.
 - **Label noise.** Labels are drawn from a probability, so some patients are on the wrong side of 0.5 for any system; the oracle's AUC on dev is 0.817.
 - **The synthetic rule is logistic.** The data-generating rule is logistic in the labs and the true symptom flags, so a logistic model is well specified for it. A good result here says the pipeline works on this synthetic task, not what a real disease would allow.
 - **`note_flag_disagreement`.** In this data the label means the note disagrees with the hidden flag, which cannot be seen from the record. The model warns only when a note contradicts itself with high confidence, so its recall for the labelled cases is expected to be near zero.

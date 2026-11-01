@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from data_gen import SYNTHETIC_NOTICE
-from data_gen.labs import LAB_BY_KEY
+from data_gen.labs import LAB_BY_KEY, LabDef
 from data_gen.schema import Record
 
 from .devsplit import dev_ids
@@ -43,12 +43,21 @@ RULES: tuple[tuple[str, str, str, Callable[[Record], bool]], ...] = (
 )
 
 
+def flag(lab: LabDef, value: float | None, unit: str) -> str | None:
+    """H or L against the reference range, judged on the value converted to the lab's usual unit; None if within it or not reported."""
+    if value is None:
+        return None
+    usual = lab.from_alt(value) if lab.alt_unit and unit == lab.alt_unit else value
+    return "H" if usual > lab.ref_hi else ("L" if usual < lab.ref_lo else None)
+
+
 def chart(record: Record) -> dict[str, Any]:
     view = input_view(record)
     labs = []
     for entry in view["panel"]:
         lab = LAB_BY_KEY[entry["lab"]]
-        labs.append({"lab": lab.key, "name": lab.name, "abbr": lab.abbr, "value": entry["value"], "unit": entry["unit"]})
+        labs.append({"lab": lab.key, "name": lab.name, "abbr": lab.abbr, "value": entry["value"], "unit": entry["unit"],
+                     "ref_lo": lab.ref_lo, "ref_hi": lab.ref_hi, "ref_unit": lab.unit, "flag": flag(lab, entry["value"], entry["unit"])})
     return {"labs": labs, "note": view["note"]}
 
 

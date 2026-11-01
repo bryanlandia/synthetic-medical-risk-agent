@@ -25,7 +25,7 @@ is what the user wrote. A message the model does not route to a tool becomes an 
 never the model's own prose. Nothing from the message, the reply, the secret or the key is logged.
 
 Response: `request_id`, `declined`, `decline_reason`, `reply`, `reply_source` (`model` or `template`), `report` (the risk report,
-or null) and `usage` (tokens, `cost_usd`, `tool_calls`, `model_calls`). `GET /healthz` returns the model hash, the model id and
+or null, with its `interval` and `gaps`; a reply may quote their bounds) and `usage` (tokens, `cost_usd`, `tool_calls`, `model_calls`). `GET /healthz` returns the model hash, the model id and
 the prompt hash.
 
 ## Configuration (environment variables only)

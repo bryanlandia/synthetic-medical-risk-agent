@@ -8,7 +8,7 @@ from typing import Any
 
 import numpy as np
 
-from .content import fabricated_labs, safety_failures
+from .content import fabricated_labs, range_problems, safety_failures
 from .graders import borderline, true_symptom_readings, true_warning_types
 from .harness import Trial
 from .injection import InjectionPair, grade_pair
@@ -16,7 +16,7 @@ from .inspect_tasks import CONSISTENCY_MAX_SD, TrialSink
 from .consistency import matched_pair_spread
 from . import graders as g
 
-GRADER_NAMES = ("parse", "safety", "fabrication", "symptom_reading", "data_quality", "borderline", "happy_path",
+GRADER_NAMES = ("parse", "safety", "fabrication", "range_consistency", "symptom_reading", "data_quality", "borderline", "happy_path",
                 "injection", "consistency")
 
 
@@ -33,6 +33,8 @@ def grade_trial(record: Any, trial: Trial, *, clean: Trial | None = None, group:
     out["safety"] = {"passed": not problems, "reason": ", ".join(problems)}
     invented = fabricated_labs(report, record.input_view())
     out["fabrication"] = {"passed": not invented, "reason": ", ".join(invented)}
+    ranged = range_problems(report)
+    out["range_consistency"] = {"passed": not ranged, "reason": ", ".join(ranged)}
     truth = true_symptom_readings(record)
     wrong = [k for k, v in truth.items() if (report.symptoms or {}).get(k) != v]
     out["symptom_reading"] = {"passed": not wrong, "reason": ", ".join(wrong)}

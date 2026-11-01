@@ -1,7 +1,7 @@
 ## ADDED Requirements
 
 ### Requirement: Scored reports carry a sensitivity range
-A scored report from the classifier system SHALL include `interval`: the lowest and highest probability the model gives over the plausible values of every unmeasured lab and every symptom the note does not mention. A symptom takes any of absent, possible or present.
+A scored report from the classifier system SHALL include `interval`: the lowest and highest probability the model gives over the plausible values of every unmeasured lab and every symptom the note does not mention. A symptom takes any of absent, possible or present. The range SHALL also include leaving every item unmeasured, so it always contains the reported probability.
 
 #### Scenario: A complete record has a point range
 - **WHEN** all eight labs are measured and every symptom is stated
@@ -9,11 +9,15 @@ A scored report from the classifier system SHALL include `interval`: the lowest 
 
 #### Scenario: A missing lab widens the range
 - **WHEN** one lab is not on the chart
-- **THEN** the interval brackets the probability, its lower bound is at most the probability and its upper bound at least the probability, and it equals the lowest and highest probability found by trying every combination of that lab's two plausible end values
+- **THEN** the interval brackets the probability, its lower bound is at most the probability and its upper bound at least the probability, and it equals the lowest and highest probability found by trying the lab left unmeasured and each of its two plausible end values
+
+#### Scenario: Obtaining a lab can only raise the estimate
+- **WHEN** every plausible value of the one missing lab would raise the estimate (as for the Osmet level)
+- **THEN** the interval's lower bound equals the probability and its upper bound is above it
 
 #### Scenario: Exact against brute force
 - **WHEN** a record has up to six unmeasured findings
-- **THEN** the reported bounds match a brute-force search over every end-value combination to within 1e-9
+- **THEN** the reported bounds match a brute-force search over every end-value combination to within 1e-9, including the unmeasured state
 
 ### Requirement: Plausible lab values and naming of the range
 A lab's plausible values SHALL be its usual mean plus or minus two standard deviations, kept inside its plausibility bounds. The range MUST be described as a range if missing results are obtained, never as a statistical confidence interval.

@@ -1,4 +1,4 @@
-# Results: classifier@414c2d467c87+r1 on dev
+# Results: classifier@414c2d467c87+r2 on dev
 
 ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.
 
@@ -14,6 +14,7 @@ A system under test
 | symptom_reading | accuracy | 0.9952 | [0.9924, 0.9980] | 500 (500) | 0.0057 | >= 0.6642 | reached, clearly met |
 | fabrication | rate | 0.0000 | [0.0000, 0.0000] | 1030 (500) | 0.0000 | <= 0.0000 | reached, clearly met |
 | safety | pass_rate | 1.0000 | [1.0000, 1.0000] | 1030 (500) | 0.0000 | >= 1.0000 | reached, clearly met |
+| range_consistency | violation_rate | 0.0000 | [0.0000, 0.0000] | 1030 (500) | 0.0000 | | |
 | parse | failure_rate | 0.0000 | [0.0000, 0.0000] | 1030 (500) | 0.0000 | <= 0.0000 | reached, clearly met |
 | data_quality | recall:missing_value | 1.0000 | [1.0000, 1.0000] | 156 (156) | 0.0000 | >= 0.5000 | reached, clearly met |
 | data_quality | recall:unit_mismatch | 0.9828 | [0.9483, 1.0000] | 58 (58) | 0.0659 | >= 0.5000 | reached, clearly met |

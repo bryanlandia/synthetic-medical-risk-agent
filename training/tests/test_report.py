@@ -30,7 +30,7 @@ def test_every_report_validates_against_the_contract(model, sample):
         assert res.ok, (r.patient_id, res.errors)
         rep = res.report
         assert rep.status == "scored" and set(rep.symptoms) == set(SYMPTOM_KEYS) and "not medical advice" in rep.disclaimer.lower()
-        assert 2 <= len(rep.evidence) <= 5 and all(len(e) <= 300 for e in rep.evidence)
+        assert 2 <= len(rep.evidence) <= 7 and all(len(e) <= 300 for e in rep.evidence)
 
 
 def test_uncertain_is_true_exactly_when_the_probability_is_in_the_band(model, sample):

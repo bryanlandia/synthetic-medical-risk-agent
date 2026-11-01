@@ -94,3 +94,29 @@ def test_the_published_schema_matches_the_model():
     assert SCHEMA_PATH.read_text() == schema_text(), "the model changed: regenerate with `evals schema --write`"
     schema = json.loads(SCHEMA_PATH.read_text())
     assert schema["additionalProperties"] is False and "status" in schema["properties"]
+
+
+# --- gaps -----------------------------------------------------------------------------------------------------
+
+def gap(**over):
+    base = {"kind": "lab", "key": "serum_k17", "low": 0.2, "high": 0.5, "changes_routing": True}
+    base.update(over)
+    return base
+
+
+def test_a_report_with_gaps_validates_and_one_without_still_does():
+    assert parse_report(scored(interval=[0.2, 0.5], gaps=[gap()])).ok
+    assert parse_report(scored()).ok  # the oracle, floor and prompted systems carry no gaps
+
+
+def test_a_gap_must_name_a_known_item_and_bracket_the_probability():
+    assert "gaps" in errors(scored(gaps=[gap(key="not_a_lab")]))
+    assert "gaps" in errors(scored(gaps=[gap(kind="symptom", key="serum_k17")]))
+    assert "low" in errors(scored(gaps=[gap(low=0.6, high=0.5)]))
+    assert "bracket" in errors(scored(gaps=[gap(low=0.35, high=0.5)]))  # probability is 0.31
+    assert "gaps" in errors(scored(gaps=[gap(high=1.2)]))
+    assert "gaps" in errors(scored(gaps=[{**gap(), "extra": 1}]))
+
+
+def test_a_declined_report_carries_no_gaps():
+    assert "gaps" in errors(declined(gaps=[gap()]))

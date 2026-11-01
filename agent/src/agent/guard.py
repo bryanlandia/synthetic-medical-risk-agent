@@ -47,6 +47,14 @@ def quoted_probabilities(text: str) -> list[tuple[float, float]]:
     return out
 
 
+def allowed_numbers(report: dict[str, Any]) -> list[float]:
+    """What a reply may quote as a probability: the estimate, the band edges, the range and each gap's range."""
+    out = [float(report["probability"]), *BAND_EDGES, *(report.get("interval") or [])]
+    for gap in report.get("gaps") or []:
+        out += [gap["low"], gap["high"]]
+    return [float(v) for v in out]
+
+
 def check_reply(reply: str, report: dict[str, Any]) -> list[str]:
     """What is wrong with a model reply; empty when it may be released."""
     problems = []
@@ -54,9 +62,9 @@ def check_reply(reply: str, report: dict[str, Any]) -> list[str]:
         problems.append("empty")
     if len(reply) > MAX_REPLY_CHARS:
         problems.append("too_long")
-    p = float(report["probability"])
+    allowed = allowed_numbers(report)
     for value, tol in quoted_probabilities(reply):
-        if abs(value - p) > tol + 1e-9 and not any(abs(value - e) <= tol + 1e-9 for e in BAND_EDGES):
+        if not any(abs(value - a) <= tol + 1e-9 for a in allowed):
             problems.append(f"number:{value:g}")
     if _ECHO.search(reply):
         problems.append("echo")

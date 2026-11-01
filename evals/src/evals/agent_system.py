@@ -23,6 +23,14 @@ FAILURE_PREFIX = "[agent"
 RETRYABLE = (httpx.RemoteProtocolError, httpx.ReadError, httpx.WriteError, httpx.ConnectError)  # tried once more, never more
 
 
+def _range_numbers(report: dict) -> list[float]:
+    """The range and gap bounds in a report: numbers a reply may quote besides the probability and the band edges."""
+    out = list(report.get("interval") or [])
+    for gap in report.get("gaps") or []:
+        out += [gap["low"], gap["high"]]
+    return out
+
+
 class AgentSystem:
     name, reference, threaded = "agent", False, True
 
@@ -82,7 +90,7 @@ class AgentSystem:
                  "tool_calls": usage.get("tool_calls", 0), "model_calls": usage.get("model_calls", 0), "tools": usage.get("tools", []),
                  "error": body.get("error") if status != 200 else None,
                  "reply_source": body.get("reply_source"), "reply": body.get("reply"), "cost_usd": usage.get("cost_usd", 0.0),
-                 "probability": (body.get("report") or {}).get("probability"), "latency_s": round(time.perf_counter() - started, 3)}
+                 "probability": (body.get("report") or {}).get("probability"), "allowed": _range_numbers(body.get("report") or {}), "latency_s": round(time.perf_counter() - started, 3)}
         tokens = {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}
         if status != 200:
             return CallOutput(f"{FAILURE_PREFIX} http {status}]", **tokens), entry
