@@ -258,3 +258,59 @@ test("the About text shows the review recording from this site and does not down
   expect(res.headers()["content-type"]).toContain("video/webm");
   await expect(page.locator("article.doc")).not.toContainText("<!--");
 });
+
+function section(heading: string): string {
+  const start = ABOUT.indexOf(`## ${heading}`);
+  expect(start).toBeGreaterThanOrEqual(0);
+  const next = ABOUT.indexOf("\n## ", start + 1);
+  return ABOUT.slice(start, next === -1 ? undefined : next);
+}
+
+test("the About tab tells the story: the disease course, the pathway with two ledgers, and what comes next", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("tab", { name: "About this project" }).click();
+  const doc = page.locator("article.doc");
+  for (const heading of ["The disease, and why catching it early matters", "Where this fits: screen, confirm, treat", "What comes next"]) {
+    await expect(doc.getByRole("heading", { name: heading })).toBeVisible();
+  }
+  for (const phrase of ["often overlooked", "highly treatable", "degenerative neurological disease", "two ledgers", "stage one",
+    "Kessler Family Foundation", "also fictional"]) {
+    await expect(doc).toContainText(phrase);
+  }
+});
+
+test("the story sections carry no treatment, dose, figure or money, and promise nothing that is not built", async () => {
+  const story = ["The disease, and why catching it early matters", "Where this fits: screen, confirm, treat", "What comes next"]
+    .map(section).join("\n");
+  expect(story).not.toMatch(/\d|%|\$/);
+  expect(story).not.toMatch(/\b(mg|mcg|ml|dose|dosage|prescri\w*|medication|drug)\b/i);
+  expect(section("What comes next")).toContain("planned, not built");
+});
+
+test("the About text is accurate about the system: Haiku baseline, assistant wording, guards and the reviewer caveat", async () => {
+  expect(ABOUT).not.toMatch(/prompted frontier/i);
+  expect(ABOUT.replace(/\]\([^)]*\)/g, "]")).not.toMatch(/\bagent\b(?! SDK)/i);
+  expect(ABOUT).toContain("prompted Haiku 5.5 baseline, which scored an AUC of 0.735");
+  expect(ABOUT).toContain("scoring tool takes no arguments");
+  expect(ABOUT).toContain("not a clinician");
+});
+
+test("the funder footer is on every tab, and the foundation is not in the request or the report", async ({ page }) => {
+  const bodies: string[] = [];
+  page.on("request", (r) => { if (r.url().endsWith("/api/analyze")) bodies.push(r.postData() ?? ""); });
+  await page.goto("/");
+  for (const name of TABS) {
+    await page.getByRole("tab", { name }).click();
+    const footer = page.getByTestId("funder-footer");
+    await expect(footer).toBeVisible();
+    await expect(footer).toContainText("Kessler Family Foundation");
+    await expect(footer).toContainText("fictional");
+  }
+  await page.getByRole("tab", { name: "Sample patient charts" }).click();
+  await page.getByRole("button", { name: "Run V-K check" }).click();
+  const card = page.getByTestId("probability");
+  await expect(card).toBeVisible();
+  expect(bodies.length).toBe(1);
+  expect(bodies[0]).not.toMatch(/Kessler Family|Foundation/i);
+  expect(await page.getByTestId("reply").innerText()).not.toMatch(/Kessler Family|Foundation/i);
+});

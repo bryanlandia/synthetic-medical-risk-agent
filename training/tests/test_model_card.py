@@ -93,3 +93,13 @@ def test_a_stale_web_copy_is_detected(tmp_path):
     assert copy.read_text() == _card()
     copy.write_text(copy.read_text() + "\nedited\n")
     assert copy.read_text() != _card()
+
+
+def test_the_card_carries_the_fictional_context_without_clinical_claims_or_a_new_hash():
+    card = _card()
+    assert model_card.CONTEXT in card
+    assert "Kessler Family Foundation, a fictional foundation" in card
+    assert "often overlooked" in card and "highly treatable" in card and "degenerative neurological disease" in card
+    assert not re.search(r"\d|%|\$", model_card.CONTEXT)  # no figures, doses, percentages or money
+    manifest = json.loads((MODEL / "manifest.json").read_text())
+    assert pipeline.model_hash(MODEL) == manifest["model_hash"]
