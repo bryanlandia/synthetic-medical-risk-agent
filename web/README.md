@@ -1,15 +1,23 @@
 # web
 
-**All data is synthetic and the disease is fictional. Nothing here is medical advice.** A public demo page: a **mock EHR** chart
-(not connected to any real system; no FHIR, no vendor software) with a decision-support panel that runs the risk check on what
-is on the chart. The guards and the evals around the agent are the real subject; the page is how a visitor sees them work.
+**All data is synthetic and the disease is fictional. Nothing here is medical advice.** A public demo page in which the visitor is a
+**neurology supervisor** reviewing a queue of 30 prepared PET-CT request packets (nothing is connected to a real system; no FHIR,
+no vendor software). The guards and the evals around the agent are the real subject; the page is how a visitor sees them work.
 
-- **Sample patient charts**: pick one of four invented patients (from the dev split, with their messages pre-rendered by the eval
-  harness), read the labs and note, open "Message sent to the agent" to see the exact text, and press "Run V-K check".
-- **Try the assistant**: a free-text box for a treatment question, an off-topic prompt, a note with an injected instruction, or
-  your own text. Every send is a single request; nothing is remembered.
-- **Model card**: the classifier's model card, with a check that it describes the model that is running.
-- **About this project**: the project description, shown from `content/about.md`.
+- **Queue**: 30 invented requests from the dev split, each prepared by a (simulated) clinician for one of ten fictional insurers.
+  The page opens with "What is this packet for?" in plain words; the same text is a help dialog on every case. Opening a case
+  makes one request to the packet route and keeps the result in the browser: the chart, the checklist against the fictional
+  policy with cited evidence, what is missing, a checked summary and the model's estimate as context. The supervisor then
+  releases it (blocked while any criterion is unknown; their own written rationale is needed if one is unmet), returns it with a
+  note, or closes it. Nothing is sent anywhere. A released packet has a cover sheet, an audit trail, copy and print.
+- **Behind the demo** (menu): **Try the assistant** (a free-text box for a treatment question, an off-topic prompt, a note with an
+  injected instruction, or your own text; every send is a single request), the **Model card** (with a check that it describes the
+  model that is running) and **About this project** (from `content/about.md`).
+
+Progress (statuses, packets, return notes, rationales) is kept in this browser's `localStorage` and nothing else; "Reset demo"
+clears it. A visit that changes nothing writes nothing. The design uses Material UI (MUI) with one theme in `lib/theme.ts`, whose
+colour pairs are tested for 4.5:1 contrast; no font, script or image comes from another site. Every simulated thing carries a quiet
+"Demo" note (`lib/copy.ts`), and a strip on every screen says everything is invented.
 
 **Writing the About text.** Edit `content/about.md` like any markdown file (headings, lists, tables and links all render; images do not, and links open in a new tab). It starts as an outline: each section has a draft paragraph that begins `*Suggested content:*`. Replace a paragraph with your own text and delete the marker; `grep -n 'Suggested content' content/about.md` lists the sections still unwritten. Take any figures from `evals/README.md` and the result files, not from memory, so they stay checkable.
 
@@ -25,18 +33,20 @@ The browser never holds the shared secret or the agent's address (`AGENT_URL` ha
 builds the app and searches everything sent to the browser for both.
 
 The route passes on the report's `interval` and `gaps` only when they are well formed (probabilities in [0, 1], a known kind); anything else is dropped. The
-chart shows each lab's reference range and an H or L flag, both written into `demo_patients.json` by `evals demo-patients` (judged after
+chart in a case shows each lab's reference range and an H or L flag, both written into `cases.json` by `evals demo-cases` (judged after
 conversion to the lab's usual unit), so the browser does no unit logic. The report card labels the interval "Range if the missing results are
 obtained": it covers findings not on the record and does not include uncertainty in the model itself, so it is never called a confidence interval. Nothing on the page edits a recorded value.
 
 
-**PET-CT readiness packet.** Below the chart, "Prepare PET-CT packet" sends the chart's stored message and the clinician's answers for C3 to C6 (each yes, no
-or not yet answered, all starting unanswered) to `/api/packet`, a second server route that works like `/api/analyze`: it keeps the secret and the
-service address, accepts only those two fields, rejects any other answer with 422 and passes on a whitelist (the six criteria with their status and
-cited evidence, the gaps, the summary and whether it came from the model or the template, and the model's estimate as context). The criteria wording
-shown on the page is `content/pet_ct_policy.json`, a copy of `risk_model/src/risk_model/policy/pet_ct_k17.json`; a test fails if they differ, so copy the
-file again when the policy changes. The rationale field and the demo sign-off live only in the browser: the rationale is never sent to the service. Printing
-shows the packet and the synthetic-data notice only.
+**The packet route.** `/api/packet` works like `/api/analyze`: it keeps the secret and the service address, accepts only a message and the
+preparer's answers for C3 to C6 (yes, no or not yet answered; anything else is 422), and passes on a whitelist (the six criteria
+with status and cited evidence, the gaps, the summary and whether it came from the model or the template, and the model's estimate as
+context). The criteria wording on the page is `content/pet_ct_policy.json`, a copy of `risk_model/src/risk_model/policy/pet_ct_k17.json`;
+a test fails if they differ, so copy the file again when the policy changes. The supervisor's note and rationale stay in the browser
+and are never sent. Printing shows the released packet and the synthetic-data notice only.
+
+**Bundle size.** First-load JS for the page was 157 kB before the Material redesign and is 259 kB after it (MUI and the 30-case file);
+the shared JS of the app is unchanged at 103 kB.
 
 ## Run it locally (free: the scripted model, no key)
 
@@ -51,7 +61,7 @@ Tests (from `web/`, with `uv` on the PATH): `npm test` builds the production app
 `PW_USE_DEV=1 npm test` uses the dev server instead of building.
 
 Committed content in `content/` is generated, and tests keep it current:
-`uv run evals demo-patients` (from `evals/`) writes `demo_patients.json`; `uv run training card` (from `training/`) refreshes
+`uv run evals demo-cases` (from `evals/`) writes `cases.json`; `uv run training card` (from `training/`) refreshes
 `model-card.md`.
 
 ## Visit and click counts (PostHog)
@@ -130,7 +140,7 @@ also uses); PostCSS runs only at build time on this repository's own CSS, and mo
 
 First deployed and checked on 2026-10-27: the agent reports Haiku 5.5 and the committed model hash `414c2d467c87…`; `uv run agent
 smoke` passed against it (model hash, one scored request, one decline); `deploy/check-env.sh vk-agent-spike` passed; the page was
-clicked through (four patients, the free-text examples, the model card and its hash check). The addresses are public; the
+clicked through (the patient charts, the free-text examples, the model card and its hash check). The addresses are public; the
 shared secret is what keeps the agent from being called around the page, and the daily cap and limits bound what a call can spend.
 
 ## What changes with real data

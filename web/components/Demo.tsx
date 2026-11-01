@@ -1,30 +1,36 @@
 "use client";
 
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { useMemo, useState } from "react";
 import { AboutTab } from "./AboutTab";
 import { trackResult } from "./Analytics";
-import { ChartTab } from "./ChartTab";
+import { CaseView } from "./CaseView";
 import { FreeTextTab } from "./FreeTextTab";
 import { ModelCardTab } from "./ModelCardTab";
+import { QueueView } from "./QueueView";
 import type { Outcome } from "./ReportCard";
-import type { Analysis, DemoPatient, ShownError } from "@/lib/types";
+import { ReviewProvider } from "./ReviewProvider";
+import { DemoStrip, Row } from "./ui";
+import type { Analysis, CasesFile, ShownError } from "@/lib/types";
 
-type Tab = "chart" | "free" | "card" | "about";
-const TABS: { id: Tab; label: string }[] = [
-  { id: "chart", label: "Sample patient charts" },
-  { id: "free", label: "Try the assistant" },
-  { id: "card", label: "Model card" },
-  { id: "about", label: "About this project" },
+type View = { name: "queue" } | { name: "case"; id: string } | { name: "free" | "card" | "about" };
+const BEHIND: { id: "free" | "card" | "about"; label: string; title: string }[] = [
+  { id: "free", label: "Try the assistant", title: "Try the assistant" },
+  { id: "card", label: "Model card", title: "Model card" },
+  { id: "about", label: "About this project", title: "About this project" },
 ];
 
 /** One message in, one result out. Nothing is kept between sends: a new result replaces the last. */
 async function send(message: string): Promise<Outcome> {
   try {
-    const response = await fetch("/api/analyze", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ message }),
-    });
+    const response = await fetch("/api/analyze", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ message }) });
     const body = (await response.json()) as { analysis?: Analysis; error?: ShownError };
     if (response.ok && body.analysis) return { kind: "done", analysis: body.analysis };
     return { kind: "error", error: body.error ?? { code: "error", message: "Something went wrong. Please try again." } };
@@ -33,25 +39,15 @@ async function send(message: string): Promise<Outcome> {
   }
 }
 
-/** The coarse kind of an answer, the only thing about it that is counted. */
-function kindOf(outcome: Outcome): string {
-  return outcome.kind === "done" ? (outcome.analysis.declined ? "declined" : "scored") : "error";
-}
+const kindOf = (outcome: Outcome): string => (outcome.kind === "done" ? (outcome.analysis.declined ? "declined" : "scored") : "error");
 
-export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPatient[]; cardBody: string; cardHash: string | null; about: string }) {
-  const [tab, setTab] = useState<Tab>("chart");
-  const [slug, setSlug] = useState(patients[0].slug);
-  const [chartOutcome, setChartOutcome] = useState<Outcome>({ kind: "idle" });
+export function Demo({ cases, cardBody, cardHash, about }: { cases: CasesFile; cardBody: string; cardHash: string | null; about: string }) {
+  const [view, setView] = useState<View>({ name: "queue" });
+  const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const [freeOutcome, setFreeOutcome] = useState<Outcome>({ kind: "idle" });
-  const labNames = useMemo(() => Object.fromEntries(patients[0].chart.labs.map((l) => [l.lab, l.name])), [patients]);
-  const patient = patients.find((p) => p.slug === slug) ?? patients[0];
+  const labNames = useMemo(() => Object.fromEntries(cases.cases[0].chart.labs.map((l) => [l.lab, l.name])), [cases]);
+  const behind = BEHIND.find((b) => b.id === view.name);
 
-  async function runCheck() {
-    setChartOutcome({ kind: "loading" });
-    const outcome = await send(patient.message);
-    trackResult("chart", kindOf(outcome));
-    setChartOutcome(outcome);
-  }
   async function runFree(message: string) {
     setFreeOutcome({ kind: "loading" });
     const outcome = await send(message);
@@ -60,35 +56,43 @@ export function Demo({ patients, cardBody, cardHash, about }: { patients: DemoPa
   }
 
   return (
-    <>
-      <main>
-        <h1>
-          <img src="/vk-check-logo.svg" alt="" className="logo" />
-          <span className="sr-only">VK-Check</span>{" "}
-          <span className="muted">Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)</span></h1>
-        <div role="tablist" aria-label="Demo sections" className="tabs">
-          {TABS.map((t) => (
-            <button key={t.id} role="tab" data-track={`tab:${t.id}`} id={`tab-${t.id}`} aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} onClick={() => setTab(t.id)}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-        <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
-          {tab === "chart" && (
-            <ChartTab
-              patients={patients}
-              patient={patient}
-              onSelect={(s) => { setSlug(s); setChartOutcome({ kind: "idle" }); }}
-              onRun={runCheck}
-              outcome={chartOutcome}
-              labNames={labNames}
-            />
-          )}
-          {tab === "free" && <FreeTextTab onSend={runFree} outcome={freeOutcome} labNames={labNames} />}
-          {tab === "card" && <ModelCardTab body={cardBody} hash={cardHash} />}
-          {tab === "about" && <AboutTab body={about} />}
-        </div>
-      </main>
-    </>
+    <ReviewProvider casesHash={cases.cases_hash}>
+      <DemoStrip />
+      <AppBar position="static" color="inherit" className="no-print" sx={{ borderBottom: "1px solid #C4CBCB", boxShadow: "none" }}>
+        <Toolbar sx={{ gap: 2, flexWrap: "wrap", py: 1 }}>
+          <Box component="img" src="/vk-check-logo.svg" alt="" sx={{ height: 36, width: "auto" }} />
+          <Box sx={{ flexGrow: 1, minWidth: 260 }}>
+            <Typography variant="h1" component="h1">
+              <span className="vk-sr-only">VK-Check </span>Supervisor review
+            </Typography>
+            <Typography variant="body2" color="text.secondary">Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)</Typography>
+          </Box>
+          <Row spacing={1} component="nav" aria-label="Main">
+            <Button data-track="nav:queue" variant={view.name === "queue" || view.name === "case" ? "contained" : "text"} onClick={() => setView({ name: "queue" })}>Queue</Button>
+            <Button data-track="menu:behind" variant={behind ? "contained" : "text"} aria-haspopup="menu" aria-expanded={Boolean(anchor)} onClick={(e) => setAnchor(e.currentTarget)}>Behind the demo</Button>
+          </Row>
+          <Menu anchorEl={anchor} open={Boolean(anchor)} onClose={() => setAnchor(null)}>
+            {BEHIND.map((b) => (
+              <MenuItem key={b.id} data-track={`nav:${b.id}`} selected={view.name === b.id} onClick={() => { setView({ name: b.id }); setAnchor(null); }}>{b.label}</MenuItem>
+            ))}
+          </Menu>
+        </Toolbar>
+      </AppBar>
+      <Container component="main" maxWidth="xl" sx={{ py: 3 }}>
+        {view.name === "queue" && <QueueView cases={cases.cases} onOpen={(id) => setView({ name: "case", id })} />}
+        {view.name === "case" && <CaseView key={view.id} rec={cases.cases.find((c) => c.id === view.id)!} onBack={() => setView({ name: "queue" })} />}
+        {behind && (
+          <Box component="section" aria-label={behind.title}>
+            <Row spacing={1.5} alignItems="center" sx={{ mb: 2 }}>
+              <Button onClick={() => setView({ name: "queue" })}>Back to the queue</Button>
+              <Typography variant="h2" component="h2">Behind the demo: {behind.title}</Typography>
+            </Row>
+            {view.name === "free" && <FreeTextTab onSend={runFree} outcome={freeOutcome} labNames={labNames} />}
+            {view.name === "card" && <ModelCardTab body={cardBody} hash={cardHash} />}
+            {view.name === "about" && <AboutTab body={about} />}
+          </Box>
+        )}
+      </Container>
+    </ReviewProvider>
   );
 }

@@ -1,12 +1,12 @@
 /** The committed content the page shows, read on the server. */
 import fs from "node:fs";
 import path from "node:path";
-import type { DemoPatient } from "./types";
+import type { CasesFile } from "./types";
 
 const dir = path.join(process.cwd(), "content");
 
-export function demoPatients(): DemoPatient[] {
-  return JSON.parse(fs.readFileSync(path.join(dir, "demo_patients.json"), "utf8")).patients as DemoPatient[];
+export function casesFile(): CasesFile {
+  return JSON.parse(fs.readFileSync(path.join(dir, "cases.json"), "utf8")) as CasesFile;
 }
 
 /** The model card without its metadata block, and the model hash on its "Model hash" line. */

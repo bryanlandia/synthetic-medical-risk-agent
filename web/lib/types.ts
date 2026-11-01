@@ -37,15 +37,6 @@ export type Chart = {
   note: string;
 };
 
-export type DemoPatient = {
-  slug: string;
-  title: string;
-  look_for: string;
-  patient_id: string;
-  split: "dev";
-  chart: Chart;
-  message: string;
-};
 
 /** The scan-readiness packet, as the page shows it: a whitelist of the service's response. */
 export type CriterionStatus = "met" | "unmet" | "unknown";
@@ -70,3 +61,18 @@ export type Packet = {
   disclaimer: string;
 };
 export type PacketDecline = { request_id: string; declined: true; decline_reason: string | null; message: string };
+
+/** One prepared case in the supervisor's queue, as the committed cases file holds it (no ground truth). */
+export type CaseRecord = {
+  id: string;
+  ordinal: string;
+  request_code: string;
+  patient_id: string;
+  insurer: string;
+  preparer: string;
+  received: string;
+  chart: Chart;
+  message: string;
+  answers: Record<AttestedId, Answer>;
+};
+export type CasesFile = { notice: string; dataset_config_hash: string; cases_hash: string; cases: CaseRecord[] };

@@ -13,14 +13,19 @@ export const analyticsEnabled = POSTHOG_KEY !== "";
 /** The site's own path that the server forwards to PostHog (see next.config.mjs). */
 export const INGEST_PATH = "/ingest";
 
-export const TABS = ["chart", "free", "card", "about"] as const;
-export const RESULT_SOURCES = ["chart", "free_text"] as const;
+export const NAVS = ["queue", "free", "card", "about"] as const;
+export const STATUS_FILTERS = ["all", "new", "in-review", "returned", "released", "closed"] as const;
+export const RESULT_SOURCES = ["case", "free_text"] as const;
 export const RESULT_KINDS = ["scored", "declined", "error"] as const;
 
-const FIXED_CLICKS = new Set(["run_check", "sent_message_expander", "send_free_text"]);
+const FIXED_CLICKS = new Set([
+  "release", "return", "close", "confirm", "reset_demo", "help", "intro_dismiss", "menu:behind",
+  "sent_message_expander", "packet_copy", "packet_print", "send_free_text",
+]);
 const CLICK_PATTERNS = [
-  new RegExp(`^tab:(${TABS.join("|")})$`),
-  /^patient:[a-z0-9-]{1,40}$/,
+  new RegExp(`^nav:(${NAVS.join("|")})$`),
+  new RegExp(`^filter:(${STATUS_FILTERS.join("|")})$`),
+  /^case:\d{2}$/,
   /^example:[a-z0-9-]{1,40}$/,
   /^link:[a-z0-9.-]{1,100}$/,
 ];
