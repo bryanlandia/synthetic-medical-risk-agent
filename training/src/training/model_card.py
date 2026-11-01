@@ -17,6 +17,9 @@ REPOSITORY = "https://github.com/bryanlandia/synthetic-medical-risk-agent"
 AUTHOR = "Bryan Wilson"
 LICENSE_LINE = "No license is granted; this is purely for demonstration"
 RULE = "The data-generating rule is logistic in the labs and the true symptom flags, so a logistic model is well specified for it."
+CONTEXT = ("In the fictional setting, Velorin-Kessler syndrome is often overlooked: caught early it is highly treatable, and missed it "
+           "becomes a degenerative neurological disease. The project is funded by the Kessler Family Foundation, a fictional foundation, "
+           "to improve diagnosis and outcomes. None of this describes a real disease or a real organization.")
 INDEX_METRICS = (("auc", "AUC"), ("brier", "Brier score"), ("log_loss", "Log loss"), ("ece", "Expected calibration error"))
 TAGS = ("synthetic-data", "fictional-disease", "not-for-clinical-use", "tabular-classification")
 EXAMPLE = '''```python
@@ -108,6 +111,7 @@ def render(model_dir: Path = pipeline.MODEL_DIR, results_dir: Path = RESULTS_DIR
           "## Uses", "", "### Direct Use", "",
           "A portfolio demonstration of a small, CPU-served model next to a prompted frontier model, scored by the same code-graded "
           "evals. It returns a probability, an uncertain flag, symptom readings, data-quality warnings and evidence for one record.", "",
+          CONTEXT, "",
           "### Downstream Use", "", "The chat service in `agent/` calls it as its only scoring tool; the model decides nothing about the numbers it returns.", "",
           "### Out-of-Scope Use", "",
           "Any real patient, any real disease and any real decision. It is **not medical advice**. It was fitted to a synthetic rule "

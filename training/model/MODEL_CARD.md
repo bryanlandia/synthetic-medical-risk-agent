@@ -81,6 +81,8 @@ A small CPU model that estimates the probability that a record has a **fictional
 
 A portfolio demonstration of a small, CPU-served model next to a prompted frontier model, scored by the same code-graded evals. It returns a probability, an uncertain flag, symptom readings, data-quality warnings and evidence for one record.
 
+In the fictional setting, Velorin-Kessler syndrome is often overlooked: caught early it is highly treatable, and missed it becomes a degenerative neurological disease. The project is funded by the Kessler Family Foundation, a fictional foundation, to improve diagnosis and outcomes. None of this describes a real disease or a real organization.
+
 ### Downstream Use
 
 The chat service in `agent/` calls it as its only scoring tool; the model decides nothing about the numbers it returns.

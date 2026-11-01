@@ -4,15 +4,31 @@
 
 VK-Check is a small applied AI system that reads a patient's symptoms and lab results and estimates their risk of Velorin-Kessler Syndrome, an invented disease that can be readily diagnosed given proper lab values and symptom notes.  The input can be any of four note styles: a standard U.S. EHR (Electronic Health Record) template, shorthand, a copy-forward follow-up, or a SOAP (Subjective-Objective-Assessment-Plan) draft from an ambient AI scribe.
 
-To date, it's a limited single-prompt chat UI in front of a small tool-calling agent, with no conversation memory.  The agent evaluates whether to score or decline to score, and calls the appropriate tool.  Its first turn picks and calls the tool, and its second writes a reply.
+To date, it's a limited single-prompt chat UI in front of a small tool-calling assistant, with no conversation memory.  The assistant decides whether to score or decline to score, and calls the appropriate tool.  Its first turn picks and calls the tool, and its second writes a reply.
 
-TODO:
+The assistant's scoring tool takes no arguments, so the model cannot change what is scored.  Declines use a closed set of reasons, and a check replaces any reply that quotes a wrong number or names a drug.  Limits per visitor and a daily dollar cap bound the spend.  On the Try the assistant tab, the example with an instruction hidden in the note shows the injection being ignored.
 
-* Improve handling of missing labs
-* Improve confidence reporting
-* What If? UI with lab value sliders and symptom toggles to see how changed values impact probability
-* Full agent loop and conversation state
-* Differential diagnosis against another fake look-alike disease
+## The disease, and why catching it early matters
+
+In this fictional world, Velorin-Kessler Syndrome is often overlooked.  Caught early it is highly treatable, but missed it becomes a degenerative neurological disease.  So the time between the first signs and a confirmed diagnosis matters a great deal.
+
+VK-Check is funded by the Kessler Family Foundation, also fictional, to improve diagnosis of and outcomes for the syndrome.  Nothing here describes a real disease or a real organization.
+
+## Where this fits: screen, confirm, treat
+
+```
+ screen             confirm                   treat
+ (this project) --> (a confirmatory scan) --> (not covered)
+ flag who to look at   authorization can stall    early is better
+                       the whole pathway
+```
+
+The confirmatory scan is where a flagged patient can wait.  An expensive study often needs prior authorization, and an incomplete or poorly documented request is denied or sent back.  That delay has two costs, which is why I think of the pathway as having two ledgers:
+
+* **The patient's:** weeks added to the time to diagnosis, in a disease where time matters.
+* **The institution's:** staff hours on rework and appeals, and work that is never reimbursed.
+
+A tool that helps a clinician get a complete, accurate request right the first time helps both.  VK-Check is stage one of that pathway: reading a chart and its note, estimating the risk, and showing what the chart does and does not support.  It does not decide who gets a scan, and it does not give medical advice.
 
 ## Why this project?
 
@@ -39,9 +55,9 @@ To check that the notes looked real, I built a rating interface of the kind expe
 
 Once the data was in place, I started with the evals, before creating any model.  Target AUC, Brier, and log loss scores were set on the development set from simple reference systems (the oracle mentioned above, a floor, and a labs-only model) and then fixed.  Evals used code graders.  Every result outputted a verdict: clearly met, clearly missed, or not distinguishable from the target at this sample size and allowed 95% interval.  After each final run I read a sample of the failing transcripts to check whether the model system or the grader was at fault.
 
-The baseline model-to-beat was a prompted frontier model, briefed in English on the disease.  I developed the prompt on Haiku 5.5, stopped at five versions, over which the AUC improved from 0.65 to 0.75.  A test against Sonnet 5.5 on the development set was no better, so I stuck with Haiku.  
+The baseline model-to-beat was a prompted Haiku 5.5 model, briefed in English on the disease.  I developed the prompt on Haiku 5.5, stopped at five versions, over which the AUC improved from 0.65 to 0.75.  A test against Sonnet 5.5 on the development set was no better, so I stuck with Haiku.  
 
-The alternative was two simple models in sequence, both simple logistic classifiers built with scikit-learn.  The first is trained on clinical note text to determine symptoms.  The second is trained on the note reader's symptom predictions plus lab values.  On the test set (931 patients) it reached an AUC of 0.796, just under the 0.80 target but within noise, and better than the prompted frontier models I tested. The weights were saved in two JSON files.
+The alternative was two simple models in sequence, both simple logistic classifiers built with scikit-learn.  The first is trained on clinical note text to determine symptoms.  The second is trained on the note reader's symptom predictions plus lab values.  On the test set (931 patients) it reached an AUC of 0.796, just under the 0.80 target but within noise, and better than the prompted Haiku 5.5 baseline, which scored an AUC of 0.735 on the same patients. The weights were saved in two JSON files.
 
 With the classifier system, inference, once scoring is allowed and requested, just needs numpy.  Scoring just finds labs and symptoms in the note, multiplies them by the stored weights, adds them up, and turns the totals into the disease probability.
 
@@ -50,17 +66,27 @@ I logged training runs (params, seed, config hash, chosen train ids hash, model 
 
 ## Results, lessons learned
 
-* **This is of course not a full agent demo**, just a simple two-step, single user prompt assistant.  It can't ask for clarifying questions yet, or respond to follow-ups about the report it generates, doesn't advise on collecting more labs, or help with differential diagnosis from other 'look-alike' conditions.
+* **This is of course not a full agentic demo**, just a simple two-step, single user prompt assistant.  It can't ask for clarifying questions yet, or respond to follow-ups about the report it generates, doesn't advise on collecting more labs, or help with differential diagnosis from other 'look-alike' conditions.
 * **My first prompts were pretty weak.** The first version scored an AUC of 0.65, and it took five rewrites to reach 0.75.
 * **No system can score perfectly here, by design.** Each label was drawn at random from the patient's true probability, so a patient at 30% still got a "has the disease" label three times in ten.  About one patient in five ended up on the 'wrong' side of the probability, which caused many of the test failures.
 
 * **The assistant sometimes tried to call a tool twice.** In about 1 request in 180 it asked to score a note twice, or to score and decline in the same turn, usually on short follow-up notes with most labs missing.  The service runs the first call and ignores the second, so the visitor still gets the right answer, but my checks counted those as misses.  I left the prompt alone afterwards, because the test set had been looked at and changing it then would be tuning on the test.
 
+* **The realism check was an LLM, not a clinician.** It can catch what looks odd, not whether a real doctor would write these notes, so the data cannot claim more than plausibility.
+
+## What comes next
+
+These are planned, not built, and each would be added as its own small step:
+
+* A chart that shows each lab against its reference range, a range around the probability, and which missing results could change the answer.  The range would come from the model itself and would not include uncertainty in the model's own fit.
+* A draft request for a confirmatory scan, where every statement is tied to a line in the chart or note, missing items are listed and not filled in, and a clinician reviews and signs it.  The tool would prepare the request and never decide who gets a scan.
+* Later: a conversation that asks for missing information one item at a time, and a look-alike fictional disease to tell apart.
+
 ## What would change with real data
 
-Generated dev/test/train data would still be useful, since assistant/agent setup, early model work and evaluation could start before any sensitive data was available.  But once available (if this were a real disease!), I would train on real clinician notes, labs and confirmed diagnoses, validate realism with expert human reviewers, and make the evals tell Velorin-Kessler apart from conditions with overlapping labs and symptoms.
+Generated dev/test/train data would still be useful, since assistant setup, early model work and evaluation could start before any sensitive data was available.  But once available (if this were a real disease!), I would train on real clinician notes, labs and confirmed diagnoses, validate realism with expert human reviewers, and make the evals tell Velorin-Kessler apart from conditions with overlapping labs and symptoms.
 
-A real agent would probably sit inside an EHR system and need much more care with PHI/PII.  Here there is no real data, the text a visitor types is not written to the logs (only sizes, timings and outcomes), and keys stay on the server.  A real deployment would need all of that reviewed, an agreement with the model provider, access controls and an audit trail.  This was of course never validated on real patients, so it would also need clinical validation and regulatory review.
+A real assistant would probably sit inside an EHR system and need much more care with PHI/PII.  Here there is no real data, the text a visitor types is not written to the logs (only sizes, timings and outcomes), and keys stay on the server.  A real deployment would need all of that reviewed, an agreement with the model provider, access controls and an audit trail.  This was of course never validated on real patients, so it would also need clinical validation and regulatory review.
 
 ## Stack, code and contact
 

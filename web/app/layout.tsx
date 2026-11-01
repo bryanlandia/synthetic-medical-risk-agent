@@ -12,6 +12,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {children}
+        <footer className="site-footer" data-testid="funder-footer">
+          Funded by the Kessler Family Foundation (a fictional foundation) to improve diagnosis of and outcomes for Velorin-Kessler Syndrome (a fictional disease). All data is synthetic. Not medical advice.
+        </footer>
         <div className="bottom-stack">
           <Analytics />
         </div>
