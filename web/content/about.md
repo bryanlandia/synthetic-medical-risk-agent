@@ -65,7 +65,7 @@ A real agent would probably sit inside an EHR system and need much more care wit
 ## Stack, code and contact
 
 * Demo UI: Next.js on Vercel
-* Model and inference API: Strands Agent, FastAPI on Vercel, Claude Haiku 5.5 as the assistant's model
+* Model and inference API: Strands Agent SDK, FastAPI on Vercel, Claude Haiku 5.5 as the assistant's model
 * Evals: Inspect AI
 * Training runs tracked with MLFlow
 * Development using OpenSpec / assisted with Claude Sonnet 5.5
