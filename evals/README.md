@@ -135,3 +135,7 @@ reported as broken, not as a system failure.
 record, mixed units with a missing lab, a borderline probability, a note that disagrees with its panel), each with its chart
 and the message `render_message` builds. The file has no ground-truth field, and `tests/test_demo_patients.py` checks that every
 id is in the dev split, every message equals a fresh rendering and the committed file is what the command writes.
+
+## PET-CT readiness packet
+
+`uv run evals packet estimate` (no key); `packet run --split dev` (scripted model; `--live --yes` for Haiku); `packet freeze` after the dev run; then `packet run --split {test,adversarial} --live --yes --final` once each (`--force` repeats, warned, recorded as stage `packet`). Attestation answers are seeded fixtures in `datasets/packet_attestations.json` (`packet fixtures [--write]`). Results and the reading of the misses: `results/packet/report.md`, `reading.md`.

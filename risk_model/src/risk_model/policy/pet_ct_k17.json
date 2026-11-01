@@ -1,0 +1,17 @@
+{
+  "id": "fictional-k17-pet-ct-v1",
+  "title": "K-17 tracer PET-CT: fictional coverage policy",
+  "notice": "This policy is fictional. It is not a real payer's policy, not medical advice, and all data is synthetic. The disease is fictional.",
+  "c1_labs": ["velorin_index", "tarnic_acid", "dorrin_ratio"],
+  "c1_min": 2,
+  "c2_required": "tremor",
+  "criteria": [
+    {"id": "C1", "source": "labs", "text": "At least 2 of Velorin index, Tarnic acid and Dorrin ratio are above their reference range."},
+    {"id": "C2", "source": "note", "text": "Tremor is present and at least one other symptom is present."},
+    {"id": "C3", "source": "attestation", "text": "Symptoms have lasted 6 weeks or more."},
+    {"id": "C4", "source": "attestation", "text": "Other explanations have been considered."},
+    {"id": "C5", "source": "attestation", "text": "No PET-CT or comparable imaging in the last 12 months."},
+    {"id": "C6", "source": "attestation", "text": "A specialist evaluation has taken place."}
+  ],
+  "illustrative_costs": null
+}

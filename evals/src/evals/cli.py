@@ -43,6 +43,25 @@ def build_parser() -> argparse.ArgumentParser:
     scope.add_argument("--base-url", default=None)
     scope.add_argument("--secret", default=None)
 
+    pk = sub.add_parser("packet", help="PET-CT readiness packet: estimate, run a stage, freeze, or check the attestation fixtures")
+    pk_sub = pk.add_subparsers(dest="packet_command", required=True)
+    pk_sub.add_parser("estimate", help="calls and cost per stage; no call, no key")
+    pk_run = pk_sub.add_parser("run", help="score a stage through the service (scripted model unless --live)")
+    pk_run.add_argument("--split", choices=["dev", "test", "adversarial"], default="dev")
+    pk_run.add_argument("--limit", type=int, default=None)
+    pk_run.add_argument("--live", action="store_true")
+    pk_run.add_argument("--yes", action="store_true")
+    pk_run.add_argument("--final", action="store_true")
+    pk_run.add_argument("--force", action="store_true")
+    pk_run.add_argument("--workers", type=int, default=8)
+    pk_run.add_argument("--base-url", default=None)
+    pk_run.add_argument("--secret", default=None)
+    pk_run.add_argument("--out", default=None)
+    pk_freeze = pk_sub.add_parser("freeze", help="end iteration on the packet after a dev run")
+    pk_freeze.add_argument("--scripted", action="store_true", help="freeze the scripted-model dev run")
+    pk_fix = pk_sub.add_parser("fixtures", help="check (or --write) the seeded attestation answers")
+    pk_fix.add_argument("--write", action="store_true")
+
     est = sub.add_parser("estimate", help="frontier or agent: the calls and cost of each stage; no call, no key")
     est.add_argument("--system", choices=["frontier", "agent"], default="frontier")
     est.add_argument("--prompt", default="v1")
@@ -95,7 +114,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
-    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope", "demo-patients"):
+    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope", "demo-patients", "packet"):
         return _dispatch(args)
     if args.command == "schema":
         from .report import schema_text, write_schema
@@ -135,6 +154,12 @@ def _dispatch(args: argparse.Namespace) -> int:
             print(format_failure(row, args.grader))
         return 0
     dataset = load_dataset(getattr(args, "dataset", None) or DEFAULT_DATASET)
+    if args.command == "packet":
+        from . import packet_cli
+
+        if args.packet_command == "freeze":
+            return packet_cli.cmd_freeze(args)
+        return {"estimate": packet_cli.cmd_estimate, "run": packet_cli.cmd_run, "fixtures": packet_cli.cmd_fixtures}[args.packet_command](args, dataset)
     if args.command == "demo-patients":
         from . import demo_patients
 

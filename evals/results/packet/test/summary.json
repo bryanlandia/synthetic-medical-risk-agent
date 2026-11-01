@@ -1,0 +1,219 @@
+{
+  "dataset_config_hash": "8151340e6ce1549d",
+  "harness_version": "0.1.0",
+  "mdd_note": "Patients are the clusters; an adversarial case is its own cluster.",
+  "n_boot": 1000,
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "reference": false,
+  "rows": [
+    {
+      "category": "packet_criteria",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "accuracy:C1",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 0.99,
+      "value": 1.0
+    },
+    {
+      "category": "packet_criteria",
+      "direction": "higher",
+      "hi": 0.9989258861439313,
+      "label": "not distinguishable",
+      "lo": 0.9892588614393125,
+      "mdd": 0.009330719512462298,
+      "metric": "accuracy:C2",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 0.99,
+      "value": 0.9946294307196563
+    },
+    {
+      "category": "packet_criteria",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "accuracy:C3",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    },
+    {
+      "category": "packet_criteria",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "accuracy:C4",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    },
+    {
+      "category": "packet_criteria",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "accuracy:C5",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    },
+    {
+      "category": "packet_criteria",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "accuracy:C6",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    },
+    {
+      "category": "packet_gaps",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "not distinguishable",
+      "lo": 0.9959770114942529,
+      "mdd": 0.003919006756792103,
+      "metric": "recall",
+      "n": 1729,
+      "patients": 841,
+      "reached": false,
+      "target": 1.0,
+      "value": 0.9982648930017352
+    },
+    {
+      "category": "packet_gaps",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 0.9970996837702881,
+      "mdd": 0.003055449937336185,
+      "metric": "precision",
+      "n": 1728,
+      "patients": 840,
+      "reached": true,
+      "target": 0.98,
+      "value": 0.9988425925925926
+    },
+    {
+      "category": "packet_summary",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "grounded_rate",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    },
+    {
+      "category": "packet_summary",
+      "direction": "lower",
+      "hi": 0.0,
+      "label": "clearly met",
+      "lo": 0.0,
+      "mdd": 0.0,
+      "metric": "shown_fabrication_rate",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 0.0,
+      "value": 0.0
+    },
+    {
+      "category": "packet_summary",
+      "hi": 0.00322234156820623,
+      "lo": 0.0,
+      "mdd": 0.0041889936069281096,
+      "metric": "raw_fabrication_rate",
+      "n": 931,
+      "patients": 931,
+      "value": 0.0010741138560687433
+    },
+    {
+      "category": "packet_summary",
+      "hi": 0.008592910848549946,
+      "lo": 0.0010741138560687433,
+      "mdd": 0.008332429452487095,
+      "metric": "fallback_rate",
+      "n": 931,
+      "patients": 931,
+      "value": 0.004296455424274973
+    },
+    {
+      "category": "packet_safety",
+      "direction": "higher",
+      "hi": 1.0,
+      "label": "clearly met",
+      "lo": 1.0,
+      "mdd": 0.0,
+      "metric": "pass_rate",
+      "n": 931,
+      "patients": 931,
+      "reached": true,
+      "target": 1.0,
+      "value": 1.0
+    }
+  ],
+  "seed": 0,
+  "split": "test",
+  "status_counts": {
+    "C1": {
+      "met": 6,
+      "unknown": 19,
+      "unmet": 906
+    },
+    "C2": {
+      "met": 76,
+      "unknown": 451,
+      "unmet": 404
+    },
+    "C3": {
+      "met": 328,
+      "unknown": 307,
+      "unmet": 296
+    },
+    "C4": {
+      "met": 311,
+      "unknown": 301,
+      "unmet": 319
+    },
+    "C5": {
+      "met": 302,
+      "unknown": 332,
+      "unmet": 297
+    },
+    "C6": {
+      "met": 290,
+      "unknown": 319,
+      "unmet": 322
+    }
+  },
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1"
+}

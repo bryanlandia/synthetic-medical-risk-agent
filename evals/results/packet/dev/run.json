@@ -1,0 +1,7 @@
+{
+  "calls": 500,
+  "limit": null,
+  "seconds": 295.9,
+  "split": "dev",
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1"
+}

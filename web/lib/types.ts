@@ -46,3 +46,27 @@ export type DemoPatient = {
   chart: Chart;
   message: string;
 };
+
+/** The scan-readiness packet, as the page shows it: a whitelist of the service's response. */
+export type CriterionStatus = "met" | "unmet" | "unknown";
+export type Answer = "yes" | "no" | "unanswered";
+export type AttestedId = "C3" | "C4" | "C5" | "C6";
+export type Criterion = { id: string; text: string; status: CriterionStatus; cites: string[] };
+export type Evidence = { id: string; label: string; text: string };
+export type PacketGap = { criterion: string; kind: "lab" | "symptom" | "attestation"; items: string[]; prompt: string };
+export type SummarySentence = { criterion: string; status: CriterionStatus; text: string; cites: string[] };
+
+export type Packet = {
+  request_id: string;
+  declined: false;
+  policy_id: string;
+  notice: string;
+  criteria: Criterion[];
+  evidence: Evidence[];
+  gaps: PacketGap[];
+  summary: SummarySentence[];
+  summary_source: "model" | "template";
+  report: Report | null;
+  disclaimer: string;
+};
+export type PacketDecline = { request_id: string; declined: true; decline_reason: string | null; message: string };

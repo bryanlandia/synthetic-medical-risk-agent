@@ -90,3 +90,10 @@ label { display: block; font-weight: 600; margin: 8px 0 4px; }
 .doc .clip { margin: 16px 0; }
 .doc .clip video { width: 100%; max-height: 70vh; background: #000; border-radius: 6px; }
 .doc .clip figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+.packet-panel { margin-top: 16px; }
+.packet-panel textarea { width: 100%; }
+.packet-panel .attest { margin: 6px 0; }
+@media print {
+  .tabs, .chart:not(.packet-panel), .card, .picker, .no-print, .notice-bar { display: none !important; }
+}

@@ -7,11 +7,12 @@ from fastapi import FastAPI
 from .app import create_app
 from .config import Settings
 from .runtime import build_orchestrator
+from .summarizer import build_summarizer
 
 
 def build() -> FastAPI:
     settings = Settings.from_env()
-    return create_app(settings, build_orchestrator(settings))
+    return create_app(settings, build_orchestrator(settings), summarizer=build_summarizer(settings))
 
 
 app = build()

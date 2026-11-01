@@ -1,3 +1,4 @@
+import { PacketPanel } from "./PacketPanel";
 import { ReportCard, type Outcome } from "./ReportCard";
 import type { DemoPatient } from "@/lib/types";
 
@@ -12,6 +13,7 @@ type Props = {
 
 export function ChartTab({ patients, patient, onSelect, onRun, outcome, labNames }: Props) {
   return (
+    <>
     <div className="two">
       <section className="chart" aria-label="Patient chart">
         <div className="picker" role="group" aria-label="Demo patients">
@@ -48,5 +50,7 @@ export function ChartTab({ patients, patient, onSelect, onRun, outcome, labNames
       </section>
       <ReportCard outcome={outcome} labNames={labNames} />
     </div>
+    <PacketPanel key={patient.slug} message={patient.message} />
+    </>
   );
 }
