@@ -38,33 +38,41 @@ def number(value: float) -> str:
     return f"{value:.4g}"
 
 
-def _lab_evidence(view: dict[str, Any], key: str) -> dict[str, Any] | None:
-    """Evidence for a lab on the chart (usable value, as written with its unit), else None."""
+def _with_unit(value: float, unit: str) -> str:
+    return f"{number(value)}{'' if unit == 'ratio' else ' ' + unit}"
+
+
+def _lab_evidence(view: dict[str, Any], key: str, threshold: float) -> dict[str, Any] | None:
+    """Evidence for a lab on the chart (usable value, as written with its unit), else None.
+
+    The state is whether the value, in the lab's usual unit, is strictly above the policy threshold. The lab's own reference range
+    is given for context and decides nothing."""
     lab = LAB_BY_KEY[key]
     usual = features.panel_values(view)[key]
     if usual is None:
         return None
     entry = next(e for e in view["panel"] if e["lab"] == key)
-    flag = "high" if usual > lab.ref_hi else ("low" if usual < lab.ref_lo else "within range")
-    written = f"{number(float(entry['value']))}{'' if entry['unit'] == 'ratio' else ' ' + str(entry['unit'])}"
+    above = usual > threshold
+    verdict = "above" if above else "not above"
     return {"id": f"lab:{key}", "label": lab.name, "value": float(entry["value"]), "unit": entry["unit"],
-            "text": f"{lab.name} {written} ({flag}; reference {number(lab.ref_lo)} to {number(lab.ref_hi)} {lab.unit})",
-            "state": flag}
+            "text": (f"{lab.name} {_with_unit(float(entry['value']), str(entry['unit']))} ({verdict} the policy threshold of "
+                     f"{_with_unit(threshold, lab.unit)}; lab reference range {number(lab.ref_lo)} to {_with_unit(lab.ref_hi, lab.unit)})"),
+            "state": "above" if above else "not above"}
 
 
 def _c1(view: dict[str, Any]) -> tuple[str, list[str], list[str], dict[str, dict[str, Any]]]:
-    keys = policy.load()["c1_labs"]
-    evidence = {k: e for k in keys if (e := _lab_evidence(view, k))}
-    high = [k for k, e in evidence.items() if e["state"] == "high"]
-    unreported = [k for k in keys if k not in evidence]
+    thresholds = policy.load()["c1_thresholds"]
+    evidence = {k: e for k, t in thresholds.items() if (e := _lab_evidence(view, k, t))}
+    above = [k for k, e in evidence.items() if e["state"] == "above"]
+    unreported = [k for k in thresholds if k not in evidence]
     need = policy.load()["c1_min"]
-    if len(high) >= need:
+    if len(above) >= need:
         status = "met"
-    elif len(high) + len(unreported) < need:
+    elif len(above) + len(unreported) < need:
         status = "unmet"
     else:
         status = "unknown"
-    cited = high if status == "met" else list(evidence)
+    cited = above if status == "met" else list(evidence)
     return status, [f"lab:{k}" for k in cited], unreported, evidence
 
 

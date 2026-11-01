@@ -31,3 +31,22 @@ def test_the_policy_quotes_no_coefficient_or_intercept():
     numbers = [*clf["coef"], clf.get("intercept")]
     for n in filter(lambda v: isinstance(v, float), numbers):
         assert f"{abs(n):.3f}" not in text
+
+
+def test_the_policy_is_version_two_and_states_that_its_thresholds_say_nothing_about_a_patient():
+    p = policy.load()
+    assert p["id"] == "fictional-k17-pet-ct-v2"
+    assert "says nothing about any patient" in p["threshold_note"]
+    assert p["threshold_note"] in (policy.POLICY_DIR / "pet_ct_k17.md").read_text()
+
+
+def test_the_c1_thresholds_are_the_lab_mean_plus_one_sd_and_appear_in_the_wording():
+    from risk_model.labs import LAB_BY_KEY
+
+    thresholds = policy.load()["c1_thresholds"]
+    assert list(thresholds) == ["velorin_index", "tarnic_acid", "dorrin_ratio"]
+    for key, value in thresholds.items():
+        lab = LAB_BY_KEY[key]
+        assert value == lab.mean + lab.sd
+        unit = "" if lab.unit == "ratio" else f" {lab.unit}"
+        assert f"{lab.name} above {value:g}{unit}" in policy.wording()["C1"]

@@ -239,3 +239,37 @@ def test_the_packet_self_check_is_clean_and_catches_a_stale_fixture(dataset, mon
     stale.write_text("{}")
     monkeypatch.setattr(pe, "FIXTURE_PATH", stale)
     assert any("fixtures" in p for p in pe.self_check(dataset))
+
+
+# --- policy v2 ----------------------------------------------------------------------------------------------------
+
+def test_the_reference_thresholds_are_the_lab_mean_plus_one_sd_and_equal_the_policys():
+    from pathlib import Path
+
+    policy = json.loads((Path(pe.__file__).resolve().parents[3] / "risk_model" / "src" / "risk_model" / "policy" / "pet_ct_k17.json").read_text())
+    assert policy["id"] == "fictional-k17-pet-ct-v2"
+    assert {k: pe.c1_threshold(k) for k in pe.C1_LABS} == policy["c1_thresholds"]
+
+
+def test_c1_in_the_reference_uses_the_threshold_not_the_labs_reference_range():
+    inside_range = [("velorin_index", 125.0, "mg/dL"), ("tarnic_acid", 365.0, "umol/L")]  # both inside their reference ranges
+    assert pe.reference(record(inside_range), {})["C1"] == "met"
+    at_threshold = [("velorin_index", 120.0, "mg/dL"), ("tarnic_acid", 360.0, "umol/L"), ("dorrin_ratio", 1.25, "ratio")]
+    assert pe.reference(record(at_threshold), {})["C1"] == "unmet"
+    above_range_one = [("velorin_index", 135.0, "mg/dL"), ("tarnic_acid", 300.0, "umol/L"), ("dorrin_ratio", 1.0, "ratio")]
+    assert pe.reference(record(above_range_one), {})["C1"] == "unmet"
+
+
+def test_the_dev_stage_warns_when_c1_met_is_rare_and_not_otherwise():
+    few = {"C1": {"met": 2, "unmet": 488, "unknown": 10}}
+    many = {"C1": {"met": 33, "unmet": 457, "unknown": 10}}
+    assert "only 2 dev patients" in pe.coverage_warnings("dev", few)[0]
+    assert pe.coverage_warnings("dev", many) == []
+    assert pe.coverage_warnings("dev", {"C1": {"met": 19, "unmet": 0, "unknown": 0}}) != []
+    assert pe.coverage_warnings("test", few) == []
+
+
+def test_a_dev_run_carries_the_coverage_warning_in_its_summary(dataset, tmp_path, mocked):
+    assert packet_cli.cmd_run(parse("--split", "dev", "--limit", "5"), dataset, out_root=tmp_path) == 0
+    summary = json.loads((tmp_path / "dev" / "summary.json").read_text())
+    assert summary["warnings"] and "fewer than 20" in summary["warnings"][0]  # five patients cannot hold twenty met cases

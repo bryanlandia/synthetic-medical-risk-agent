@@ -98,8 +98,8 @@
       "lo": 1.0,
       "mdd": 0.0,
       "metric": "recall",
-      "n": 924,
-      "patients": 449,
+      "n": 933,
+      "patients": 450,
       "reached": true,
       "target": 1.0,
       "value": 1.0
@@ -112,8 +112,8 @@
       "lo": 1.0,
       "mdd": 0.0,
       "metric": "precision",
-      "n": 924,
-      "patients": 449,
+      "n": 933,
+      "patients": 450,
       "reached": true,
       "target": 0.98,
       "value": 1.0
@@ -150,7 +150,7 @@
       "category": "packet_summary",
       "hi": 0.006,
       "lo": 0.0,
-      "mdd": 0.007706022083244147,
+      "mdd": 0.007731708833683334,
       "metric": "raw_fabrication_rate",
       "n": 500,
       "patients": 500,
@@ -158,13 +158,13 @@
     },
     {
       "category": "packet_summary",
-      "hi": 0.006,
-      "lo": 0.0,
-      "mdd": 0.007706022083244147,
+      "hi": 0.02204999999999995,
+      "lo": 0.004,
+      "mdd": 0.01988822334370508,
       "metric": "fallback_rate",
       "n": 500,
       "patients": 500,
-      "value": 0.002
+      "value": 0.012
     },
     {
       "category": "packet_safety",
@@ -185,9 +185,9 @@
   "split": "dev",
   "status_counts": {
     "C1": {
-      "met": 2,
-      "unknown": 10,
-      "unmet": 488
+      "met": 33,
+      "unknown": 19,
+      "unmet": 448
     },
     "C2": {
       "met": 43,
@@ -215,5 +215,6 @@
       "unmet": 157
     }
   },
-  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1"
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v2",
+  "warnings": []
 }

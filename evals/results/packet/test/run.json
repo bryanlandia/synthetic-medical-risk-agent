@@ -1,7 +1,7 @@
 {
   "calls": 931,
   "limit": null,
-  "seconds": 548.6,
+  "seconds": 556.0,
   "split": "test",
-  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1"
+  "system_version": "agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v2"
 }

@@ -1,4 +1,4 @@
-# Results: agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v1 on adversarial
+# Results: agent@414c2d467c87+p125eec6826c9+claude-haiku-5-5+v0.1.0.2+pk20ae709d578f+fictional-k17-pet-ct-v2 on adversarial
 
 ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.
 
