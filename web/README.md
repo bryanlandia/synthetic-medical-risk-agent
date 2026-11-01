@@ -29,6 +29,15 @@ chart shows each lab's reference range and an H or L flag, both written into `de
 conversion to the lab's usual unit), so the browser does no unit logic. The report card labels the interval "Range if the missing results are
 obtained": it covers findings not on the record and does not include uncertainty in the model itself, so it is never called a confidence interval. Nothing on the page edits a recorded value.
 
+
+**PET-CT readiness packet.** Below the chart, "Prepare PET-CT packet" sends the chart's stored message and the clinician's answers for C3 to C6 (each yes, no
+or not yet answered, all starting unanswered) to `/api/packet`, a second server route that works like `/api/analyze`: it keeps the secret and the
+service address, accepts only those two fields, rejects any other answer with 422 and passes on a whitelist (the six criteria with their status and
+cited evidence, the gaps, the summary and whether it came from the model or the template, and the model's estimate as context). The criteria wording
+shown on the page is `content/pet_ct_policy.json`, a copy of `risk_model/src/risk_model/policy/pet_ct_k17.json`; a test fails if they differ, so copy the
+file again when the policy changes. The rationale field and the demo sign-off live only in the browser: the rationale is never sent to the service. Printing
+shows the packet and the synthetic-data notice only.
+
 ## Run it locally (free: the scripted model, no key)
 
 ```

@@ -30,6 +30,8 @@ The confirmatory scan is where a flagged patient can wait.  An expensive study o
 
 A tool that helps a clinician get a complete, accurate request right the first time helps both.  VK-Check is stage one of that pathway: reading a chart and its note, estimating the risk, and showing what the chart does and does not support.  It does not decide who gets a scan, and it does not give medical advice.
 
+Both are built. The chart shows each lab against its reference range, a range around the probability (it leaves out uncertainty in the model's own fit) and which missing results could change the answer. Below it, a packet for a fictional PET-CT policy lists six criteria as met, unmet or unknown, each tied to a line in the chart or note, lists what is missing without filling it in, and has a clinician answer the history items. One language-model step drafts the summary and code checks every sentence against its evidence, falling back to a fixed template if it does not pass. A clinician signs it off (as a demo). It never decides who gets a scan, and it does not give medical advice.
+
 ## Why this project?
 
 I wanted to explore building a small assistant for medical diagnosis: how to generate and validate synthetic data when there is no real condition and no clinicians who know about it, how a small trained model compares with frontier models, and how to build a thorough set of evals for all of it.
@@ -78,8 +80,6 @@ I logged training runs (params, seed, config hash, chosen train ids hash, model 
 
 These are planned, not built, and each would be added as its own small step:
 
-* A chart that shows each lab against its reference range, a range around the probability, and which missing results could change the answer.  The range would come from the model itself and would not include uncertainty in the model's own fit.
-* A draft request for a confirmatory scan, where every statement is tied to a line in the chart or note, missing items are listed and not filled in, and a clinician reviews and signs it.  The tool would prepare the request and never decide who gets a scan.
 * Later: a conversation that asks for missing information one item at a time, and a look-alike fictional disease to tell apart.
 
 ## What would change with real data

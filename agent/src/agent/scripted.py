@@ -8,33 +8,14 @@ instruction) so that every guard can be tested. The service refuses it when the 
 from __future__ import annotations
 
 import json
-import re
 from typing import Any, AsyncGenerator
 
-from risk_model import labvalues
 from strands.models.model import Model
+
+from .precheck import decide
 
 MODES = ("normal", "wrong_number", "medication", "no_tool", "two_tools", "extra_args", "score_and_decline", "echo_injection",
          "overlong", "empty_reply")
-_SSN = re.compile(r"\b\d{3}-\d{2}-\d{4}\b|\b(?:dob|date of birth)\b", re.IGNORECASE)
-_TREATMENT = re.compile(r"\b(?:what|which)\b[^.?\n]{0,30}\b(?:medication|medicine|drug|dose|dosage|pill)s?\b|\bshould (?:i|we|he|she|they)\b[^.?\n]{0,30}"
-                        r"\b(?:take|give|start|stop|prescribe)\b|\bprescribe\b|\bhow (?:do|can|should) (?:i|we)\b[^.?\n]{0,20}\btreat", re.IGNORECASE)
-_REAL = re.compile(r"\b(?:diabetes|cancer|hypertension|covid|influenza|asthma|stroke|alzheimer|parkinson)\b", re.IGNORECASE)
-_SYMPTOM = re.compile(r"tremor|shak|fatigue|tired|dizz|lighthead|light sensitiv|photophob|stiff|woozy", re.IGNORECASE)
-
-
-def decide(message: str) -> tuple[str, str | None]:
-    """('score', None) or ('decline', reason): what a sensible model would do."""
-    if _SSN.search(message):
-        return "decline", "phi"
-    if _TREATMENT.search(message):
-        return "decline", "treatment_request"
-    has_payload = bool(labvalues.read(message)) or bool(_SYMPTOM.search(message))
-    if _REAL.search(message) and not has_payload:
-        return "decline", "real_disease"
-    if has_payload:
-        return "score", None
-    return "decline", "out_of_scope"
 
 
 def _texts(messages: list[dict[str, Any]]) -> str:
