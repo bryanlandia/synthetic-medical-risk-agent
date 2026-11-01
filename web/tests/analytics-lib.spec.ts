@@ -21,18 +21,19 @@ test("a ref value is reduced to a short, safe label", () => {
 });
 
 test("only fixed click names are sent", () => {
-  for (const ok of ["run_check", "send_free_text", "sent_message_expander", "tab:about", "tab:chart", "patient:unit-and-missing", "example:forced-low", "link:github.com"]) {
+  for (const ok of ["send_free_text", "sent_message_expander", "release", "return", "close", "confirm", "reset_demo", "help", "intro_dismiss", "menu:behind", "packet_copy", "packet_print", "nav:about", "nav:queue", "case:07", "filter:returned", "filter:in-review", "example:forced-low", "link:github.com"]) {
     expect(validClickName(ok), ok).toBe(true);
     expect(clickEvent(ok)).toEqual({ event: "ui_click", properties: { element: ok } });
   }
-  for (const bad of ["opt_out", "tab:admin", "patient:Some One", "example:", "link:", "link:evil.com/path?x=1", "I typed this text", "", null, undefined, 7]) {
+  for (const bad of ["opt_out", "run_check", "tab:chart", "patient:borderline", "nav:admin", "case:7", "case:ab", "case:P20261-000013", "filter:bogus", "cancel", "patient:Some One", "example:", "link:", "link:evil.com/path?x=1", "I typed this text", "", null, undefined, 7]) {
     expect(validClickName(bad), String(bad)).toBe(false);
     expect(clickEvent(bad)).toBeNull();
   }
 });
 
 test("a result is counted by source and kind only", () => {
-  expect(resultEvent("chart", "scored")).toEqual({ event: "result_shown", properties: { source: "chart", kind: "scored" } });
+  expect(resultEvent("case", "scored")).toEqual({ event: "result_shown", properties: { source: "case", kind: "scored" } });
+  expect(resultEvent("chart", "scored")).toBeNull();
   expect(resultEvent("free_text", "declined")?.properties.kind).toBe("declined");
   expect(resultEvent("free_text", "0.81 probability")).toBeNull();
   expect(resultEvent("my message", "scored")).toBeNull();

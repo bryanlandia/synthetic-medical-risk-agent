@@ -129,12 +129,16 @@ Graders are plain functions (`evals/graders.py`, `injection.py`, `consistency.py
 oracle is run through every grader as a self-check (`evals/selfcheck.py`): a grader that does not score it as expected is
 reported as broken, not as a system failure.
 
-## Demo patients for the web page
+## Demo cases for the web page
 
-`uv run evals demo-patients` writes `web/content/demo_patients.json`: four dev-split patients chosen by fixed rules (a routine
-record, mixed units with a missing lab, a borderline probability, a note that disagrees with its panel), each with its chart
-and the message `render_message` builds. The file has no ground-truth field, and `tests/test_demo_patients.py` checks that every
-id is in the dev split, every message equals a fresh rendering and the committed file is what the command writes.
+`uv run evals demo-cases` writes `web/content/cases.json`: 30 dev-split cases for the supervisor queue, chosen by a seeded rule (8 to 10
+with C1 met, 6 to 7 unknown, the rest unmet; at least 3 with a unit mismatch, 2 contradiction, 3 borderline, 3 with a lab not
+reported; every tremor state; all three dev patients with both C1 and C2 met, the only fully releasable ones). Each case has its chart,
+the message `render_message` builds, the answers a simulated preparing clinician entered for C3 to C6 (a separate seeded draw from
+the eval attestation fixtures: mostly yes, some no, some unanswered), one of ten fictional insurers, a fictional preparer, request code
+and received time. The file has no ground-truth field, and `tests/test_demo_cases.py` checks the dev split, the harness rendering,
+the mix, that the packets the scripted service builds match the independent reference, and that the committed file is what the
+command writes.
 
 ## PET-CT readiness packet
 

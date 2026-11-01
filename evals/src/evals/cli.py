@@ -85,7 +85,7 @@ def build_parser() -> argparse.ArgumentParser:
     fr = sub.add_parser("freeze", help="frontier: choose the prompt for the protected splits; ends dev iteration")
     fr.add_argument("--prompt", required=True)
 
-    dp = sub.add_parser("demo-patients", help="write web/content/demo_patients.json: dev-split demo patients with their rendered messages")
+    dp = sub.add_parser("demo-cases", help="write web/content/cases.json: the 30 dev-split demo cases for the supervisor queue")
     dp.add_argument("--dataset", default=None, help="dataset directory (default data_gen/data_llm)")
     sub.add_parser("baselines", help="run the three reference systems on dev; write baseline summaries and targets v1")
     sub.add_parser("regression", help="the fast key-free regression subset (used by CI); exit 1 on any failure")
@@ -114,7 +114,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
-    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope", "demo-patients", "packet"):
+    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope", "demo-cases", "packet"):
         return _dispatch(args)
     if args.command == "schema":
         from .report import schema_text, write_schema
@@ -160,10 +160,10 @@ def _dispatch(args: argparse.Namespace) -> int:
         if args.packet_command == "freeze":
             return packet_cli.cmd_freeze(args)
         return {"estimate": packet_cli.cmd_estimate, "run": packet_cli.cmd_run, "fixtures": packet_cli.cmd_fixtures}[args.packet_command](args, dataset)
-    if args.command == "demo-patients":
-        from . import demo_patients
+    if args.command == "demo-cases":
+        from . import demo_cases
 
-        print(f"wrote {demo_patients.write(dataset)}")
+        print(f"wrote {demo_cases.write(dataset)}")
         return 0
     if args.command == "agent-scope":
         from .agent_cli import cmd_scope

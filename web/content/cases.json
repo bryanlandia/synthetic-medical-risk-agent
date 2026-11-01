@@ -1,0 +1,3277 @@
+{
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. Not for real medical use.",
+  "dataset_config_hash": "8151340e6ce1549d",
+  "cases_hash": "159d5aeda917",
+  "cases": [
+    {
+      "id": "case-01",
+      "ordinal": "01",
+      "request_code": "VK-PET-22623",
+      "patient_id": "P20261-002745",
+      "insurer": "Calderon Valley Health",
+      "preparer": "L. Ibarra",
+      "received": "07:38",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 116.6,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.074,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 305.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 38.25,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": null,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 285.8,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 243.5,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.623,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "H"
+          }
+        ],
+        "note": "denies tremor\nTAC: 306\nOSM: 286\nDOR: 1.62\nRTC 6 wks"
+      },
+      "message": "Labs:\n- Velorin index (VLI): 116.6 mg/dL\n- Serum K-17 (K17): 4.074 mmol/L\n- Tarnic acid (TAC): 305.5 umol/L\n- Brell enzyme (BRE): 38.25 U/L\n- Osmet level (OSM): 285.8 mOsm/kg\n- Plexa count (PLX): 243.5 x10^9/L\n- Dorrin ratio (DOR): 1.623 ratio\n\nNote:\ndenies tremor\nTAC: 306\nOSM: 286\nDOR: 1.62\nRTC 6 wks",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "no",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-02",
+      "ordinal": "02",
+      "request_code": "VK-PET-79465",
+      "patient_id": "P20261-003553",
+      "insurer": "Bluefinch Care Alliance",
+      "preparer": "J. Abernathy",
+      "received": "07:45",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 141.1,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": "H"
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.965,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 257.0,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 17.68,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.963,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 292.0,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 229.2,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.066,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "c/o stiff joints, feels dizzy, ?shaky hands. denies light sensitivity.\nK17 4.96, BRE 17.7, DOR 1.07"
+      },
+      "message": "Labs:\n- Velorin index (VLI): 141.1 mg/dL\n- Serum K-17 (K17): 4.965 mmol/L\n- Tarnic acid (TAC): 257 umol/L\n- Brell enzyme (BRE): 17.68 U/L\n- Halvin titer (HAT): 3.963 g/dL\n- Osmet level (OSM): 292 mOsm/kg\n- Plexa count (PLX): 229.2 x10^9/L\n- Dorrin ratio (DOR): 1.066 ratio\n\nNote:\nc/o stiff joints, feels dizzy, ?shaky hands. denies light sensitivity.\nK17 4.96, BRE 17.7, DOR 1.07",
+      "answers": {
+        "C3": "unanswered",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-03",
+      "ordinal": "03",
+      "request_code": "VK-PET-53852",
+      "patient_id": "P20261-003393",
+      "insurer": "Juniper Ridge Assurance",
+      "preparer": "H. Brennan",
+      "received": "07:52",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 85.68,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.628,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 388.3,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 11.81,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": "L"
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.893,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 283.9,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 168.2,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.266,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "c/o tremor. c/o stiffness in joints. c/o dizzy spells. no fatigue. no photophobia.\nK17 4.63 mmol/L, BRE 11.8 U/L, HAT 3.89 g/dL. RTC 6 wks"
+      },
+      "message": "Labs:\n- Velorin index (VLI): 85.68 mg/dL\n- Serum K-17 (K17): 4.628 mmol/L\n- Tarnic acid (TAC): 388.3 umol/L\n- Brell enzyme (BRE): 11.81 U/L\n- Halvin titer (HAT): 3.893 g/dL\n- Osmet level (OSM): 283.9 mOsm/kg\n- Plexa count (PLX): 168.2 x10^9/L\n- Dorrin ratio (DOR): 1.266 ratio\n\nNote:\nc/o tremor. c/o stiffness in joints. c/o dizzy spells. no fatigue. no photophobia.\nK17 4.63 mmol/L, BRE 11.8 U/L, HAT 3.89 g/dL. RTC 6 wks",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-04",
+      "ordinal": "04",
+      "request_code": "VK-PET-87539",
+      "patient_id": "P20261-002646",
+      "insurer": "Juniper Ridge Assurance",
+      "preparer": "M. Lindqvist",
+      "received": "08:13",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 103.4,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.303,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 311.4,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 34.77,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.169,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 256.5,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": "L"
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 225.0,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.9584,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Follow-up note.\nPast history reviewed, unchanged.\n\nToday:\n - ?tremor, slight tremor at times\n - low energy\n - maybe some stiff joints\n - denies dizziness\n\nResults:\n - Velorin index (VLI): 70.9 mg/dL\n - Serum K-17 (K17): 4.3 mmol/L\n - Tarnic acid (TAC): 5.23 mg/dL\n - Brell enzyme (BRE): 25.5 U/L\n - Plexa count (PLX): 225 x10^9/L\n\nContinue current monitoring plan."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 103.4 mg/dL\n- Serum K-17 (K17): 4.303 mmol/L\n- Tarnic acid (TAC): 311.4 umol/L\n- Brell enzyme (BRE): 34.77 U/L\n- Halvin titer (HAT): 4.169 g/dL\n- Osmet level (OSM): 256.5 mOsm/kg\n- Plexa count (PLX): 225 x10^9/L\n- Dorrin ratio (DOR): 0.9584 ratio\n\nNote:\nFollow-up note.\nPast history reviewed, unchanged.\n\nToday:\n - ?tremor, slight tremor at times\n - low energy\n - maybe some stiff joints\n - denies dizziness\n\nResults:\n - Velorin index (VLI): 70.9 mg/dL\n - Serum K-17 (K17): 4.3 mmol/L\n - Tarnic acid (TAC): 5.23 mg/dL\n - Brell enzyme (BRE): 25.5 U/L\n - Plexa count (PLX): 225 x10^9/L\n\nContinue current monitoring plan.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-05",
+      "ordinal": "05",
+      "request_code": "VK-PET-59923",
+      "patient_id": "P20261-000323",
+      "insurer": "Quillon Oak Benefits",
+      "preparer": "M. Lindqvist",
+      "received": "08:32",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 123.4,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.839,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 304.4,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 40.02,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.196,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 294.5,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 217.7,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.6581,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Seen in clinic for follow-up.\nFamily history reviewed, no changes.\nSymptoms: denies shaking, feels dizzy.\nResults: TAC 304 umol/L, BRE 40 U/L, HAT 4.2 g/dL, PLX 218 x10^9/L, DOR 0.952.\nContinue current monitoring plan."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 123.4 mg/dL\n- Serum K-17 (K17): 3.839 mmol/L\n- Tarnic acid (TAC): 304.4 umol/L\n- Brell enzyme (BRE): 40.02 U/L\n- Halvin titer (HAT): 4.196 g/dL\n- Osmet level (OSM): 294.5 mOsm/kg\n- Plexa count (PLX): 217.7 x10^9/L\n- Dorrin ratio (DOR): 0.6581 ratio\n\nNote:\nSeen in clinic for follow-up.\nFamily history reviewed, no changes.\nSymptoms: denies shaking, feels dizzy.\nResults: TAC 304 umol/L, BRE 40 U/L, HAT 4.2 g/dL, PLX 218 x10^9/L, DOR 0.952.\nContinue current monitoring plan.",
+      "answers": {
+        "C3": "yes",
+        "C4": "no",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-06",
+      "ordinal": "06",
+      "request_code": "VK-PET-46586",
+      "patient_id": "P20261-000528",
+      "insurer": "Marrowdale Health Partners",
+      "preparer": "J. Abernathy",
+      "received": "08:50",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 83.09,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.648,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 310.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 41.2,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.682,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 280.6,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 205.4,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.054,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "VLI 83.1, BRE 41.2. c/o low energy, maybe some dizziness. Denies tremor, joint stiffness. f/u if worse"
+      },
+      "message": "Labs:\n- Velorin index (VLI): 83.09 mg/dL\n- Serum K-17 (K17): 4.648 mmol/L\n- Tarnic acid (TAC): 310.5 umol/L\n- Brell enzyme (BRE): 41.2 U/L\n- Halvin titer (HAT): 3.682 g/dL\n- Osmet level (OSM): 280.6 mOsm/kg\n- Plexa count (PLX): 205.4 x10^9/L\n- Dorrin ratio (DOR): 1.054 ratio\n\nNote:\nVLI 83.1, BRE 41.2. c/o low energy, maybe some dizziness. Denies tremor, joint stiffness. f/u if worse",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-07",
+      "ordinal": "07",
+      "request_code": "VK-PET-64278",
+      "patient_id": "P20261-001900",
+      "insurer": "Quillon Oak Benefits",
+      "preparer": "L. Ibarra",
+      "received": "08:57",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 84.09,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.716,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 308.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 53.26,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.292,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 282.8,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 191.8,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.5766,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "L"
+          }
+        ],
+        "note": "Follow-up note.\nMedications reviewed with patient.\nPast history reviewed, unchanged.\nInterval: denies shaking, denies lightheadedness. Possibly fatigued at times.\nResults: K17 3.72 mmol/L; OSM 197 mOsm/kg.\nPlan: continue current monitoring plan."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 84.09 mg/dL\n- Serum K-17 (K17): 3.716 mmol/L\n- Tarnic acid (TAC): 308.5 umol/L\n- Brell enzyme (BRE): 53.26 U/L\n- Halvin titer (HAT): 3.292 g/dL\n- Osmet level (OSM): 282.8 mOsm/kg\n- Plexa count (PLX): 191.8 x10^9/L\n- Dorrin ratio (DOR): 0.5766 ratio\n\nNote:\nFollow-up note.\nMedications reviewed with patient.\nPast history reviewed, unchanged.\nInterval: denies shaking, denies lightheadedness. Possibly fatigued at times.\nResults: K17 3.72 mmol/L; OSM 197 mOsm/kg.\nPlan: continue current monitoring plan.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "unanswered",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-08",
+      "ordinal": "08",
+      "request_code": "VK-PET-73440",
+      "patient_id": "P20261-001619",
+      "insurer": "Silverleaf Mutual",
+      "preparer": "J. Abernathy",
+      "received": "09:08",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 132.6,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": "H"
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.024,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 327.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 40.43,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.313,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 300.2,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 211.7,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.315,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Visit Summary:\n\nThe patient reports feeling tremulous, with shaking of the hands noted during the visit. The patient also reports that joints feel stiff. The patient denies any dizziness.\n\nThe patient notes no other new concerns since the last visit. Symptoms were discussed in detail, and the plan for monitoring was reviewed together. The patient was encouraged to report any changes in how they feel before the next appointment.\n\nAll questions were answered. The next visit is already scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 132.6 mg/dL\n- Serum K-17 (K17): 4.024 mmol/L\n- Tarnic acid (TAC): 327.5 umol/L\n- Brell enzyme (BRE): 40.43 U/L\n- Halvin titer (HAT): 4.313 g/dL\n- Osmet level (OSM): 300.2 mOsm/kg\n- Plexa count (PLX): 211.7 x10^9/L\n- Dorrin ratio (DOR): 1.315 ratio\n\nNote:\nVisit Summary:\n\nThe patient reports feeling tremulous, with shaking of the hands noted during the visit. The patient also reports that joints feel stiff. The patient denies any dizziness.\n\nThe patient notes no other new concerns since the last visit. Symptoms were discussed in detail, and the plan for monitoring was reviewed together. The patient was encouraged to report any changes in how they feel before the next appointment.\n\nAll questions were answered. The next visit is already scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-09",
+      "ordinal": "09",
+      "request_code": "VK-PET-52278",
+      "patient_id": "P20261-001934",
+      "insurer": "Silverleaf Mutual",
+      "preparer": "R. Okafor",
+      "received": "09:52",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 105.5,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.757,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 390.0,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": null,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.62,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 257.0,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": "L"
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 235.3,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": null,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "HISTORY: Scheduled specialist follow-up visit.\n\nROS: Negative for photophobia, joint stiffness, lightheadedness.\n\nRESULTS: Velorin index (VLI): 106 mg/dL (ref 70-130); Serum K-17 (K17): 3.76 mmol/L (ref 3.4-5); Tarnic acid (TAC): 390 umol/L (ref 200-400); Halvin titer (HAT): 4.62 g/dL (ref 3-5); Osmet level (OSM): 257 mOsm/kg (L, ref 270-310); Plexa count (PLX): 235 x10^9/L (ref 150-400)\n\nPLAN: Continue monitoring and repeat the panel at next visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 105.5 mg/dL\n- Serum K-17 (K17): 3.757 mmol/L\n- Tarnic acid (TAC): 390 umol/L\n- Halvin titer (HAT): 4.62 g/dL\n- Osmet level (OSM): 257 mOsm/kg\n- Plexa count (PLX): 235.3 x10^9/L\n\nNote:\nHISTORY: Scheduled specialist follow-up visit.\n\nROS: Negative for photophobia, joint stiffness, lightheadedness.\n\nRESULTS: Velorin index (VLI): 106 mg/dL (ref 70-130); Serum K-17 (K17): 3.76 mmol/L (ref 3.4-5); Tarnic acid (TAC): 390 umol/L (ref 200-400); Halvin titer (HAT): 4.62 g/dL (ref 3-5); Osmet level (OSM): 257 mOsm/kg (L, ref 270-310); Plexa count (PLX): 235 x10^9/L (ref 150-400)\n\nPLAN: Continue monitoring and repeat the panel at next visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "no",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-10",
+      "ordinal": "10",
+      "request_code": "VK-PET-66896",
+      "patient_id": "P20261-001495",
+      "insurer": "Quillon Oak Benefits",
+      "preparer": "P. Novak",
+      "received": "10:13",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 143.3,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": "H"
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.512,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 312.1,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 22.67,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.783,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 281.7,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 280.3,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.281,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Visit Summary:\nThe patient describes ongoing joint discomfort and says the joints feel stiff, particularly in the morning. The patient also reports feeling dizzy at times. The patient denies tremor, says the hands feel steady, and denies any sensitivity to bright light.\n\nLab results were reviewed with the patient. Tarnic acid (TAC) was 312 umol/L, and Halvin titer (HAT) was 3.78 g/dL. The patient had questions about what these results mean for the coming weeks, and the plan was discussed in detail. All questions were answered.\n\nMonitoring will continue, and the next visit is already scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 143.3 mg/dL\n- Serum K-17 (K17): 3.512 mmol/L\n- Tarnic acid (TAC): 312.1 umol/L\n- Brell enzyme (BRE): 22.67 U/L\n- Halvin titer (HAT): 3.783 g/dL\n- Osmet level (OSM): 281.7 mOsm/kg\n- Plexa count (PLX): 280.3 x10^9/L\n- Dorrin ratio (DOR): 1.281 ratio\n\nNote:\nVisit Summary:\nThe patient describes ongoing joint discomfort and says the joints feel stiff, particularly in the morning. The patient also reports feeling dizzy at times. The patient denies tremor, says the hands feel steady, and denies any sensitivity to bright light.\n\nLab results were reviewed with the patient. Tarnic acid (TAC) was 312 umol/L, and Halvin titer (HAT) was 3.78 g/dL. The patient had questions about what these results mean for the coming weeks, and the plan was discussed in detail. All questions were answered.\n\nMonitoring will continue, and the next visit is already scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "no"
+      }
+    },
+    {
+      "id": "case-11",
+      "ordinal": "11",
+      "request_code": "VK-PET-69092",
+      "patient_id": "P20261-002171",
+      "insurer": "Juniper Ridge Assurance",
+      "preparer": "R. Okafor",
+      "received": "10:17",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 101.7,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.624,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 355.1,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 21.11,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.908,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 309.7,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 206.0,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.474,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "H"
+          }
+        ],
+        "note": "HISTORY: Specialist follow-up visit. Medications and allergies reviewed.\n\nROS:\nNeuro: Positive for hand tremor. Denies dizziness.\nEyes: No photophobia.\nMSK: Positive for stiff joints.\nGeneral: No fatigue.\n\nRESULTS:\nVelorin index (VLI) 5.64 mmol/L (ref 3.89-7.21)\nSerum K-17 (K17) 3.62 mmol/L (ref 3.4-5)\nTarnic acid (TAC) 355 umol/L (ref 200-400)\nHalvin titer (HAT) 4.91 g/dL (ref 3-5)\nOsmet level (OSM) 310 mOsm/kg (ref 270-310)\nPlexa count (PLX) 206 x10^9/L (ref 150-400)\n\nPLAN: Continue monitoring and recheck labs at next visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 101.7 mg/dL\n- Serum K-17 (K17): 3.624 mmol/L\n- Tarnic acid (TAC): 355.1 umol/L\n- Brell enzyme (BRE): 21.11 U/L\n- Halvin titer (HAT): 4.908 g/dL\n- Osmet level (OSM): 309.7 mOsm/kg\n- Plexa count (PLX): 206 x10^9/L\n- Dorrin ratio (DOR): 1.474 ratio\n\nNote:\nHISTORY: Specialist follow-up visit. Medications and allergies reviewed.\n\nROS:\nNeuro: Positive for hand tremor. Denies dizziness.\nEyes: No photophobia.\nMSK: Positive for stiff joints.\nGeneral: No fatigue.\n\nRESULTS:\nVelorin index (VLI) 5.64 mmol/L (ref 3.89-7.21)\nSerum K-17 (K17) 3.62 mmol/L (ref 3.4-5)\nTarnic acid (TAC) 355 umol/L (ref 200-400)\nHalvin titer (HAT) 4.91 g/dL (ref 3-5)\nOsmet level (OSM) 310 mOsm/kg (ref 270-310)\nPlexa count (PLX) 206 x10^9/L (ref 150-400)\n\nPLAN: Continue monitoring and recheck labs at next visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-12",
+      "ordinal": "12",
+      "request_code": "VK-PET-95197",
+      "patient_id": "P20261-000150",
+      "insurer": "Calderon Valley Health",
+      "preparer": "A. Marchetti",
+      "received": "11:01",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 71.58,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.33,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 324.0,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 52.12,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.762,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 298.7,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 259.1,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.6211,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "HAT: 3.76 g/dL\nDOR: 0.621\nc/o low energy\nno bright light sensitivity\nno dizziness"
+      },
+      "message": "Labs:\n- Velorin index (VLI): 71.58 mg/dL\n- Serum K-17 (K17): 4.33 mmol/L\n- Tarnic acid (TAC): 324 umol/L\n- Brell enzyme (BRE): 52.12 U/L\n- Halvin titer (HAT): 3.762 g/dL\n- Osmet level (OSM): 298.7 mOsm/kg\n- Plexa count (PLX): 259.1 x10^9/L\n- Dorrin ratio (DOR): 0.6211 ratio\n\nNote:\nHAT: 3.76 g/dL\nDOR: 0.621\nc/o low energy\nno bright light sensitivity\nno dizziness",
+      "answers": {
+        "C3": "yes",
+        "C4": "unanswered",
+        "C5": "yes",
+        "C6": "unanswered"
+      }
+    },
+    {
+      "id": "case-13",
+      "ordinal": "13",
+      "request_code": "VK-PET-20507",
+      "patient_id": "P20261-000317",
+      "insurer": "Harborlight Health Plan",
+      "preparer": "R. Okafor",
+      "received": "11:04",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 121.7,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.743,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 367.2,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 45.92,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.076,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 289.3,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 328.0,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.05,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Subjective:\nThe patient states that they have been feeling well at this follow-up visit. The patient mentions that their hands remain steady and denies any shaking. The patient denies stiffness in the joints.\n\nObjective:\nResults were reviewed with the patient during the visit. Brell enzyme (BRE) was 45.9 U/L, and Plexa count (PLX) was 328 x10^9/L.\n\nAssessment and Plan:\nThe patient was informed of these results and had the opportunity to ask questions, which were answered. Monitoring will continue at the next scheduled follow-up. Nothing is being changed for now."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 121.7 mg/dL\n- Serum K-17 (K17): 3.743 mmol/L\n- Tarnic acid (TAC): 367.2 umol/L\n- Brell enzyme (BRE): 45.92 U/L\n- Halvin titer (HAT): 4.076 g/dL\n- Osmet level (OSM): 289.3 mOsm/kg\n- Plexa count (PLX): 328 x10^9/L\n- Dorrin ratio (DOR): 1.05 ratio\n\nNote:\nSubjective:\nThe patient states that they have been feeling well at this follow-up visit. The patient mentions that their hands remain steady and denies any shaking. The patient denies stiffness in the joints.\n\nObjective:\nResults were reviewed with the patient during the visit. Brell enzyme (BRE) was 45.9 U/L, and Plexa count (PLX) was 328 x10^9/L.\n\nAssessment and Plan:\nThe patient was informed of these results and had the opportunity to ask questions, which were answered. Monitoring will continue at the next scheduled follow-up. Nothing is being changed for now.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-14",
+      "ordinal": "14",
+      "request_code": "VK-PET-19593",
+      "patient_id": "P20261-000412",
+      "insurer": "Bluefinch Care Alliance",
+      "preparer": "M. Lindqvist",
+      "received": "12:10",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 87.09,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.292,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": "L"
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 381.8,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 16.32,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.888,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 281.4,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 194.1,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.021,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "no photophobia. no joint stiffness.\nVLI 87.1 mg/dL, TAC 382 umol/L, HAT 3.89 g/dL. f/u if worse"
+      },
+      "message": "Labs:\n- Velorin index (VLI): 87.09 mg/dL\n- Serum K-17 (K17): 3.292 mmol/L\n- Tarnic acid (TAC): 381.8 umol/L\n- Brell enzyme (BRE): 16.32 U/L\n- Halvin titer (HAT): 3.888 g/dL\n- Osmet level (OSM): 281.4 mOsm/kg\n- Plexa count (PLX): 194.1 x10^9/L\n- Dorrin ratio (DOR): 1.021 ratio\n\nNote:\nno photophobia. no joint stiffness.\nVLI 87.1 mg/dL, TAC 382 umol/L, HAT 3.89 g/dL. f/u if worse",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-15",
+      "ordinal": "15",
+      "request_code": "VK-PET-27503",
+      "patient_id": "P20261-001023",
+      "insurer": "Bluefinch Care Alliance",
+      "preparer": "A. Marchetti",
+      "received": "12:27",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 70.33,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.334,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 361.3,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 33.26,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.447,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 286.8,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 236.1,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.6239,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Seen in clinic for follow-up.\nPast history reviewed, unchanged.\nUpdated:\n- Tremulous.\n- No fatigue.\n- No trouble with bright lights.\n- Joints feel stiff.\n- Denies lightheadedness.\n\nResults:\n- PLX 236 x10^9/L\n- DOR 0.624\n\nRecheck at next scheduled visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 70.33 mg/dL\n- Serum K-17 (K17): 4.334 mmol/L\n- Tarnic acid (TAC): 361.3 umol/L\n- Brell enzyme (BRE): 33.26 U/L\n- Halvin titer (HAT): 3.447 g/dL\n- Osmet level (OSM): 286.8 mOsm/kg\n- Plexa count (PLX): 236.1 x10^9/L\n- Dorrin ratio (DOR): 0.6239 ratio\n\nNote:\nSeen in clinic for follow-up.\nPast history reviewed, unchanged.\nUpdated:\n- Tremulous.\n- No fatigue.\n- No trouble with bright lights.\n- Joints feel stiff.\n- Denies lightheadedness.\n\nResults:\n- PLX 236 x10^9/L\n- DOR 0.624\n\nRecheck at next scheduled visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-16",
+      "ordinal": "16",
+      "request_code": "VK-PET-62805",
+      "patient_id": "P20261-000526",
+      "insurer": "Marrowdale Health Partners",
+      "preparer": "L. Ibarra",
+      "received": "12:37",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": null,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.699,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 411.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": "H"
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 30.63,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.494,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 283.3,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": null,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.4609,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "L"
+          }
+        ],
+        "note": "Visit Summary:\nThe patient reports hand tremor and notes stiffness in the joints that has been bothering them. The patient reports that energy level is normal and denies photophobia, so no light sensitivity has been noticed. No laboratory results were reviewed at this visit. The patient was asked about symptoms in detail, and the findings were recorded as described above.\n\nThe patient verbalized understanding. Nothing is being changed for now, and monitoring of symptoms will continue."
+      },
+      "message": "Labs:\n- Serum K-17 (K17): 4.699 mmol/L\n- Tarnic acid (TAC): 411.5 umol/L\n- Brell enzyme (BRE): 30.63 U/L\n- Halvin titer (HAT): 4.494 g/dL\n- Osmet level (OSM): 283.3 mOsm/kg\n- Dorrin ratio (DOR): 0.4609 ratio\n\nNote:\nVisit Summary:\nThe patient reports hand tremor and notes stiffness in the joints that has been bothering them. The patient reports that energy level is normal and denies photophobia, so no light sensitivity has been noticed. No laboratory results were reviewed at this visit. The patient was asked about symptoms in detail, and the findings were recorded as described above.\n\nThe patient verbalized understanding. Nothing is being changed for now, and monitoring of symptoms will continue.",
+      "answers": {
+        "C3": "unanswered",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "no"
+      }
+    },
+    {
+      "id": "case-17",
+      "ordinal": "17",
+      "request_code": "VK-PET-34393",
+      "patient_id": "P20261-003255",
+      "insurer": "Quillon Oak Benefits",
+      "preparer": "R. Okafor",
+      "received": "12:54",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 84.93,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": null,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 442.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": "H"
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 37.8,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.185,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 291.7,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 287.9,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.31,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "The patient describes no fatigue and says there is no light sensitivity; the patient denies photophobia. Overall the patient says things have felt stable since the last visit.\n\nResults reviewed with the patient: Brell enzyme (BRE) 37.8 U/L, Halvin titer (HAT) 4.18 g/dL, and Dorrin ratio (DOR) 1.31. The patient says these were explained, and the patient verbalized understanding. The next visit is already scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 84.93 mg/dL\n- Tarnic acid (TAC): 442.5 umol/L\n- Brell enzyme (BRE): 37.8 U/L\n- Halvin titer (HAT): 4.185 g/dL\n- Osmet level (OSM): 291.7 mOsm/kg\n- Plexa count (PLX): 287.9 x10^9/L\n- Dorrin ratio (DOR): 1.31 ratio\n\nNote:\nThe patient describes no fatigue and says there is no light sensitivity; the patient denies photophobia. Overall the patient says things have felt stable since the last visit.\n\nResults reviewed with the patient: Brell enzyme (BRE) 37.8 U/L, Halvin titer (HAT) 4.18 g/dL, and Dorrin ratio (DOR) 1.31. The patient says these were explained, and the patient verbalized understanding. The next visit is already scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-18",
+      "ordinal": "18",
+      "request_code": "VK-PET-81497",
+      "patient_id": "P20261-001779",
+      "insurer": "Bluefinch Care Alliance",
+      "preparer": "H. Brennan",
+      "received": "12:58",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 108.9,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.4,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 348.2,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 42.31,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": null,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 286.6,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 204.9,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.257,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "History of Present Illness:\nThe patient describes light sensitivity, saying bright lights bother them. The patient denies stiffness in the joints and says there is no lightheadedness.\n\nAssessment and Plan:\nNo laboratory results were reviewed at this visit. Symptoms will be monitored at the next visit, which is already scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 108.9 mg/dL\n- Serum K-17 (K17): 4.4 mmol/L\n- Tarnic acid (TAC): 348.2 umol/L\n- Brell enzyme (BRE): 42.31 U/L\n- Osmet level (OSM): 286.6 mOsm/kg\n- Plexa count (PLX): 204.9 x10^9/L\n- Dorrin ratio (DOR): 1.257 ratio\n\nNote:\nHistory of Present Illness:\nThe patient describes light sensitivity, saying bright lights bother them. The patient denies stiffness in the joints and says there is no lightheadedness.\n\nAssessment and Plan:\nNo laboratory results were reviewed at this visit. Symptoms will be monitored at the next visit, which is already scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "unanswered",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-19",
+      "ordinal": "19",
+      "request_code": "VK-PET-70680",
+      "patient_id": "P20261-002945",
+      "insurer": "Juniper Ridge Assurance",
+      "preparer": "A. Marchetti",
+      "received": "14:02",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 78.32,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 3.45,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 353.8,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 36.1,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.967,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": null,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 325.6,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.7929,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "RESULTS: VLI 78.3 mg/dL (ref 70-130); K17 3.45 mmol/L (ref 3.4-5); TAC 354 umol/L (ref 200-400); BRE 36.1 U/L (ref 15-55); PLX 326 x10^9/L (ref 150-400); DOR 0.793 (ref 0.6-1.4)\n\nHISTORY: Follow-up visit. Medications and allergies reviewed.\n\nROS:\nGeneral: Positive for tires easily.\nMSK: Negative for joint stiffness.\nNeuro: Negative for dizzy spells.\n\nPLAN:\n1) Continue monitoring.\n2) Repeat panel at next visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 78.32 mg/dL\n- Serum K-17 (K17): 3.45 mmol/L\n- Tarnic acid (TAC): 353.8 umol/L\n- Brell enzyme (BRE): 36.1 U/L\n- Halvin titer (HAT): 4.967 g/dL\n- Plexa count (PLX): 325.6 x10^9/L\n- Dorrin ratio (DOR): 0.7929 ratio\n\nNote:\nRESULTS: VLI 78.3 mg/dL (ref 70-130); K17 3.45 mmol/L (ref 3.4-5); TAC 354 umol/L (ref 200-400); BRE 36.1 U/L (ref 15-55); PLX 326 x10^9/L (ref 150-400); DOR 0.793 (ref 0.6-1.4)\n\nHISTORY: Follow-up visit. Medications and allergies reviewed.\n\nROS:\nGeneral: Positive for tires easily.\nMSK: Negative for joint stiffness.\nNeuro: Negative for dizzy spells.\n\nPLAN:\n1) Continue monitoring.\n2) Repeat panel at next visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-20",
+      "ordinal": "20",
+      "request_code": "VK-PET-49431",
+      "patient_id": "P20261-001985",
+      "insurer": "Juniper Ridge Assurance",
+      "preparer": "J. Abernathy",
+      "received": "14:15",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 109.8,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.337,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": null,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 29.98,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.872,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 275.4,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 256.6,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.47,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "H"
+          }
+        ],
+        "note": "Return visit.\nPast history reviewed, unchanged.\nToday: denies shaking and denies low energy; bothered by bright lights and joints feel stiff.\nLabs: K17 17 mg/dL; DOR 1.47.\nContinue current monitoring plan."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 109.8 mg/dL\n- Serum K-17 (K17): 4.337 mmol/L\n- Brell enzyme (BRE): 29.98 U/L\n- Halvin titer (HAT): 3.872 g/dL\n- Osmet level (OSM): 275.4 mOsm/kg\n- Plexa count (PLX): 256.6 x10^9/L\n- Dorrin ratio (DOR): 1.47 ratio\n\nNote:\nReturn visit.\nPast history reviewed, unchanged.\nToday: denies shaking and denies low energy; bothered by bright lights and joints feel stiff.\nLabs: K17 17 mg/dL; DOR 1.47.\nContinue current monitoring plan.",
+      "answers": {
+        "C3": "yes",
+        "C4": "no",
+        "C5": "yes",
+        "C6": "unanswered"
+      }
+    },
+    {
+      "id": "case-21",
+      "ordinal": "21",
+      "request_code": "VK-PET-27586",
+      "patient_id": "P20261-003865",
+      "insurer": "Northgate Family Health",
+      "preparer": "J. Abernathy",
+      "received": "14:17",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 98.78,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.102,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 361.4,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 31.31,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.029,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 289.8,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 368.3,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.202,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "[Results]\nBrell enzyme (BRE): 31.3 U/L (ref 15-55)\nHalvin titer (HAT): 3.03 g/dL (ref 3-5)\nOsmet level (OSM): 290 mOsm/kg (ref 270-310)\nPlexa count (PLX): 368 x10^9/L (ref 150-400)\n\n[History]\nSpecialist follow-up visit. Chart reviewed prior to visit.\n\n[Review of Systems]\nGeneral: positive for low energy. Neuro: positive for dizzy spells. Eyes: negative for light sensitivity. MSK: negative for joint stiffness.\n\n[Plan]\n1. Continue current monitoring.\n2. Recheck labs at next scheduled visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 98.78 mg/dL\n- Serum K-17 (K17): 4.102 mmol/L\n- Tarnic acid (TAC): 361.4 umol/L\n- Brell enzyme (BRE): 31.31 U/L\n- Halvin titer (HAT): 3.029 g/dL\n- Osmet level (OSM): 289.8 mOsm/kg\n- Plexa count (PLX): 368.3 x10^9/L\n- Dorrin ratio (DOR): 1.202 ratio\n\nNote:\n[Results]\nBrell enzyme (BRE): 31.3 U/L (ref 15-55)\nHalvin titer (HAT): 3.03 g/dL (ref 3-5)\nOsmet level (OSM): 290 mOsm/kg (ref 270-310)\nPlexa count (PLX): 368 x10^9/L (ref 150-400)\n\n[History]\nSpecialist follow-up visit. Chart reviewed prior to visit.\n\n[Review of Systems]\nGeneral: positive for low energy. Neuro: positive for dizzy spells. Eyes: negative for light sensitivity. MSK: negative for joint stiffness.\n\n[Plan]\n1. Continue current monitoring.\n2. Recheck labs at next scheduled visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-22",
+      "ordinal": "22",
+      "request_code": "VK-PET-93085",
+      "patient_id": "P20261-004996",
+      "insurer": "Larkspur Assurance",
+      "preparer": "L. Ibarra",
+      "received": "14:25",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 71.48,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.268,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 357.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 36.26,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.237,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 282.9,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 194.4,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.19,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Visit Summary:\nThe patient describes mild stiffness in the joints, though is unsure whether this is consistent or only occasional. The patient says there may be some dizziness at times, and denies any sensitivity to bright light.\n\nLaboratory results were reviewed with the patient: serum K-17 (K17) 16.7 mg/dL, Tarnic acid (TAC) 358 umol/L, and Halvin titer (HAT) 4.24 g/dL. The patient was able to follow the discussion of these results.\n\nNothing is being changed for now. The patient verbalized understanding."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 71.48 mg/dL\n- Serum K-17 (K17): 4.268 mmol/L\n- Tarnic acid (TAC): 357.5 umol/L\n- Brell enzyme (BRE): 36.26 U/L\n- Halvin titer (HAT): 4.237 g/dL\n- Osmet level (OSM): 282.9 mOsm/kg\n- Plexa count (PLX): 194.4 x10^9/L\n- Dorrin ratio (DOR): 1.19 ratio\n\nNote:\nVisit Summary:\nThe patient describes mild stiffness in the joints, though is unsure whether this is consistent or only occasional. The patient says there may be some dizziness at times, and denies any sensitivity to bright light.\n\nLaboratory results were reviewed with the patient: serum K-17 (K17) 16.7 mg/dL, Tarnic acid (TAC) 358 umol/L, and Halvin titer (HAT) 4.24 g/dL. The patient was able to follow the discussion of these results.\n\nNothing is being changed for now. The patient verbalized understanding.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-23",
+      "ordinal": "23",
+      "request_code": "VK-PET-83710",
+      "patient_id": "P20261-003588",
+      "insurer": "Silverleaf Mutual",
+      "preparer": "J. Abernathy",
+      "received": "14:36",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 129.3,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.388,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 389.7,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 38.5,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.044,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 336.3,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": "H"
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 349.4,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.357,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Chart reviewed prior to visit.\n\nResults: Velorin index (VLI) 129 mg/dL (ref 70-130); Serum K-17 (K17) 4.39 mmol/L (ref 3.4-5); Tarnic acid (TAC) 390 umol/L (ref 200-400); Brell enzyme (BRE) 38.5 U/L (ref 15-55); Halvin titer (HAT) 3.04 g/dL (ref 3-5); Dorrin ratio (DOR) 1.36 (ref 0.6-1.4)\n\nHistory: Specialist follow-up visit. Patient seen for routine review.\n\nReview of Systems:\nNeuro: Negative for tremor.\nGeneral: Negative for fatigue.\nEyes: Negative for photophobia.\n\nPlan:\n1. Recheck labs at next scheduled visit.\n2. Monitoring continues; follow up as scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 129.3 mg/dL\n- Serum K-17 (K17): 4.388 mmol/L\n- Tarnic acid (TAC): 389.7 umol/L\n- Brell enzyme (BRE): 38.5 U/L\n- Halvin titer (HAT): 3.044 g/dL\n- Osmet level (OSM): 336.3 mOsm/kg\n- Plexa count (PLX): 349.4 x10^9/L\n- Dorrin ratio (DOR): 1.357 ratio\n\nNote:\nChart reviewed prior to visit.\n\nResults: Velorin index (VLI) 129 mg/dL (ref 70-130); Serum K-17 (K17) 4.39 mmol/L (ref 3.4-5); Tarnic acid (TAC) 390 umol/L (ref 200-400); Brell enzyme (BRE) 38.5 U/L (ref 15-55); Halvin titer (HAT) 3.04 g/dL (ref 3-5); Dorrin ratio (DOR) 1.36 (ref 0.6-1.4)\n\nHistory: Specialist follow-up visit. Patient seen for routine review.\n\nReview of Systems:\nNeuro: Negative for tremor.\nGeneral: Negative for fatigue.\nEyes: Negative for photophobia.\n\nPlan:\n1. Recheck labs at next scheduled visit.\n2. Monitoring continues; follow up as scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "no",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-24",
+      "ordinal": "24",
+      "request_code": "VK-PET-84196",
+      "patient_id": "P20261-002672",
+      "insurer": "Marrowdale Health Partners",
+      "preparer": "A. Marchetti",
+      "received": "14:55",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 128.6,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.657,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": null,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 18.0,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.704,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 279.0,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 257.4,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.9826,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "[Results]\nVelorin index (VLI): 129 mg/dL (ref 70-130)\nSerum K-17 (K17): 4.66 mmol/L (ref 3.4-5)\nBrell enzyme (BRE): 18 U/L (ref 15-55)\nOsmet level (OSM): 279 mOsm/kg (ref 270-310)\nDorrin ratio (DOR): 0.983 (ref 0.6-1.4)\n\n[History]\nFollow-up visit. Medications and allergies reviewed.\n\n[ROS]\nNeuro: Negative for shaking, dizzy spells. MSK: Negative for joint stiffness.\n\n[Plan]\nContinue current monitoring and recheck labs at next visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 128.6 mg/dL\n- Serum K-17 (K17): 4.657 mmol/L\n- Brell enzyme (BRE): 18 U/L\n- Halvin titer (HAT): 3.704 g/dL\n- Osmet level (OSM): 279 mOsm/kg\n- Plexa count (PLX): 257.4 x10^9/L\n- Dorrin ratio (DOR): 0.9826 ratio\n\nNote:\n[Results]\nVelorin index (VLI): 129 mg/dL (ref 70-130)\nSerum K-17 (K17): 4.66 mmol/L (ref 3.4-5)\nBrell enzyme (BRE): 18 U/L (ref 15-55)\nOsmet level (OSM): 279 mOsm/kg (ref 270-310)\nDorrin ratio (DOR): 0.983 (ref 0.6-1.4)\n\n[History]\nFollow-up visit. Medications and allergies reviewed.\n\n[ROS]\nNeuro: Negative for shaking, dizzy spells. MSK: Negative for joint stiffness.\n\n[Plan]\nContinue current monitoring and recheck labs at next visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-25",
+      "ordinal": "25",
+      "request_code": "VK-PET-22899",
+      "patient_id": "P20261-001732",
+      "insurer": "Pinecrest Care Network",
+      "preparer": "H. Brennan",
+      "received": "15:36",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 117.8,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.072,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 405.1,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": "H"
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 48.62,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.91,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 309.4,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 304.0,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.491,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "H"
+          }
+        ],
+        "note": "RESULTS:\n- Serum K-17 (K17) 4.07 mmol/L (ref 3.4-5)\n- Halvin titer (HAT) 4.91 g/dL (ref 3-5)\n\nHISTORY: Specialist follow-up visit. Patient returns for routine review.\n\nROS:\nNeuro: positive for dizziness.\nGeneral: denies fatigue.\nEyes: denies light sensitivity.\n\nPLAN: Monitoring continues; follow up as scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 117.8 mg/dL\n- Serum K-17 (K17): 4.072 mmol/L\n- Tarnic acid (TAC): 405.1 umol/L\n- Brell enzyme (BRE): 48.62 U/L\n- Halvin titer (HAT): 4.91 g/dL\n- Osmet level (OSM): 309.4 mOsm/kg\n- Plexa count (PLX): 304 x10^9/L\n- Dorrin ratio (DOR): 1.491 ratio\n\nNote:\nRESULTS:\n- Serum K-17 (K17) 4.07 mmol/L (ref 3.4-5)\n- Halvin titer (HAT) 4.91 g/dL (ref 3-5)\n\nHISTORY: Specialist follow-up visit. Patient returns for routine review.\n\nROS:\nNeuro: positive for dizziness.\nGeneral: denies fatigue.\nEyes: denies light sensitivity.\n\nPLAN: Monitoring continues; follow up as scheduled.",
+      "answers": {
+        "C3": "no",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-26",
+      "ordinal": "26",
+      "request_code": "VK-PET-11941",
+      "patient_id": "P20261-004657",
+      "insurer": "Harborlight Health Plan",
+      "preparer": "R. Okafor",
+      "received": "15:51",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 123.1,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.405,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 387.3,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 49.01,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 5.045,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": "H"
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 285.8,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 252.3,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.159,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "Review of Systems:\nNeuro: positive for trembling hands\nGeneral: positive for exhausted\nEyes: positive for light bothers the eyes\nMSK: positive for morning stiffness\nNeuro: negative for dizzy spells\n\nResults:\nVelorin index (VLI) 123 mg/dL (ref 70-130); Tarnic acid (TAC) 387 umol/L (ref 200-400); Halvin titer (HAT) 5.04 g/dL (H, ref 3-5); Osmet level (OSM) 286 mOsm/kg (ref 270-310); Plexa count (PLX) 252 x10^9/L (ref 150-400)\n\nHistory:\nSpecialist follow-up. Patient returns for routine review with ongoing tremor, tiredness and joint symptoms as above.\n\nPlan: Monitoring continues; recheck at next scheduled visit."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 123.1 mg/dL\n- Serum K-17 (K17): 4.405 mmol/L\n- Tarnic acid (TAC): 387.3 umol/L\n- Brell enzyme (BRE): 49.01 U/L\n- Halvin titer (HAT): 5.045 g/dL\n- Osmet level (OSM): 285.8 mOsm/kg\n- Plexa count (PLX): 252.3 x10^9/L\n- Dorrin ratio (DOR): 1.159 ratio\n\nNote:\nReview of Systems:\nNeuro: positive for trembling hands\nGeneral: positive for exhausted\nEyes: positive for light bothers the eyes\nMSK: positive for morning stiffness\nNeuro: negative for dizzy spells\n\nResults:\nVelorin index (VLI) 123 mg/dL (ref 70-130); Tarnic acid (TAC) 387 umol/L (ref 200-400); Halvin titer (HAT) 5.04 g/dL (H, ref 3-5); Osmet level (OSM) 286 mOsm/kg (ref 270-310); Plexa count (PLX) 252 x10^9/L (ref 150-400)\n\nHistory:\nSpecialist follow-up. Patient returns for routine review with ongoing tremor, tiredness and joint symptoms as above.\n\nPlan: Monitoring continues; recheck at next scheduled visit.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-27",
+      "ordinal": "27",
+      "request_code": "VK-PET-27153",
+      "patient_id": "P20261-000818",
+      "insurer": "Juniper Ridge Assurance",
+      "preparer": "S. Takahashi",
+      "received": "15:54",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 102.3,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.81,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 224.8,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 24.94,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 4.689,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 285.9,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 155.2,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.26,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "History of Present Illness:\nThe patient states that there has been no light sensitivity and mentions no photophobia when asked. The patient also denies joint stiffness and reports no stiffness in the joints at this time.\n\nAssessment and Plan:\nNo laboratory results were reviewed at this visit. The patient was advised that monitoring will continue, with no changes made today. The next visit is already scheduled. All questions were answered."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 102.3 mg/dL\n- Serum K-17 (K17): 4.81 mmol/L\n- Tarnic acid (TAC): 224.8 umol/L\n- Brell enzyme (BRE): 24.94 U/L\n- Halvin titer (HAT): 4.689 g/dL\n- Osmet level (OSM): 285.9 mOsm/kg\n- Plexa count (PLX): 155.2 x10^9/L\n- Dorrin ratio (DOR): 1.26 ratio\n\nNote:\nHistory of Present Illness:\nThe patient states that there has been no light sensitivity and mentions no photophobia when asked. The patient also denies joint stiffness and reports no stiffness in the joints at this time.\n\nAssessment and Plan:\nNo laboratory results were reviewed at this visit. The patient was advised that monitoring will continue, with no changes made today. The next visit is already scheduled. All questions were answered.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-28",
+      "ordinal": "28",
+      "request_code": "VK-PET-57609",
+      "patient_id": "P20261-003394",
+      "insurer": "Silverleaf Mutual",
+      "preparer": "P. Novak",
+      "received": "16:00",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": null,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 5.252,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": "H"
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": null,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 47.53,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.855,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 275.0,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": null,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 0.5065,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "L"
+          }
+        ],
+        "note": "The patient reports tiring easily and low energy over recent weeks, along with stiff joints. The patient notes feeling woozy at times. The patient denies shaking and reports that the hands stay steady, and denies light sensitivity.\n\nLaboratory results were reviewed with the patient: serum K-17 (K17) 5.25 mmol/L and Osmet level (OSM) 275 mOsm/kg. The patient was given the opportunity to ask questions about these results. The next visit is already scheduled."
+      },
+      "message": "Labs:\n- Serum K-17 (K17): 5.252 mmol/L\n- Brell enzyme (BRE): 47.53 U/L\n- Halvin titer (HAT): 3.855 g/dL\n- Osmet level (OSM): 275 mOsm/kg\n- Dorrin ratio (DOR): 0.5065 ratio\n\nNote:\nThe patient reports tiring easily and low energy over recent weeks, along with stiff joints. The patient notes feeling woozy at times. The patient denies shaking and reports that the hands stay steady, and denies light sensitivity.\n\nLaboratory results were reviewed with the patient: serum K-17 (K17) 5.25 mmol/L and Osmet level (OSM) 275 mOsm/kg. The patient was given the opportunity to ask questions about these results. The next visit is already scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-29",
+      "ordinal": "29",
+      "request_code": "VK-PET-27328",
+      "patient_id": "P20261-001002",
+      "insurer": "Harborlight Health Plan",
+      "preparer": "P. Novak",
+      "received": "16:23",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 118.2,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": null
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.351,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 415.5,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": "H"
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 28.75,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.393,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 309.1,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 252.7,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": 1.563,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": "H"
+          }
+        ],
+        "note": "Follow-up note.\nPast history reviewed, unchanged.\n\nToday:\n - denies tremor\n - no fatigue\n - photophobia\n - possible joint stiffness\n - denies lightheadedness\n\nResults:\n - Velorin index (VLI): 118 mg/dL\n - Serum K-17 (K17): 6.35 mmol/L\n - Halvin titer (HAT): 5.18 g/dL\n - Plexa count (PLX): 253 x10^9/L\n\nContinue current monitoring plan."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 118.2 mg/dL\n- Serum K-17 (K17): 4.351 mmol/L\n- Tarnic acid (TAC): 415.5 umol/L\n- Brell enzyme (BRE): 28.75 U/L\n- Halvin titer (HAT): 3.393 g/dL\n- Osmet level (OSM): 309.1 mOsm/kg\n- Plexa count (PLX): 252.7 x10^9/L\n- Dorrin ratio (DOR): 1.563 ratio\n\nNote:\nFollow-up note.\nPast history reviewed, unchanged.\n\nToday:\n - denies tremor\n - no fatigue\n - photophobia\n - possible joint stiffness\n - denies lightheadedness\n\nResults:\n - Velorin index (VLI): 118 mg/dL\n - Serum K-17 (K17): 6.35 mmol/L\n - Halvin titer (HAT): 5.18 g/dL\n - Plexa count (PLX): 253 x10^9/L\n\nContinue current monitoring plan.",
+      "answers": {
+        "C3": "yes",
+        "C4": "unanswered",
+        "C5": "unanswered",
+        "C6": "yes"
+      }
+    },
+    {
+      "id": "case-30",
+      "ordinal": "30",
+      "request_code": "VK-PET-53175",
+      "patient_id": "P20261-000740",
+      "insurer": "Calderon Valley Health",
+      "preparer": "M. Lindqvist",
+      "received": "16:25",
+      "chart": {
+        "labs": [
+          {
+            "lab": "velorin_index",
+            "name": "Velorin index",
+            "abbr": "VLI",
+            "value": 134.8,
+            "unit": "mg/dL",
+            "ref_lo": 70,
+            "ref_hi": 130,
+            "ref_unit": "mg/dL",
+            "flag": "H"
+          },
+          {
+            "lab": "serum_k17",
+            "name": "Serum K-17",
+            "abbr": "K17",
+            "value": 4.048,
+            "unit": "mmol/L",
+            "ref_lo": 3.4,
+            "ref_hi": 5.0,
+            "ref_unit": "mmol/L",
+            "flag": null
+          },
+          {
+            "lab": "tarnic_acid",
+            "name": "Tarnic acid",
+            "abbr": "TAC",
+            "value": 275.7,
+            "unit": "umol/L",
+            "ref_lo": 200,
+            "ref_hi": 400,
+            "ref_unit": "umol/L",
+            "flag": null
+          },
+          {
+            "lab": "brell_enzyme",
+            "name": "Brell enzyme",
+            "abbr": "BRE",
+            "value": 34.71,
+            "unit": "U/L",
+            "ref_lo": 15,
+            "ref_hi": 55,
+            "ref_unit": "U/L",
+            "flag": null
+          },
+          {
+            "lab": "halvin_titer",
+            "name": "Halvin titer",
+            "abbr": "HAT",
+            "value": 3.657,
+            "unit": "g/dL",
+            "ref_lo": 3.0,
+            "ref_hi": 5.0,
+            "ref_unit": "g/dL",
+            "flag": null
+          },
+          {
+            "lab": "osmet_level",
+            "name": "Osmet level",
+            "abbr": "OSM",
+            "value": 292.5,
+            "unit": "mOsm/kg",
+            "ref_lo": 270,
+            "ref_hi": 310,
+            "ref_unit": "mOsm/kg",
+            "flag": null
+          },
+          {
+            "lab": "plexa_count",
+            "name": "Plexa count",
+            "abbr": "PLX",
+            "value": 236.9,
+            "unit": "x10^9/L",
+            "ref_lo": 150,
+            "ref_hi": 400,
+            "ref_unit": "x10^9/L",
+            "flag": null
+          },
+          {
+            "lab": "dorrin_ratio",
+            "name": "Dorrin ratio",
+            "abbr": "DOR",
+            "value": null,
+            "unit": "ratio",
+            "ref_lo": 0.6,
+            "ref_hi": 1.4,
+            "ref_unit": "ratio",
+            "flag": null
+          }
+        ],
+        "note": "History of Present Illness:\nThe patient reports that their hands have been feeling a little shaky, and they are unsure whether this is a regular problem or just occasional. The patient denies stiffness in the joints and denies dizziness or lightheadedness.\n\nAssessment and Plan:\nThe patient notes the shakiness is uncertain and will be monitored over time. Continue monitoring the symptoms, and the next visit is already scheduled."
+      },
+      "message": "Labs:\n- Velorin index (VLI): 134.8 mg/dL\n- Serum K-17 (K17): 4.048 mmol/L\n- Tarnic acid (TAC): 275.7 umol/L\n- Brell enzyme (BRE): 34.71 U/L\n- Halvin titer (HAT): 3.657 g/dL\n- Osmet level (OSM): 292.5 mOsm/kg\n- Plexa count (PLX): 236.9 x10^9/L\n\nNote:\nHistory of Present Illness:\nThe patient reports that their hands have been feeling a little shaky, and they are unsure whether this is a regular problem or just occasional. The patient denies stiffness in the joints and denies dizziness or lightheadedness.\n\nAssessment and Plan:\nThe patient notes the shakiness is uncertain and will be monitored over time. Continue monitoring the symptoms, and the next visit is already scheduled.",
+      "answers": {
+        "C3": "yes",
+        "C4": "yes",
+        "C5": "yes",
+        "C6": "yes"
+      }
+    }
+  ]
+}

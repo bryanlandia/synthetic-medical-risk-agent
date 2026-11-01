@@ -9,7 +9,7 @@ Portfolio demo. **All medical data is synthetic and the disease is fictional.** 
 - `training/` classifier + LoRA training, MLflow tracking (writes the model files `risk_model` loads)
 - `agent/` FastAPI + Strands chat service: guards, a no-argument scoring tool, a reply check (depends on `risk_model` only)
 - `evals/` Inspect AI tasks, promptfoo configs, datasets, reports
-- `web/` Next.js demo: a mock EHR chart page, a free-text tab and the model card, in front of the agent (Vercel project, root dir `web/`)
+- `web/` Next.js demo: a supervisor's review queue of 30 prepared PET-CT request packets (Material UI), with the free-text assistant, the model card and About under "Behind the demo", in front of the agent (Vercel project, root dir `web/`)
 - `deploy/` Vercel helper scripts (`check-env.sh`); the agent's Vercel project is built from the repository root files `index.py`, `requirements.txt`, `vercel.json` and `.vercelignore`
 - `rating_ui/` local-only Next.js tool for rating pilot notes (never deployed; loopback only; cannot read the answer key)
 - `openspec/` specs and changes
@@ -78,7 +78,7 @@ Agent (from `agent/`, same uv setup; see `agent/README.md`):
 Web demo (from `web/`, Node via nvm, `npm install --ignore-scripts`; see `web/README.md`):
 
 - `npm test` builds the app, starts the scripted agent (`uv` must be on the PATH) and the app, and runs the Playwright tests; `npm run typecheck`
-- `uv run evals demo-patients` (from `evals/`) writes `web/content/demo_patients.json` from the dev split; `uv run training card` (from `training/`) also refreshes `web/content/model-card.md`; tests fail if either file is stale
+- `uv run evals demo-cases` (from `evals/`) writes `web/content/cases.json` (30 dev-split cases) from the dev split; `uv run training card` (from `training/`) also refreshes `web/content/model-card.md`; tests fail if either file is stale
 - Deploy: two Vercel projects (agent at the repository root, web in `web/`); variables are in `web/README.md`; `deploy/check-env.sh <agent-project>` checks them by name
 
 Rating app (from `rating_ui/`, Node via nvm, `npm install --ignore-scripts` avoids a node-gyp hang on this machine):
