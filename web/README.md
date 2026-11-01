@@ -58,7 +58,7 @@ list in `lib/analytics.ts`; automatic capture is off. A footer notice says this 
 choice is kept in local storage, and pressing it is not itself counted). Do Not Track and Global Privacy Control start nothing.
 Requests go to `/ingest` on the site itself, which the server forwards to PostHog (an ad blocker then hides far fewer visits).
 
-**Telling people apart.** Give each recipient their own link with a `ref`, for example `https://vk-web-liart.vercel.app/?ref=ode`,
+**Telling people apart.** Give each recipient their own link with a `ref`, for example `https://vk-check.vercel.app/?ref=ode`,
 and filter by `ref` in PostHog. The page cannot tell which company a visitor works at; the link is the only way.
 
 **PostHog project settings (do these once).**
@@ -68,6 +68,11 @@ and filter by `ref` in PostHog. The page cannot tell which company a visitor wor
 3. Leave session replay off. Cookieless unique visitors are approximate (a hash of address and browser that changes daily).
 
 `deploy/check-env.sh <agent-project> <web-project>` also fails if the web project's preview environment holds the key.
+
+**Checked on production (2026-11-01).** The key is in the built JavaScript, `/ingest` forwards to PostHog (200), and a page view with
+`?ref=test` arrives from Safari with the notice shown. A browser with Do Not Track on (Firefox here) shows no notice and sends
+nothing, as intended. Automated browsers (Playwright) are dropped by PostHog's own bot filter unless they hide the user agent,
+`navigator.webdriver` and the client-hint brands, as `tests/analytics.spec.ts` does.
 
 ## Deploy (Vercel only, two projects from this repository)
 
@@ -106,7 +111,7 @@ also uses); PostCSS runs only at build time on this repository's own CSS, and mo
 
 | | Address | Project |
 |---|---|---|
-| The demo page | https://vk-web-liart.vercel.app | `vk-web` (Root Directory `web/`) |
+| The demo page | https://vk-check.vercel.app | `vk-check` (Root Directory `web/`) |
 | The agent service | https://vk-agent-spike.vercel.app | `vk-agent-spike` (Root Directory: the repository root; the name is left from the spike) |
 
 First deployed and checked on 2026-10-27: the agent reports Haiku 5.5 and the committed model hash `414c2d467c87…`; `uv run agent

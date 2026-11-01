@@ -16,5 +16,5 @@
 ## 4. Documentation and the owner's steps
 
 - [x] 4.1 Update `web/README.md` (the two variables, the PostHog project settings in the design, how to make `?ref=` links, what the page can and cannot tell the owner, the click names, and the notice) and extend `deploy/check-env.sh` to fail if a web project's preview environment has `NEXT_PUBLIC_POSTHOG_KEY`. Eval: the README lists both variables and the check script catches a preview key.
-- [ ] 4.2 Owner-run: in PostHog confirm the authorized URL, the IP and cookieless settings; set the two variables on the web project, production only; redeploy; open the page with `?ref=test`, use each tab, patient, example and the expander, then confirm in PostHog one page view with `ref`, the named clicks, and that no recording exists. Record the outcome in the README.
+- [x] 4.2 Owner-run: in PostHog confirm the authorized URL, the IP and cookieless settings; set the two variables on the web project, production only; redeploy; open the page with `?ref=test`, use each tab, patient, example and the expander, then confirm in PostHog one page view with `ref`, the named clicks, and that no recording exists. Record the outcome in the README.
 - [x] 4.3 Run the web tests and typecheck, the Python suites that read `web/content/` (`training` and `evals` freshness tests) and `openspec validate add-posthog-analytics --strict`.
