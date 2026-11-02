@@ -1,4 +1,4 @@
-/** The words the interface says about itself, in one place: what the packet is for, the hints on four terms, and the demo notes.
+/** The words the interface says about itself, in one place: what the packet is for, the hints on three terms, and the demo notes.
  * Tests read these strings, so the page and the checks cannot drift apart. */
 
 export const STRIP_TEXT =
@@ -8,16 +8,15 @@ export const PURPOSE_TITLE = "What is this packet for?";
 export const PURPOSE_PARAGRAPHS = [
   "Confirming Velorin-Kessler syndrome (a fictional disease) takes a K-17 PET-CT, an expensive scan. Insurers usually ask for documentation before they pay for one (this is called prior authorization).",
   "A request that is incomplete, or that does not point to its evidence, is sent back. That delays the patient's diagnosis and creates rework for the clinic.",
-  "The packet is that documentation. For each request, the tool checks the chart against the insurer's criteria, shows the evidence behind each answer, and lists what is still missing.",
+  "The packet is that documentation. For each request, the tool checks the chart against the insurer's coverage criteria, shows the evidence behind each answer, and lists what is still missing.",
   "You are the neurology supervisor. You decide what happens to each packet: release it to the insurer, return it to the preparing clinician with a note, or close it because the criteria are not met. The tool decides nothing about the patient's care or about coverage.",
 ];
 
-/** Short hints on four terms where they first appear. */
+/** Short hints on three terms where they first appear. */
 export const HINTS = {
   "PET-CT": "A scan that combines positron emission tomography with a CT image. Here it uses a fictional tracer called K-17.",
   "prior authorization": "An insurer's advance review of an expensive service, before it is paid for.",
   packet: "What is sent to the insurer: the criteria checklist, the evidence for each criterion, a summary and the supervisor's notes.",
-  criteria: "The conditions in the insurer's (fictional) policy that the request is checked against.",
 } as const;
 export type HintTerm = keyof typeof HINTS;
 
@@ -25,7 +24,6 @@ export type HintTerm = keyof typeof HINTS;
 export const DEMO_NOTES = {
   role: "You are playing a neurology supervisor. The cases were prepared by clinicians who do not exist, so you can see how a review works.",
   queue: "Names and times are made up.",
-  answers: "These four answers were entered by the preparing clinician (simulated). Real answers would come from the person who knows the patient.",
   policy: "A made-up policy that every insurer here shares. Real insurers each have their own, and they change.",
   estimate: "The estimate comes from a small model trained on invented data. It is context only and decides no criterion.",
   summary: "Drafted by a language model, then checked sentence by sentence against the evidence. If a sentence fails the check, a fixed template is shown instead.",
@@ -44,3 +42,32 @@ export const C5_SHOWN = "The last PET-CT or comparable imaging was more than 12 
 export function criterionText(id: string, policyText: string): string {
   return id === "C5" ? C5_SHOWN : policyText;
 }
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** A case's received value ("2026-11-02 07:45", fictional Eastern time) as "2 Nov 2026, 07:45 ET", the same in every visitor's zone. */
+export function formatReceived(value: string): string {
+  const m = /^(\d{4})-(\d\d)-(\d\d) (\d\d:\d\d)$/.exec(value);
+  return m ? `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}, ${m[4]} ET` : value;
+}
+
+/** What produced each part of the page: one table, used by the labels and by the key, so they cannot drift. */
+export const PRODUCED_TITLE = "What produced this page?";
+export const PRODUCED_INTRO = "Everything here is invented: the patients, the disease, the insurers and the policy. Each part of a case is marked with what produced it.";
+export const PRODUCED = {
+  classifier: { label: "Classifier model", tone: "model", text: "A small model, trained on invented data, that estimates risk from the labs and symptoms. It is context only and decides no criterion." },
+  reader: { label: "Note reader", tone: "model", text: "A small model, trained on invented notes, that reads the clinical note and picks out the symptoms it mentions." },
+  rules: { label: "Code", tone: "code", text: "Fixed rules written in code: the lab thresholds, the criterion statuses and the checks on the summary. No model is involved." },
+  llm: { label: "Language model", tone: "model", text: "A language model (Claude Haiku) drafts the summary. Code then checks every sentence against the table and its evidence." },
+  template: { label: "Template", tone: "code", text: "Fixed wording filled in by code, used when the model's draft did not pass the checks or the model was unavailable." },
+  preparer: { label: "Preparer (simulated)", tone: "preparer", text: "Entered by a preparing clinician who does not exist." },
+  you: { label: "You", tone: "you", text: "Your decision and your own words. The tool writes nothing here." },
+  agent: { label: "Agent", tone: "model", text: "A language-model agent (Claude Haiku) behind guards. It has one scoring tool that takes no arguments, and code checks its reply." },
+} as const;
+export type ProducedKind = keyof typeof PRODUCED;
+
+/** Where each criterion's answer comes from, by the policy's own source field. */
+export const CRITERION_SOURCE = {
+  labs: "Chart labs",
+  note: "Clinical note",
+  attestation: "Preparer's answer",
+} as const;

@@ -3,11 +3,12 @@
 import Box from "@mui/material/Box";
 import type { SxProps, Theme } from "@mui/material/styles";
 import Chip from "@mui/material/Chip";
+import TableCell from "@mui/material/TableCell";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Fragment, type ReactNode } from "react";
-import { DEMO_NOTES, HINTS, STRIP_TEXT, type DemoNoteKey, type HintTerm } from "@/lib/copy";
-import { CRITERION_CHIPS, DEMO_CHIP, STATUS_CHIPS, COLORS, type StatusKey } from "@/lib/theme";
+import { CRITERION_SOURCE, DEMO_NOTES, HINTS, PRODUCED, STRIP_TEXT, formatReceived, type DemoNoteKey, type HintTerm, type ProducedKind } from "@/lib/copy";
+import { CRITERION_CHIPS, DEMO_CHIP, PRODUCED_CHIPS, STATUS_CHIPS, COLORS, type StatusKey } from "@/lib/theme";
 
 /** The one loud element: a strip on every screen saying everything is invented. */
 export function DemoStrip() {
@@ -31,6 +32,30 @@ export function DemoNote({ note }: { note: DemoNoteKey }) {
   );
 }
 
+/** A small label saying what produced a block (a model, code, the simulated preparer or the supervisor), with its explanation on hover or focus. */
+export function Produced({ kind, testId }: { kind: ProducedKind; testId?: string }) {
+  const p = PRODUCED[kind];
+  const c = PRODUCED_CHIPS[p.tone];
+  return (
+    <Tooltip title={p.text} describeChild>
+      <Box component="span" tabIndex={0} data-testid={`produced-${testId ?? kind}`} data-produced={kind} sx={{ display: "inline-flex", verticalAlign: "middle", ml: 1, borderRadius: 4, "&:focus-visible": { outline: `2px solid ${COLORS.primary}`, outlineOffset: 2 } }}>
+        <Chip size="small" label={p.label} sx={{ bgcolor: c.bg, color: c.text, height: 22, fontSize: "0.75rem", cursor: "help" }} />
+      </Box>
+    </Tooltip>
+  );
+}
+
+/** Where a criterion's answer comes from, and what produced it. */
+export function SourceCell({ source, testId }: { source: string; testId: string }) {
+  const kind: ProducedKind = source === "labs" ? "rules" : source === "note" ? "reader" : "preparer";
+  return (
+    <TableCell data-testid={`source-${testId}`}>
+      {CRITERION_SOURCE[source as keyof typeof CRITERION_SOURCE] ?? source}
+      <Produced kind={kind} testId={`source-${testId}`} />
+    </TableCell>
+  );
+}
+
 /** A term with a short hint, reachable by keyboard. */
 export function Term({ term, children }: { term: HintTerm; children?: ReactNode }) {
   return (
@@ -42,9 +67,9 @@ export function Term({ term, children }: { term: HintTerm; children?: ReactNode 
   );
 }
 
-const TERM_PATTERN = /(PET-CT|prior authorization|packet|criteria)/g;
+const TERM_PATTERN = /(PET-CT|prior authorization|packet)/g;
 
-/** Text in which the first use of each of the four terms carries its hint. */
+/** Text in which the first use of each of the three terms carries its hint. */
 export function withTerms(paragraphs: string[]): ReactNode[] {
   const seen = new Set<string>();
   return paragraphs.map((text, i) => (
@@ -70,7 +95,7 @@ export function CriterionChip({ status, testId }: { status: keyof typeof CRITERI
   return <Chip size="small" label={c.label} data-testid={testId} sx={{ bgcolor: c.bg, color: c.text }} />;
 }
 
-export const clock = (at: string): string => (/^\d\d:\d\d$/.test(at) ? at : new Date(at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+export const clock = (at: string): string => (/^\d{4}-\d\d-\d\d \d\d:\d\d$/.test(at) ? formatReceived(at) : new Date(at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
 
 /** A row of items with a gap, aligned and wrapped as asked. */
 export function Row({ spacing = 1, alignItems, justifyContent, flexWrap, component = "div", sx, children, ...rest }: {

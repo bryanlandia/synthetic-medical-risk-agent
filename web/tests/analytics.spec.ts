@@ -84,7 +84,7 @@ test("each countable element sends one named click, and empty space and typing s
   await page.getByRole("button", { name: "Returned", exact: true }).click();
   await page.getByRole("button", { name: "All", exact: true }).click();
   await openFirstCase(page);
-  await page.getByText("Message sent to the service").click();
+  await page.getByText("Show the message sent to the service").click();
   await page.getByRole("button", { name: "Back to the queue" }).click();
   await openBehind(page, "Try the assistant");
   await page.getByRole("button", { name: "A treatment question" }).click();
@@ -206,7 +206,8 @@ test("every element that must be counted carries a name", async ({ page }) => {
   await expect(page.locator('[data-track^="case:"]')).toHaveCount(30);
   for (const name of ["intro_dismiss", "reset_demo"]) await expect(page.locator(`[data-track="${name}"]`)).toHaveCount(1);
   await openFirstCase(page);
-  for (const name of ["help", "sent_message_expander", "release", "return", "close"]) await expect(page.locator(`[data-track="${name}"]`)).toHaveCount(1);
+  for (const name of ["sent_message_expander", "release", "return", "close"]) await expect(page.locator(`[data-track="${name}"]`)).toHaveCount(1);
+  await expect(page.locator(`[data-track="help"]`)).toHaveCount(2); // the packet help and the "What produced this page?" key share the name
   await page.getByRole("button", { name: "Back to the queue" }).click();
   await page.getByRole("button", { name: "Behind the demo" }).click();
   for (const nav of ["free", "card", "about"]) await expect(page.locator(`[data-track="nav:${nav}"]`)).toHaveCount(1);

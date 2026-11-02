@@ -13,9 +13,11 @@ import Typography from "@mui/material/Typography";
 import { STRIP_TEXT, criterionText } from "@/lib/copy";
 import type { CaseState } from "@/lib/store";
 import type { CaseRecord, Packet } from "@/lib/types";
-import { clock, CriterionChip, DemoNote, Row } from "./ui";
+import { clock, CriterionChip, DemoNote, Produced, Row, SourceCell } from "./ui";
+import policy from "@/content/pet_ct_policy.json";
 
 const STUDY = "K-17 tracer PET-CT (fictional)";
+const SOURCE_OF = Object.fromEntries(policy.criteria.map((c) => [c.id, c.source])) as Record<string, string>;
 const EVENT_LABEL = { prepared: "Prepared", opened: "Opened by you", reopened: "Reopened by you", returned: "Returned by you", released: "Released by you", closed: "Closed by you" } as const;
 
 export function plainText(rec: CaseRecord, packet: Packet, state: CaseState): string {
@@ -53,13 +55,14 @@ export function ReleasedPacket({ rec, packet, state }: { rec: CaseRecord; packet
         <Box className="no-print"><DemoNote note="cover" /></Box>
       </Paper>
       <Paper sx={{ p: 3, mb: 2 }}>
-        <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Criteria and evidence</Typography>
+        <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Criteria and evidence<Produced kind="rules" testId="checklist" /></Typography>
         <Table size="small" aria-label="Criteria and evidence">
-          <TableHead><TableRow><TableCell>Criterion</TableCell><TableCell>Status</TableCell><TableCell>Evidence</TableCell></TableRow></TableHead>
+          <TableHead><TableRow><TableCell>Criterion</TableCell><TableCell>Source</TableCell><TableCell>Status</TableCell><TableCell>Evidence</TableCell></TableRow></TableHead>
           <TableBody>
             {packet.criteria.map((c) => (
               <TableRow key={c.id}>
                 <TableCell><strong>{c.id}</strong> {criterionText(c.id, c.text)}</TableCell>
+                <SourceCell source={SOURCE_OF[c.id]} testId={`released-${c.id}`} />
                 <TableCell><CriterionChip status={c.status} /></TableCell>
                 <TableCell>{c.cites.map((id) => <Typography key={id} variant="body2">{evidence.get(id) ?? id}</Typography>)}</TableCell>
               </TableRow>
@@ -68,11 +71,11 @@ export function ReleasedPacket({ rec, packet, state }: { rec: CaseRecord; packet
         </Table>
         <Typography variant="h3" component="h3" sx={{ mt: 2, mb: 0.5 }}>Still missing</Typography>
         <Typography variant="body2">{packet.gaps.length ? packet.gaps.map((g) => g.prompt).join(" ") : "Nothing is missing."}</Typography>
-        <Typography variant="h3" component="h3" sx={{ mt: 2, mb: 0.5 }}>Summary</Typography>
+        <Typography variant="h3" component="h3" sx={{ mt: 2, mb: 0.5 }}>Summary<Produced kind={packet.summary_source === "model" ? "llm" : "template"} testId="released-summary" /></Typography>
         {packet.summary.map((s) => <Typography key={s.criterion} variant="body2" sx={{ mb: 0.5 }}>{s.text}</Typography>)}
         {state.rationale && (
           <>
-            <Typography variant="h3" component="h3" sx={{ mt: 2, mb: 0.5 }}>Supervisor&apos;s rationale</Typography>
+            <Typography variant="h3" component="h3" sx={{ mt: 2, mb: 0.5 }}>Supervisor&apos;s rationale<Produced kind="you" testId="released-rationale-by" /></Typography>
             <Typography variant="caption" color="text.secondary">In the supervisor&apos;s own words; not written by the tool.</Typography>
             <Typography data-testid="released-rationale" sx={{ whiteSpace: "pre-wrap" }}>{state.rationale}</Typography>
           </>
