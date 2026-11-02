@@ -43,6 +43,8 @@ class Settings:
     daily_budget_usd: float
     rate_per_minute: int
     rate_per_day: int
+    estimate_per_minute: int
+    estimate_per_day: int
     max_message_chars: int
     max_tokens: int
     model_timeout_s: float
@@ -89,6 +91,8 @@ class Settings:
             daily_budget_usd=1_000_000.0 if relaxed and "AGENT_DAILY_BUDGET_USD" not in env else _number(env, "AGENT_DAILY_BUDGET_USD", 2.0),
             rate_per_minute=int(high or _number(env, "AGENT_RATE_PER_MINUTE", 10)),
             rate_per_day=int(high or _number(env, "AGENT_RATE_PER_DAY", 200)),
+            estimate_per_minute=int(high or _number(env, "AGENT_ESTIMATE_PER_MINUTE", 120)),
+            estimate_per_day=int(high or _number(env, "AGENT_ESTIMATE_PER_DAY", 5000)),
             max_message_chars=int(_number(env, "AGENT_MAX_MESSAGE_CHARS", 6000)),
             max_tokens=int(_number(env, "AGENT_MAX_TOKENS", 2000)),
             model_timeout_s=_number(env, "AGENT_MODEL_TIMEOUT_S", 30.0),

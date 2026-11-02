@@ -43,6 +43,14 @@ def build_parser() -> argparse.ArgumentParser:
     scope.add_argument("--base-url", default=None)
     scope.add_argument("--secret", default=None)
 
+    pg = sub.add_parser("playground", help="Estimate a risk: the assistant must give the dial's number on seeded invented patients, with and without a hidden instruction")
+    pg.add_argument("--n", type=int, default=200, help="how many seeded patients")
+    pg.add_argument("--seed", type=int, default=0)
+    pg.add_argument("--live", action="store_true")
+    pg.add_argument("--yes", action="store_true")
+    pg.add_argument("--base-url", default=None)
+    pg.add_argument("--secret", default=None)
+
     pk = sub.add_parser("packet", help="PET-CT readiness packet: estimate, run a stage, freeze, or check the attestation fixtures")
     pk_sub = pk.add_subparsers(dest="packet_command", required=True)
     pk_sub.add_parser("estimate", help="calls and cost per stage; no call, no key")
@@ -114,7 +122,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return 0
-    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope", "demo-cases", "packet"):
+    if args.command in ("run", "baselines", "regression", "failures", "estimate", "iterate", "freeze", "report", "compare", "agent-scope", "demo-cases", "packet", "playground"):
         return _dispatch(args)
     if args.command == "schema":
         from .report import schema_text, write_schema
@@ -153,6 +161,10 @@ def _dispatch(args: argparse.Namespace) -> int:
         for row in sample:
             print(format_failure(row, args.grader))
         return 0
+    if args.command == "playground":
+        from .playground_cli import cmd_playground
+
+        return cmd_playground(args)
     dataset = load_dataset(getattr(args, "dataset", None) or DEFAULT_DATASET)
     if args.command == "packet":
         from . import packet_cli

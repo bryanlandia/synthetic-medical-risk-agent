@@ -30,3 +30,15 @@ export const openCase = async (page: Page, c: CaseRecord) => {
 export const waitForPacket = (page: Page) => expect(page.getByTestId("packet-checklist")).toBeVisible();
 export const backToQueue = (page: Page) => page.getByRole("button", { name: "Back to the queue" }).click();
 export const dialogButton = (page: Page, name: string) => page.getByRole("dialog").getByRole("button", { name, exact: true });
+
+/** The free-text assistant: the Estimate a risk scenario, with its collapsed text box opened. Retried as a whole, because a click made
+ * before the page has finished loading can be lost. */
+export const openAssistant = async (page: Page) => {
+  const head = page.locator("#free-text-head");
+  await expect(async () => {
+    if (!(await head.isVisible())) await page.getByRole("button", { name: "Estimate a risk" }).click();
+    await expect(head).toBeVisible({ timeout: 2000 });
+    if ((await head.getAttribute("aria-expanded")) !== "true") await head.click();
+    await expect(page.getByLabel("Message")).toBeVisible({ timeout: 2000 });
+  }).toPass({ timeout: 15000 });
+};

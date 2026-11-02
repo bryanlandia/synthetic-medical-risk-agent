@@ -6,7 +6,7 @@ VK-Check is a small applied AI system that reads a patient's symptoms and lab re
 
 To date, it's a limited single-prompt chat UI in front of a small tool-calling assistant, with no conversation memory.  The assistant decides whether to score or decline to score, and calls the appropriate tool.  Its first turn picks and calls the tool, and its second writes a reply.
 
-The assistant's scoring tool takes no arguments, so the model cannot change what is scored.  Declines use a closed set of reasons, and a check replaces any reply that quotes a wrong number or names a drug.  Limits per visitor and a daily dollar cap bound the spend.  On the Try the assistant tab, the example with an instruction hidden in the note shows the injection being ignored.
+The assistant's scoring tool takes no arguments, so the model cannot change what is scored.  Declines use a closed set of reasons, and a check replaces any reply that quotes a wrong number or names a drug.  Limits per visitor and a daily dollar cap bound the spend.  On the Estimate a risk page, the button that hides an instruction in the invented patient's note shows the injection being ignored: the assistant's number stays the dial's.
 
 ## The disease, and why catching it early matters
 

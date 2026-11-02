@@ -41,4 +41,22 @@ def run_smoke(url: str, secret: str, expected_hash: str | None = None, client: h
         body = declined.json()
         if not body.get("declined") or body.get("report") is not None or body.get("decline_reason") != "treatment_request":
             problems.append(f"the treatment question was not declined as treatment_request (declined={body.get('declined')})")
+    problems += _estimate_problems(http, headers, expected_hash)
+    return problems
+
+
+def _estimate_problems(http: httpx.Client, headers: dict[str, str], expected_hash: str) -> list[str]:
+    """The what-if route: it answers with a probability, the committed model's hash and a message, and costs nothing."""
+    from risk_model.labs import LAB_BY_KEY, LAB_KEYS, SYMPTOM_KEYS
+
+    body = {"labs": {k: LAB_BY_KEY[k].mean for k in LAB_KEYS}, "symptoms": {k: "absent" for k in SYMPTOM_KEYS}}
+    response = http.post("/estimate", json=body, headers=headers)
+    if response.status_code != 200:
+        return [f"estimate request answered {response.status_code}"]
+    out = response.json()
+    problems = []
+    if not 0.0 <= out.get("probability", -1) <= 1.0:
+        problems.append("the estimate request did not return a probability")
+    if out.get("model_hash") != expected_hash:
+        problems.append("the estimate was made by a different model than the committed one")
     return problems

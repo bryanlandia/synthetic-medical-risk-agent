@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hmac
+import json
 import math
 import time
 import unicodedata
@@ -21,7 +22,7 @@ from .config import Settings
 from .logs import log_request
 from .orchestrator import Orchestrator, OrchestratorError
 from .store import StoreError
-from .limits import build_limits
+from .limits import build_estimate_limiter, build_limits
 from .summarizer import PACKET_PROMPT_HASH, Summarizer, SummarizerError
 
 VERSION = "0.1.0"
@@ -29,6 +30,7 @@ SECRET_HEADER = "x-shared-secret"
 VISITOR_HEADER = "x-visitor-address"
 MAX_BODY_BYTES = 64 * 1024  # a body this large is refused before it is read, whatever the message cap is
 PACKET_KEYS = {"message", "attestations"}
+ESTIMATE_KEYS = {"labs", "symptoms"}
 
 
 def clean(message: str) -> str:
@@ -38,9 +40,10 @@ def clean(message: str) -> str:
 
 
 def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[], float] = time.time, limits: Any = None,
-               summarizer: Summarizer | None = None) -> FastAPI:
+               summarizer: Summarizer | None = None, estimate_limiter: Any = None) -> FastAPI:
     app = FastAPI(title="Fictional-disease risk chat", docs_url=None, redoc_url=None, openapi_url=None)
     limiter, spend = limits or build_limits(settings, clock)
+    estimate_limit = estimate_limiter or build_estimate_limiter(settings, clock)
     model_hash = risk_model.model_hash(settings.model_dir)
     risk = risk_model.load(settings.model_dir)
     secret = settings.shared_secret.encode() if settings.shared_secret else None
@@ -51,6 +54,12 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
                     reason=logged or error)
         return JSONResponse({"error": error, "request_id": request_id, **extra}, status_code=status,
                             headers={"x-request-id": request_id, **(headers or {})})
+
+    def client_of(request: Request, authenticated: bool) -> str:
+        """Who a request counts against: the address the platform gives, or, for a caller that presented the secret, the visitor it names."""
+        if authenticated and request.headers.get(VISITOR_HEADER):
+            return request.headers[VISITOR_HEADER][:100]
+        return request.client.host if request.client else "unknown"
 
     async def admit(request: Request, request_id: str, started: float, allowed_keys: set[str] | None = None) -> JSONResponse | tuple[dict[str, Any], str]:
         """Steps every model-backed route shares, in order: the secret, size and shape, the rate limit and the day's spend.
@@ -87,9 +96,7 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
             except ValueError:
                 return reject(422, "invalid_request", request_id, started, len(message), logged="invalid_attestations")
         # 3. the rate limit; a caller that presented the secret may name the visitor it is acting for
-        client = request.client.host if request.client else "unknown"
-        if authenticated and request.headers.get(VISITOR_HEADER):
-            client = request.headers[VISITOR_HEADER][:100]
+        client = client_of(request, authenticated)
         try:  # the counters may be in a remote store: off the event loop, and if they cannot answer the request is refused
             wait = await run_in_threadpool(limiter.check, client)
             if wait is not None:
@@ -158,6 +165,45 @@ def create_app(settings: Settings, orchestrator: Orchestrator, clock: Callable[[
         if problems:
             return template, "template", sorted({p.split(":")[0] for p in problems}), draft.input_tokens, draft.output_tokens
         return draft.sentences, "model", [], draft.input_tokens, draft.output_tokens
+
+    @app.post("/estimate")
+    async def estimate(request: Request) -> JSONResponse:
+        """The what-if estimate for hand-set labs and symptoms: no model call, no spend, its own rate limit, no input logged."""
+        started, request_id = time.monotonic(), uuid.uuid4().hex
+
+        def refuse(status: int, error: str, headers: dict[str, str] | None = None) -> JSONResponse:
+            log_request(request_id=request_id, status=status, route="estimate", reason=error,
+                        latency_ms=round((time.monotonic() - started) * 1000))
+            return JSONResponse({"error": error, "request_id": request_id}, status_code=status, headers={"x-request-id": request_id, **(headers or {})})
+
+        authenticated = False
+        if secret is not None:
+            if not hmac.compare_digest(request.headers.get(SECRET_HEADER, "").encode(), secret):
+                return refuse(401, "unauthorized")
+            authenticated = True
+        raw = await request.body()
+        if len(raw) > MAX_BODY_BYTES:
+            return refuse(413, "message_too_long")
+        try:
+            body = json.loads(raw)
+        except ValueError:
+            return refuse(422, "invalid_request")
+        if not isinstance(body, dict) or set(body) != ESTIMATE_KEYS:
+            return refuse(422, "invalid_request")
+        try:
+            wait = await run_in_threadpool(estimate_limit.check, client_of(request, authenticated))
+        except StoreError:  # the counters cannot answer: refused, as for the assistant
+            return refuse(503, "limits_unavailable")
+        if wait is not None:
+            return refuse(429, "rate_limited", {"retry-after": str(math.ceil(wait))})
+        try:
+            out = risk.estimate(body["labs"], body["symptoms"])
+        except risk_model.EstimateError:
+            return refuse(422, "invalid_request")
+        log_request(request_id=request_id, status=200, route="estimate", latency_ms=round((time.monotonic() - started) * 1000))
+        return JSONResponse({"request_id": request_id, "probability": out["probability"], "band": out["band"], "score": out["score"],
+                             "start": out["start"], "breakdown": out["breakdown"], "message": out["message"], "model_hash": model_hash},
+                            headers={"x-request-id": request_id})
 
     @app.post("/packet")
     async def packet(request: Request) -> JSONResponse:

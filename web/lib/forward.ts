@@ -4,7 +4,7 @@
  * Nothing here imports Next, so the tests run it directly with a fake `fetch`. The shared secret and the service address are
  * arguments, read from the server's environment by the route; they are never part of a response.
  */
-import type { Analysis, CriterionStatus, Criterion, DataQuality, Evidence, Gap, Packet, PacketDecline, PacketGap, Report, ShownError, SummarySentence } from "./types";
+import type { Analysis, Band, CriterionStatus, Estimate, EstimateInputs, EstimateRow, Criterion, DataQuality, Evidence, Gap, Packet, PacketDecline, PacketGap, Report, ShownError, SummarySentence } from "./types";
 
 export type ForwardConfig = { url: string; secret: string; timeoutMs: number };
 export type Forwarded = { status: number; body: { analysis: Analysis } | { error: ShownError }; retryAfter?: number };
@@ -209,6 +209,80 @@ export async function forwardPacket(message: string, attestations: Record<string
     const code = body && typeof body === "object" && str((body as Record<string, unknown>).error) ? ((body as Record<string, unknown>).error as string) : null;
     const wait = Number(response.headers.get("retry-after"));
     return failure(response.status, code, Number.isFinite(wait) ? wait : null);
+  } catch (exc) {
+    return failure((exc as Error).name === "AbortError" ? 504 : 502);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const BANDS = ["low", "uncertain", "high"];
+
+/** The whitelisted estimate, or null if the body is not a response this page understands. */
+export function pickEstimate(body: unknown): Estimate | null {
+  if (!body || typeof body !== "object") return null;
+  const o = body as Record<string, unknown>;
+  if (!prob(o.probability) || !str(o.band) || !BANDS.includes(o.band) || !num(o.score) || !num(o.start) || !str(o.message) || !Array.isArray(o.breakdown)) return null;
+  const breakdown = o.breakdown
+    .filter((r): r is EstimateRow => !!r && (r.kind === "lab" || r.kind === "symptom") && str(r.key) && num(r.contribution))
+    .map((r) => ({ kind: r.kind, key: r.key, contribution: r.contribution }));
+  if (breakdown.length !== 13) return null;
+  return {
+    request_id: str(o.request_id) ? o.request_id : "", probability: o.probability, band: o.band as Band, score: o.score, start: o.start,
+    breakdown, message: o.message, model_hash: str(o.model_hash) ? o.model_hash : "",
+  };
+}
+
+export type ForwardedEstimate = { status: number; body: { estimate: Estimate } | { error: ShownError }; retryAfter?: number };
+
+/** The inputs as the service wants them, or null: the eight labs and five symptoms by name and nothing else. The service checks the ranges. */
+export function cleanEstimateInputs(raw: unknown): EstimateInputs | null {
+  if (!raw || typeof raw !== "object") return null;
+  const { labs, symptoms, ...rest } = raw as Record<string, unknown>;
+  if (Object.keys(rest).length || !labs || typeof labs !== "object" || !symptoms || typeof symptoms !== "object") return null;
+  const pickLabs: EstimateInputs["labs"] = {};
+  for (const [k, v] of Object.entries(labs as Record<string, unknown>)) {
+    if (v !== null && !num(v)) return null;
+    pickLabs[k] = v as number | null;
+  }
+  const pickSymptoms: EstimateInputs["symptoms"] = {};
+  for (const [k, v] of Object.entries(symptoms as Record<string, unknown>)) {
+    if (v !== "absent" && v !== "possible" && v !== "present") return null;
+    pickSymptoms[k] = v;
+  }
+  return { labs: pickLabs, symptoms: pickSymptoms };
+}
+
+/** Errors for this route: the shared ones, except that a refused input is not an empty message. */
+function estimateFailure(status: number, code: string | null, retryAfter: number | null): ForwardedEstimate {
+  if (status === 422 || status === 413) return { status: 422, body: { error: { code: "invalid_inputs", message: "Those values are outside what the demo accepts." } } };
+  return failure(status, code, retryAfter);
+}
+
+export async function forwardEstimate(inputs: EstimateInputs, visitor: string, cfg: ForwardConfig, fetchImpl: typeof fetch = fetch): Promise<ForwardedEstimate> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), cfg.timeoutMs);
+  try {
+    const response = await fetchImpl(`${cfg.url.replace(/\/$/, "")}/estimate`, {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-shared-secret": cfg.secret, "x-visitor-address": visitor },
+      body: JSON.stringify({ labs: inputs.labs, symptoms: inputs.symptoms }),
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    let body: unknown = null;
+    try {
+      body = await response.json();
+    } catch {
+      body = null;
+    }
+    if (response.status === 200) {
+      const estimate = pickEstimate(body);
+      return estimate ? { status: 200, body: { estimate } } : failure(502);
+    }
+    const code = body && typeof body === "object" && str((body as Record<string, unknown>).error) ? ((body as Record<string, unknown>).error as string) : null;
+    const wait = Number(response.headers.get("retry-after"));
+    return estimateFailure(response.status, code, Number.isFinite(wait) ? wait : null);
   } catch (exc) {
     return failure((exc as Error).name === "AbortError" ? 504 : 502);
   } finally {

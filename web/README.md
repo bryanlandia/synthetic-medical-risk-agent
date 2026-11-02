@@ -10,9 +10,14 @@ no vendor software). The guards and the evals around the agent are the real subj
   policy with cited evidence, what is missing, a checked summary and the model's estimate as context. The supervisor then
   releases it (blocked while any criterion is unknown; their own written rationale is needed if one is unmet), returns it with a
   note, or closes it. Nothing is sent anywhere. A released packet has a cover sheet, an audit trail, copy and print.
-- **Behind the demo** (menu): **Try the assistant** (a free-text box for a treatment question, an off-topic prompt, a note with an
-  injected instruction, or your own text; every send is a single request), the **Model card** (with a check that it describes the
-  model that is running) and **About this project** (from `content/about.md`).
+- **Estimate a risk** (second scenario): sliders for the eight labs (each can be "not done") and toggles for the five symptoms of an invented
+  patient, opening on a borderline one; a dial with the model's estimate, its band and a bar for each input, from `/api/estimate` (no
+  language model, its own rate limit). "Send this patient to the assistant" writes the patient out as a short note (the message the service
+  returns, so the page has no copy of the template) and shows the assistant's number beside the dial's; three buttons add a hidden
+  instruction, a treatment question or an off-topic question. A collapsed box still takes your own text. It starts from no queue case, edits
+  no recorded value and stores nothing.
+- **Behind the demo** (menu): the **Model card** (with a check that it describes the model that is running) and **About this project**
+  (from `content/about.md`).
 
 Progress (statuses, packets, return notes, rationales) is kept in this browser's `localStorage` and nothing else; "Reset demo"
 clears it. A visit that changes nothing writes nothing. The design uses Material UI (MUI) with one theme in `lib/theme.ts`, whose
@@ -45,6 +50,8 @@ with status and cited evidence, the gaps, the summary and whether it came from t
 context). The criteria wording on the page is `content/pet_ct_policy.json`, a copy of `risk_model/src/risk_model/policy/pet_ct_k17.json`;
 a test fails if they differ, so copy the file again when the policy changes. C5 is shown in a positive wording (`criterionText` in `lib/copy.ts`, display only) so that a Yes means the criterion holds. The supervisor's note and rationale stay in the browser
 and are never sent. Printing shows the released packet and the synthetic-data notice only.
+
+**The estimate route.** `/api/estimate` forwards the labs and symptoms the visitor set (and nothing else; anything else is 422) to the service's `/estimate`, with the secret and the visitor address, and passes on a whitelist (the probability, band, score, starting point, the thirteen breakdown rows, the generated message and the model hash). The page has no copy of the model or of the note template: the percentage, the bars and the message all come from the service. `lib/estimator.ts` sends at most one request every 150 ms while a control moves and once more when it stops, drops an answer older than the one on screen, keeps the last estimate on a 429, and shows a waking-up message after 1.5 s. The opening patient and the lab limits are `content/estimate.json`, written by `uv run python -m risk_model.estimate_start` (a test in `risk_model/` and one here fail if it is stale).
 
 **Bundle size.** First-load JS for the page was 157 kB before the Material redesign and is 259 kB after it (MUI and the 30-case file);
 the shared JS of the app is unchanged at 103 kB.
@@ -141,7 +148,7 @@ also uses); PostCSS runs only at build time on this repository's own CSS, and mo
 
 First deployed and checked on 2026-10-27: the agent reports Haiku 5.5 and the committed model hash `414c2d467c87…`; `uv run agent
 smoke` passed against it (model hash, one scored request, one decline); `deploy/check-env.sh vk-agent-spike` passed; the page was
-clicked through (the patient charts, the free-text examples, the model card and its hash check). The addresses are public; the
+clicked through (the queue and a case, the Estimate a risk sliders and assistant buttons, the model card and its hash check). The addresses are public; the
 shared secret is what keeps the agent from being called around the page, and the daily cap and limits bound what a call can spend.
 
 ## What changes with real data

@@ -33,3 +33,12 @@ def build_limits(settings: Settings, clock: Callable[[], float] = time.time,
                 RedisSpend(store, settings.daily_budget_usd, clock))
     return (RateLimiter(settings.rate_per_minute, settings.rate_per_day, clock),
             SpendCounter(settings.spend_db, settings.daily_budget_usd, clock))
+
+
+def build_estimate_limiter(settings: Settings, clock: Callable[[], float] = time.time, client: httpx.Client | None = None) -> Limiter:
+    """The limiter for ``/estimate``: its own counts (and its own keys in the shared store), apart from the assistant's. The
+    route calls no model, so no spend counter goes with it."""
+    if settings.store_url:
+        store = RestStore(settings.store_url, settings.store_token or "", client=client)
+        return RedisRateLimiter(store, settings.estimate_per_minute, settings.estimate_per_day, clock, prefix="estimate")
+    return RateLimiter(settings.estimate_per_minute, settings.estimate_per_day, clock)

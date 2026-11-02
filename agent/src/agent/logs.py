@@ -8,7 +8,7 @@ import logging
 LOGGER = logging.getLogger("agent.request")
 FIELDS = ("request_id", "status", "tool", "reply_source", "input_tokens", "output_tokens", "cost_usd", "latency_ms",
           "message_chars", "tool_calls", "model_calls", "prompt_hash", "reason", "tools", "route", "summary_source",
-          "verifier_failures")
+          "verifier_failures")  # no input of the what-if route is ever a field
 
 
 def log_request(**fields: object) -> None:

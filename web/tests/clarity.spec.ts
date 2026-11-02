@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { HINTS, formatReceived } from "../lib/copy";
-import { CASES, classify, first, openCase, waitForPacket } from "./helpers";
+import { CASES, classify, first, openAssistant, openCase, waitForPacket } from "./helpers";
 
 let kinds: Awaited<ReturnType<typeof classify>>;
 test.beforeAll(async ({ request }) => {
@@ -132,8 +132,7 @@ test("the key opens from the queue and from a case, closes with Escape and retur
 
 test("the free-text view names the guards, the agent and the classifier", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Behind the demo" }).click();
-  await page.getByRole("menuitem", { name: "Try the assistant" }).click();
+  await openAssistant(page);
   const row = page.getByTestId("free-text-produced");
   await expect(row).toBeVisible();
   for (const id of ["free-guards", "free-agent", "free-classifier"]) await expect(page.getByTestId(`produced-${id}`)).toBeVisible();
