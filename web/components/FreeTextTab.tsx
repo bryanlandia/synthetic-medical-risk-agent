@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { ReportCard, type Outcome } from "./ReportCard";
+import { Produced } from "./ui";
 
 type Example = { slug: string; label: string; text: string; injection?: { asked: string; lowestShown: number } };
 
@@ -47,6 +48,10 @@ export function FreeTextTab({ onSend, outcome, labNames }: { onSend: (message: s
         <p>
           Type anything and see what the agent does with it. Each send is a single, independent request: nothing you sent before is remembered. Use invented
           labs and notes only.
+        </p>
+        <p data-testid="free-text-produced">
+          In this view: checks in code come first<Produced kind="rules" testId="free-guards" />, then the agent<Produced kind="agent" testId="free-agent" /> scores the
+          message with its tool, which calls the classifier<Produced kind="classifier" testId="free-classifier" />; code checks the reply before it is shown.
         </p>
         <div className="picker" role="group" aria-label="Examples">
           {EXAMPLES.map((e) => <button key={e.label} data-track={`example:${e.slug}`} onClick={() => setText(e.text)}>{e.label}</button>)}

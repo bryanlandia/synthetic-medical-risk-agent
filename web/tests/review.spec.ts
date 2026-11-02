@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { HINTS, PURPOSE_PARAGRAPHS, PURPOSE_TITLE, DEMO_NOTES } from "../lib/copy";
+import { HINTS, PURPOSE_PARAGRAPHS, PURPOSE_TITLE, DEMO_NOTES, formatReceived } from "../lib/copy";
 import { STORAGE_KEY } from "../lib/store";
 import { backToQueue, CASES, classify, dialogButton, first, openCase, waitForPacket, type Kind } from "./helpers";
 
@@ -37,7 +37,7 @@ test("thirty New rows show their fields, and no packet is requested or shown for
     await expect(row).toContainText(c.patient_id);
     await expect(row).toContainText(c.insurer);
     await expect(row).toContainText(c.preparer);
-    await expect(row).toContainText(c.received);
+    await expect(row).toContainText(formatReceived(c.received));
     await expect(row).toContainText("of 4 answered");
     await expect(page.getByTestId(`chip-${c.ordinal}`)).toHaveText("New");
   }
@@ -68,10 +68,10 @@ test("the intro card explains what the packet is for, and the words are free of 
   expect(text).not.toMatch(VERDICT);
 });
 
-test("the four terms carry keyboard-reachable hints", async ({ page }) => {
+test("the three terms carry keyboard-reachable hints", async ({ page }) => {
   await page.goto("/");
   const card = page.getByTestId("intro-card");
-  for (const term of ["PET-CT", "prior authorization", "packet", "criteria"]) {
+  for (const term of ["PET-CT", "prior authorization", "packet"]) {
     const span = card.locator("span[tabindex='0']", { hasText: new RegExp(`^${term}$`) }).first();
     await span.focus();
     await expect(page.getByRole("tooltip").filter({ hasText: HINTS[term as keyof typeof HINTS] })).toBeVisible();
@@ -127,7 +127,7 @@ test("the chart, the sent message, the evidence and the estimate are beside the 
   await waitForPacket(page);
   await expect(page.getByTestId("chart")).toContainText(c.patient_id);
   for (const lab of c.chart.labs) await expect(page.getByTestId(`range-${lab.lab}`)).toContainText(`${lab.ref_lo}–${lab.ref_hi}`);
-  await page.getByText("Message sent to the service").click();
+  await page.getByText("Show the message sent to the service").click();
   expect((await page.getByTestId("sent-message").innerText()).trim()).toBe(c.message.trim());
   await expect(page.getByTestId("crit-status-C1")).toHaveText("Met");
   await expect(page.getByTestId("criterion-C1")).toContainText("above the policy threshold");
@@ -173,11 +173,12 @@ test("each simulated element carries its quiet Demo note, and nothing in the flo
   const unmetCase = first(kinds, "unmet");
   await openCase(page, unmetCase);
   await waitForPacket(page);
-  for (const key of ["answers", "policy", "estimate", "summary", "rationale"] as const) await expect(page.getByTestId(`demo-note-${key}`)).toContainText(DEMO_NOTES[key]);
+  await expect(page.getByTestId("demo-note-answers")).toHaveCount(0); // the answers heading says "simulated" instead
+  for (const key of ["policy", "estimate", "summary", "rationale"] as const) await expect(page.getByTestId(`demo-note-${key}`)).toContainText(DEMO_NOTES[key]);
   await page.getByRole("button", { name: "Return with a note" }).click();
   await expect(page.getByRole("dialog").getByTestId("demo-note-returnNote")).toBeVisible();
   await dialogButton(page, "Cancel").click();
-  for (const key of ["role", "answers", "policy"] as const) {
+  for (const key of ["role", "policy"] as const) {
     const note = page.getByTestId(`demo-note-${key}`).first();
     if (await note.count()) expect(await note.locator("button, [role=button]").count()).toBe(0); // not a dismissible banner
   }

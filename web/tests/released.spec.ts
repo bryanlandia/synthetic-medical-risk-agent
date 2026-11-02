@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { DEMO_NOTES, STRIP_TEXT } from "../lib/copy";
+import { DEMO_NOTES, STRIP_TEXT, formatReceived } from "../lib/copy";
 import { backToQueue, classify, dialogButton, first, openCase, waitForPacket } from "./helpers";
 
 let kinds: Awaited<ReturnType<typeof classify>>;
@@ -52,7 +52,7 @@ test("the audit timeline lists the preparer and each supervisor action in order 
   await expect(items).toHaveCount(5);
   const lines = await items.allInnerTexts();
   expect(lines[0]).toContain(`Prepared by ${c.preparer} (simulated)`);
-  expect(lines[0]).toContain(c.received);
+  expect(lines[0]).toContain(formatReceived(c.received));
   expect(lines.slice(1).map((l) => l.replace(/^\d{1,2}:\d{2}(\s?[AP]M)?\s+/i, "").trim())).toEqual(["Opened by you", "Returned by you", "Reopened by you", "Released by you"]);
   for (const l of lines.slice(1)) expect(l).toMatch(/^\d{1,2}:\d{2}/);
   await expect(page.getByTestId("released-rationale")).toHaveText(RATIONALE);

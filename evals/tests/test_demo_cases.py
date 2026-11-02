@@ -1,4 +1,5 @@
 import json
+import re
 from collections import Counter
 
 from data_gen.labs import LAB_BY_KEY
@@ -97,7 +98,9 @@ def test_insurers_preparers_and_codes_are_fictional_stable_and_varied():
     names = " ".join([*dc.INSURERS, *dc.PREPARERS]).lower()
     assert not [n for n in REAL_NAMES if n in names]
     times = [c["received"] for c in cases]
-    assert times == sorted(times) and all("07:30" <= t <= "16:45" for t in times)
+    assert times == sorted(times) and len(set(times)) == 30
+    assert {t[:10] for t in times} == set(dc.WORKING_DAYS)  # three fictional working days, a Monday to a Wednesday
+    assert all(re.fullmatch(r"2026-11-0[234] \d\d:\d\d", t) and "07:30" <= t[11:] <= "16:45" for t in times)
 
 
 def test_each_lab_carries_its_range_and_a_flag_judged_in_the_usual_unit():

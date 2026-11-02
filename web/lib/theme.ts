@@ -36,6 +36,14 @@ export const CRITERION_CHIPS = {
 
 export const DEMO_CHIP = { bg: "#E8DEF8", text: "#3A2A66" } as const;
 
+/** What produced a block: models in teal, plain code in grey, the simulated preparer in the Demo purple, the supervisor in green. The label says it too. */
+export const PRODUCED_CHIPS = {
+  model: { bg: "#D2EEF0", text: "#0B4A4C" },
+  code: { bg: "#E1E8E8", text: "#171D1D" },
+  preparer: DEMO_CHIP,
+  you: { bg: "#C9EBD4", text: "#0F4A27" },
+} as const;
+
 /** Text-on-background pairs that must meet 4.5:1. */
 export const CONTRAST_PAIRS: [string, string, string][] = [
   ["text on background", COLORS.text, COLORS.background],
@@ -48,6 +56,7 @@ export const CONTRAST_PAIRS: [string, string, string][] = [
   ["strip text", COLORS.stripText, COLORS.strip],
   ["error text", COLORS.errorText, COLORS.errorBg],
   ["demo chip", DEMO_CHIP.text, DEMO_CHIP.bg],
+  ...Object.entries(PRODUCED_CHIPS).map(([k, v]) => [`produced ${k}`, v.text, v.bg] as [string, string, string]),
   ...Object.entries(STATUS_CHIPS).map(([k, v]) => [`status ${k}`, v.text, v.bg] as [string, string, string]),
   ...Object.entries(CRITERION_CHIPS).map(([k, v]) => [`criterion ${k}`, v.text, v.bg] as [string, string, string]),
 ];

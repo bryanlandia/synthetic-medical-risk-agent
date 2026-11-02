@@ -21,8 +21,9 @@ import { STATUS_FILTERS } from "@/lib/analytics";
 import { statusOf } from "@/lib/store";
 import { STATUS_CHIPS, type StatusKey } from "@/lib/theme";
 import type { CaseRecord } from "@/lib/types";
-import { IntroCard } from "./Intro";
+import { IntroCard, ProducedKeyButton } from "./Intro";
 import { useReview } from "./ReviewProvider";
+import { formatReceived } from "@/lib/copy";
 import { DemoNote, Row, StatusChip, Term } from "./ui";
 
 const FILTER_LABEL: Record<(typeof STATUS_FILTERS)[number], string> = { all: "All", ...Object.fromEntries(Object.entries(STATUS_CHIPS).map(([k, v]) => [k, v.label])) } as never;
@@ -46,6 +47,7 @@ export function QueueView({ cases, onOpen }: { cases: CaseRecord[]; onOpen: (id:
         <Typography variant="body2" color="text.secondary" data-testid="queue-counts">
           {cases.length} requests · {count("new")} new · {count("in-review")} in review · {count("returned")} returned · {count("released")} released · {count("closed")} closed
         </Typography>
+        <ProducedKeyButton />
       </Row>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
         Each request is a <Term term="packet" /> for a <Term term="PET-CT" /> scan, prepared by a clinician for an insurer.
@@ -74,7 +76,7 @@ export function QueueView({ cases, onOpen }: { cases: CaseRecord[]; onOpen: (id:
                 <TableCell>{c.patient_id}</TableCell>
                 <TableCell>{c.insurer}</TableCell>
                 <TableCell>{c.preparer}</TableCell>
-                <TableCell>{c.received}</TableCell>
+                <TableCell>{formatReceived(c.received)}</TableCell>
                 <TableCell align="right">{flags(c)}</TableCell>
                 <TableCell>{answered(c)} of 4 answered</TableCell>
                 <TableCell sx={{ maxWidth: 260, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={firstLine(c)}>{firstLine(c)}</TableCell>

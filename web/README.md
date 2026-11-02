@@ -34,7 +34,8 @@ builds the app and searches everything sent to the browser for both.
 
 The route passes on the report's `interval` and `gaps` only when they are well formed (probabilities in [0, 1], a known kind); anything else is dropped. The
 chart in a case shows each lab's reference range and an H or L flag, both written into `cases.json` by `evals demo-cases` (judged after
-conversion to the lab's usual unit), so the browser does no unit logic. The report card labels the interval "Range if the missing results are
+conversion to the lab's usual unit), so the browser does no unit logic. Each case's `received` is a fictional date and time in fictional Eastern time ("2026-11-02 07:45"), written by the same builder (three working days, ten cases a day) and shown as "2 Nov 2026, 07:45 ET" in every visitor's zone (`formatReceived` in `lib/copy.ts`).
+Each part of a case is labelled with what produced it (a model, plain code, the simulated preparer or the supervisor): one table, `PRODUCED` in `lib/copy.ts`, feeds the labels, the checklist's Source column and the "What produced this page?" key, so they cannot drift. The report card labels the interval "Range if the missing results are
 obtained": it covers findings not on the record and does not include uncertainty in the model itself, so it is never called a confidence interval. Nothing on the page edits a recorded value.
 
 

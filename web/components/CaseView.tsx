@@ -23,21 +23,28 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import policy from "@/content/pet_ct_policy.json";
-import { criterionText } from "@/lib/copy";
+import { criterionText, formatReceived } from "@/lib/copy";
 import { requestPacket } from "@/lib/packet-client";
 import { MIN_NOTE, MIN_RATIONALE, releaseBlock, statusOf } from "@/lib/store";
 import type { Answer, AttestedId, CaseRecord, Packet, ShownError } from "@/lib/types";
-import { HelpButton } from "./Intro";
+import { HelpButton, ProducedKeyButton } from "./Intro";
 import { ReleasedPacket } from "./ReleasedPacket";
 import { useReview } from "./ReviewProvider";
-import { CriterionChip, DemoNote, Row, StatusChip, Term } from "./ui";
+import { CriterionChip, DemoNote, Produced, Row, SourceCell, StatusChip, Term } from "./ui";
 
+const SOURCE_OF = Object.fromEntries(policy.criteria.map((c) => [c.id, c.source])) as Record<string, string>;
 const WORDING = Object.fromEntries(policy.criteria.map((c) => [c.id, criterionText(c.id, c.text)])) as Record<string, string>;
 const ANSWERS: AttestedId[] = ["C3", "C4", "C5", "C6"];
 const ANSWER_LABEL: Record<Answer, string> = { yes: "Yes", no: "No", unanswered: "Not yet answered" };
 const pct = (v: number) => `${Math.round(v * 100)}%`;
 
+/** A small inline chevron for the disclosure (no icon package). */
+function Chevron() {
+  return <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 10l5 5 5-5z" fill="currentColor" /></svg>;
+}
+
 function Chart({ rec }: { rec: CaseRecord }) {
+  const [showSent, setShowSent] = useState(false);
   return (
     <Paper component="section" aria-label="Patient chart" data-testid="chart" sx={{ p: 2.5 }}>
       <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Chart for {rec.patient_id}</Typography>
@@ -57,10 +64,12 @@ function Chart({ rec }: { rec: CaseRecord }) {
           ))}
         </TableBody>
       </Table>
-      <Typography variant="h4" component="h4" sx={{ mt: 2, mb: 0.5 }}>Note</Typography>
+      <Typography variant="h4" component="h4" sx={{ mt: 2, mb: 0.5 }}>Clinical note</Typography>
       <Box component="pre" data-testid="note" sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word", bgcolor: "#F4F8F8", border: "1px solid #C4CBCB", borderRadius: 2, p: 1.5, m: 0, font: "0.88rem/1.45 ui-monospace, Menlo, monospace" }}>{rec.chart.note}</Box>
-      <Accordion disableGutters elevation={0} sx={{ mt: 1.5, "&:before": { display: "none" } }}>
-        <AccordionSummary data-track="sent_message_expander" aria-controls="sent-message-body" id="sent-message-head">Message sent to the service</AccordionSummary>
+      <Accordion disableGutters elevation={0} expanded={showSent} onChange={(_, open) => setShowSent(open)} sx={{ mt: 1.5, "&:before": { display: "none" } }}>
+        <AccordionSummary data-track="sent_message_expander" aria-controls="sent-message-body" id="sent-message-head" expandIcon={<Chevron />} sx={{ bgcolor: "#F4F8F8", fontWeight: 600, color: "primary.main" }}>
+          {showSent ? "Hide the message sent to the service" : "Show the message sent to the service"}
+        </AccordionSummary>
         <AccordionDetails id="sent-message-body">
           <Typography variant="caption" color="text.secondary">The check sends exactly this text, built from the chart&apos;s labs and note, and the four preparer answers. Nothing else.</Typography>
           <Box component="pre" data-testid="sent-message" sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word", m: 0, mt: 0.5, font: "0.85rem/1.4 ui-monospace, Menlo, monospace" }}>{rec.message}</Box>
@@ -73,8 +82,7 @@ function Chart({ rec }: { rec: CaseRecord }) {
 function PreparerAnswers({ rec }: { rec: CaseRecord }) {
   return (
     <Box data-testid="answers" sx={{ mb: 2 }}>
-      <Typography variant="h4" component="h4">Answers entered by the preparing clinician ({rec.preparer}, simulated)</Typography>
-      <DemoNote note="answers" />
+      <Typography variant="h4" component="h4">Answers entered by the preparing clinician ({rec.preparer}, simulated)<Produced kind="preparer" testId="answers" /></Typography>
       <Table size="small" aria-label="Preparer answers">
         <TableBody>
           {ANSWERS.map((id) => (
@@ -90,14 +98,15 @@ function Checklist({ packet }: { packet: Packet }) {
   const evidence = new Map(packet.evidence.map((e) => [e.id, e.text]));
   return (
     <Box sx={{ mb: 2 }}>
-      <Typography variant="h4" component="h4">Checklist against the insurer&apos;s <Term term="criteria" /></Typography>
+      <Typography variant="h4" component="h4">Checklist against the insurer&apos;s coverage criteria<Produced kind="rules" testId="checklist" /></Typography>
       <DemoNote note="policy" />
       <Table size="small" aria-label="Criteria" data-testid="packet-checklist">
-        <TableHead><TableRow><TableCell>Criterion</TableCell><TableCell>Status</TableCell><TableCell>Evidence</TableCell></TableRow></TableHead>
+        <TableHead><TableRow><TableCell>Criterion</TableCell><TableCell>Source</TableCell><TableCell>Status</TableCell><TableCell>Evidence</TableCell></TableRow></TableHead>
         <TableBody>
           {packet.criteria.map((c) => (
             <TableRow key={c.id} data-testid={`criterion-${c.id}`}>
               <TableCell><strong>{c.id}</strong> {criterionText(c.id, c.text)}</TableCell>
+              <SourceCell source={SOURCE_OF[c.id]} testId={c.id} />
               <TableCell><CriterionChip status={c.status} testId={`crit-status-${c.id}`} /></TableCell>
               <TableCell>{c.cites.map((id) => <Typography key={id} variant="body2">{evidence.get(id) ?? id}</Typography>)}</TableCell>
             </TableRow>
@@ -118,17 +127,17 @@ function PacketBody({ rec, packet }: { rec: CaseRecord; packet: Packet }) {
     <>
       {r && (
         <Box sx={{ mb: 2 }} data-testid="estimate">
-          <Typography variant="h4" component="h4">Why this patient was flagged (context only)</Typography>
+          <Typography variant="h4" component="h4">Why this patient was flagged (context only)<Produced kind="classifier" testId="estimate" /></Typography>
           <Typography variant="body2">
-            The model estimates {pct(r.probability)}
-            {r.interval ? `, a range of ${pct(r.interval[0])} to ${pct(r.interval[1])} if missing results are obtained` : ""}. It decides no criterion.
+            Estimated risk of Velorin-Kessler syndrome (fictional): {pct(r.probability)}
+            {r.interval ? `, or ${pct(r.interval[0])} to ${pct(r.interval[1])} if the missing results are obtained` : ""}. Context only; it decides no criterion.
           </Typography>
           <DemoNote note="estimate" />
         </Box>
       )}
       <PreparerAnswers rec={rec} />
       <Checklist packet={packet} />
-      <Typography variant="h4" component="h4">Summary</Typography>
+      <Typography variant="h4" component="h4">Summary<Produced kind={packet.summary_source === "model" ? "llm" : "template"} testId="summary" /></Typography>
       <Typography variant="caption" color="text.secondary" data-testid="summary-source">
         {packet.summary_source === "model"
           ? "Drafted by the language model; every sentence was checked by code against the table and its evidence."
@@ -205,8 +214,8 @@ export function CaseView({ rec, onBack }: { rec: CaseRecord; onBack: () => void 
         <Button onClick={onBack}>Back to the queue</Button>
         <Typography variant="h2" component="h2" data-testid="case-title">{rec.request_code}</Typography>
         <StatusChip status={status} testId="case-status" />
-        <Typography variant="body2" color="text.secondary">{rec.insurer} (fictional) · received {rec.received}</Typography>
-        <Box sx={{ flexGrow: 1 }} /><HelpButton />
+        <Typography variant="body2" color="text.secondary">{rec.insurer} (fictional) · received {formatReceived(rec.received)}</Typography>
+        <Box sx={{ flexGrow: 1 }} /><ProducedKeyButton /><HelpButton />
       </Row>
       <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { xs: "minmax(0,1fr)", md: "minmax(0,5fr) minmax(0,6fr)" }, alignItems: "start" }}>
         <Chart rec={rec} />
@@ -228,7 +237,7 @@ export function CaseView({ rec, onBack }: { rec: CaseRecord; onBack: () => void 
           {status === "closed" && <Alert severity="info" sx={{ mt: 2 }} data-testid="closed-note">Closed: the criteria are not met. Nothing was sent.</Alert>}
           {status === "in-review" && live && (
             <Box sx={{ mt: 2, pt: 2, borderTop: "1px solid #C4CBCB" }} data-testid="decision-bar">
-              <Typography variant="h4" component="h4" sx={{ mb: 1 }}>Your decision</Typography>
+              <Typography variant="h4" component="h4" sx={{ mb: 1 }}>Your decision<Produced kind="you" testId="decision" /></Typography>
               {hasUnmet && !hasUnknown && (
                 <>
                   <TextField label="Your rationale, in your own words" multiline minRows={3} fullWidth value={rationale} onChange={(e) => setRationale(e.target.value)}

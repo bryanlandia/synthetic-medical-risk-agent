@@ -31,6 +31,7 @@ INSURERS = ("Harborlight Health Plan", "Juniper Ridge Assurance", "Calderon Vall
             "Larkspur Assurance", "Northgate Family Health")
 PREPARERS = ("R. Okafor", "M. Lindqvist", "A. Marchetti", "S. Takahashi", "J. Abernathy", "L. Ibarra", "P. Novak", "H. Brennan")
 DAY_START, DAY_END = 7 * 60 + 30, 16 * 60 + 45  # received times, in minutes from midnight
+WORKING_DAYS = ("2026-11-02", "2026-11-03", "2026-11-04")  # fictional Monday to Wednesday, in fictional Eastern time
 # the answer mix across the 30 cases (the three fully releasable cases are always fully answered yes)
 N_YES, N_NO, N_UNANSWERED, N_MIXED = 17, 5, 5, 3
 
@@ -75,6 +76,14 @@ def chart(record: Record) -> dict[str, Any]:
         labs.append({"lab": lab.key, "name": lab.name, "abbr": lab.abbr, "value": entry["value"], "unit": entry["unit"],
                      "ref_lo": lab.ref_lo, "ref_hi": lab.ref_hi, "ref_unit": lab.unit, "flag": flag(lab, entry["value"], entry["unit"])})
     return {"labs": labs, "note": view["note"]}
+
+
+def received(n: int, minutes: list[int]) -> str:
+    """Case n (from 1) arrives on one of three working days, ten cases a day, earliest first; each day's ten times are every third
+    of the sorted minutes, so a day spans the whole working day and the queue stays in received order. No further random draw."""
+    day, k = divmod(n - 1, len(minutes) // len(WORKING_DAYS))
+    minute = minutes[k * len(WORKING_DAYS) + day]
+    return f"{WORKING_DAYS[day]} {minute // 60:02d}:{minute % 60:02d}"
 
 
 def select(dataset: Dataset, rng: np.random.Generator) -> list[Record]:
@@ -135,7 +144,7 @@ def build(dataset: Dataset) -> dict[str, Any]:
     minutes = sorted(int(m) for m in rng.choice(np.arange(DAY_START, DAY_END), size=N_CASES, replace=False))
     codes: set[int] = set()
     cases = []
-    for n, (record, given, minute) in enumerate(zip(chosen, answers, minutes), start=1):
+    for n, (record, given) in enumerate(zip(chosen, answers), start=1):
         code = int(rng.integers(10000, 99999))
         while code in codes:
             code = int(rng.integers(10000, 99999))
@@ -143,7 +152,7 @@ def build(dataset: Dataset) -> dict[str, Any]:
         cases.append({
             "id": f"case-{n:02d}", "ordinal": f"{n:02d}", "request_code": f"VK-PET-{code}", "patient_id": record.patient_id,
             "insurer": INSURERS[int(rng.integers(0, len(INSURERS)))], "preparer": PREPARERS[int(rng.integers(0, len(PREPARERS)))],
-            "received": f"{minute // 60:02d}:{minute % 60:02d}", "chart": chart(record), "message": render_message(input_view(record)),
+            "received": received(n, minutes), "chart": chart(record), "message": render_message(input_view(record)),
             "answers": given})
     digest = hashlib.sha256(json.dumps(cases, sort_keys=True).encode()).hexdigest()[:12]
     return {"notice": SYNTHETIC_NOTICE, "dataset_config_hash": dataset.config_hash, "cases_hash": digest, "cases": cases}
