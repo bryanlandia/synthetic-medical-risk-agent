@@ -69,14 +69,14 @@ class RedisRateLimiter:
     """Per-client counts in fixed windows (a minute, a day). A client may send up to twice the per-minute limit across a window
     boundary; the daily dollar cap is the real bound on spend."""
 
-    def __init__(self, store: RestStore, per_minute: int, per_day: int, clock: Callable[[], float] = time.time):
-        self.store, self.per_minute, self.per_day, self.clock = store, per_minute, per_day, clock
+    def __init__(self, store: RestStore, per_minute: int, per_day: int, clock: Callable[[], float] = time.time, prefix: str = "rate"):
+        self.store, self.per_minute, self.per_day, self.clock, self.prefix = store, per_minute, per_day, clock, prefix
 
     def check(self, client: str) -> float | None:
         """Record a request and return None, or the seconds to wait if the client is over a limit (the request is not recorded)."""
         now = self.clock()
         minute, day = int(now // MINUTE), int(now // DAY)
-        kmin, kday = f"rate:min:{client}:{minute}", f"rate:day:{client}:{day}"
+        kmin, kday = f"{self.prefix}:min:{client}:{minute}", f"{self.prefix}:day:{client}:{day}"
         in_minute, _, in_day, _ = self.store.pipeline(
             [["INCR", kmin], ["EXPIRE", kmin, 2 * MINUTE], ["INCR", kday], ["EXPIRE", kday, DAY + 3600]])
         if in_minute > self.per_minute or in_day > self.per_day:

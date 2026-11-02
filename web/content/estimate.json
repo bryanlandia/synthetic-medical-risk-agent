@@ -1,0 +1,202 @@
+{
+  "estimate": {
+    "band": "uncertain",
+    "breakdown": [
+      {
+        "contribution": 0.5095101566779974,
+        "key": "velorin_index",
+        "kind": "lab"
+      },
+      {
+        "contribution": -0.22693531018136054,
+        "key": "serum_k17",
+        "kind": "lab"
+      },
+      {
+        "contribution": 0.29507027494253996,
+        "key": "tarnic_acid",
+        "kind": "lab"
+      },
+      {
+        "contribution": 0.11347782390318462,
+        "key": "brell_enzyme",
+        "kind": "lab"
+      },
+      {
+        "contribution": -0.0019005606329581416,
+        "key": "halvin_titer",
+        "kind": "lab"
+      },
+      {
+        "contribution": -0.00399334884276895,
+        "key": "osmet_level",
+        "kind": "lab"
+      },
+      {
+        "contribution": 0.04904968556316327,
+        "key": "plexa_count",
+        "kind": "lab"
+      },
+      {
+        "contribution": 0.08956907815922341,
+        "key": "dorrin_ratio",
+        "kind": "lab"
+      },
+      {
+        "contribution": 0.7641139423195108,
+        "key": "tremor",
+        "kind": "symptom"
+      },
+      {
+        "contribution": 0.0,
+        "key": "fatigue",
+        "kind": "symptom"
+      },
+      {
+        "contribution": 0.0,
+        "key": "photophobia",
+        "kind": "symptom"
+      },
+      {
+        "contribution": 0.0,
+        "key": "joint_stiffness",
+        "kind": "symptom"
+      },
+      {
+        "contribution": 0.0,
+        "key": "dizziness",
+        "kind": "symptom"
+      }
+    ],
+    "message": "Labs:\n- Velorin index (VLI): 112 mg/dL\n- Serum K-17 (K17): 4.5 mmol/L\n- Tarnic acid (TAC): 330 umol/L\n- Brell enzyme (BRE): 38 U/L\n- Halvin titer (HAT): 4.0 g/dL\n- Osmet level (OSM): 292 mOsm/kg\n- Plexa count (PLX): 260 x10^9/L\n- Dorrin ratio (DOR): 1.05 ratio\n\nNote:\nOn review, possible tremor.\nOn review, denies fatigue.\nOn review, denies photophobia.\nOn review, denies joint stiffness.\nOn review, denies dizziness.",
+    "probability": 0.5094434717381896,
+    "score": 0.03777837943892497,
+    "start": -1.5501833624696069
+  },
+  "labs": [
+    {
+      "abbr": "VLI",
+      "decimals": 0,
+      "key": "velorin_index",
+      "max": 220,
+      "min": 20,
+      "name": "Velorin index",
+      "ref_hi": 130,
+      "ref_lo": 70,
+      "step": 1.0,
+      "unit": "mg/dL"
+    },
+    {
+      "abbr": "K17",
+      "decimals": 1,
+      "key": "serum_k17",
+      "max": 7.5,
+      "min": 1.5,
+      "name": "Serum K-17",
+      "ref_hi": 5.0,
+      "ref_lo": 3.4,
+      "step": 0.1,
+      "unit": "mmol/L"
+    },
+    {
+      "abbr": "TAC",
+      "decimals": 0,
+      "key": "tarnic_acid",
+      "max": 600,
+      "min": 50,
+      "name": "Tarnic acid",
+      "ref_hi": 400,
+      "ref_lo": 200,
+      "step": 1.0,
+      "unit": "umol/L"
+    },
+    {
+      "abbr": "BRE",
+      "decimals": 0,
+      "key": "brell_enzyme",
+      "max": 90,
+      "min": 3,
+      "name": "Brell enzyme",
+      "ref_hi": 55,
+      "ref_lo": 15,
+      "step": 1.0,
+      "unit": "U/L"
+    },
+    {
+      "abbr": "HAT",
+      "decimals": 1,
+      "key": "halvin_titer",
+      "max": 7.0,
+      "min": 1.5,
+      "name": "Halvin titer",
+      "ref_hi": 5.0,
+      "ref_lo": 3.0,
+      "step": 0.1,
+      "unit": "g/dL"
+    },
+    {
+      "abbr": "OSM",
+      "decimals": 0,
+      "key": "osmet_level",
+      "max": 350,
+      "min": 230,
+      "name": "Osmet level",
+      "ref_hi": 310,
+      "ref_lo": 270,
+      "step": 1.0,
+      "unit": "mOsm/kg"
+    },
+    {
+      "abbr": "PLX",
+      "decimals": 0,
+      "key": "plexa_count",
+      "max": 600,
+      "min": 40,
+      "name": "Plexa count",
+      "ref_hi": 400,
+      "ref_lo": 150,
+      "step": 1.0,
+      "unit": "x10^9/L"
+    },
+    {
+      "abbr": "DOR",
+      "decimals": 2,
+      "key": "dorrin_ratio",
+      "max": 2.5,
+      "min": 0.1,
+      "name": "Dorrin ratio",
+      "ref_hi": 1.4,
+      "ref_lo": 0.6,
+      "step": 0.01,
+      "unit": "ratio"
+    }
+  ],
+  "model_hash": "414c2d467c87d44bbf3cd8d92454a4041a133f9bc2403b11a521e59ee8191443",
+  "notice": "ALL DATA IS SYNTHETIC. The disease is fictional. This patient is invented.",
+  "start": {
+    "labs": {
+      "brell_enzyme": 38,
+      "dorrin_ratio": 1.05,
+      "halvin_titer": 4.0,
+      "osmet_level": 292,
+      "plexa_count": 260,
+      "serum_k17": 4.5,
+      "tarnic_acid": 330,
+      "velorin_index": 112
+    },
+    "symptoms": {
+      "dizziness": "absent",
+      "fatigue": "absent",
+      "joint_stiffness": "absent",
+      "photophobia": "absent",
+      "tremor": "possible"
+    }
+  },
+  "symptoms": [
+    "tremor",
+    "fatigue",
+    "photophobia",
+    "joint_stiffness",
+    "dizziness"
+  ]
+}

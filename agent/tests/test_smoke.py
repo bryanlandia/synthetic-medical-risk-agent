@@ -27,6 +27,13 @@ def test_a_different_model_hash_fails(tmp_path):
 def test_a_wrong_secret_fails_the_requests(tmp_path):
     problems = run_smoke("http://testserver", "not-the-secret", client=scripted_service(tmp_path))
     assert any("scored request answered 401" in p for p in problems) and any("declined request answered 401" in p for p in problems)
+    assert any("estimate request answered 401" in p for p in problems)
+
+
+def test_a_service_without_the_estimate_route_fails(tmp_path):
+    service = scripted_service(tmp_path)
+    service.app.router.routes[:] = [r for r in service.app.router.routes if getattr(r, "path", "") != "/estimate"]
+    assert any("estimate request answered 404" in p for p in run_smoke("http://testserver", SECRET, client=service))
 
 
 def test_a_service_that_scores_the_treatment_question_fails(tmp_path, make):

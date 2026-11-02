@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { ANALYTICS_PORT, STUB_PORT } from "../playwright.config";
-import { CASES } from "./helpers";
+import { CASES, openAssistant } from "./helpers";
 
 // PostHog drops events from anything that looks like a bot, and automated Chromium says so three ways: the user agent, the
 // client-hint brands ("HeadlessChrome") and navigator.webdriver. The tests present an ordinary browser instead.
@@ -70,7 +70,7 @@ const openFirstCase = async (page: Page) => {
 test("one page view per load carries the ref, and switching views does not send another", async ({ page }) => {
   await page.goto("/?ref=Ode!!");
   await openBehind(page, "About this project");
-  await openBehind(page, "Try the assistant");
+  await openAssistant(page);
   const all = events(await until(() => seen(page), (s) => events(s).some((e) => e.event === "ui_click")));
   const views = all.filter((e) => e.event === "$pageview");
   expect(views).toHaveLength(1);
@@ -86,7 +86,7 @@ test("each countable element sends one named click, and empty space and typing s
   await openFirstCase(page);
   await page.getByText("Show the message sent to the service").click();
   await page.getByRole("button", { name: "Back to the queue" }).click();
-  await openBehind(page, "Try the assistant");
+  await openAssistant(page);
   await page.getByRole("button", { name: "A treatment question" }).click();
   await page.getByLabel("Message").pressSequentially("typing is not counted");
   await page.getByRole("button", { name: "Send", exact: true }).click();
@@ -96,7 +96,7 @@ test("each countable element sends one named click, and empty space and typing s
   const all = events(await until(() => seen(page), (s) => events(s).filter((e) => e.event === "ui_click").length >= 10));
   const clicks = all.filter((e) => e.event === "ui_click").map((e) => e.properties.element);
   expect(clicks).toEqual(expect.arrayContaining([
-    "filter:returned", "filter:all", "case:01", "sent_message_expander", "menu:behind", "nav:free", "example:treatment-question", "send_free_text", "nav:about",
+    "filter:returned", "filter:all", "case:01", "sent_message_expander", "menu:behind", "nav:estimate", "example:treatment-question", "send_free_text", "nav:about",
   ]));
   for (const c of clicks) expect(String(c)).toMatch(NAME);
   expect(all.some((e) => e.event === "$autocapture")).toBe(false);
@@ -106,14 +106,14 @@ const NAME = /^(sent_message_expander|send_free_text|release|return|close|confir
 
 test("no typed text, reply or probability is ever sent, and no screen recording is requested", async ({ page }) => {
   await page.goto("/");
-  await openBehind(page, "Try the assistant");
+  await openAssistant(page);
   const typed = "ZXQ-typed-text-7731 Velorin index 128 mg/dL. Tremor present.";
   await page.getByLabel("Message").fill(typed);
   await page.getByRole("button", { name: "Send", exact: true }).click();
   await expect(page.getByTestId("probability")).toBeVisible();
   const reply = (await page.getByTestId("reply").innerText()).slice(0, 40);
   const prob = await page.getByTestId("probability").innerText();
-  await page.getByRole("button", { name: "Back to the queue" }).click();
+  await page.getByRole("button", { name: "Review queue" }).click();
   const all = await until(() => seen(page), (s) => events(s).some((e) => e.event === "result_shown"));
   const bodies = all.map((r) => r.body + r.path + r.query).join("\n");
   expect(bodies).not.toContain("ZXQ-typed-text");
@@ -209,10 +209,14 @@ test("every element that must be counted carries a name", async ({ page }) => {
   for (const name of ["sent_message_expander", "release", "return", "close"]) await expect(page.locator(`[data-track="${name}"]`)).toHaveCount(1);
   await expect(page.locator(`[data-track="help"]`)).toHaveCount(2); // the packet help and the "What produced this page?" key share the name
   await page.getByRole("button", { name: "Back to the queue" }).click();
+  await expect(page.locator('[data-track="nav:estimate"]')).toHaveCount(1);
   await page.getByRole("button", { name: "Behind the demo" }).click();
-  for (const nav of ["free", "card", "about"]) await expect(page.locator(`[data-track="nav:${nav}"]`)).toHaveCount(1);
-  await page.getByRole("menuitem", { name: "Try the assistant" }).click();
-  await expect(page.locator('[data-track^="example:"]')).toHaveCount(4);
+  for (const nav of ["card", "about"]) await expect(page.locator(`[data-track="nav:${nav}"]`)).toHaveCount(1);
+  await expect(page.locator('[data-track="nav:free"]')).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await openAssistant(page);
+  await expect(page.locator('[data-track^="example:"]')).toHaveCount(7); // the four free-text examples and the three guardrail buttons
+  for (const guard of ["injection", "treatment", "offtopic"]) await expect(page.locator(`[data-track="example:guard-${guard}"]`)).toHaveCount(1);
   await expect(page.locator('[data-track="send_free_text"]')).toHaveCount(1);
   await openBehind(page, "About this project");
   await expect(page.locator('article.doc a[data-track^="link:"]').first()).toBeVisible();

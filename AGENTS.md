@@ -9,7 +9,7 @@ Portfolio demo. **All medical data is synthetic and the disease is fictional.** 
 - `training/` classifier + LoRA training, MLflow tracking (writes the model files `risk_model` loads)
 - `agent/` FastAPI + Strands chat service: guards, a no-argument scoring tool, a reply check (depends on `risk_model` only)
 - `evals/` Inspect AI tasks, promptfoo configs, datasets, reports
-- `web/` Next.js demo: a supervisor's review queue of 30 prepared PET-CT request packets (Material UI), with the free-text assistant, the model card and About under "Behind the demo", in front of the agent (Vercel project, root dir `web/`)
+- `web/` Next.js demo: a supervisor's review queue of 30 prepared PET-CT request packets (Material UI), and a second scenario, "Estimate a risk" (sliders and toggles for an invented patient, a live estimate from `/estimate`, and buttons that send that patient to the assistant to show its guardrails), with the model card and About under "Behind the demo", in front of the agent (Vercel project, root dir `web/`)
 - `deploy/` Vercel helper scripts (`check-env.sh`); the agent's Vercel project is built from the repository root files `index.py`, `requirements.txt`, `vercel.json` and `.vercelignore`
 - `rating_ui/` local-only Next.js tool for rating pilot notes (never deployed; loopback only; cannot read the answer key)
 - `openspec/` specs and changes
@@ -72,6 +72,7 @@ Agent (from `agent/`, same uv setup; see `agent/README.md`):
 - `uv sync` install; `uv run pytest -q` tests (scripted model: no key, no network, no spend)
 - `AGENT_SCRIPTED_MODEL=1 AGENT_LOCAL_DEV=1 uv run agent serve` run locally for free; with `ANTHROPIC_API_KEY` and `AGENT_SHARED_SECRET` exported in your own shell it uses Haiku 5.5. `uv run agent live-check` sends 5 hand-picked messages through the real model (a few cents)
 - Evals (from `evals/`): `uv run evals estimate --system agent` (no key); `uv run evals run --system agent --split dev` starts the service itself with the scripted model, `--live --yes` uses the real one (the service's own daily cap is set to the stage cap), `--base-url URL --secret S` scores a running service; `uv run evals agent-scope` runs the 66-prompt scope set; `test` and `adversarial` need a dev run of the same system and `--final`, once each (`--force` repeats, warned). The agent's guard tests also run in `uv run evals regression`
+- `uv run evals playground` (no key; scripted model) checks that the Estimate a risk dial and the assistant agree on seeded invented patients, with and without a hidden instruction (`--live --yes` for Haiku)
 - Inference is `risk_model`; `agent/` must not depend on `training`, `evals` or `data_gen` (their `anthropic` requirements conflict with Strands')
 - `uv run agent smoke --url URL` checks a deployment (model hash, one scored request, one decline; secret from `AGENT_SHARED_SECRET`). `AGENT_STORE_URL` and `AGENT_STORE_TOKEN` move the spend and rate counters to a shared Redis REST store; production requires them
 

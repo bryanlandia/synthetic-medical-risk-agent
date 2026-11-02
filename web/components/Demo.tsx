@@ -8,21 +8,22 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AboutTab } from "./AboutTab";
 import { trackResult } from "./Analytics";
 import { CaseView } from "./CaseView";
-import { FreeTextTab } from "./FreeTextTab";
+import type { AssistantResult, Sent } from "./AssistantPanel";
+import { EstimateView } from "./EstimateView";
 import { ModelCardTab } from "./ModelCardTab";
 import { QueueView } from "./QueueView";
 import type { Outcome } from "./ReportCard";
 import { ReviewProvider } from "./ReviewProvider";
 import { DemoStrip, Row } from "./ui";
+import { SUBTITLES } from "@/lib/copy";
 import type { Analysis, CasesFile, ShownError } from "@/lib/types";
 
-type View = { name: "queue" } | { name: "case"; id: string } | { name: "free" | "card" | "about" };
-const BEHIND: { id: "free" | "card" | "about"; label: string; title: string }[] = [
-  { id: "free", label: "Try the assistant", title: "Try the assistant" },
+type View = { name: "queue" } | { name: "case"; id: string } | { name: "estimate" | "card" | "about" };
+const BEHIND: { id: "card" | "about"; label: string; title: string }[] = [
   { id: "card", label: "Model card", title: "Model card" },
   { id: "about", label: "About this project", title: "About this project" },
 ];
@@ -44,15 +45,17 @@ const kindOf = (outcome: Outcome): string => (outcome.kind === "done" ? (outcome
 export function Demo({ cases, cardBody, cardHash, about }: { cases: CasesFile; cardBody: string; cardHash: string | null; about: string }) {
   const [view, setView] = useState<View>({ name: "queue" });
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
-  const [freeOutcome, setFreeOutcome] = useState<Outcome>({ kind: "idle" });
+  const [result, setResult] = useState<AssistantResult>({ sent: null, outcome: { kind: "idle" } });
   const labNames = useMemo(() => Object.fromEntries(cases.cases[0].chart.labs.map((l) => [l.lab, l.name])), [cases]);
   const behind = BEHIND.find((b) => b.id === view.name);
+  useEffect(() => { if (view.name !== "estimate") setResult({ sent: null, outcome: { kind: "idle" } }); }, [view.name]); // an answer is about the patient it was sent for
 
-  async function runFree(message: string) {
-    setFreeOutcome({ kind: "loading" });
+  /** One message in, one result out: the newest result replaces the last, whichever box it came from. */
+  async function runSend(message: string, sent: Sent) {
+    setResult({ sent, outcome: { kind: "loading" } });
     const outcome = await send(message);
     trackResult("free_text", kindOf(outcome));
-    setFreeOutcome(outcome);
+    setResult({ sent, outcome });
   }
 
   return (
@@ -63,12 +66,13 @@ export function Demo({ cases, cardBody, cardHash, about }: { cases: CasesFile; c
           <Box component="img" src="/vk-check-logo.svg" alt="" sx={{ height: 36, width: "auto" }} />
           <Box sx={{ flexGrow: 1, minWidth: 260 }}>
             <Typography variant="h1" component="h1">
-              <span className="vk-sr-only">VK-Check </span>Supervisor review
+              VK-Check<span data-testid="scenario-subtitle">: {SUBTITLES[view.name]}</span>
             </Typography>
             <Typography variant="body2" color="text.secondary">Decision support for Velorin-Kessler Syndrome diagnosis (fictional disease)</Typography>
           </Box>
           <Row spacing={1} component="nav" aria-label="Main">
-            <Button data-track="nav:queue" variant={view.name === "queue" || view.name === "case" ? "contained" : "text"} onClick={() => setView({ name: "queue" })}>Queue</Button>
+            <Button data-track="nav:queue" variant={view.name === "queue" || view.name === "case" ? "contained" : "text"} onClick={() => setView({ name: "queue" })}>Review queue</Button>
+            <Button data-track="nav:estimate" variant={view.name === "estimate" ? "contained" : "text"} onClick={() => setView({ name: "estimate" })}>Estimate a risk</Button>
             <Button data-track="menu:behind" variant={behind ? "contained" : "text"} aria-haspopup="menu" aria-expanded={Boolean(anchor)} onClick={(e) => setAnchor(e.currentTarget)}>Behind the demo</Button>
           </Row>
           <Menu anchorEl={anchor} open={Boolean(anchor)} onClose={() => setAnchor(null)}>
@@ -81,13 +85,13 @@ export function Demo({ cases, cardBody, cardHash, about }: { cases: CasesFile; c
       <Container component="main" maxWidth="xl" sx={{ py: 3 }}>
         {view.name === "queue" && <QueueView cases={cases.cases} onOpen={(id) => setView({ name: "case", id })} />}
         {view.name === "case" && <CaseView key={view.id} rec={cases.cases.find((c) => c.id === view.id)!} onBack={() => setView({ name: "queue" })} />}
+        {view.name === "estimate" && <EstimateView onSend={runSend} result={result} labNames={labNames} />}
         {behind && (
           <Box component="section" aria-label={behind.title}>
             <Row spacing={1.5} alignItems="center" sx={{ mb: 2 }}>
               <Button onClick={() => setView({ name: "queue" })}>Back to the queue</Button>
               <Typography variant="h2" component="h2">Behind the demo: {behind.title}</Typography>
             </Row>
-            {view.name === "free" && <FreeTextTab onSend={runFree} outcome={freeOutcome} labNames={labNames} />}
             {view.name === "card" && <ModelCardTab body={cardBody} hash={cardHash} />}
             {view.name === "about" && <AboutTab body={about} />}
           </Box>

@@ -9,6 +9,8 @@ from pathlib import Path
 from typing import Any
 
 from .classifier import RiskClassifier
+from . import estimate
+from .estimate import EstimateError
 from .reader import NoteReader
 from .report import build
 
@@ -18,7 +20,7 @@ LOGIC_VERSION = "2"
 
 MODEL_FILES = ("reader.json", "classifier.json")  # the model: its hash is the hash of these two files
 
-__all__ = ["RiskClassifier", "NoteReader", "RiskModel", "load", "model_hash", "LOGIC_VERSION"]
+__all__ = ["RiskClassifier", "NoteReader", "RiskModel", "load", "model_hash", "LOGIC_VERSION", "EstimateError"]
 
 
 class RiskModel:
@@ -29,6 +31,10 @@ class RiskModel:
 
     def report(self, view: dict[str, Any]) -> dict[str, Any]:
         return build(view, self.reader, self.classifier)
+
+    def estimate(self, labs: dict[str, Any], symptoms: dict[str, str]) -> dict[str, Any]:
+        """The what-if estimate for hand-set inputs (see ``risk_model.estimate``): no note is read."""
+        return estimate.estimate(self.classifier, labs, symptoms)  # ``estimate`` here is the submodule
 
 
 def default_directory() -> Path:

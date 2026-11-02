@@ -43,6 +43,7 @@ export function ReportCard({ outcome, labNames, callout }: { outcome: Outcome; l
     return (
       <section className="card declined" aria-live="polite">
         <h2>Declined</h2>
+        {callout}
         <p className="muted">This looked like {REASONS[analysis.decline_reason ?? "other"] ?? REASONS.other}, so no risk was estimated.</p>
         <p data-testid="reply">{analysis.reply}</p>
       </section>

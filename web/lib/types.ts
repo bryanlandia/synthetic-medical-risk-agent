@@ -76,3 +76,20 @@ export type CaseRecord = {
   answers: Record<AttestedId, Answer>;
 };
 export type CasesFile = { notice: string; dataset_config_hash: string; cases_hash: string; cases: CaseRecord[] };
+
+/** The what-if estimate for hand-set labs and symptoms: the classifier's probability and what moved it. */
+export type EstimateRow = { kind: "lab" | "symptom"; key: string; contribution: number };
+export type Band = "low" | "uncertain" | "high";
+export type Estimate = { request_id: string; probability: number; band: Band; score: number; start: number; breakdown: EstimateRow[]; message: string; model_hash: string };
+export type EstimateInputs = { labs: Record<string, number | null>; symptoms: Record<string, "absent" | "possible" | "present"> };
+
+/** The committed file the Estimate a risk page opens on (see risk_model.estimate_start). */
+export type EstimateLab = { key: string; name: string; abbr: string; unit: string; min: number; max: number; step: number; decimals: number; ref_lo: number; ref_hi: number };
+export type EstimateContent = {
+  notice: string;
+  model_hash: string;
+  labs: EstimateLab[];
+  symptoms: string[];
+  start: EstimateInputs;
+  estimate: Omit<Estimate, "request_id">;
+};
