@@ -10,7 +10,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
-import { STRIP_TEXT } from "@/lib/copy";
+import { STRIP_TEXT, criterionText } from "@/lib/copy";
 import type { CaseState } from "@/lib/store";
 import type { CaseRecord, Packet } from "@/lib/types";
 import { clock, CriterionChip, DemoNote, Row } from "./ui";
@@ -25,7 +25,7 @@ export function plainText(rec: CaseRecord, packet: Packet, state: CaseState): st
     `Insurer (fictional): ${rec.insurer}`, `Request code (fictional): ${rec.request_code}`, `Patient: ${rec.patient_id}`, `Requested study: ${STUDY}`, "",
   ];
   for (const c of packet.criteria) {
-    lines.push(`${c.id} ${c.status.toUpperCase()}: ${c.text}`);
+    lines.push(`${c.id} ${c.status.toUpperCase()}: ${criterionText(c.id, c.text)}`);
     for (const id of c.cites) lines.push(`  - ${evidence.get(id) ?? id}`);
   }
   lines.push("", "Still missing:", ...(packet.gaps.length ? packet.gaps.map((g) => `  - ${g.prompt}`) : ["  - nothing"]));
@@ -59,7 +59,7 @@ export function ReleasedPacket({ rec, packet, state }: { rec: CaseRecord; packet
           <TableBody>
             {packet.criteria.map((c) => (
               <TableRow key={c.id}>
-                <TableCell><strong>{c.id}</strong> {c.text}</TableCell>
+                <TableCell><strong>{c.id}</strong> {criterionText(c.id, c.text)}</TableCell>
                 <TableCell><CriterionChip status={c.status} /></TableCell>
                 <TableCell>{c.cites.map((id) => <Typography key={id} variant="body2">{evidence.get(id) ?? id}</Typography>)}</TableCell>
               </TableRow>
