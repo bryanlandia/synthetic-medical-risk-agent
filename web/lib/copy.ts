@@ -37,3 +37,10 @@ export const DEMO_NOTES = {
   storage: "Your progress is saved in this browser only. Reset the demo to clear it and restore all 30 cases.",
 } as const;
 export type DemoNoteKey = keyof typeof DEMO_NOTES;
+
+/** What the page shows for a criterion. The policy words C5 as a negation ("No PET-CT ..."), so a Yes answer read as a double
+ * negative; here a Yes means the criterion holds. Display only: the policy, the answers and the statuses are unchanged. */
+export const C5_SHOWN = "The last PET-CT or comparable imaging was more than 12 months ago, or there has been none.";
+export function criterionText(id: string, policyText: string): string {
+  return id === "C5" ? C5_SHOWN : policyText;
+}

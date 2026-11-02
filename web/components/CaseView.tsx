@@ -23,6 +23,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useEffect, useRef, useState } from "react";
 import policy from "@/content/pet_ct_policy.json";
+import { criterionText } from "@/lib/copy";
 import { requestPacket } from "@/lib/packet-client";
 import { MIN_NOTE, MIN_RATIONALE, releaseBlock, statusOf } from "@/lib/store";
 import type { Answer, AttestedId, CaseRecord, Packet, ShownError } from "@/lib/types";
@@ -31,7 +32,7 @@ import { ReleasedPacket } from "./ReleasedPacket";
 import { useReview } from "./ReviewProvider";
 import { CriterionChip, DemoNote, Row, StatusChip, Term } from "./ui";
 
-const WORDING = Object.fromEntries(policy.criteria.map((c) => [c.id, c.text])) as Record<string, string>;
+const WORDING = Object.fromEntries(policy.criteria.map((c) => [c.id, criterionText(c.id, c.text)])) as Record<string, string>;
 const ANSWERS: AttestedId[] = ["C3", "C4", "C5", "C6"];
 const ANSWER_LABEL: Record<Answer, string> = { yes: "Yes", no: "No", unanswered: "Not yet answered" };
 const pct = (v: number) => `${Math.round(v * 100)}%`;
@@ -96,7 +97,7 @@ function Checklist({ packet }: { packet: Packet }) {
         <TableBody>
           {packet.criteria.map((c) => (
             <TableRow key={c.id} data-testid={`criterion-${c.id}`}>
-              <TableCell><strong>{c.id}</strong> {c.text}</TableCell>
+              <TableCell><strong>{c.id}</strong> {criterionText(c.id, c.text)}</TableCell>
               <TableCell><CriterionChip status={c.status} testId={`crit-status-${c.id}`} /></TableCell>
               <TableCell>{c.cites.map((id) => <Typography key={id} variant="body2">{evidence.get(id) ?? id}</Typography>)}</TableCell>
             </TableRow>

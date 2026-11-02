@@ -42,7 +42,7 @@ obtained": it covers findings not on the record and does not include uncertainty
 preparer's answers for C3 to C6 (yes, no or not yet answered; anything else is 422), and passes on a whitelist (the six criteria
 with status and cited evidence, the gaps, the summary and whether it came from the model or the template, and the model's estimate as
 context). The criteria wording on the page is `content/pet_ct_policy.json`, a copy of `risk_model/src/risk_model/policy/pet_ct_k17.json`;
-a test fails if they differ, so copy the file again when the policy changes. The supervisor's note and rationale stay in the browser
+a test fails if they differ, so copy the file again when the policy changes. C5 is shown in a positive wording (`criterionText` in `lib/copy.ts`, display only) so that a Yes means the criterion holds. The supervisor's note and rationale stay in the browser
 and are never sent. Printing shows the released packet and the synthetic-data notice only.
 
 **Bundle size.** First-load JS for the page was 157 kB before the Material redesign and is 259 kB after it (MUI and the 30-case file);
