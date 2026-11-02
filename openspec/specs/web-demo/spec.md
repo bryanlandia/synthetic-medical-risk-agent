@@ -6,20 +6,6 @@ Defines the public demo page: a mock patient chart that runs the risk check on t
 
 ## Requirements
 
-### Requirement: The chart page runs the check on the chart's contents
-The page SHALL show a mock patient chart (labs and a note) for one of the demo patients, selectable from the list, with a "Run V-K check" button. The button SHALL send one message built from the chart's non-null labs, with name and usual unit, followed by the note, and nothing else, and SHALL show the result in a report card beside the chart.
-
-#### Scenario: A check on a demo patient
-- **WHEN** a visitor selects a patient and presses the button
-- **THEN** exactly one request is made, its message equals the patient's stored message, and the report card shows the result
-
-### Requirement: The message sent is visible
-The chart SHALL have an expander showing the exact message the check sends, so a visitor can see the agent receives only the chart's contents. The displayed text SHALL be the text sent.
-
-#### Scenario: The expander matches the request
-- **WHEN** the expander is opened and the check is run
-- **THEN** the message in the request body is identical to the text in the expander
-
 ### Requirement: The report card shows the report and the reply
 For a scored message the card SHALL show the probability, whether the result is uncertain, the evidence strings, the data-quality warnings, the labs read and the reply with its disclaimer. For a declined message it SHALL show the reason and the fixed message, and no report.
 
@@ -32,18 +18,11 @@ For a scored message the card SHALL show the probability, whether the result is 
 - **THEN** the card shows a decline with its reason and no probability
 
 ### Requirement: A free-text tab sends one message
-A second tab SHALL take free text and send it, as it is, to the same route, and show the same card. Each send SHALL be a single, independent request: the page MUST NOT keep or send earlier messages or replies.
+A free-text assistant view, reached from "Behind the demo", SHALL take free text and send it, as it is, to the same route, and show the same card. Each send SHALL be a single, independent request: the page MUST NOT keep or send earlier messages or replies.
 
 #### Scenario: No history
 - **WHEN** two messages are sent one after the other
 - **THEN** the second request contains only the second message and the first result is replaced
-
-### Requirement: Demo patients come from the dev split and carry no answer
-The demo patients SHALL be a small committed set taken from the dev split, each with its chart and its pre-rendered message. The file MUST NOT contain a ground-truth field, and it SHALL be equal to what the evaluation harness renders for those patients.
-
-#### Scenario: The file is current and clean
-- **WHEN** the demo-patient test runs
-- **THEN** every patient id is in the dev split, every message equals the harness's rendering, and no ground-truth key appears
 
 ### Requirement: The browser never holds the secret or the service address
 The browser SHALL call only a server route of the web app. The route SHALL add the shared secret and the visitor address, forward the message, and return only the fields the page shows. The secret and the agent's address MUST NOT appear in any file sent to the browser.
@@ -64,17 +43,17 @@ The route and page SHALL turn each service error into a clear message: 413 and 4
 - **THEN** the page says the daily budget is used up and to come back tomorrow
 
 ### Requirement: The model card is shown and checked against the running model
-A tab SHALL show the committed model card rendered without its metadata block, and SHALL compare the model hash in the card with the hash the running service reports, showing whether they match.
+A view reached from "Behind the demo" SHALL show the committed model card rendered without its metadata block, and SHALL compare the model hash in the card with the hash the running service reports, showing whether they match.
 
 #### Scenario: Matching and mismatching hashes
 - **WHEN** the service reports the card's hash, and then a different hash
-- **THEN** the tab shows a match, and then a warning that the card does not describe the running model
+- **THEN** the view shows a match, and then a warning that the card does not describe the running model
 
 ### Requirement: An About tab describes the project
-The page SHALL have a tab named "About this project", reachable from every other tab, that shows a project description written in markdown from a committed content file. It SHALL render every heading, paragraph, list, table and link in the file. The page MUST NOT fetch the description from the agent service.
+The page SHALL have an "About this project" view, reachable from every other view through "Behind the demo", that shows a project description written in markdown from a committed content file. It SHALL render every heading, paragraph, list, table and link in the file. The page MUST NOT fetch the description from the agent service.
 
 #### Scenario: Every heading in the file is on the page
-- **WHEN** the About tab is opened
+- **WHEN** the About view is opened
 - **THEN** each second-level heading in the content file is shown as a heading, in the file's order
 
 ### Requirement: Links in the description are safe
@@ -85,14 +64,14 @@ Links in the About text SHALL open in a new tab without giving the new page acce
 - **THEN** the link opens in a new tab with `noopener` and `noreferrer`, and the tab makes no request to another site
 
 ### Requirement: Every screen says the disease is fictional
-Every screen SHALL show a title that states the disease is fictional. The page MUST NOT claim FHIR, vendor or real-system integration.
+Every screen SHALL show the persistent demo strip and a title that states the disease is fictional. The page MUST NOT claim FHIR, vendor or real-system integration.
 
 #### Scenario: The title is on every tab
-- **WHEN** each tab is opened
+- **WHEN** the queue, a case and each Behind the demo view are opened
 - **THEN** the title stating that the disease is fictional is visible without scrolling
 
 #### Scenario: No integration is claimed
-- **WHEN** the text of any tab is read
+- **WHEN** the text of any view is read
 - **THEN** it does not claim HL7, FHIR or a vendor's software
 
 ### Requirement: The About tab tells the project's story
@@ -107,10 +86,10 @@ The About text SHALL state, in plain words, that the disease is fictional and of
 - **THEN** none is found
 
 ### Requirement: The funder is named and marked fictional
-The About text and a footer shown on every tab SHALL state that the project is funded by the Kessler Family Foundation, a fictional foundation, to improve diagnosis and outcomes for Velorin-Kessler Syndrome. The foundation MUST NOT appear in any request, report or workflow text.
+The About text and a footer shown on every screen SHALL state that the project is funded by the Kessler Family Foundation, a fictional foundation, to improve diagnosis and outcomes for Velorin-Kessler Syndrome. The foundation MUST NOT appear in any request, report or workflow text.
 
 #### Scenario: The footer is on every tab
-- **WHEN** each tab is opened
+- **WHEN** each screen is opened
 - **THEN** the footer names the Kessler Family Foundation and says it is fictional
 
 #### Scenario: The foundation is not in the data path
@@ -153,39 +132,6 @@ The report card SHALL show the probability with its range, labelled as the range
 #### Scenario: Only whitelisted fields reach the page
 - **WHEN** the route returns a response
 - **THEN** only the interval and gaps fields the page shows are passed on, as with the existing fields
-
-### Requirement: The chart page offers a scan-readiness packet
-The chart page SHALL offer a "Prepare PET-CT packet" action for the selected patient with a yes, no or not-yet-answered control for each of C3 to C6, all starting as not yet answered. It SHALL send one request through the app's server route with the chart's message and the answers, and show the criteria table, the gaps, the summary and its source. No answer SHALL be pre-filled from the note or the model.
-
-#### Scenario: Default answers
-- **WHEN** the packet view is opened for any patient
-- **THEN** C3 to C6 show not yet answered and the first packet shows them as unknown gaps
-
-#### Scenario: One request
-- **WHEN** the action is pressed
-- **THEN** exactly one request is made, its message equals the patient's stored message, and its answers equal the controls
-
-### Requirement: The packet view shows status, evidence and gaps plainly
-Each criterion row SHALL show its policy wording, a status of met, unmet or unknown, and its cited evidence as the chart's values with units. Unknown rows SHALL show what would settle them. Unmet rows SHALL show the evidence factually and a clinician rationale field the page never fills. The summary SHALL show whether it came from the model or the template.
-
-#### Scenario: Citations are visible
-- **WHEN** a met criterion is shown
-- **THEN** each cited lab or symptom appears beside it with the value read from the chart
-
-#### Scenario: Rationale is empty
-- **WHEN** a packet has an unmet criterion
-- **THEN** the rationale field is empty and has a label saying it is for the clinician's own words
-
-### Requirement: Demo sign-off, copy and print
-The packet view SHALL offer a sign-off button labelled as a demo. After it is pressed the packet SHALL be read-only, labelled "drafted by tool, reviewed by clinician (demo)", with a copy and a print action. Every state of the view SHALL show the synthetic-data banner, and printing SHALL include it.
-
-#### Scenario: Locked after sign-off
-- **WHEN** sign-off is pressed
-- **THEN** the answer controls and rationale field are read-only and the label is shown
-
-#### Scenario: Banner in print
-- **WHEN** the print view is rendered
-- **THEN** it contains the synthetic-data banner and "not medical advice"
 
 ### Requirement: The packet page does not hold secrets or other fields
 The browser SHALL reach the packet only through the app's server route, which holds the secret and the service address, and the route SHALL pass on only the whitelisted packet fields. The page MUST NOT offer any control that edits a recorded value, and MUST NOT use the words "approved", "denied", "eligible" or "qualifies" for a packet.
