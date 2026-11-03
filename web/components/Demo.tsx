@@ -73,7 +73,7 @@ export function Demo({ cases, cardBody, cardHash, about }: { cases: CasesFile; c
           <Row spacing={1} component="nav" aria-label="Main">
             <Button data-track="nav:queue" variant={view.name === "queue" || view.name === "case" ? "contained" : "text"} onClick={() => setView({ name: "queue" })}>Review queue</Button>
             <Button data-track="nav:estimate" variant={view.name === "estimate" ? "contained" : "text"} onClick={() => setView({ name: "estimate" })}>Estimate a risk</Button>
-            <Button data-track="menu:behind" variant={behind ? "contained" : "text"} aria-haspopup="menu" aria-expanded={Boolean(anchor)} onClick={(e) => setAnchor(e.currentTarget)}>Behind the demo</Button>
+            <Button data-track="menu:behind" variant={behind ? "contained" : "text"} aria-haspopup="menu" aria-expanded={Boolean(anchor)} onClick={(e) => setAnchor(e.currentTarget)}>How it works</Button>
           </Row>
           <Menu anchorEl={anchor} open={Boolean(anchor)} onClose={() => setAnchor(null)}>
             {BEHIND.map((b) => (
@@ -90,7 +90,7 @@ export function Demo({ cases, cardBody, cardHash, about }: { cases: CasesFile; c
           <Box component="section" aria-label={behind.title}>
             <Row spacing={1.5} alignItems="center" sx={{ mb: 2 }}>
               <Button onClick={() => setView({ name: "queue" })}>Back to the queue</Button>
-              <Typography variant="h2" component="h2">Behind the demo: {behind.title}</Typography>
+              <Typography variant="h2" component="h2">How it works: {behind.title}</Typography>
             </Row>
             {view.name === "card" && <ModelCardTab body={cardBody} hash={cardHash} />}
             {view.name === "about" && <AboutTab body={about} />}

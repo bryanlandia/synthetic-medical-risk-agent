@@ -7,7 +7,7 @@ import { SECRET, AGENT_PORT } from "../playwright.config";
 import { CASES, openAssistant } from "./helpers";
 
 async function openBehind(page: Page, item: string) {
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   await page.getByRole("menuitem", { name: item }).click();
 }
 

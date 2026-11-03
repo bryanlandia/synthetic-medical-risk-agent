@@ -59,7 +59,7 @@ test("the notice is shown and every analytics request goes to the site's own add
 });
 
 async function openBehind(page: Page, item: string) {
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   await page.getByRole("menuitem", { name: item }).click();
 }
 const openFirstCase = async (page: Page) => {
@@ -210,7 +210,7 @@ test("every element that must be counted carries a name", async ({ page }) => {
   await expect(page.locator(`[data-track="help"]`)).toHaveCount(2); // the packet help and the "What produced this page?" key share the name
   await page.getByRole("button", { name: "Back to the queue" }).click();
   await expect(page.locator('[data-track="nav:estimate"]')).toHaveCount(1);
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   for (const nav of ["card", "about"]) await expect(page.locator(`[data-track="nav:${nav}"]`)).toHaveCount(1);
   await expect(page.locator('[data-track="nav:free"]')).toHaveCount(0);
   await page.keyboard.press("Escape");

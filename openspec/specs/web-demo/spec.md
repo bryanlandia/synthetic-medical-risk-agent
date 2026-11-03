@@ -18,11 +18,15 @@ For a scored message the card SHALL show the probability, whether the result is 
 - **THEN** the card shows a decline with its reason and no probability
 
 ### Requirement: A free-text tab sends one message
-A free-text assistant view, reached from "Behind the demo", SHALL take free text and send it, as it is, to the same route, and show the same card. Each send SHALL be a single, independent request: the page MUST NOT keep or send earlier messages or replies.
+A free-text box, inside the Estimate a risk scenario and collapsed by default, SHALL take free text and send it, as it is, to the same route, and show the same card. Each send SHALL be a single, independent request: the page MUST NOT keep or send earlier messages or replies. The free-text box MUST NOT be reached from "Behind the demo".
 
 #### Scenario: No history
 - **WHEN** two messages are sent one after the other
 - **THEN** the second request contains only the second message and the first result is replaced
+
+#### Scenario: Where it lives
+- **WHEN** Behind the demo is opened and then Estimate a risk is opened
+- **THEN** the free-text box is found only in Estimate a risk, collapsed
 
 ### Requirement: The browser never holds the secret or the service address
 The browser SHALL call only a server route of the web app. The route SHALL add the shared secret and the visitor address, forward the message, and return only the fields the page shows. The secret and the agent's address MUST NOT appear in any file sent to the browser.
@@ -143,3 +147,25 @@ The browser SHALL reach the packet only through the app's server route, which ho
 #### Scenario: No verdict words
 - **WHEN** the packet view text is read for any demo patient
 - **THEN** none of those words appears
+
+### Requirement: The page has two scenarios under one title
+The page SHALL be titled VK-Check, and its main navigation SHALL offer the review queue, which is shown first, "Estimate a risk", and "Behind the demo". Each scenario SHALL show its own subtitle, and the review queue's SHALL remain "Supervisor review". "Behind the demo" SHALL hold the model card and the About text and nothing else.
+
+#### Scenario: The first screen
+- **WHEN** the page is opened
+- **THEN** the review queue is shown and the navigation offers the queue, Estimate a risk and Behind the demo
+
+#### Scenario: Behind the demo
+- **WHEN** the Behind the demo menu is opened
+- **THEN** it lists the model card and the About text, and no assistant view
+
+#### Scenario: Each scenario names itself
+- **WHEN** the queue and then Estimate a risk are opened
+- **THEN** the title VK-Check is visible in both, each with its own subtitle, and both say the disease is fictional without scrolling
+
+### Requirement: Estimate a risk has its own introduction
+The Estimate a risk scenario SHALL open with a short introduction, in plain words, of what the controls do, that the patient is invented, and that the number is an estimate from a fictional disease's model and not advice. The queue's introduction and help SHALL NOT appear in it.
+
+#### Scenario: The introduction
+- **WHEN** Estimate a risk is opened
+- **THEN** its introduction is visible, states that the patient is invented, and does not contain the queue's introduction text

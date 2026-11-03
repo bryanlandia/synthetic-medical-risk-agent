@@ -5,7 +5,7 @@
 no vendor software). The guards and the evals around the agent are the real subject; the page is how a visitor sees them work.
 
 - **Queue**: 30 invented requests from the dev split, each prepared by a (simulated) clinician for one of ten fictional insurers.
-  The page opens with "What is this packet for?" in plain words; the same text is a help dialog on every case. Opening a case
+  The page opens with "What are the review and packet for?" in plain words; the same text is a help dialog on every case. Opening a case
   makes one request to the packet route and keeps the result in the browser: the chart, the checklist against the fictional
   policy with cited evidence, what is missing, a checked summary and the model's estimate as context. The supervisor then
   releases it (blocked while any criterion is unknown; their own written rationale is needed if one is unmet), returns it with a
@@ -16,7 +16,7 @@ no vendor software). The guards and the evals around the agent are the real subj
   returns, so the page has no copy of the template) and shows the assistant's number beside the dial's; three buttons add a hidden
   instruction, a treatment question or an off-topic question. A collapsed box still takes your own text. It starts from no queue case, edits
   no recorded value and stores nothing.
-- **Behind the demo** (menu): the **Model card** (with a check that it describes the model that is running) and **About this project**
+- **How it works** (menu): the **Model card** (with a check that it describes the model that is running) and **About this project**
   (from `content/about.md`).
 
 Progress (statuses, packets, return notes, rationales) is kept in this browser's `localStorage` and nothing else; "Reset demo"
