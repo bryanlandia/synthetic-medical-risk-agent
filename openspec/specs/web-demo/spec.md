@@ -18,14 +18,14 @@ For a scored message the card SHALL show the probability, whether the result is 
 - **THEN** the card shows a decline with its reason and no probability
 
 ### Requirement: A free-text tab sends one message
-A free-text box, inside the Estimate a risk scenario and collapsed by default, SHALL take free text and send it, as it is, to the same route, and show the same card. Each send SHALL be a single, independent request: the page MUST NOT keep or send earlier messages or replies. The free-text box MUST NOT be reached from "Behind the demo".
+A free-text box, inside the Estimate a risk scenario and collapsed by default, SHALL take free text and send it, as it is, to the same route, and show the same card. Each send SHALL be a single, independent request: the page MUST NOT keep or send earlier messages or replies. The free-text box MUST NOT be reached from "How it works".
 
 #### Scenario: No history
 - **WHEN** two messages are sent one after the other
 - **THEN** the second request contains only the second message and the first result is replaced
 
 #### Scenario: Where it lives
-- **WHEN** Behind the demo is opened and then Estimate a risk is opened
+- **WHEN** How it works is opened and then Estimate a risk is opened
 - **THEN** the free-text box is found only in Estimate a risk, collapsed
 
 ### Requirement: The browser never holds the secret or the service address
@@ -47,14 +47,14 @@ The route and page SHALL turn each service error into a clear message: 413 and 4
 - **THEN** the page says the daily budget is used up and to come back tomorrow
 
 ### Requirement: The model card is shown and checked against the running model
-A view reached from "Behind the demo" SHALL show the committed model card rendered without its metadata block, and SHALL compare the model hash in the card with the hash the running service reports, showing whether they match.
+A view reached from "How it works" SHALL show the committed model card rendered without its metadata block, and SHALL compare the model hash in the card with the hash the running service reports, showing whether they match.
 
 #### Scenario: Matching and mismatching hashes
 - **WHEN** the service reports the card's hash, and then a different hash
 - **THEN** the view shows a match, and then a warning that the card does not describe the running model
 
 ### Requirement: An About tab describes the project
-The page SHALL have an "About this project" view, reachable from every other view through "Behind the demo", that shows a project description written in markdown from a committed content file. It SHALL render every heading, paragraph, list, table and link in the file. The page MUST NOT fetch the description from the agent service.
+The page SHALL have an "About this project" view, reachable from every other view through "How it works", that shows a project description written in markdown from a committed content file. It SHALL render every heading, paragraph, list, table and link in the file. The page MUST NOT fetch the description from the agent service.
 
 #### Scenario: Every heading in the file is on the page
 - **WHEN** the About view is opened
@@ -71,7 +71,7 @@ Links in the About text SHALL open in a new tab without giving the new page acce
 Every screen SHALL show the persistent demo strip and a title that states the disease is fictional. The page MUST NOT claim FHIR, vendor or real-system integration.
 
 #### Scenario: The title is on every tab
-- **WHEN** the queue, a case and each Behind the demo view are opened
+- **WHEN** the queue, a case and each How it works view are opened
 - **THEN** the title stating that the disease is fictional is visible without scrolling
 
 #### Scenario: No integration is claimed
@@ -148,24 +148,24 @@ The browser SHALL reach the packet only through the app's server route, which ho
 - **WHEN** the packet view text is read for any demo patient
 - **THEN** none of those words appears
 
-### Requirement: The page has two scenarios under one title
-The page SHALL be titled VK-Check, and its main navigation SHALL offer the review queue, which is shown first, "Estimate a risk", and "Behind the demo". Each scenario SHALL show its own subtitle, and the review queue's SHALL remain "Supervisor review". "Behind the demo" SHALL hold the model card and the About text and nothing else.
-
-#### Scenario: The first screen
-- **WHEN** the page is opened
-- **THEN** the review queue is shown and the navigation offers the queue, Estimate a risk and Behind the demo
-
-#### Scenario: Behind the demo
-- **WHEN** the Behind the demo menu is opened
-- **THEN** it lists the model card and the About text, and no assistant view
-
-#### Scenario: Each scenario names itself
-- **WHEN** the queue and then Estimate a risk are opened
-- **THEN** the title VK-Check is visible in both, each with its own subtitle, and both say the disease is fictional without scrolling
-
 ### Requirement: Estimate a risk has its own introduction
 The Estimate a risk scenario SHALL open with a short introduction, in plain words, of what the controls do, that the patient is invented, and that the number is an estimate from a fictional disease's model and not advice. The queue's introduction and help SHALL NOT appear in it.
 
 #### Scenario: The introduction
 - **WHEN** Estimate a risk is opened
 - **THEN** its introduction is visible, states that the patient is invented, and does not contain the queue's introduction text
+
+### Requirement: The page has two scenarios and a How it works menu
+The page SHALL be titled VK-Check, and its main navigation SHALL offer the review queue, which is shown first, "Estimate a risk", and "How it works". Each scenario SHALL show its own subtitle, and the review queue's SHALL remain "Supervisor review". "How it works" SHALL hold the model card and the About text and nothing else.
+
+#### Scenario: The first screen
+- **WHEN** the page is opened
+- **THEN** the review queue is shown and the navigation offers the queue, Estimate a risk and How it works
+
+#### Scenario: The How it works menu
+- **WHEN** the How it works menu is opened
+- **THEN** it lists the model card and the About text, and no assistant view
+
+#### Scenario: Each scenario names itself
+- **WHEN** the queue and then Estimate a risk are opened
+- **THEN** the title VK-Check is visible in both, each with its own subtitle, and both say the disease is fictional without scrolling
