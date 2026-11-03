@@ -4,9 +4,10 @@
 export const STRIP_TEXT =
   "Everything here is invented: the patients, the disease (Velorin-Kessler syndrome), the insurers and the policy. Not medical advice.";
 
-export const PURPOSE_TITLE = "What is this packet for?";
+export const PURPOSE_TITLE = "What are the review and packet for?";
 export const PURPOSE_PARAGRAPHS = [
-  "Confirming Velorin-Kessler syndrome (a fictional disease) takes a K-17 PET-CT, an expensive scan. Insurers usually ask for documentation before they pay for one (this is called prior authorization).",
+  "Velorin-Kessler syndrome (a fictional disease) is a neurological disorder that is treatable if caught early, but becomes a debilitating and expensive disease if it is not. The Kessler Family Foundation (also fictional) sponsors these tools to speed insurer coverage of the confirming scan and to aid diagnosis.",
+  "Confirming the syndrome takes a K-17 PET-CT, an expensive scan. Insurers usually ask for documentation before they pay for one (this is called prior authorization).",
   "A request that is incomplete, or that does not point to its evidence, is sent back. That delays the patient's diagnosis and creates rework for the clinic.",
   "The packet is that documentation. For each request, the tool checks the chart against the insurer's coverage criteria, shows the evidence behind each answer, and lists what is still missing.",
   "You are the neurology supervisor. You decide what happens to each packet: release it to the insurer, return it to the preparing clinician with a note, or close it because the criteria are not met. The tool decides nothing about the patient's care or about coverage.",

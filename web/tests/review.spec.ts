@@ -63,7 +63,7 @@ test("the intro card explains what the packet is for, and the words are free of 
   await expect(card).toBeVisible();
   await expect(card.getByRole("heading", { name: PURPOSE_TITLE })).toBeVisible();
   const text = (await card.innerText()).toLowerCase();
-  for (const phrase of ["pet-ct", "expensive", "insurer", "criteria", "evidence", "missing", "supervisor", "decides nothing about the patient's care or about coverage"]) expect(text).toContain(phrase);
+  for (const phrase of ["kessler family foundation", "also fictional", "treatable if caught early", "speed insurer coverage", "aid diagnosis", "pet-ct", "expensive", "insurer", "criteria", "evidence", "missing", "supervisor", "decides nothing about the patient's care or about coverage"]) expect(text).toContain(phrase);
   expect([...PURPOSE_PARAGRAPHS, ...Object.values(HINTS), PURPOSE_TITLE].join(" ")).not.toMatch(VERDICT);
   expect(text).not.toMatch(VERDICT);
 });
@@ -339,7 +339,7 @@ test("nothing is stored on the server: progress lives only in the browser", asyn
 test("a visit that changes nothing writes nothing to storage, and an action writes only the review progress", async ({ page, context }) => {
   await page.goto("/");
   await expect(page.getByTestId("queue")).toBeVisible();
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   await page.getByRole("menuitem", { name: "About this project" }).click();
   expect(await context.cookies()).toEqual([]);
   expect(await page.evaluate(() => [localStorage.length, sessionStorage.length])).toEqual([0, 0]);

@@ -168,11 +168,11 @@ test("the free-text box is collapsed on open and sends nothing", async ({ page }
 
 test("the free-text box is only in Estimate a risk, and sends one independent message", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   for (const name of ["Model card", "About this project"]) {
     await page.getByRole("menuitem", { name }).click();
     await expect(page.getByRole("textbox", { name: "Message" })).toHaveCount(0);
-    await page.getByRole("button", { name: "Behind the demo" }).click();
+    await page.getByRole("button", { name: "How it works" }).click();
   }
   await page.keyboard.press("Escape");
   await openAssistant(page);

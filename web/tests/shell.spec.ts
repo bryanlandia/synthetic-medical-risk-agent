@@ -4,7 +4,7 @@ import { WEB_PORT } from "../playwright.config";
 const BEHIND = ["Model card", "About this project"];
 
 async function openBehind(page: Page, item: string) {
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   await page.getByRole("menuitem", { name: item }).click();
 }
 
@@ -49,23 +49,23 @@ test("the navigation reaches every view and returns to the queue", async ({ page
   await expect(page.getByTestId("queue")).toBeVisible();
   for (const item of BEHIND) {
     await openBehind(page, item);
-    await expect(page.getByRole("heading", { name: new RegExp(`Behind the demo: ${item}`) })).toBeVisible();
+    await expect(page.getByRole("heading", { name: new RegExp(`How it works: ${item}`) })).toBeVisible();
     await page.getByRole("button", { name: "Back to the queue" }).click();
     await expect(page.getByTestId("queue")).toBeVisible();
   }
 });
 
-test("the first screen is the review queue, with the queue, Estimate a risk and Behind the demo in the navigation", async ({ page }) => {
+test("the first screen is the review queue, with the queue, Estimate a risk and How it works in the navigation", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByTestId("queue")).toBeVisible();
   const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByRole("button")).toHaveText(["Review queue", "Estimate a risk", "Behind the demo"]);
+  await expect(nav.getByRole("button")).toHaveText(["Review queue", "Estimate a risk", "How it works"]);
   await expect(page.getByTestId("scenario-subtitle")).toHaveText(": Supervisor review");
 });
 
-test("Behind the demo lists the model card and About and no assistant view", async ({ page }) => {
+test("How it works lists the model card and About and no assistant view", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Behind the demo" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   await expect(page.getByRole("menuitem")).toHaveText(["Model card", "About this project"]);
   await expect(page.getByRole("menuitem", { name: /assistant/i })).toHaveCount(0);
 });
@@ -91,5 +91,5 @@ test("Estimate a risk has its own introduction, and the queue's introduction and
   await expect(intro).toContainText("invented patient");
   await expect(intro).toContainText("fictional");
   await expect(page.getByTestId("intro-card")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "What is this packet for?" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "What are the review and packet for?" })).toHaveCount(0);
 });
