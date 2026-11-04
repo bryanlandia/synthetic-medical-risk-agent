@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 330" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title id="t">The pathway: screen, confirm, treat</title>
+  <desc id="d">Three stages in a row. Screen is this project, stage one: flag who to look at. Confirm is a confirmatory scan, where prior authorization can stall the pathway. Treat is not covered here; early is better. Below the confirm stage are two costs of delay: the patient's added time to diagnosis and the institution's rework.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#3F4948"/></marker>
+  </defs>
+  <rect x="1" y="1" width="958" height="328" rx="10" fill="#F4F8F8" stroke="#C4CBCB"/>
+
+  <!-- stage one: this project -->
+  <rect x="30" y="40" width="250" height="130" rx="10" fill="#00696B"/>
+  <text x="155" y="76" text-anchor="middle" font-size="26" font-weight="700" fill="#FFFFFF">Screen</text>
+  <text x="155" y="108" text-anchor="middle" font-size="18" fill="#FFFFFF">Flag who to look at</text>
+  <text x="155" y="146" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">This project, stage one</text>
+
+  <!-- stage two -->
+  <rect x="355" y="40" width="250" height="130" rx="10" fill="#FFFFFF" stroke="#171D1D" stroke-width="2"/>
+  <text x="480" y="76" text-anchor="middle" font-size="26" font-weight="700" fill="#171D1D">Confirm</text>
+  <text x="480" y="108" text-anchor="middle" font-size="18" fill="#171D1D">A confirmatory scan</text>
+  <text x="480" y="136" text-anchor="middle" font-size="16" fill="#3F4948">Prior authorization can</text>
+  <text x="480" y="156" text-anchor="middle" font-size="16" fill="#3F4948">stall the whole pathway</text>
+
+  <!-- stage three -->
+  <rect x="680" y="40" width="250" height="130" rx="10" fill="#FFFFFF" stroke="#C4CBCB" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="805" y="76" text-anchor="middle" font-size="26" font-weight="700" fill="#3F4948">Treat</text>
+  <text x="805" y="108" text-anchor="middle" font-size="18" fill="#3F4948">Not covered here</text>
+  <text x="805" y="140" text-anchor="middle" font-size="16" fill="#3F4948">Early is better</text>
+
+  <!-- arrows -->
+  <line x1="284" y1="105" x2="350" y2="105" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="317" y="92" text-anchor="middle" font-size="14" fill="#00504F" font-weight="700">packet</text>
+  <line x1="609" y1="105" x2="675" y2="105" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- the two costs of delay, under the confirm stage -->
+  <line x1="480" y1="172" x2="480" y2="206" stroke="#3F4948" stroke-width="2"/>
+  <line x1="260" y1="206" x2="700" y2="206" stroke="#3F4948" stroke-width="2"/>
+  <line x1="260" y1="206" x2="260" y2="226" stroke="#3F4948" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="700" y1="206" x2="700" y2="226" stroke="#3F4948" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="100" y="230" width="320" height="72" rx="8" fill="#FFE7B0"/>
+  <text x="260" y="261" text-anchor="middle" font-size="18" font-weight="700" fill="#5C4300">Cost to the patient</text>
+  <text x="260" y="286" text-anchor="middle" font-size="16" fill="#5C4300">Time added to the diagnosis</text>
+  <rect x="540" y="230" width="320" height="72" rx="8" fill="#FFE7B0"/>
+  <text x="700" y="261" text-anchor="middle" font-size="18" font-weight="700" fill="#5C4300">Cost to the institution</text>
+  <text x="700" y="286" text-anchor="middle" font-size="16" fill="#5C4300">Rework, appeals, unpaid work</text>
+</svg>

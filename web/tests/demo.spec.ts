@@ -184,7 +184,8 @@ test("links in the About text open safely and the tab loads nothing from another
     expect(rel).toContain("noopener");
     expect(rel).toContain("noreferrer");
   }
-  expect(await page.locator("article.doc img").count()).toBe(0);
+  // the renderer refuses images; the only ones on the page are the diagrams, served from this site
+  for (const src of await page.locator("article.doc img").evaluateAll((els) => els.map((e) => (e as HTMLImageElement).getAttribute("src")))) expect(src).toMatch(/^\/[\w-]+\.svg$/);
   expect([...origins]).toEqual([new URL(baseURL!).origin]);
 });
 
@@ -231,14 +232,14 @@ function section(heading: string): string {
   return ABOUT.slice(start, next === -1 ? undefined : next);
 }
 
-test("the About tab tells the story: the disease course, the pathway with two ledgers, and what comes next", async ({ page }) => {
+test("the About tab tells the story: the disease course, the pathway with two costs, and what comes next", async ({ page }) => {
   await page.goto("/");
   await openBehind(page, "About this project");
   const doc = page.locator("article.doc");
   for (const heading of ["The disease, and why catching it early matters", "Where this fits: screen, confirm, treat", "What comes next"]) {
     await expect(doc.getByRole("heading", { name: heading })).toBeVisible();
   }
-  for (const phrase of ["often overlooked", "highly treatable", "degenerative neurological disease", "two ledgers", "stage one",
+  for (const phrase of ["often overlooked", "highly treatable", "degenerative neurological disease", "two costs", "stage one",
     "Kessler Family Foundation", "also fictional"]) {
     await expect(doc).toContainText(phrase);
   }
@@ -268,4 +269,17 @@ test("the foundation is not in the packet request or the packet shown", async ({
   expect(bodies.length).toBe(1);
   expect(bodies[0]).not.toMatch(/Kessler Family|Foundation/i);
   expect(await page.getByRole("region", { name: "Request packet" }).innerText()).not.toMatch(/Kessler Family|Foundation/i);
+});
+
+test("the About text shows the pathway and the request-packet diagrams as images from this site, each with alt text", async ({ page }) => {
+  await page.goto("/");
+  await openBehind(page, "About this project");
+  const imgs = page.locator("article.doc figure.diagram img");
+  await expect(imgs).toHaveCount(2);
+  for (const img of await imgs.all()) {
+    await expect(img).toHaveAttribute("alt", /.{40,}/);
+    await expect.poll(() => img.evaluate((e) => (e as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  }
+  await expect(page.locator("article.doc")).not.toContainText("web/public");
+  await expect(page.locator("article.doc pre")).toHaveCount(0);
 });
