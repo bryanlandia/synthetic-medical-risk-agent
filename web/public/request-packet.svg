@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <title id="t">How a request packet is made</title>
+  <desc id="d">The chart's labs and clinical note go to a small note reader model, which picks out the symptoms. Fixed rules in code judge each criterion of the fictional policy as met, unmet or unknown, with evidence; the preparing clinician's answers feed the rest. A language model drafts a summary and code checks every sentence, falling back to a fixed template. The supervisor then releases, returns or closes the request. A classifier estimate sits beside the chart as context only and decides no criterion.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#3F4948"/></marker>
+  </defs>
+  <rect x="1" y="1" width="958" height="418" rx="10" fill="#F4F8F8" stroke="#C4CBCB"/>
+
+  <!-- top row -->
+  <rect x="24" y="30" width="190" height="100" rx="8" fill="#FFFFFF" stroke="#171D1D" stroke-width="2"/>
+  <text x="119" y="64" text-anchor="middle" font-size="20" font-weight="700" fill="#171D1D">The chart</text>
+  <text x="119" y="90" text-anchor="middle" font-size="16" fill="#3F4948">Labs and the</text>
+  <text x="119" y="110" text-anchor="middle" font-size="16" fill="#3F4948">clinical note</text>
+
+  <rect x="256" y="30" width="200" height="100" rx="8" fill="#E8E0F5" stroke="#5B3F8F" stroke-width="2"/>
+  <text x="356" y="64" text-anchor="middle" font-size="20" font-weight="700" fill="#3A2766">Note reader</text>
+  <text x="356" y="90" text-anchor="middle" font-size="16" fill="#3A2766">A small model picks out</text>
+  <text x="356" y="110" text-anchor="middle" font-size="16" fill="#3A2766">the symptoms it mentions</text>
+
+  <rect x="498" y="30" width="220" height="100" rx="8" fill="#D6EEEE" stroke="#00696B" stroke-width="2"/>
+  <text x="608" y="64" text-anchor="middle" font-size="20" font-weight="700" fill="#00504F">Policy check</text>
+  <text x="608" y="90" text-anchor="middle" font-size="16" fill="#00504F">Code judges each criterion:</text>
+  <text x="608" y="110" text-anchor="middle" font-size="16" fill="#00504F">met, unmet or unknown</text>
+
+  <rect x="760" y="30" width="176" height="100" rx="8" fill="#E8E0F5" stroke="#5B3F8F" stroke-width="2"/>
+  <text x="848" y="64" text-anchor="middle" font-size="20" font-weight="700" fill="#3A2766">Summary</text>
+  <text x="848" y="90" text-anchor="middle" font-size="16" fill="#3A2766">A language model</text>
+  <text x="848" y="110" text-anchor="middle" font-size="16" fill="#3A2766">drafts it</text>
+
+  <line x1="217" y1="80" x2="252" y2="80" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="459" y1="80" x2="494" y2="80" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="721" y1="80" x2="756" y2="80" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- bottom row -->
+  <rect x="24" y="250" width="190" height="104" rx="8" fill="#FFFFFF" stroke="#C4CBCB" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="119" y="282" text-anchor="middle" font-size="20" font-weight="700" fill="#3F4948">Risk estimate</text>
+  <text x="119" y="308" text-anchor="middle" font-size="16" fill="#3F4948">Context only. It decides</text>
+  <text x="119" y="328" text-anchor="middle" font-size="16" fill="#3F4948">no criterion.</text>
+  <line x1="119" y1="134" x2="119" y2="246" stroke="#3F4948" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+
+  <rect x="498" y="250" width="220" height="104" rx="8" fill="#FFE7B0" stroke="#5C4300" stroke-width="2"/>
+  <text x="608" y="282" text-anchor="middle" font-size="20" font-weight="700" fill="#5C4300">Preparer's answers</text>
+  <text x="608" y="308" text-anchor="middle" font-size="16" fill="#5C4300">Simulated: the clinician's</text>
+  <text x="608" y="328" text-anchor="middle" font-size="16" fill="#5C4300">yes or no on four criteria</text>
+  <line x1="608" y1="246" x2="608" y2="134" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="760" y="186" width="176" height="84" rx="8" fill="#D6EEEE" stroke="#00696B" stroke-width="2"/>
+  <text x="848" y="214" text-anchor="middle" font-size="18" font-weight="700" fill="#00504F">Sentence check</text>
+  <text x="848" y="238" text-anchor="middle" font-size="15" fill="#00504F">Code. A draft that fails</text>
+  <text x="848" y="256" text-anchor="middle" font-size="15" fill="#00504F">gets a fixed template</text>
+  <line x1="848" y1="134" x2="848" y2="182" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <rect x="760" y="310" width="176" height="84" rx="8" fill="#FFE7B0" stroke="#5C4300" stroke-width="2"/>
+  <text x="848" y="340" text-anchor="middle" font-size="20" font-weight="700" fill="#5C4300">Supervisor</text>
+  <text x="848" y="364" text-anchor="middle" font-size="15" fill="#5C4300">Release, return with a</text>
+  <text x="848" y="382" text-anchor="middle" font-size="15" fill="#5C4300">note, or close</text>
+  <line x1="848" y1="274" x2="848" y2="306" stroke="#3F4948" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- the table also reaches the summary check -->
+  <path d="M608 134 L608 170 L760 228" fill="none" stroke="#3F4948" stroke-width="2" stroke-dasharray="7 5" marker-end="url(#arrow)"/>
+
+  <!-- legend -->
+  <rect x="270" y="388" width="16" height="16" rx="3" fill="#D6EEEE" stroke="#00696B"/><text x="294" y="402" font-size="15" fill="#171D1D">Code</text>
+  <rect x="360" y="388" width="16" height="16" rx="3" fill="#E8E0F5" stroke="#5B3F8F"/><text x="384" y="402" font-size="15" fill="#171D1D">Model</text>
+  <rect x="460" y="388" width="16" height="16" rx="3" fill="#FFE7B0" stroke="#5C4300"/><text x="484" y="402" font-size="15" fill="#171D1D">Person</text>
+</svg>

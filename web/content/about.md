@@ -4,7 +4,9 @@
 
 VK-Check is a small applied AI system that reads a patient's symptoms and lab results and estimates their risk of Velorin-Kessler Syndrome, an invented disease that can be readily diagnosed given proper lab values and symptom notes.  The input can be any of four note styles: a standard U.S. EHR (Electronic Health Record) template, shorthand, a copy-forward follow-up, or a SOAP (Subjective-Objective-Assessment-Plan) draft from an ambient AI scribe.
 
-To date, it's a limited single-prompt chat UI in front of a small tool-calling assistant, with no conversation memory.  The assistant decides whether to score or decline to score, and calls the appropriate tool.  Its first turn picks and calls the tool, and its second writes a reply.
+There are two things to try.  One is a review queue, where you play a neurology supervisor working through 30 invented requests for a confirmatory scan.  The other is Estimate a risk, where sliders and toggles build an invented patient and a dial shows the classifier's estimate as you move them.  The dial calls no language model, so it is instant and costs nothing.
+
+From the dial you can also send that patient to a small tool-calling assistant, as a note, to see how its guardrails behave.  It is a single prompt with no conversation memory.  The assistant decides whether to score or decline to score, and calls the appropriate tool.  Its first turn picks and calls the tool, and its second writes a reply.  A collapsed box on the same page takes free text if you would rather write your own.
 
 The assistant's scoring tool takes no arguments, so the model cannot change what is scored.  Declines use a closed set of reasons, and a check replaces any reply that quotes a wrong number or names a drug.  Limits per visitor and a daily dollar cap bound the spend.  On the Estimate a risk page, the button that hides an instruction in the invented patient's note shows the injection being ignored: the assistant's number stays the dial's.
 
@@ -16,21 +18,25 @@ VK-Check is funded by the Kessler Family Foundation, also fictional, to improve 
 
 ## Where this fits: screen, confirm, treat
 
-```
- screen             confirm                   treat
- (this project) --> (a confirmatory scan) --> (not covered)
- flag who to look at   authorization can stall    early is better
-                       the whole pathway
-```
+![The pathway has three stages: screen, confirm and treat.  This project is stage one, and its request packet is what carries a flagged patient into the confirm stage, where the patient's and the institution's costs of delay build up.](web/public/pathway.svg)
 
-The confirmatory scan is where a flagged patient can wait.  An expensive study often needs prior authorization, and an incomplete or poorly documented request is denied or sent back.  That delay has two costs, which is why I think of the pathway as having two ledgers:
+The confirmatory scan is where a flagged patient can wait.  An expensive study often needs prior authorization, and an incomplete or poorly documented request is denied or sent back.  That delay has two costs:
 
 * **The patient's:** weeks added to the time to diagnosis, in a disease where time matters.
 * **The institution's:** staff hours on rework and appeals, and work that is never reimbursed.
 
 A tool that helps a clinician get a complete, accurate request right the first time helps both.  VK-Check is stage one of that pathway: reading a chart and its note, estimating the risk, and showing what the chart does and does not support.  It does not decide who gets a scan, and it does not give medical advice.
 
-Both are built, and the demo puts you in the supervisor's chair. You work a queue of invented requests for a confirmatory scan, each prepared by a clinician who does not exist. Opening one shows the chart beside a packet: a checklist against a fictional policy (the first criterion asks whether at least two of three labs are above fictional policy thresholds, which can differ from the lab's own reference range), each answer tied to a line in the chart or note, what is still missing without anything filled in, and a summary that a language model drafts and code checks sentence by sentence, falling back to a fixed template if it does not pass. You decide: release it, return it with a note, or close it because the criteria are not met. Nothing is sent anywhere. The tool never decides who gets a scan, and it does not give medical advice.
+The review queue is where the packet gets used, and it puts you in the supervisor's chair.  Each request in it was prepared by a clinician who does not exist.  Opening one shows the chart beside a packet, which has:
+
+* a checklist against a fictional policy.  The first criterion asks whether at least two of three labs are above the policy's thresholds, which can differ from the lab's own reference range
+* each answer tied to a line in the chart or note
+* what is still missing, with nothing filled in
+* a summary that a language model drafts and code checks sentence by sentence, with a fixed template used instead if it fails the check
+
+![How a request packet is made.  The chart's labs and note go to a small note reader and then to a code check against the fictional policy, with the preparer's answers feeding it.  A language model drafts a summary that code checks.  The supervisor decides.  A risk estimate sits beside it as context only.](web/public/request-packet.svg)
+
+You decide: release it, return it with a note, or close it because the criteria are not met.  Nothing is sent anywhere, and your progress stays in your browser until you reset the demo.  Each part of a packet is labelled with what produced it, a model, code, or a person, so you can tell which is which.  The risk estimate is there as context, and it decides no criterion.  The tool never decides who gets a scan, and it does not give medical advice.
 
 ## Why this project?
 

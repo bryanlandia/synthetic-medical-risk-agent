@@ -70,6 +70,8 @@ label { display: block; font-weight: 600; margin: 8px 0 4px; }
 .doc .clip { margin: 16px 0; }
 .doc .clip video { width: 100%; max-height: 70vh; background: #000; border-radius: 6px; }
 .doc .clip figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+.doc .diagram { margin: 16px 0; }
+.doc .diagram img { display: block; width: 100%; height: auto; }
 
 
 .vk-sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
