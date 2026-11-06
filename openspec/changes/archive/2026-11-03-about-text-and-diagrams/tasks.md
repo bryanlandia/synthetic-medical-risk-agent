@@ -12,4 +12,4 @@
 ## 3. Verify and archive
 
 - [x] 3.1 Run the full `npm test` in `web/` and `npm run typecheck`; verify all specs pass.
-- [ ] 3.2 Validate the delta (`openspec validate about-text-and-diagrams`) and, after merge, archive the change; verify the main `web-demo` spec holds the new requirements.
+- [x] 3.2 Validate the delta (`openspec validate about-text-and-diagrams`) and, after merge, archive the change; verify the main `web-demo` spec holds the new requirements.
