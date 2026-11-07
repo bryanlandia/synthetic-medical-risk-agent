@@ -12,7 +12,7 @@ test("the estimate names what it estimates and stays context only", async ({ pag
   await openCase(page, first(kinds, "unmet"));
   await waitForPacket(page);
   const est = page.getByTestId("estimate");
-  await expect(est).toContainText("Estimated risk of Velorin-Kessler syndrome (fictional):");
+  await expect(est).toContainText("Estimated risk of Velorin-Kessler syndrome (fictional)");
   await expect(est).toContainText(/\d+%/);
   await expect(est).toContainText("Context only; it decides no criterion.");
 });
@@ -137,4 +137,32 @@ test("the free-text view names the guards, the agent and the classifier", async 
   await expect(row).toBeVisible();
   for (const id of ["free-guards", "free-agent", "free-classifier"]) await expect(page.getByTestId(`produced-${id}`)).toBeVisible();
   expect(await row.innerText()).not.toMatch(BANNED);
+});
+
+/** The number's size in px, whether it is the largest text in its block, and its colour. */
+async function figure(page: import("@playwright/test").Page, id: string) {
+  return page.getByTestId(id).evaluate((el) => {
+    const px = (e: Element) => parseFloat(getComputedStyle(e).fontSize);
+    const block = el.closest(".risk-figure")!.parentElement!;
+    const sizes = Array.from(block.querySelectorAll("*")).filter((e) => e !== el && e.childElementCount === 0 && e.textContent?.trim()).map(px);
+    return { size: px(el), rem: px(document.documentElement), largest: Math.max(...sizes), color: getComputedStyle(el).color, text: el.textContent };
+  });
+}
+const notVerdictColour = (c: string) => {
+  const [r, g, b] = c.match(/\d+/g)!.map(Number);
+  return !(r > g + 40 && r > b + 40) && !(g > r + 60 && g > b + 60); // not red or amber, not green; teal has g and b above r
+};
+
+test("in a case the risk is a large labelled figure, not a verdict colour, and the queue shows none", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByTestId("probability")).toHaveCount(0);
+  await expect(page.getByTestId("estimate-figure")).toHaveCount(0);
+  await openCase(page, first(kinds, "unmet"));
+  await waitForPacket(page);
+  const f = await figure(page, "estimate-figure");
+  expect(f.text).toMatch(/^\d+%$/);
+  expect(f.size).toBeGreaterThanOrEqual(3.5 * f.rem);
+  expect(f.size).toBeGreaterThan(f.largest);
+  expect(notVerdictColour(f.color)).toBe(true);
+  await expect(page.getByTestId("estimate")).toContainText("Estimated risk of Velorin-Kessler syndrome (fictional)");
 });

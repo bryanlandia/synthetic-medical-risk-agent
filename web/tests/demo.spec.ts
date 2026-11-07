@@ -283,3 +283,15 @@ test("the About text shows the pathway and the request-packet diagrams as images
   await expect(page.locator("article.doc")).not.toContainText("web/public");
   await expect(page.locator("article.doc pre")).toHaveCount(0);
 });
+
+test("the free-text card shows the risk as the large labelled figure", async ({ page }) => {
+  await page.goto("/");
+  await openAssistant(page);
+  await page.getByRole("button", { name: "A short note" }).click();
+  await page.getByRole("button", { name: "Send", exact: true }).click();
+  const n = page.getByTestId("probability");
+  await expect(n).toHaveText(/^\d+%$/);
+  const size = await n.evaluate((el) => parseFloat(getComputedStyle(el).fontSize) / parseFloat(getComputedStyle(document.documentElement).fontSize));
+  expect(size).toBeGreaterThanOrEqual(3.5);
+  await expect(page.locator("section.card .risk-figure-label")).toContainText("Estimated risk of Velorin-Kessler syndrome (fictional)");
+});

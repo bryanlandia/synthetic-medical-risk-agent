@@ -185,3 +185,17 @@ test("the free-text box is only in Estimate a risk, and sends one independent me
   }
   expect(bodies.map((b) => JSON.parse(b))).toEqual([{ message: "first note: tremor present" }, { message: "second note: tremor absent" }]);
 });
+
+test("the estimate is a large labelled figure, the largest text in its block, and not a verdict colour", async ({ page }) => {
+  await openEstimate(page);
+  const f = await page.getByTestId("estimate-probability").evaluate((el) => {
+    const px = (e: Element) => parseFloat(getComputedStyle(e).fontSize);
+    const block = el.closest(".risk-figure")!.parentElement!;
+    const others = Array.from(block.querySelectorAll("*")).filter((e) => e !== el && e.childElementCount === 0 && e.textContent?.trim()).map(px);
+    return { size: px(el), rem: px(document.documentElement), largest: Math.max(...others), color: getComputedStyle(el).color };
+  });
+  expect(f.size).toBeGreaterThanOrEqual(3.5 * f.rem);
+  expect(f.size).toBeGreaterThan(f.largest);
+  expect(f.color).toBe("rgb(0, 105, 107)");
+  await expect(page.getByLabel("Estimate", { exact: true })).toContainText("Estimated risk of Velorin-Kessler syndrome (fictional)");
+});

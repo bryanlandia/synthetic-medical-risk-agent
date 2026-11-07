@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Analysis, Gap, Report, ShownError } from "@/lib/types";
+import { RiskFigure } from "./RiskFigure";
 
 export type Outcome = { kind: "idle" } | { kind: "loading" } | { kind: "error"; error: ShownError } | { kind: "done"; analysis: Analysis };
 
@@ -54,7 +55,7 @@ export function ReportCard({ outcome, labNames, callout }: { outcome: Outcome; l
     <section className="card" aria-live="polite">
       <h2>Risk estimate</h2>
       {callout}
-      <p className="big" data-testid="probability">{Math.round(report.probability * 100)}%</p>
+      <RiskFigure probability={report.probability} testId="probability" />
       <p>
         {report.uncertain ? <span className="badge warn" data-testid="uncertain">Uncertain: close to the line</span> : <span className="badge" data-testid="certain">Not in the uncertain band</span>}
       </p>
