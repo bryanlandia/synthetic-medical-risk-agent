@@ -28,6 +28,7 @@ import { requestPacket } from "@/lib/packet-client";
 import { MIN_NOTE, MIN_RATIONALE, releaseBlock, statusOf } from "@/lib/store";
 import type { Answer, AttestedId, CaseRecord, Packet, ShownError } from "@/lib/types";
 import { HelpButton, ProducedKeyButton } from "./Intro";
+import { RiskFigure } from "./RiskFigure";
 import { ReleasedPacket } from "./ReleasedPacket";
 import { useReview } from "./ReviewProvider";
 import { CriterionChip, DemoNote, Produced, Row, SourceCell, StatusChip, Term } from "./ui";
@@ -128,9 +129,9 @@ function PacketBody({ rec, packet }: { rec: CaseRecord; packet: Packet }) {
       {r && (
         <Box sx={{ mb: 2 }} data-testid="estimate">
           <Typography variant="h4" component="h4">Why this patient was flagged (context only)<Produced kind="classifier" testId="estimate" /></Typography>
+          <RiskFigure probability={r.probability} testId="estimate-figure" />
           <Typography variant="body2">
-            Estimated risk of Velorin-Kessler syndrome (fictional): {pct(r.probability)}
-            {r.interval ? `, or ${pct(r.interval[0])} to ${pct(r.interval[1])} if the missing results are obtained` : ""}. Context only; it decides no criterion.
+            {r.interval ? `The range is ${pct(r.interval[0])} to ${pct(r.interval[1])} if the missing results are obtained. ` : ""}Context only; it decides no criterion.
           </Typography>
           <DemoNote note="estimate" />
         </Box>

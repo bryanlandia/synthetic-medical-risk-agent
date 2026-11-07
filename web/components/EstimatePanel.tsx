@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import { BAND_TEXT, BREAKDOWN_NOTE, ESTIMATE_STATUS_TEXT, SYMPTOM_LABELS, SYMPTOM_STATES } from "@/lib/copy";
 import type { EstimateStatus } from "@/lib/estimator";
 import type { Estimate, EstimateContent, EstimateInputs, EstimateLab, ShownError } from "@/lib/types";
+import { RiskFigure } from "./RiskFigure";
 import { Row } from "./ui";
 
 type Api = {
@@ -128,7 +129,7 @@ export function EstimateResult({ content, estimate, inputs, status, error }: { c
   return (
     <Paper component="section" aria-label="Estimate" sx={{ p: 3, position: { md: "sticky" }, top: { md: 16 } }}>
       <Typography variant="h3" component="h3">Estimate</Typography>
-      <Typography component="p" data-testid="estimate-probability" aria-live="polite" sx={{ fontSize: "3rem", fontWeight: 700, lineHeight: 1.1, mt: 1 }}>{Math.round(estimate.probability * 100)}%</Typography>
+      <RiskFigure probability={estimate.probability} testId="estimate-probability" live />
       <Chip data-testid="estimate-band" label={BAND_TEXT[estimate.band]} sx={{ mt: 1, bgcolor: estimate.band === "uncertain" ? "#FFE7B0" : "#E1E8E8", color: estimate.band === "uncertain" ? "#5C4300" : "#171D1D" }} />
       <Gauge p={estimate.probability} />
       <Typography variant="body2" role={status === "error" ? "alert" : "status"} data-testid="estimate-status" color={status === "error" ? "error" : "text.secondary"} sx={{ minHeight: "1.5em" }}>{statusText}</Typography>
